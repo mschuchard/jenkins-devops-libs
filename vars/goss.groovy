@@ -32,13 +32,13 @@ def server(body) {
 
   // create goss rest api endpoint
   try {
-    cmd = "${config.path} -f ${config.format}"
+    cmd = "${config.path}"
 
     if (config.gossfile != null) {
       cmd += " -g ${config.gossfile}"
     }
 
-    sh "${cmd} serve -e ${config.endpoint} -l ${config.port} &"
+    sh "${cmd} serve -f ${config.format} -e ${config.endpoint} -l ${config.port} &"
   }
   catch(Exception error) {
     echo 'Failure using goss serve.'
@@ -63,13 +63,13 @@ def validate(body) {
 
   // validate with goss
   try {
-    cmd = "${config.path} -f ${config.format}"
+    cmd = "${config.path}"
 
     if (config.gossfile != null) {
       cmd += " -g ${config.gossfile}"
     }
 
-    sh "${cmd} validate"
+    sh "${cmd} validate -f ${config.format}"
   }
   catch(Exception error) {
     echo 'Failure using goss validate.'

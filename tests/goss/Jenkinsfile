@@ -38,7 +38,7 @@ pipeline {
           goss.server {
             gossfile = '/tmp/goss.yaml' // optional location of gossfile
             format = 'documentation' // optional formatter to use for output
-            path = '/usr/bin/goss' // optional executable path for goss
+            path = '/tmp/goss' // optional executable path for goss
           }
         }
       }
