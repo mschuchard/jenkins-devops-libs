@@ -25,12 +25,13 @@ def server(body) {
 
   // create goss rest api endpoint
   try {
-    if (config.gossfile == null) {
-      sh "${config.path} -f ${config.format} serve -e ${config.endpoint} -l ${config.port} &"
+    cmd = "${config.path} -f ${config.format}"
+
+    if (config.gossfile != null) {
+      cmd += " -g ${config.gossfile}"
     }
-    else {
-      sh "${config.path} -f ${config.format} -g ${config.gossfile} serve -e ${config.endpoint} -l ${config.port} &"
-    }
+
+    sh "${cmd} serve -e ${config.endpoint} -l ${config.port} &"
   }
   catch(error) {
     echo 'Failure using goss serve:'
@@ -54,12 +55,13 @@ def validate(body) {
 
   // validate with goss
   try {
-    if (config.gossfile == null) {
-      sh "${config.path} -f ${config.format} validate"
+    cmd = "${config.path} -f ${config.format}"
+
+    if (config.gossfile != null) {
+      cmd += " -g ${config.gossfile}"
     }
-    else {
-      sh "${config.path} -f ${config.format} -g ${config.gossfile} validate"
-    }
+
+    sh "${cmd} validate"
   }
   catch(error) {
     echo 'Failure using goss validate:'
@@ -68,5 +70,17 @@ def validate(body) {
 }
 
 def validate_gossfile(String gossfile) {
-
+  if (fileExists(gossfile)) {
+    try {
+      readYaml(file: gossfile)
+    }
+    catch(error) {
+      echo 'Gossfile failed YAML validation:'
+      throw error
+    }
+    echo "${gossfile} is valid YAML."
+  }
+  else {
+    throw "Gossfile ${gossfile} does not exist!"
+  }
 }

@@ -14,6 +14,7 @@ goss.validate {
   gossfile = 'goss.yaml' // optional location of gossfile
   format = 'rspecish' // optional formatter to use for output
   path = '/usr/bin/goss' // optional executable path for goss
+  vars = 'vars.yaml' // optional vars file to use with gossfile
 }
 ```
 
@@ -34,6 +35,7 @@ goss.server {
   format = 'rspecish' // optional formatter to use for output
   port = '8080' // optional specified port to listen on
   path = '/usr/bin/goss' // optional executable path for goss
+  vars = 'vars.yaml' // optional vars file to use with gossfile
 }
 ```
 

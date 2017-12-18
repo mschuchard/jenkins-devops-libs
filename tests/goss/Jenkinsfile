@@ -1,0 +1,13 @@
+@Library('goss')
+
+pipeline {
+  agent any
+
+  stages {
+    stage('Install') {
+      steps {
+        goss.install('0.3.5')
+      }
+    }
+  }
+}
