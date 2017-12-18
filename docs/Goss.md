@@ -4,7 +4,6 @@ Interacts with Goss.
 
 ### Dependencies
 
-- devops/common/utils (`server` and `validate`)
 - pipeline-utility-steps (`validate_gossfile`)
 
 ### goss.validate {}

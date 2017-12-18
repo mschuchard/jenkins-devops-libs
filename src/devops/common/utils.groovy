@@ -4,3 +4,5 @@ package devops.common;
 def default_input(input, default_value) {
   return input == null ? default_value : input
 }
+// def utils = new utils()
+// utils.default_input(foo, 'bar')

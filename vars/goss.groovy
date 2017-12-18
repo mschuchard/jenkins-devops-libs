@@ -14,16 +14,14 @@ def server(body) {
   body.delegate = config
   body()
 
-  def utils = new utils()
-
   // input checking
   if ((config.gossfile != null) && (!fileExists(config.gossfile))) {
     throw "Gossfile ${config.gossfile} does not exist!"
   }
-  utils.default_input(config.endpoint, '/healthz')
-  utils.default_input(config.format, 'rspecish')
-  utils.default_input(config.port, '8080')
-  utils.default_input(config.path, 'goss')
+  config.endpoint = config.endpoint == null ? '/healthz' : config.endpoint
+  config.format = config.format == null ? 'rspecish' : config.format
+  config.port = config.port == null ? ':8080' : config.port
+  config.path = config.path == null ? 'goss' : config.path
 
   // create goss rest api endpoint
   try {
@@ -48,14 +46,13 @@ def validate(body) {
   body.delegate = config
   body()
 
-  def utils = new utils()
-
   // input checking
   if ((config.gossfile != null) && (!fileExists(config.gossfile))) {
     throw "Gossfile ${config.gossfile} does not exist!"
   }
-  utils.default_input(config.format, 'rspecish')
-  utils.default_input(config.path, 'goss')
+  config.format = config.format == null ? 'rspecish' : config.format
+  config.port = config.port == null ? ':8080' : config.port
+  config.path = config.path == null ? 'goss' : config.path
 
   // validate with goss
   try {
