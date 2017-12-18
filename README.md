@@ -10,3 +10,4 @@ Unsure how to use these in your declarative syntax `Jenkinsfile`? Check the docu
 - Packer
 - Puppet
 - Serverspec
+- Else, replace all `sh` with API where possible

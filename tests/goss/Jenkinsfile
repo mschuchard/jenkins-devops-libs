@@ -1,4 +1,6 @@
-@Library('goss')
+library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
+  [$class: 'GitSCMSource',
+   remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
 
 pipeline {
   agent any
@@ -6,7 +8,39 @@ pipeline {
   stages {
     stage('Install') {
       steps {
-        goss.install('0.3.5')
+        script {
+          goss.install('0.3.5', '/tmp/')
+        }
+      }
+    }
+    stage('Validate Gossfile') {
+      steps {
+        sh 'curl -L https://raw.githubusercontent.com/mschuchard/snippets-and-notes/master/goss/goss.yaml -o /tmp/goss.yaml'
+
+        script {
+          goss.validate_gossfile('/tmp/goss.yaml')
+        }
+      }
+    }
+    stage('Validate Server') {
+      steps {
+        script {
+          goss.validate {
+            gossfile = '/tmp/goss.yaml' // optional location of gossfile
+            path = '/tmp/goss' // optional executable path for goss
+          }
+        }
+      }
+    }
+    stage('Create Endpoint') {
+      steps {
+        script {
+          goss.server {
+            gossfile = '/tmp/goss.yaml' // optional location of gossfile
+            format = 'documentation' // optional formatter to use for output
+            path = '/usr/bin/goss' // optional executable path for goss
+          }
+        }
       }
     }
   }

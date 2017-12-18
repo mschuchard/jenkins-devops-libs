@@ -14,14 +14,16 @@ def server(body) {
   body.delegate = config
   body()
 
+  def utils = new utils()
+
   // input checking
   if ((config.gossfile != null) && (!fileExists(config.gossfile))) {
     throw "Gossfile ${config.gossfile} does not exist!"
   }
-  default_input(config.endpoint, '/healthz')
-  default_input(config.format, 'rspecish')
-  default_input(config.port, '8080')
-  default_input(config.path, 'goss')
+  utils.default_input(config.endpoint, '/healthz')
+  utils.default_input(config.format, 'rspecish')
+  utils.default_input(config.port, '8080')
+  utils.default_input(config.path, 'goss')
 
   // create goss rest api endpoint
   try {
@@ -33,9 +35,9 @@ def server(body) {
 
     sh "${cmd} serve -e ${config.endpoint} -l ${config.port} &"
   }
-  catch(error) {
-    echo 'Failure using goss serve:'
-    throw error
+  catch(Exception error) {
+    echo 'Failure using goss serve.'
+    throw(error.toString())
   }
 }
 
@@ -46,12 +48,14 @@ def validate(body) {
   body.delegate = config
   body()
 
+  def utils = new utils()
+
   // input checking
   if ((config.gossfile != null) && (!fileExists(config.gossfile))) {
     throw "Gossfile ${config.gossfile} does not exist!"
   }
-  default_input(config.format, 'rspecish')
-  default_input(config.path, 'goss')
+  utils.default_input(config.format, 'rspecish')
+  utils.default_input(config.path, 'goss')
 
   // validate with goss
   try {
@@ -63,9 +67,9 @@ def validate(body) {
 
     sh "${cmd} validate"
   }
-  catch(error) {
-    echo 'Failure using goss validate:'
-    throw error
+  catch(Exception error) {
+    echo 'Failure using goss validate.'
+    throw(error.toString())
   }
 }
 
@@ -74,9 +78,9 @@ def validate_gossfile(String gossfile) {
     try {
       readYaml(file: gossfile)
     }
-    catch(error) {
-      echo 'Gossfile failed YAML validation:'
-      throw error
+    catch(Exception error) {
+      echo 'Gossfile failed YAML validation.'
+      throw(error.toString())
     }
     echo "${gossfile} is valid YAML."
   }
