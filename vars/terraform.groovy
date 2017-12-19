@@ -54,10 +54,10 @@ def install(body) {
   }
   // otherwise download and install specified version
   dir(config.install_path) {
-    sh "curl -L https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip"
-    sh "unzip terraform_${config.version}_${config.platform}.zip"
+    sh "curl -L https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip -o terraform.zip"
+    sh "unzip terraform.zip"
     sh "chmod +rx terraform"
-    new File("terraform_${config.version}_${config.platform}.zip").delete()
+    new File("${config.install_path}/terraform.zip").delete()
     echo "Terraform successfully installed at ${config.install_path}/terraform."
   }
 }
@@ -66,7 +66,7 @@ def plan(String dir, String bin = '/usr/bin/terraform') {
   if (fileExists(dir)) {
     // generate a plan from the config directory
     try {
-      sh "${bin} plan -no-color -out=${dir} ${dir}"
+      sh "${bin} plan -no-color -out=${dir}/plan.tfplan ${dir}"
     }
     catch(Exception error) {
       echo 'Failure using terraform plan.'

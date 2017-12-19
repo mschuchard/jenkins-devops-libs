@@ -32,7 +32,7 @@ terraform.install {
 ```
 
 ### terraform.plan(String dir, String bin = '/usr/bin/terraform')
-Uses Terraform to generate an execution plan. The plan file will be written to the same directory as the input config directory. This is mostly useful in a Pipeline for validating the config set and then speeding up a subsequent `apply` by providing an input plan file.
+Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will be written to the same directory as the input config directory. This is mostly useful in a Pipeline for validating the config set and then speeding up a subsequent `apply` by providing an input plan file.
 
 ```groovy
 terraform.plan(String '/path/to/config_dir')

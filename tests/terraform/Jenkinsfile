@@ -27,8 +27,23 @@ pipeline {
       }
     }
     stage('Validate') {
+      steps {
         script {
           terraform.validate('/tmp', '/tmp/terraform')
+        }
+      }
+    }
+    stage('Plan') {
+      steps {
+        script {
+          terraform.plan('/tmp', '/tmp/terraform')
+        }
+      }
+    }
+    stage('Apply') {
+      steps {
+        script {
+          terraform.apply('/tmp/plan.tfplan', '/tmp/terraform')
         }
       }
     }
