@@ -9,7 +9,7 @@ pipeline {
     stage('Install') {
       steps {
         script {
-          goss.install('0.3.5', '/tmp/')
+          goss.install('0.3.5', '/tmp')
         }
       }
     }

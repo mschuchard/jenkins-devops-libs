@@ -1,8 +1,8 @@
 # Jenkins DevOps Shared Libraries
 
-A collection of Jenkins Pipeline shared libraries for common DevOps software. Usage and library dependencies for each can be found in the documentation.
+A collection of Jenkins Pipeline shared libraries for common DevOps software. Usage and library dependencies for each can be found in the [documentation](docs).
 
-Unsure how to use these in your declarative syntax `Jenkinsfile`? Check the documentation here: https://jenkins.io/doc/book/pipeline/shared-libraries/#using-libraries
+Unsure how to use these in your declarative syntax `Jenkinsfile`? Check the declarative Jenkinsfile shared library  [documentation](https://jenkins.io/doc/book/pipeline/shared-libraries/#using-libraries).
 
 Basically, if you have the GitHub Branch Source plugin installed, then you can load the current master branch like:
 
@@ -22,8 +22,7 @@ Additionally, you can pare down the libraries available from this repo and then 
 
 ## TODO
 
-- Terraform
-- Goss vars file
+- Goss vars file; add test gossfile
 - Packer
 - Puppet
 - Serverspec

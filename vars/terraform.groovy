@@ -53,13 +53,11 @@ def install(body) {
     }
   }
   // otherwise download and install specified version
-  dir(config.install_path) {
-    sh "curl -L https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip -o terraform.zip"
-    sh "unzip terraform.zip"
-    sh "chmod +rx terraform"
-    new File("${config.install_path}/terraform.zip").delete()
-    echo "Terraform successfully installed at ${config.install_path}/terraform."
-  }
+  sh "curl -L https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip -o terraform.zip"
+  sh "unzip terraform.zip -d ${config.install_path}"
+  sh "chmod +rx ${config.install_path}/terraform"
+  new File("${config.install_path}/terraform.zip").delete()
+  echo "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
 def plan(String dir, String bin = '/usr/bin/terraform') {
