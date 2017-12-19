@@ -4,7 +4,8 @@ Interacts with Terraform.
 
 ### Dependencies
 
-None
+- unzip package (`install`)
+- devops.common.utils
 
 ### terraform.apply(String config_path, String bin = '/usr/bin/terraform')
 Uses Terraform to apply a config.

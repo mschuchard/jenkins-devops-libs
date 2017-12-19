@@ -1,4 +1,6 @@
 // vars/terraform.groovy
+import devops.common.utils
+
 def apply(String config_path, String bin = '/usr/bin/terraform') {
   if (fileExists(config_path)) {
     // apply the config
@@ -47,8 +49,8 @@ def install(body) {
   // check if current version already installed
   if (fileExists("${config.install_path}/terraform")) {
     installed_version = sh(returnStdout: true, script: "${config.install_path}/terraform version").trim()
-    if (installed_version =~ version) {
-      echo "Terraform version ${version} already installed at ${config.install_path}."
+    if (installed_version =~ config.version) {
+      echo "Terraform version ${config.version} already installed at ${config.install_path}."
       return
     }
   }
@@ -56,7 +58,9 @@ def install(body) {
   sh "curl -L https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip -o terraform.zip"
   sh "unzip terraform.zip -d ${config.install_path}"
   sh "chmod +rx ${config.install_path}/terraform"
-  new File("${config.install_path}/terraform.zip").delete()
+  new utils.remove_file('terraform.zip')
+  // def utils = new utils()
+  // utils.remove_file('terraform.zip')
   echo "Terraform successfully installed at ${config.install_path}/terraform."
 }
 

@@ -4,7 +4,7 @@ Interacts with Goss.
 
 ### Dependencies
 
-- pipeline-utility-steps (`validate_gossfile`)
+- pipeline-utility-steps plugin (`validate_gossfile`)
 
 ### goss.install(String version, String install_path = '/usr/bin')
 Locally installs a specific version of goss.
