@@ -1,6 +1,6 @@
 // vars/terraform.groovy
 def apply(String config_path, String bin = '/usr/bin/terraform') {
-  if (fileExists(config.config_path)) {
+  if (fileExists(config_path)) {
     // apply the config
     try {
       sh "${config.path} apply -no-color -auto-approve=true ${config.config_path}"
@@ -45,10 +45,10 @@ def install(body) {
   }
 
   // check if current version already installed
-  if (fileExists("${install_path}/terraform")) {
-    installed_version = sh(returnStdout: true, script: "${install_path}/terraform version").trim()
+  if (fileExists("${config.install_path}/terraform")) {
+    installed_version = sh(returnStdout: true, script: "${config.install_path}/terraform version").trim()
     if (installed_version =~ version) {
-      echo "Terraform version ${version} already installed at ${install_path}."
+      echo "Terraform version ${version} already installed at ${config.install_path}."
       return
     }
   }
@@ -58,7 +58,7 @@ def install(body) {
     sh "unzip terraform_${config.version}_${config.platform}.zip"
     sh "chmod +rx terraform"
     new File("terraform_${config.version}_${config.platform}.zip").delete()
-    echo "Terraform successfully installed at ${install_path}/terraform."
+    echo "Terraform successfully installed at ${config.install_path}/terraform."
   }
 }
 
