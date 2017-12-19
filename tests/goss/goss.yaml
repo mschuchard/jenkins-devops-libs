@@ -1,0 +1,8 @@
+file:
+  /etc:
+    exists: true
+    mode: "0755"
+    size: 4096
+    owner: root
+    group: root
+    filetype: directory

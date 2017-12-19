@@ -22,7 +22,6 @@ Additionally, you can pare down the libraries available from this repo and then 
 
 ## TODO
 
-- Goss vars file; add test gossfile
 - Packer
 - Puppet
 - Serverspec

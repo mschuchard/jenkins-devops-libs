@@ -34,6 +34,9 @@ def server(body) {
   try {
     cmd = "${config.path}"
 
+    if (config.vars != null) {
+      cmd += " --vars ${config.vars}"
+    }
     if (config.gossfile != null) {
       cmd += " -g ${config.gossfile}"
     }
@@ -65,6 +68,9 @@ def validate(body) {
   try {
     cmd = "${config.path}"
 
+    if (config.vars != null) {
+      cmd += " --vars ${config.vars}"
+    }
     if (config.gossfile != null) {
       cmd += " -g ${config.gossfile}"
     }

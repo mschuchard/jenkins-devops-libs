@@ -15,7 +15,7 @@ pipeline {
     }
     stage('Validate Gossfile') {
       steps {
-        sh 'curl -L https://raw.githubusercontent.com/mschuchard/snippets-and-notes/master/goss/goss.yaml -o /tmp/goss.yaml'
+        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/goss/goss.yaml -o /tmp/goss.yaml'
 
         script {
           goss.validate_gossfile('/tmp/goss.yaml')

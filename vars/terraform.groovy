@@ -58,7 +58,7 @@ def install(body) {
   sh "curl -L https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip -o terraform.zip"
   sh "unzip terraform.zip -d ${config.install_path}"
   sh "chmod +rx ${config.install_path}/terraform"
-  new utils.remove_file('terraform.zip')
+  new utils().remove_file('terraform.zip')
   // def utils = new utils()
   // utils.remove_file('terraform.zip')
   echo "Terraform successfully installed at ${config.install_path}/terraform."
