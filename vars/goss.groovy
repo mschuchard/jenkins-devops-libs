@@ -15,7 +15,7 @@ def install(String version, String install_path = '/usr/bin/') {
 }
 
 def server(body) {
-  // evaluate the body block, and collect configuration into the object
+  // evaluate the body block and collect configuration into the object
   def config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
@@ -28,12 +28,13 @@ def server(body) {
   config.endpoint = config.endpoint == null ? '/healthz' : config.endpoint
   config.format = config.format == null ? 'rspecish' : config.format
   config.port = config.port == null ? ':8080' : config.port
-  config.path = config.path == null ? 'goss' : config.path
+  config.bin = config.bin == null ? 'goss' : config.bin
 
   // create goss rest api endpoint
   try {
-    cmd = "${config.path}"
+    cmd = "${config.bin}"
 
+    // check for optional inputs
     if (config.vars != null) {
       cmd += " --vars ${config.vars}"
     }
@@ -47,6 +48,7 @@ def server(body) {
     echo 'Failure using goss serve.'
     throw error
   }
+  echo 'Goss endpoint created successfully.'
 }
 
 def validate(body) {
@@ -62,12 +64,13 @@ def validate(body) {
   }
   config.format = config.format == null ? 'rspecish' : config.format
   config.port = config.port == null ? ':8080' : config.port
-  config.path = config.path == null ? 'goss' : config.path
+  config.bin = config.bin == null ? 'goss' : config.bin
 
   // validate with goss
   try {
-    cmd = "${config.path}"
+    cmd = "${config.bin}"
 
+    // check for optional inputs
     if (config.vars != null) {
       cmd += " --vars ${config.vars}"
     }
@@ -81,6 +84,7 @@ def validate(body) {
     echo 'Failure using goss validate.'
     throw error
   }
+  echo 'Goss validate command was successful.'
 }
 
 def validate_gossfile(String gossfile) {

@@ -7,14 +7,14 @@ Interacts with Terraform.
 - unzip package (`install`)
 - devops.common.utils
 
-### terraform.apply(String config_path, String bin = '/usr/bin/terraform')
+### terraform.apply(String config_path, String bin = 'terraform')
 Uses Terraform to apply a config.
 
 ```groovy
 terraform.apply('path/to/config_dir_or_plan_file')
 ```
 
-### terraform.init(String dir, String bin = '/usr/bin/terraform')
+### terraform.init(String dir, String bin = 'terraform')
 Uses Terraform to initialize a working directory.
 
 ```groovy
@@ -32,14 +32,14 @@ terraform.install {
 }
 ```
 
-### terraform.plan(String dir, String bin = '/usr/bin/terraform')
+### terraform.plan(String dir, String bin = 'terraform')
 Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will be written to the same directory as the input config directory. This is mostly useful in a Pipeline for validating the config set and then speeding up a subsequent `apply` by providing an input plan file.
 
 ```groovy
 terraform.plan(String '/path/to/config_dir')
 ```
 
-### terraform.validate(String dir, String bin = '/usr/bin/terraform')
+### terraform.validate(String dir, String bin = 'terraform')
 Uses Terraform to validate a config directory.
 
 ```groovy

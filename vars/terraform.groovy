@@ -1,23 +1,24 @@
 // vars/terraform.groovy
 import devops.common.utils
 
-def apply(String config_path, String bin = '/usr/bin/terraform') {
+def apply(String config_path, String bin = 'terraform') {
   if (fileExists(config_path)) {
     // apply the config
     try {
-      sh "${config.path} apply -no-color -auto-approve=true ${config.config_path}"
+      sh "${bin} apply -no-color -auto-approve=true ${config_path}"
     }
     catch(Exception error) {
       echo 'Failure using terraform apply.'
       throw error
     }
+    echo 'Terraform apply was successful.'
   }
   else {
     throw new Exception("Terraform config/plan ${config_path} does not exist!")
   }
 }
 
-def init(String dir, String bin = '/usr/bin/terraform') {
+def init(String dir, String bin = 'terraform') {
   if (fileExists(dir)) {
     // initialize the working config directory
     try {
@@ -27,6 +28,7 @@ def init(String dir, String bin = '/usr/bin/terraform') {
       echo 'Failure using terraform init.'
       throw error
     }
+    echo 'Terraform init was successful.'
   }
   else {
     throw new Exception('Working config directory does not exist!')
@@ -34,7 +36,7 @@ def init(String dir, String bin = '/usr/bin/terraform') {
 }
 
 def install(body) {
-  // evaluate the body block, and collect configuration into the object
+  // evaluate the body block and collect configuration into the object
   def config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
@@ -59,12 +61,10 @@ def install(body) {
   sh "unzip terraform.zip -d ${config.install_path}"
   sh "chmod +rx ${config.install_path}/terraform"
   new utils().remove_file('terraform.zip')
-  // def utils = new utils()
-  // utils.remove_file('terraform.zip')
   echo "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
-def plan(String dir, String bin = '/usr/bin/terraform') {
+def plan(String dir, String bin = 'terraform') {
   if (fileExists(dir)) {
     // generate a plan from the config directory
     try {
@@ -74,13 +74,14 @@ def plan(String dir, String bin = '/usr/bin/terraform') {
       echo 'Failure using terraform plan.'
       throw error
     }
+    echo 'Terraform plan was successful.'
   }
   else {
     throw new Exception('Config directory does not exist!')
   }
 }
 
-def validate(String dir, String bin = '/usr/bin/terraform') {
+def validate(String dir, String bin = 'terraform') {
   if (fileExists(dir)) {
     // validates the config directory
     try {
@@ -90,6 +91,7 @@ def validate(String dir, String bin = '/usr/bin/terraform') {
       echo 'Failure using terraform validate.'
       throw error
     }
+    echo 'Terraform validate was successful.'
   }
   else {
     throw new Exception('Config directory does not exist!')
