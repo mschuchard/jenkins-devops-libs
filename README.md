@@ -22,7 +22,6 @@ Additionally, you can pare down the libraries available from this repo and then 
 
 ## TODO
 
-- Packer
 - Puppet
 - Serverspec
 - Else, replace all `sh` with API where possible and abstract common methods into utils.

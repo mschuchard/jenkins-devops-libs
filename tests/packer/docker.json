@@ -1,0 +1,15 @@
+{
+  "builders": [{
+    "type": "docker",
+    "image": "centos:7",
+    "commit": "true"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "echo hello"
+      ]
+    }
+  ]
+}

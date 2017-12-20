@@ -1,0 +1,41 @@
+library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
+  [$class: 'GitSCMSource',
+   remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
+
+pipeline {
+  agent any
+
+  stages {
+    stage('Install') {
+      steps {
+        script {
+          packer.install {
+            version = '1.1.3'
+            install_path = '/tmp'
+            platform = 'linux_amd64'
+          }
+        }
+      }
+    }
+    stage('Validate') {
+      steps {
+        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.json -o /tmp/docker.json'
+
+        script {
+          packer.validate {
+            template = '/tmp/docker.json'
+          }
+        }
+      }
+    }
+    stage('Build') {
+      steps {
+        script {
+          packer.build {
+            template = '/tmp/docker.json'
+          }
+        }
+      }
+    }
+  }
+}
