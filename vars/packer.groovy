@@ -60,7 +60,7 @@ def install(body) {
   }
   // otherwise download and install specified version
   sh "curl -L https://releases.hashicorp.com/packer/${config.version}/packer_${config.version}_${config.platform}.zip -o packer.zip"
-  sh "unzip packer.zip -d ${config.install_path}"
+  unzip(zipFile: 'packer.zip', dir: config.install_path)
   sh "chmod +rx ${config.install_path}/packer"
   new utils().remove_file('packer.zip')
   echo "Packer successfully installed at ${config.install_path}/packer."

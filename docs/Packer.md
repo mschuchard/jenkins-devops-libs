@@ -5,6 +5,7 @@ Interacts with Packer.
 ### Dependencies
 
 - unzip package (`install`)
+- pipeline-utility-steps plugin (`install`)
 - devops.common.utils
 
 ### packer.build {}

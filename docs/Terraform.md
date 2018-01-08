@@ -5,6 +5,7 @@ Interacts with Terraform.
 ### Dependencies
 
 - unzip package (`install`)
+- pipeline-utility-steps plugin (`install`)
 - devops.common.utils
 
 ### terraform.apply(String config_path, String bin = 'terraform')
