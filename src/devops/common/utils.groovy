@@ -6,11 +6,13 @@ def default_input(input, default_value) {
 }
 
 // removes file
+@Whitelisted
 def remove_file(String file) {
   new File(file).delete()
 }
 
 // downloads file
+@Whitelisted
 def download_file(String url, String dest) {
   def file = new File(dest).newOutputStream()
   file << new URL(url).openStream()
@@ -19,4 +21,3 @@ def download_file(String url, String dest) {
 }
 
 //http://vertx.io/docs/groovydoc/io/vertx/groovy/core/file/FileSystem.html
-//@Whitelisted

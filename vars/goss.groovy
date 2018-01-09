@@ -1,4 +1,6 @@
 // vars/goss.groovy
+import devops.common.utils
+
 def install(String version, String install_path = '/usr/bin/') {
   // check if current version already installed
   if (fileExists("${install_path}/goss")) {
@@ -9,7 +11,8 @@ def install(String version, String install_path = '/usr/bin/') {
     }
   }
   // otherwise download and install specified version
-  sh "curl -L https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64 -o ${install_path}/goss"
+  download_file("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${install_path}/goss")
+  //sh "curl -L https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64 -o ${install_path}/goss"
   sh "chmod +rx ${install_path}/goss"
   echo "Goss successfully installed at ${install_path}/goss."
 }
