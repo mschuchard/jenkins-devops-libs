@@ -12,7 +12,6 @@ def install(String version, String install_path = '/usr/bin/') {
   }
   // otherwise download and install specified version
   new utils().download_file("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${install_path}/goss")
-  //sh "curl -L https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64 -o ${install_path}/goss"
   sh "chmod +rx ${install_path}/goss"
   echo "Goss successfully installed at ${install_path}/goss."
 }

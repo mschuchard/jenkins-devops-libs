@@ -1,6 +1,11 @@
+// for dynamic retrieval
 library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
   [$class: 'GitSCMSource',
    remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
+// if added in Jenkins global config shared libraries
+//@Library('jenkins-devops-libs')
+// if added in Jenkins global config shared libraries and the github api plugin is bugging out and slamming github with requests
+//library('jenkins-devops-libs')
 
 pipeline {
   agent any
@@ -27,7 +32,7 @@ pipeline {
         script {
           goss.validate {
             gossfile = '/tmp/goss.yaml' // optional location of gossfile
-            path = '/tmp/goss' // optional executable path for goss
+            bin = '/tmp/goss' // optional executable path for goss
           }
         }
       }
@@ -38,7 +43,7 @@ pipeline {
           goss.server {
             gossfile = '/tmp/goss.yaml' // optional location of gossfile
             format = 'documentation' // optional formatter to use for output
-            path = '/tmp/goss' // optional executable path for goss
+            bin = '/tmp/goss' // optional executable path for goss
           }
         }
       }

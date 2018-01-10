@@ -60,7 +60,6 @@ def install(body) {
   }
   // otherwise download and install specified version
   new utils().download_file("https://releases.hashicorp.com/packer/${config.version}/packer_${config.version}_${config.platform}.zip", packer.zip)
-  //sh "curl -L https://releases.hashicorp.com/packer/${config.version}/packer_${config.version}_${config.platform}.zip -o packer.zip"
   unzip(zipFile: 'packer.zip', dir: config.install_path)
   sh "chmod +rx ${config.install_path}/packer"
   new utils().remove_file('packer.zip')
