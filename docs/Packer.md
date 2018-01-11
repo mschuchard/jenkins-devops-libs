@@ -6,7 +6,6 @@ Interacts with Packer.
 
 - unzip package (`install`)
 - pipeline-utility-steps plugin (`install`)
-- devops.common.utils
 
 ### packer.build {}
 Uses Packer to build an artifact from a template.

@@ -8,7 +8,7 @@ Additionally, you can pare down the libraries available from this repo and then 
 
 ## Retrieve and use with Disabled Sandbox
 
-Basically, if you have the GitHub Branch Source plugin installed, then you can load the current master branch like:
+Basically, if you have the GitHub Branch Source plugin installed, then you can [load a specific version](https://jenkins.io/doc/book/pipeline/shared-libraries/#library-versions) like:
 
 ```groovy
 @Library('github.com/mschuchard/jenkins-devops-libs@version')
@@ -22,9 +22,9 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
    remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
 ```
 
-## Use with Sandbox Enabled
+## Use with Enabled Sandbox
 
-Basically, you need to first add the shared library in the Jenkins global config. Then, you can either load the library's methods with:
+Basically, you need to first [add the shared library](https://jenkins.io/doc/book/pipeline/shared-libraries/#global-shared-libraries) in the Jenkins global configuration. Then, you can either load the library's methods with:
 
 ```groovy
 @Library('jenkins-devops-libs@version')_
@@ -36,7 +36,14 @@ or using the defaults with:
 library('jenkins-devops-libs')
 ```
 
+## Supported
+- FaaS
+- Goss
+- Packer
+- Terraform
+
 ## TODO
 - Puppet
 - Serverspec
+- install path existence check
 - Else, replace all `sh` with API where possible and abstract common methods into utils.

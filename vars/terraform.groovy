@@ -57,7 +57,7 @@ def install(body) {
     }
   }
   // otherwise download and install specified version
-  new utils().download_file("https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip", terraform.zip)
+  new utils().download_file("https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip", 'terraform.zip')
   unzip(zipFile: 'terraform.zip', dir: config.install_path)
   sh "chmod +rx ${config.install_path}/terraform"
   new utils().remove_file('terraform.zip')

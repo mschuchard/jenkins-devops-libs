@@ -6,7 +6,6 @@ Interacts with Terraform.
 
 - unzip package (`install`)
 - pipeline-utility-steps plugin (`install`)
-- devops.common.utils
 
 ### terraform.apply(String config_path, String bin = 'terraform')
 Uses Terraform to apply a config.
