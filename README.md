@@ -45,5 +45,6 @@ library('jenkins-devops-libs')
 ## TODO
 - Puppet
 - Serverspec
+- FaaS: invoke, push, remove
 - install path existence check
 - Else, replace all `sh` with API where possible and abstract common methods into utils.

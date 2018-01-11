@@ -102,6 +102,6 @@ def validate_gossfile(String gossfile) {
     echo "${gossfile} is valid YAML."
   }
   else {
-    throw new Exception("Gossfile ${config.gossfile} does not exist!")
+    throw new Exception("Gossfile ${gossfile} does not exist!")
   }
 }

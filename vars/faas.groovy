@@ -1,4 +1,4 @@
-// vars/goss.groovy
+// vars/faas.groovy
 import devops.common.utils
 
 def install(body) {
@@ -33,8 +33,25 @@ def install(body) {
     default: throw new Exception("Unsupported platform ${config.platform} specified!");
   }
   // download and install specified version
-  new utils().download_file("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${install_path}/faas-cli")
+  new utils().download_file("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.install_path}/faas-cli")
   extension = null
   sh "chmod +rx ${config.install_path}/faas-cli"
   echo "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
+}
+
+def validate_template(String template) {
+  // ensure template exists and then check yaml syntax
+  if (fileExists(template)) {
+    try {
+      readYaml(file: template)
+    }
+    catch(Exception error) {
+      echo 'Template failed YAML validation.'
+      throw error
+    }
+    echo "${template} is valid YAML."
+  }
+  else {
+    throw new Exception("Template ${template} does not exist!")
+  }
 }
