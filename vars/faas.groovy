@@ -1,6 +1,108 @@
 // vars/faas.groovy
 import devops.common.utils
 
+def build(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  if (config.template == null) {
+    throw new Exception('The required template parameter was not set.')
+  }
+  config.bin = config.bin == null ? 'faas-cli' : config.bin
+
+  if (fileExists(config.template)) {
+    // create image with faas
+    try {
+      cmd = "${config.bin} build -f ${config.template}"
+
+      // check for optional inputs
+      if (config.filter != null) {
+        cmd += " --filter '${config.filter}'"
+      }
+      if (config.no_cache == true) {
+        cmd += ' --no-cache'
+      }
+      if (config.parallel != null) {
+        cmd += " --parallel ${config.parallel}"
+      }
+      if (config.regex != null) {
+        cmd += " --regex '${config.regex}'"
+      }
+      if (config.squash == true) {
+        cmd += ' --squash'
+      }
+
+      sh "${cmd} ${config.template}"
+    }
+    catch(Exception error) {
+      echo 'Failure using faas-cli build.'
+      throw error
+    }
+    echo 'FaaS build image created successfully.'
+  }
+  else {
+    throw new Exception("The template file ${config.template} does not exist!")
+  }
+}
+
+def deploy(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  if (config.template == null) {
+    throw new Exception('The required template parameter was not set.')
+  }
+  if (config.replace != null && config.update != null) {
+    throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
+  }
+  config.bin = config.bin == null ? 'faas-cli' : config.bin
+
+  if (fileExists(config.template)) {
+    // deploy function with faas
+    try {
+      cmd = "${config.bin} deploy -f ${config.template}"
+
+      // check for optional inputs
+      if (config.filter != null) {
+        cmd += " --filter '${config.filter}'"
+      }
+      if (config.label != null) {
+        cmd += " --label ${config.label}"
+      }
+      if (config.regex != null) {
+        cmd += " --regex '${config.regex}'"
+      }
+      if (config.replace == false) {
+        cmd += ' --replace=false'
+      }
+      if (config.secret != null) {
+        cmd += " --secret ${config.secret}"
+      }
+      if (config.update == true) {
+        cmd += ' --update=true'
+      }
+
+      sh "${cmd} ${config.template}"
+    }
+    catch(Exception error) {
+      echo 'Failure using faas-cli deploy.'
+      throw error
+    }
+    echo 'FaaS function deployed successfully.'
+  }
+  else {
+    throw new Exception("The template file ${config.template} does not exist!")
+  }
+}
+
 def install(body) {
   // evaluate the body block and collect configuration into the object
   def config = [:]
