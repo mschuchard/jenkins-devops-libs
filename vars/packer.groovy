@@ -21,7 +21,12 @@ def build(body) {
 
       // check for optional inputs
       if (config.var_file != null) {
-        cmd += " -var_file=${config.var_file}"
+        if (fileExists(config.var_file)) {
+          cmd += " -var_file=${config.var_file}"
+        }
+        else {
+          throw new Exception("The var file ${config.var_file} does not exist!")
+        }
       }
 
       sh "${cmd} ${config.template}"
@@ -33,7 +38,7 @@ def build(body) {
     echo 'Packer build artifact created successfully.'
   }
   else {
-    throw new Exception('The template file does not exist!')
+    throw new Exception("The template file ${config.template} does not exist!")
   }
 }
 
@@ -86,7 +91,12 @@ def validate(body) {
 
       // check for optional inputs
       if (config.var_file != null) {
-        cmd += " -var_file=${config.var_file}"
+        if (fileExists(config.var_file)) {
+          cmd += " -var_file=${config.var_file}"
+        }
+        else {
+          throw new Exception("The var file ${config.var_file} does not exist!")
+        }
       }
 
       sh "${cmd} ${config.template}"
@@ -98,6 +108,6 @@ def validate(body) {
     echo 'Packer validate executed successfully.'
   }
   else {
-    throw new Exception('The template file does not exist!')
+    throw new Exception("The template file ${config.template} does not exist!")
   }
 }

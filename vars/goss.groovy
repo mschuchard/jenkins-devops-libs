@@ -38,7 +38,12 @@ def server(body) {
 
     // check for optional inputs
     if (config.vars != null) {
-      cmd += " --vars ${config.vars}"
+      if (fileExists(config.vars)) {
+        cmd += " --vars ${config.vars}"
+      }
+      else {
+        throw new Exception("The vars file ${config.vars} does not exist!")
+      }
     }
     if (config.gossfile != null) {
       cmd += " -g ${config.gossfile}"
@@ -74,7 +79,12 @@ def validate(body) {
 
     // check for optional inputs
     if (config.vars != null) {
-      cmd += " --vars ${config.vars}"
+      if (fileExists(config.vars)) {
+        cmd += " --vars ${config.vars}"
+      }
+      else {
+        throw new Exception("The vars file ${config.vars} does not exist!")
+      }
     }
     if (config.gossfile != null) {
       cmd += " -g ${config.gossfile}"

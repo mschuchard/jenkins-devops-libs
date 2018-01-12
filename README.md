@@ -46,5 +46,4 @@ library('jenkins-devops-libs')
 - Puppet
 - Serverspec
 - FaaS: invoke, push, remove
-- install path existence check
 - Else, replace all `sh` with API where possible and abstract common methods into utils.

@@ -31,7 +31,7 @@ def init(String dir, String bin = 'terraform') {
     echo 'Terraform init was successful.'
   }
   else {
-    throw new Exception('Working config directory does not exist!')
+    throw new Exception("Working config directory ${dir} does not exist!")
   }
 }
 
@@ -77,7 +77,7 @@ def plan(String dir, String bin = 'terraform') {
     echo 'Terraform plan was successful.'
   }
   else {
-    throw new Exception('Config directory does not exist!')
+    throw new Exception("Config directory ${dir} does not exist!")
   }
 }
 
@@ -94,6 +94,6 @@ def validate(String dir, String bin = 'terraform') {
     echo 'Terraform validate was successful.'
   }
   else {
-    throw new Exception('Config directory does not exist!')
+    throw new Exception("Config directory ${dir} does not exist!")
   }
 }
