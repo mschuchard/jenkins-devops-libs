@@ -39,10 +39,10 @@ def build(body) {
       sh "${cmd} ${config.template}"
     }
     catch(Exception error) {
-      echo 'Failure using faas-cli build.'
+      print 'Failure using faas-cli build.'
       throw error
     }
-    echo 'FaaS build image created successfully.'
+    print 'FaaS build image created successfully.'
   }
   else {
     throw new Exception("The template file ${config.template} does not exist!")
@@ -93,10 +93,10 @@ def deploy(body) {
       sh "${cmd} ${config.template}"
     }
     catch(Exception error) {
-      echo 'Failure using faas-cli deploy.'
+      print 'Failure using faas-cli deploy.'
       throw error
     }
-    echo 'FaaS function deployed successfully.'
+    print 'FaaS function deployed successfully.'
   }
   else {
     throw new Exception("The template file ${config.template} does not exist!")
@@ -120,7 +120,7 @@ def install(body) {
   if (fileExists("${config.install_path}/faas-cli")) {
     installed_version = sh(returnStdout: true, script: "${config.install_path}/faas-cli version").trim()
     if (installed_version =~ config.version) {
-      echo "FaaS CLI version ${config.version} already installed at ${config.install_path}."
+      print "FaaS CLI version ${config.version} already installed at ${config.install_path}."
       return
     }
   }
@@ -138,7 +138,7 @@ def install(body) {
   new utils().download_file("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.install_path}/faas-cli")
   extension = null
   sh "chmod +rx ${config.install_path}/faas-cli"
-  echo "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
+  print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
 }
 
 def validate_template(String template) {
@@ -148,10 +148,10 @@ def validate_template(String template) {
       readYaml(file: template)
     }
     catch(Exception error) {
-      echo 'Template failed YAML validation.'
+      print 'Template failed YAML validation.'
       throw error
     }
-    echo "${template} is valid YAML."
+    print "${template} is valid YAML."
   }
   else {
     throw new Exception("Template ${template} does not exist!")

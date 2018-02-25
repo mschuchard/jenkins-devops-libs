@@ -32,10 +32,10 @@ def build(body) {
       sh "${cmd} ${config.template}"
     }
     catch(Exception error) {
-      echo 'Failure using packer build.'
+      print 'Failure using packer build.'
       throw error
     }
-    echo 'Packer build artifact created successfully.'
+    print 'Packer build artifact created successfully.'
   }
   else {
     throw new Exception("The template file ${config.template} does not exist!")
@@ -59,7 +59,7 @@ def install(body) {
   if (fileExists("${config.install_path}/packer")) {
     installed_version = sh(returnStdout: true, script: "${config.install_path}/packer version").trim()
     if (installed_version =~ config.version) {
-      echo "Packer version ${config.version} already installed at ${config.install_path}."
+      print "Packer version ${config.version} already installed at ${config.install_path}."
       return
     }
   }
@@ -68,7 +68,7 @@ def install(body) {
   unzip(zipFile: 'packer.zip', dir: config.install_path)
   sh "chmod +rx ${config.install_path}/packer"
   new utils().remove_file('packer.zip')
-  echo "Packer successfully installed at ${config.install_path}/packer."
+  print "Packer successfully installed at ${config.install_path}/packer."
 }
 
 def validate(body) {
@@ -102,10 +102,10 @@ def validate(body) {
       sh "${cmd} ${config.template}"
     }
     catch(Exception error) {
-      echo 'Failure using packer validate.'
+      print 'Failure using packer validate.'
       throw error
     }
-    echo 'Packer validate executed successfully.'
+    print 'Packer validate executed successfully.'
   }
   else {
     throw new Exception("The template file ${config.template} does not exist!")

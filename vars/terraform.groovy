@@ -8,10 +8,10 @@ def apply(String config_path, String bin = 'terraform') {
       sh "${bin} apply -no-color -auto-approve=true ${config_path}"
     }
     catch(Exception error) {
-      echo 'Failure using terraform apply.'
+      print 'Failure using terraform apply.'
       throw error
     }
-    echo 'Terraform apply was successful.'
+    print 'Terraform apply was successful.'
   }
   else {
     throw new Exception("Terraform config/plan ${config_path} does not exist!")
@@ -25,10 +25,10 @@ def init(String dir, String bin = 'terraform') {
       sh "${bin} init -no-color ${dir}"
     }
     catch(Exception error) {
-      echo 'Failure using terraform init.'
+      print 'Failure using terraform init.'
       throw error
     }
-    echo 'Terraform init was successful.'
+    print 'Terraform init was successful.'
   }
   else {
     throw new Exception("Working config directory ${dir} does not exist!")
@@ -52,7 +52,7 @@ def install(body) {
   if (fileExists("${config.install_path}/terraform")) {
     installed_version = sh(returnStdout: true, script: "${config.install_path}/terraform version").trim()
     if (installed_version =~ config.version) {
-      echo "Terraform version ${config.version} already installed at ${config.install_path}."
+      print "Terraform version ${config.version} already installed at ${config.install_path}."
       return
     }
   }
@@ -61,7 +61,7 @@ def install(body) {
   unzip(zipFile: 'terraform.zip', dir: config.install_path)
   sh "chmod +rx ${config.install_path}/terraform"
   new utils().remove_file('terraform.zip')
-  echo "Terraform successfully installed at ${config.install_path}/terraform."
+  print "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
 def plan(String dir, String bin = 'terraform') {
@@ -71,10 +71,10 @@ def plan(String dir, String bin = 'terraform') {
       sh "${bin} plan -no-color -out=${dir}/plan.tfplan ${dir}"
     }
     catch(Exception error) {
-      echo 'Failure using terraform plan.'
+      print 'Failure using terraform plan.'
       throw error
     }
-    echo 'Terraform plan was successful.'
+    print 'Terraform plan was successful.'
   }
   else {
     throw new Exception("Config directory ${dir} does not exist!")
@@ -88,10 +88,10 @@ def validate(String dir, String bin = 'terraform') {
       sh "${bin} validate -no-color ${dir}"
     }
     catch(Exception error) {
-      echo 'Failure using terraform validate.'
+      print 'Failure using terraform validate.'
       throw error
     }
-    echo 'Terraform validate was successful.'
+    print 'Terraform validate was successful.'
   }
   else {
     throw new Exception("Config directory ${dir} does not exist!")
