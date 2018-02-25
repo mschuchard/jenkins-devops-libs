@@ -16,6 +16,21 @@ def install(String version, String install_path = '/usr/bin/') {
   print "Goss successfully installed at ${install_path}/goss."
 }
 
+def install_dgoss(String version, String install_path = '/usr/bin/') {
+  // check if current version already installed
+  if (fileExists("${install_path}/dgoss") && fileExists("${install_path}/goss")) {
+    installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()
+    if (installed_version =~ version) {
+      print "Dgoss version ${version} already installed at ${install_path}."
+      return
+    }
+  }
+  // otherwise download and install specified version
+  new utils().download_file("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${install_path}/dgoss")
+  sh "chmod +rx ${install_path}/dgoss"
+  print "Dgoss successfully installed at ${install_path}/dgoss."
+}
+
 def server(body) {
   // evaluate the body block and collect configuration into the object
   def config = [:]

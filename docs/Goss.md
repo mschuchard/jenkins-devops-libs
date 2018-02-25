@@ -13,6 +13,13 @@ Locally installs a specific version of goss.
 goss.install('0.3.5', '/usr/local/bin/')
 ```
 
+### goss.install_dgoss(String version, String install_path = '/usr/bin')
+Locally installs a specific version of dgoss.
+
+```groovy
+goss.install_dgoss('0.3.5', '/usr/local/bin/')
+```
+
 ### goss.server{}
 Creates a persistent REST API endpoint with goss.
 
