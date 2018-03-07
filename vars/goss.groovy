@@ -114,6 +114,38 @@ def validate(body) {
   print 'Goss validate command was successful.'
 }
 
+def validate_docker(body) {
+  // evaluate the body block, and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  if (config.image == null) {
+    throw new Exception('The required image parameter was not set.')
+  }
+  config.bin = config.bin == null ? 'dgoss' : config.bin
+
+  // run with dgoss
+  try {
+    flags = ''
+    // check for optional inputs
+    if ((config.flags != null) && !(config.flags.empty)) {
+      for (flag in config.flags) {
+        flags += "-e ${flag} "
+      }
+    }
+
+    sh "${config.bin} run ${config.image}"
+  }
+  catch(Exception error) {
+    print 'Failure using dgoss run.'
+    throw error
+  }
+  print 'Dgoss run command was successful.'
+}
+
 def validate_gossfile(String gossfile) {
   // ensure gossfile exists and then check yaml syntax
   if (fileExists(gossfile)) {

@@ -46,6 +46,5 @@ library('jenkins-devops-libs')
 - Puppet
 - Serverspec
 - FaaS: invoke, push, remove
-- add dgoss run
 - validate yaml/json methods and use in goss/packer/faas
 - Else, replace all `sh` with API where possible and abstract common methods into utils.
