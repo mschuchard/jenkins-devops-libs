@@ -31,6 +31,17 @@ pipeline {
         }
       }
     }
+    stage('Workspace') {
+      steps {
+        script {
+          terraform.workspace {
+            bin = '/tmp/terraform'
+            dir = '/tmp'
+            workspace = 'default'
+          }
+        }
+      }
+    }
     stage('Validate') {
       steps {
         script {

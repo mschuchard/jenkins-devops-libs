@@ -5,7 +5,7 @@ def apply(String config_path, String bin = 'terraform') {
   if (fileExists(config_path)) {
     // apply the config
     try {
-      sh "${bin} apply -no-color -auto-approve=true ${config_path}"
+      sh "${bin} apply -input=false -no-color -auto-approve=true ${config_path}"
     }
     catch(Exception error) {
       print 'Failure using terraform apply.'
@@ -22,7 +22,7 @@ def init(String dir, String bin = 'terraform') {
   if (fileExists(dir)) {
     // initialize the working config directory
     try {
-      sh "${bin} init -no-color ${dir}"
+      sh "${bin} init -input=false -no-color ${dir}"
     }
     catch(Exception error) {
       print 'Failure using terraform init.'
@@ -95,5 +95,36 @@ def validate(String dir, String bin = 'terraform') {
   }
   else {
     throw new Exception("Config directory ${dir} does not exist!")
+  }
+}
+
+def workspace(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
+  if (config.directory == null || config.workspace == null) {
+    throw new Exception('A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.')
+  }
+
+  if (fileExists(config.dir)) {
+    dir(config.dir) {
+      // select workspace in terraform config directory
+      try {
+        sh "${config.bin} workspace select -no-color ${config.workspace}"
+      }
+      catch(Exception error) {
+        print 'Failure using terraform workspace select.'
+        throw error
+      }
+      print 'Terraform workspace selected successfully.'
+    }
+  }
+  else {
+    throw new Exception("The config directory ${config.dir} does not exist!")
   }
 }

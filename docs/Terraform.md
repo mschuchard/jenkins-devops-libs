@@ -45,3 +45,14 @@ Uses Terraform to validate a config directory.
 ```groovy
 terraform.plan(String '/path/to/config_dir')
 ```
+
+### terraform.workspace {}
+Selects the Terraform workspace for a config directory. Ideally executed in Pipeline before other Terraform blocks.
+
+```groovy
+terraform.workspace {
+  bin = '/usr/bin' // optional location of terraform install
+  dir = '/path/to/config' // location of terraform config directory
+  workspace = 'default' // terraform workspace to select
+}
+```
