@@ -28,6 +28,12 @@ def build(body) {
           throw new Exception("The var file ${config.var_file} does not exist!")
         }
       }
+      if (config.var != null) {
+        cmd += " -var=${config.var}"
+      }
+      if (config.only != null) {
+        cmd += " -only=${config.only}"
+      }
 
       sh "${cmd} ${config.template}"
     }
