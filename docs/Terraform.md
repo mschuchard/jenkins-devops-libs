@@ -36,14 +36,14 @@ terraform.install {
 Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will be written to the same directory as the input config directory. This is mostly useful in a Pipeline for validating the config set and then speeding up a subsequent `apply` by providing an input plan file.
 
 ```groovy
-terraform.plan(String '/path/to/config_dir')
+terraform.plan('/path/to/config_dir')
 ```
 
 ### terraform.validate(String dir, String bin = 'terraform')
 Uses Terraform to validate a config directory.
 
 ```groovy
-terraform.plan(String '/path/to/config_dir')
+terraform.plan('/path/to/config_dir')
 ```
 
 ### terraform.workspace {}

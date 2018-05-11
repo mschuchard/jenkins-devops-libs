@@ -11,7 +11,7 @@ Interacts with Packer.
 Uses Packer to build an artifact from a template.
 
 ```groovy
-packer.build{
+packer.build {
   bin = '/usr/bin/packer' // optional location of packer install
   only = 'foo,bar,baz' // optional comma-separated builder names to build
   template = '/path/to/template.json' // location of packer template
@@ -35,9 +35,11 @@ packer.install {
 Uses Packer to validate a build template.
 
 ```groovy
-packer.validate{
+packer.validate {
   bin = '/usr/bin/packer' // optional location of packer install
+  only = 'foo,bar,baz' // optional comma-separated builder names to build
   template = '/path/to/template.json' // location of packer template
+  var = 'foo=bar' // optional variable setting
   var_file = '/path/to/variables.json' // optional location of variables file
 }
 ```
