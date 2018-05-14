@@ -20,7 +20,7 @@ Locally installs a specific version of dgoss.
 goss.install_dgoss('0.3.5', '/usr/local/bin/')
 ```
 
-### goss.server{}
+### goss.server {}
 Creates a persistent REST API endpoint with goss.
 
 ```groovy
