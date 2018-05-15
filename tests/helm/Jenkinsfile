@@ -25,13 +25,13 @@ pipeline {
         script {
           helm.install {
             bin = '/usr/bin/helm' // optional executable path for helm
-            chart = 'stable/maria-db' // chart repository, local archive, directory, or url to install
+            chart = 'stable/mariadb' // chart repository, local archive, directory, or url to install
             name = 'happy-panda' // optional name for the installed release object
           }
         }
       }
     }
-    stage('Validate Server') {
+    stage('Delete') {
       steps {
         script {
           helm.delete('happy-panda')

@@ -39,14 +39,15 @@ library('jenkins-devops-libs')
 ## Supported
 - FaaS
 - Goss
+- Helm
 - Packer
 - Terraform
 
 ## TODO
 - Puppet
 - Serverspec
-- Helm
 - Docker-Compose
+- Helm: package, test, lint, verify
 - FaaS: invoke, push, remove
 - dgoss does not actually work like you would think and also has pathing issues; workaround with volume mounting
 - tf enterprise api

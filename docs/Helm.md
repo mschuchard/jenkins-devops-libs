@@ -39,7 +39,7 @@ helm.rollback {
 ```
 
 ### helm.setup(String version, String install_path = '/usr/bin')
-Locally installs a specific version of helm and then initializes helm and tiller. It is strongly recommended to manage this with a software provisioner instead, but this can be helpful for quick one-offs.
+Locally installs a specific version of helm and then initializes helm and installs tiller. If helm is already installed at the specified version, then helm is initialized for the jenkins user if it has not been already. It is strongly recommended to manage this with a software provisioner instead, but this can be helpful for quick one-offs.
 
 ```groovy
 helm.setup('2.8.2', '/usr/local/bin')

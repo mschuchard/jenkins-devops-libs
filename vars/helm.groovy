@@ -29,7 +29,7 @@ def install(body) {
   if (config.chart == null) {
     throw new Exception("The required parameter 'chart' was not set.")
   }
-  release_obj_list = sh(returnStdout: true, script: "${config.bin} list").trim()
+  release_obj_list = sh(returnStdout: true, script: "${config.bin} list --all").trim()
   if ((config.name != null) && (release_obj_list =~ config.name)) {
     throw new Exception("Release object ${config.name} already exists!")
   }
@@ -75,7 +75,7 @@ def rollback(body) {
   if (config.name == null) {
     throw new Exception("The required parameter 'name' was not set.")
   }
-  release_obj_list = sh(returnStdout: true, script: "${config.bin} list").trim()
+  release_obj_list = sh(returnStdout: true, script: "${config.bin} list --all").trim()
   if (release_obj_list =~ config.name) {
     config.bin = config.bin == null ? 'helm' : config.bin
   }
@@ -100,23 +100,28 @@ def setup(String version, String install_path = '/usr/bin/') {
     installed_version = sh(returnStdout: true, script: "${install_path}/helm version").trim()
     if (installed_version =~ version) {
       print "Helm version ${version} already installed at ${install_path}."
-      return
     }
   }
   // otherwise download and untar specified version
-  new utils().download_file("https://storage.googleapis.com/kubernetes-helm/helm-v${version}-linux-amd64.tar.gz", '/tmp/helm.tar.gz')
-  sh "tar -xzf /tmp/helm.tar.gz -C ${install_path} --strip-components 1 linux-amd64/helm"
-  new utils().remove_file('/tmp/helm.tar.gz')
-  print "Helm successfully installed at ${install_path}/helm."
-  // and then initialize helm
-  try {
-    sh "${install_path}/helm init"
+  else {
+    new utils().download_file("https://storage.googleapis.com/kubernetes-helm/helm-v${version}-linux-amd64.tar.gz", '/tmp/helm.tar.gz')
+    sh "tar -xzf /tmp/helm.tar.gz -C ${install_path} --strip-components 1 linux-amd64/helm"
+    new utils().remove_file('/tmp/helm.tar.gz')
+    print "Helm successfully installed at ${install_path}/helm."
+    // and then initialize helm
+    try {
+      sh "${install_path}/helm init"
+    }
+    catch(Exception error) {
+      print 'Failure initializing helm.'
+      throw error
+    }
+    print "Helm and Tiller successfully initialized."
   }
-  catch(Exception error) {
-    print 'Failure initializing helm.'
-    throw error
+  if (!(fileExists("${install_path}/.helm"))) {
+    sh "${install_path}/helm init --client-only "
+    print "Helm successfully initialized."
   }
-  print "Helm successfully initialized."
 }
 
 def upgrade(body) {
