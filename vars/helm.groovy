@@ -31,7 +31,7 @@ def install(body) {
   }
   release_obj_list = sh(returnStdout: true, script: "${config.bin} list").trim()
   if ((config.name != null) && (release_obj_list =~ config.name)) {
-    throw new Exception("Release object ${config.name} already exists for ${config.chart}!")
+    throw new Exception("Release object ${config.name} already exists!")
   }
   if ((config.values != null) && (!fileExists(config.values))) {
     throw new Exception("Overrides file ${config.values} does not exist!")
@@ -49,7 +49,7 @@ def install(body) {
       cmd += " --set ${config.set}"
     }
     if (config.name != null) {
-      cmd += " ${config.name}"
+      cmd += " --name ${config.name}"
     }
 
     sh "${cmd} ${config.chart}"

@@ -1,0 +1,42 @@
+// for dynamic retrieval
+library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
+  [$class: 'GitSCMSource',
+   remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
+// if added in Jenkins global config shared libraries
+//@Library('jenkins-devops-libs')
+// if added in Jenkins global config shared libraries and the github api plugin is bugging out and slamming github with requests
+//library('jenkins-devops-libs')
+
+pipeline {
+  agent any
+
+  environment { KUBECONFIG = '/home/vagrant/.kube/config' }
+
+  stages {
+    stage('Setup') {
+      steps {
+        script {
+          helm.setup('2.8.2', '/usr/bin')
+        }
+      }
+    }
+    stage('Install') {
+      steps {
+        script {
+          helm.install {
+            bin = '/usr/bin/helm' // optional executable path for helm
+            chart = 'stable/maria-db' // chart repository, local archive, directory, or url to install
+            name = 'happy-panda' // optional name for the installed release object
+          }
+        }
+      }
+    }
+    stage('Validate Server') {
+      steps {
+        script {
+          helm.delete('happy-panda')
+        }
+      }
+    }
+  }
+}
