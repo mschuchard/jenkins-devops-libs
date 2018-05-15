@@ -7,7 +7,7 @@ Interacts with Helm. Note that you should set the environment variable `KUBECONF
 - tar package (`setup`)
 - pipeline-utility-steps plugin (`setup`)
 
-### helm.delete(String 'release-object', String bin = 'helm')
+### helm.delete(String release_obj, String bin = 'helm')
 Delete the release object from Kubernetes with helm.
 
 ```groovy
@@ -39,7 +39,7 @@ helm.rollback {
 ```
 
 ### helm.setup(String version, String install_path = '/usr/bin')
-Locally installs a specific version of helm and then initializes helm and tiller.
+Locally installs a specific version of helm and then initializes helm and tiller. It is strongly recommended to manage this with a software provisioner instead, but this can be helpful for quick one-offs.
 
 ```groovy
 helm.setup('2.8.2', '/usr/local/bin')

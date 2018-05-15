@@ -85,7 +85,6 @@ def validate(body) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
   }
   config.format = config.format == null ? 'rspecish' : config.format
-  config.port = config.port == null ? ':8080' : config.port
   config.bin = config.bin == null ? 'goss' : config.bin
 
   // validate with goss
