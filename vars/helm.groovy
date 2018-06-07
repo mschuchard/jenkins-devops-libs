@@ -26,6 +26,7 @@ def install(body) {
   body()
 
   // input checking
+  config.bin = config.bin == null ? 'helm' : config.bin
   if (config.chart == null) {
     throw new Exception("The required parameter 'chart' was not set.")
   }
@@ -36,7 +37,6 @@ def install(body) {
   if ((config.values != null) && (!fileExists(config.values))) {
     throw new Exception("Overrides file ${config.values} does not exist!")
   }
-  config.bin = config.bin == null ? 'helm' : config.bin
 
   // install with helm
   try {
@@ -75,11 +75,9 @@ def rollback(body) {
   if (config.name == null) {
     throw new Exception("The required parameter 'name' was not set.")
   }
+  config.bin = config.bin == null ? 'helm' : config.bin
   release_obj_list = sh(returnStdout: true, script: "${config.bin} list --all").trim()
-  if (release_obj_list =~ config.name) {
-    config.bin = config.bin == null ? 'helm' : config.bin
-  }
-  else {
+  if (!(release_obj_list =~ config.name)) {
     throw new Exception("Release object ${config.name} does not exist!")
   }
 
@@ -138,11 +136,9 @@ def upgrade(body) {
   if (config.name == null) {
     throw new Exception("The required parameter 'name' was not set.")
   }
+  config.bin = config.bin == null ? 'helm' : config.bin
   release_obj_list = sh(returnStdout: true, script: "${config.bin} list").trim()
-  if (release_obj_list =~ config.name) {
-    config.bin = config.bin == null ? 'helm' : config.bin
-  }
-  else {
+  if (!(release_obj_list =~ config.name)) {
     throw new Exception("Release object ${config.name} does not exist!")
   }
   if ((config.values != null) && (!fileExists(config.values))) {

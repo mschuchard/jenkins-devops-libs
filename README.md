@@ -37,9 +37,9 @@ library('jenkins-devops-libs')
 ```
 
 ## Supported
-- FaaS
 - Goss
 - Helm
+- OpenFaaS
 - Packer
 - Terraform
 
@@ -51,5 +51,5 @@ library('jenkins-devops-libs')
 - FaaS: invoke, push, remove
 - dgoss does not actually work like you would think and also has pathing issues; workaround with volume mounting
 - tf enterprise api
-- validate yaml/json methods and use in goss/packer/faas
+- validate yaml/json methods and use in goss/packer/faas/helm?
 - Else, replace all `sh` with API where possible and abstract common methods into utils.
