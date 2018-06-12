@@ -44,9 +44,11 @@ library('jenkins-devops-libs')
 - Terraform
 
 ## TODO
+- begin release management
 - Puppet
 - Serverspec
 - Docker-Compose
+- Terraform: -target=resource (plan/apply/destroy)
 - Helm: package, test, lint, verify
 - FaaS: invoke, push, remove
 - dgoss does not actually work like you would think and also has pathing issues; workaround with volume mounting

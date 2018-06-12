@@ -1,6 +1,6 @@
 # FaaS
 
-Interacts with FaaS CLI.
+Interacts with OpenFaaS CLI.
 
 ### Dependencies
 
@@ -38,7 +38,7 @@ faas.deploy {
 ```
 
 ### faas.install
-Locally installs a specific version of FaaS CLI.
+Locally installs a specific version of the OpenFaaS CLI.
 
 ```groovy
 faas.install {

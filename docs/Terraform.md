@@ -8,7 +8,7 @@ Interacts with Terraform.
 - pipeline-utility-steps plugin (`install`)
 
 ### terraform.apply(String config_path, String bin = 'terraform')
-Uses Terraform to apply a config.
+Uses Terraform to apply a config. Note that if `terraform.plan(config_dir)` was invoked before this, the resulting plan file is in `config_dir/plan.tfplan`.
 
 ```groovy
 terraform.apply('path/to/config_dir_or_plan_file')

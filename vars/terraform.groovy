@@ -18,6 +18,23 @@ def apply(String config_path, String bin = 'terraform') {
   }
 }
 
+def destroy(String dir, String bin = 'terraform') {
+  if (fileExists(config_path)) {
+    // apply the config
+    try {
+      sh "${bin} destroy -input=false -no-color -auto-approve=true ${config_path}"
+    }
+    catch(Exception error) {
+      print 'Failure using terraform destroy.'
+      throw error
+    }
+    print 'Terraform destroy was successful.'
+  }
+  else {
+    throw new Exception("Terraform config ${config_path} does not exist!")
+  }
+}
+
 def init(String dir, String bin = 'terraform') {
   if (fileExists(dir)) {
     // initialize the working config directory
