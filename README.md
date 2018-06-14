@@ -22,6 +22,8 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
    remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
 ```
 
+Note that this latter example is also useful for circumventing Github API rate limit issues.
+
 ## Use with Enabled Sandbox
 
 Basically, you need to first [add the shared library](https://jenkins.io/doc/book/pipeline/shared-libraries/#global-shared-libraries) in the Jenkins global configuration. Then, you can either load the library's methods with:

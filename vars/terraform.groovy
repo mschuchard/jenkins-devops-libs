@@ -5,7 +5,7 @@ def apply(String config_path, String bin = 'terraform') {
   if (fileExists(config_path)) {
     // apply the config
     try {
-      sh "${bin} apply -input=false -no-color -auto-approve=true ${config_path}"
+      sh "${bin} apply -input=false -no-color -auto-approve ${config_path}"
     }
     catch(Exception error) {
       print 'Failure using terraform apply.'
@@ -19,10 +19,18 @@ def apply(String config_path, String bin = 'terraform') {
 }
 
 def destroy(String dir, String bin = 'terraform') {
-  if (fileExists(config_path)) {
+  // -force changed to -auto-approve in 0.11.4
+  installed_version = sh(returnStdout: true, script: "${bin} version").trim()
+  if (installed_version =~ /0\.1[2-9]\.[0-9]|0\.11\.[4-9]/) {
+    no_input_flag = '-auto-approve'
+  }
+  else {
+    no_input_flag = '-force'
+  }
+  if (fileExists(dir)) {
     // apply the config
     try {
-      sh "${bin} destroy -input=false -no-color -auto-approve=true ${config_path}"
+      sh "${bin} destroy -input=false -no-color ${no_input_flag} ${dir}"
     }
     catch(Exception error) {
       print 'Failure using terraform destroy.'
@@ -31,7 +39,7 @@ def destroy(String dir, String bin = 'terraform') {
     print 'Terraform destroy was successful.'
   }
   else {
-    throw new Exception("Terraform config ${config_path} does not exist!")
+    throw new Exception("Terraform config ${dir} does not exist!")
   }
 }
 
