@@ -50,8 +50,10 @@ library('jenkins-devops-libs')
 - Puppet
 - Serverspec
 - Docker-Compose
-- Terraform: -target=resource (plan/apply/destroy)
-- Helm: package, test, lint, verify
+- Packer: plugin install (note should be done with soft prov though)
+- Terra/Pack: probably should change into root dir of template/config
+- Terraform: -target=resource (plan/apply/destroy), -var (multi), -var-file
+- Helm: package, test, lint, verify; --kube-context; install kubectl, config kubeconfig; additional flags like namespace
 - FaaS: invoke, push, remove
 - dgoss does not actually work like you would think and also has pathing issues; workaround with volume mounting
 - tf enterprise api

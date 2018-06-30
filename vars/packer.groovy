@@ -29,7 +29,12 @@ def build(body) {
         }
       }
       if (config.var != null) {
-        cmd += " -var=${config.var}"
+        if (!(config.var instanceof String[])) {
+          throw new Exception('The var parameter must be an array of strings.')
+        }
+        config.var.each() {
+          cmd += " -var ${it}"
+        }
       }
       if (config.only != null) {
         cmd += " -only=${config.only}"
@@ -105,7 +110,12 @@ def validate(body) {
         }
       }
       if (config.var != null) {
-        cmd += " -var=${config.var}"
+        if (!(config.var instanceof String[])) {
+          throw new Exception('The var parameter must be an array of strings.')
+        }
+        config.var.each() {
+          cmd += " -var ${it}"
+        }
       }
       if (config.only != null) {
         cmd += " -only=${config.only}"

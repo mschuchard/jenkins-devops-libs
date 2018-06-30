@@ -51,6 +51,9 @@ def install(body) {
     if (config.name != null) {
       cmd += " --name ${config.name}"
     }
+    if (config.namespace != null) {
+      cmd += " --namespace ${config.namespace}"
+    }
 
     sh "${cmd} ${config.chart}"
   }
@@ -154,6 +157,9 @@ def upgrade(body) {
     }
     if (config.set != null) {
       cmd += " --set ${config.set}"
+    }
+    if (config.namespace != null) {
+      cmd += " --namespace ${config.namespace}"
     }
 
     sh "${cmd} ${config.name} ${config.chart}"

@@ -14,11 +14,11 @@ Uses Terraform to apply a config. Note that if `terraform.plan(config_dir)` was 
 terraform.apply('path/to/config_dir_or_plan_file')
 ```
 
-### terraform.destroy(String config_path, String bin = 'terraform')
+### terraform.destroy(String dir, String bin = 'terraform')
 Uses Terraform to destroy an applied config.
 
 ```groovy
-terraform.apply('path/to/config_dir')
+terraform.destroy('path/to/config_dir')
 ```
 
 ### terraform.init(String dir, String bin = 'terraform')

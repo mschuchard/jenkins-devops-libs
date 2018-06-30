@@ -22,6 +22,7 @@ helm.install {
   bin = '/usr/bin/helm' // optional executable path for helm
   chart = 'chart' // chart repository, local archive, directory, or url to install
   name = 'happy-panda' // optional name for the installed release object
+  namespace = 'default' // optional namespace for the installed release object
   values = 'config.yaml' // optional value overrides yaml file
   set = 'foo=bar' // optional value override
 }
@@ -53,6 +54,7 @@ helm.upgrade {
   bin = '/usr/bin/helm' // optional executable path for helm
   chart = 'chart' // chart repository, local archive, directory, or url to upgrade
   name = 'happy-panda' // name of the upgraded release object
+  namespace = 'default' // optional namespace for the upgraded release object
   values = 'config.yaml' // optional value overrides yaml file
   set = 'foo=bar' // optional value override
 }
