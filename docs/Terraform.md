@@ -7,18 +7,24 @@ Interacts with Terraform.
 - unzip package (`install`)
 - pipeline-utility-steps plugin (`install`)
 
-### terraform.apply(String config_path, String bin = 'terraform')
-Uses Terraform to apply a config. Note that if `terraform.plan(config_dir)` was invoked before this, the resulting plan file is in `config_dir/plan.tfplan`.
+### terraform.apply {}
+Uses Terraform to apply a config. Note that if `terraform.plan { path = config_dir }` was invoked before this, the resulting plan file is in `config_dir/plan.tfplan`.
 
 ```groovy
-terraform.apply('path/to/config_dir_or_plan_file')
+terraform.apply {
+  bin = '/usr/bin/terraform' // optional path to terraform executable
+  config_path = 'path/to/config_dir_or_plan_file' // path to config dir or plan file
+}
 ```
 
-### terraform.destroy(String dir, String bin = 'terraform')
+### terraform.destroy {}
 Uses Terraform to destroy an applied config.
 
 ```groovy
-terraform.destroy('path/to/config_dir')
+terraform.destroy {
+  bin = '/usr/bin/terraform' // optional path to terraform executable
+  dir = 'path/to/config_dir_or_plan_file' // path to config dir
+}
 ```
 
 ### terraform.init(String dir, String bin = 'terraform')
@@ -39,18 +45,21 @@ terraform.install {
 }
 ```
 
-### terraform.plan(String dir, String bin = 'terraform')
+### terraform.plan {}
 Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will be written to the same directory as the input config directory. This is mostly useful in a Pipeline for validating the config set and then speeding up a subsequent `apply` by providing an input plan file.
 
 ```groovy
-terraform.plan('/path/to/config_dir')
+terraform.plan {
+  bin = '/usr/bin/terraform' // optional path to terraform executable
+  dir = 'path/to/config_dir_or_plan_file' // path to config dir
+}
 ```
 
 ### terraform.validate(String dir, String bin = 'terraform')
 Uses Terraform to validate a config directory.
 
 ```groovy
-terraform.plan('/path/to/config_dir')
+terraform.validate('/path/to/config_dir')
 ```
 
 ### terraform.workspace {}

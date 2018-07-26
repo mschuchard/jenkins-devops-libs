@@ -52,14 +52,30 @@ pipeline {
     stage('Plan') {
       steps {
         script {
-          terraform.plan('/tmp', '/tmp/terraform')
+          terraform.plan {
+            bin = '/tmp/terraform'
+            dir = '/tmp'
+          }
         }
       }
     }
     stage('Apply') {
       steps {
         script {
-          terraform.apply('/tmp/plan.tfplan', '/tmp/terraform')
+          terraform.apply {
+            bin = '/tmp/terraform'
+            config_path = '/tmp/plan.tfplan'
+          }
+        }
+      }
+    }
+    stage('Destroy') {
+      steps {
+        scripts {
+          terraform.destroy {
+            bin = '/tmp/terraform'
+            dir = '/tmp'
+          }
         }
       }
     }

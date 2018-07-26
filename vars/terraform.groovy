@@ -1,11 +1,19 @@
 // vars/terraform.groovy
 import devops.common.utils
 
-def apply(String config_path, String bin = 'terraform') {
-  if (fileExists(config_path)) {
+def apply(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
+  if (fileExists(config.config_path)) {
     // apply the config
     try {
-      sh "${bin} apply -input=false -no-color -auto-approve ${config_path}"
+      sh "${config.bin} apply -input=false -no-color -auto-approve ${config.config_path}"
     }
     catch(Exception error) {
       print 'Failure using terraform apply.'
@@ -14,23 +22,31 @@ def apply(String config_path, String bin = 'terraform') {
     print 'Terraform apply was successful.'
   }
   else {
-    throw new Exception("Terraform config/plan ${config_path} does not exist!")
+    throw new Exception("Terraform config/plan ${config.config_path} does not exist!")
   }
 }
 
-def destroy(String dir, String bin = 'terraform') {
+def destroy(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
   // -force changed to -auto-approve in 0.11.4
-  installed_version = sh(returnStdout: true, script: "${bin} version").trim()
+  installed_version = sh(returnStdout: true, script: "${config.bin} version").trim()
   if (installed_version =~ /0\.1[2-9]\.[0-9]|0\.11\.[4-9]/) {
     no_input_flag = '-auto-approve'
   }
   else {
     no_input_flag = '-force'
   }
-  if (fileExists(dir)) {
+  if (fileExists(config.dir)) {
     // apply the config
     try {
-      sh "${bin} destroy -input=false -no-color ${no_input_flag} ${dir}"
+      sh "${config.bin} destroy -input=false -no-color ${no_input_flag} ${config.dir}"
     }
     catch(Exception error) {
       print 'Failure using terraform destroy.'
@@ -39,7 +55,7 @@ def destroy(String dir, String bin = 'terraform') {
     print 'Terraform destroy was successful.'
   }
   else {
-    throw new Exception("Terraform config ${dir} does not exist!")
+    throw new Exception("Terraform config ${config.dir} does not exist!")
   }
 }
 
@@ -89,11 +105,19 @@ def install(body) {
   print "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
-def plan(String dir, String bin = 'terraform') {
-  if (fileExists(dir)) {
+def plan(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
+  if (fileExists(config.dir)) {
     // generate a plan from the config directory
     try {
-      sh "${bin} plan -no-color -out=${dir}/plan.tfplan ${dir}"
+      sh "${config.bin} plan -no-color -out=${config.dir}/plan.tfplan ${config.dir}"
     }
     catch(Exception error) {
       print 'Failure using terraform plan.'
@@ -102,7 +126,7 @@ def plan(String dir, String bin = 'terraform') {
     print 'Terraform plan was successful.'
   }
   else {
-    throw new Exception("Config directory ${dir} does not exist!")
+    throw new Exception("Config directory ${config.dir} does not exist!")
   }
 }
 
