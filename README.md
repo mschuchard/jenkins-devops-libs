@@ -45,17 +45,7 @@ library('jenkins-devops-libs')
 - Packer
 - Terraform
 
-## TODO
-- begin release management
-- Puppet
-- Serverspec
-- Docker-Compose
-- Packer: plugin install (note should be done with soft prov though)
-- Terra/Pack: probably should change into root dir of template/config
-- Terraform: -target=resource (plan/apply/destroy), -var (multi), -var-file
-- Helm: package, test, lint, verify; --kube-context; install kubectl, config kubeconfig; additional flags like namespace
-- FaaS: invoke, push, remove
-- dgoss does not actually work like you would think and also has pathing issues; workaround with volume mounting
-- tf enterprise api
-- validate yaml/json methods and use in goss/packer/faas/helm?
-- Else, replace all `sh` with API where possible and abstract common methods into utils.
+## Contributing
+Code should pass all acceptance tests. New features should involve new acceptance tests.
+
+Please consult the GitHub Project for the current development roadmap.
