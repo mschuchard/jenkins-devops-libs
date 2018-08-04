@@ -13,7 +13,7 @@ Uses Terraform to apply a config. Note that if `terraform.plan { path = config_d
 ```groovy
 terraform.apply {
   bin = '/usr/bin/terraform' // optional path to terraform executable
-  config_path = 'path/to/config_dir_or_plan_file' // path to config dir or plan file
+  config_path = '/path/to/config_dir_or_plan_file' // path to config dir or plan file
 }
 ```
 
@@ -23,7 +23,7 @@ Uses Terraform to destroy an applied config.
 ```groovy
 terraform.destroy {
   bin = '/usr/bin/terraform' // optional path to terraform executable
-  dir = 'path/to/config_dir_or_plan_file' // path to config dir
+  dir = '/path/to/config_dir' // path to config dir
 }
 ```
 
@@ -51,15 +51,18 @@ Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will b
 ```groovy
 terraform.plan {
   bin = '/usr/bin/terraform' // optional path to terraform executable
-  dir = 'path/to/config_dir_or_plan_file' // path to config dir
+  dir = '/path/to/config_dir_or_plan_file' // path to config dir
 }
 ```
 
-### terraform.validate(String dir, String bin = 'terraform')
+### terraform.validate {}
 Uses Terraform to validate a config directory.
 
 ```groovy
-terraform.validate('/path/to/config_dir')
+terraform.validate {
+  bin = '/usr/bin/terraform' // optional path to terraform executable
+  dir = '/path/to/config_dir' // path to config dir
+}
 ```
 
 ### terraform.workspace {}

@@ -130,8 +130,16 @@ def plan(body) {
   }
 }
 
-def validate(String dir, String bin = 'terraform') {
-  if (fileExists(dir)) {
+def validate(config) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
+  if (fileExists(config.dir)) {
     // validates the config directory
     try {
       sh "${bin} validate -no-color ${dir}"
@@ -143,7 +151,7 @@ def validate(String dir, String bin = 'terraform') {
     print 'Terraform validate was successful.'
   }
   else {
-    throw new Exception("Config directory ${dir} does not exist!")
+    throw new Exception("Config directory ${config.dir} does not exist!")
   }
 }
 
