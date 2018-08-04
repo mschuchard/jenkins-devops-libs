@@ -13,7 +13,19 @@ def apply(body) {
   if (fileExists(config.config_path)) {
     // apply the config
     try {
-      sh "${config.bin} apply -input=false -no-color -auto-approve ${config.config_path}"
+      cmd = "${config.bin} apply -input=false -no-color -auto-approve"
+
+      // check for optional inputs
+      if (config.var_file != null) {
+        if (fileExists(config.var_file)) {
+          cmd += " -var_file=${config.var_file}"
+        }
+        else {
+          throw new Exception("The var file ${config.var_file} does not exist!")
+        }
+      }
+
+      sh "${cmd} ${config.config_path}"
     }
     catch(Exception error) {
       print 'Failure using terraform apply.'
@@ -44,9 +56,21 @@ def destroy(body) {
     no_input_flag = '-force'
   }
   if (fileExists(config.dir)) {
-    // apply the config
+    // destroy the state
     try {
-      sh "${config.bin} destroy -input=false -no-color ${no_input_flag} ${config.dir}"
+      cmd = "${config.bin} destroy -input=false -no-color ${no_input_flag}"
+
+      // check for optional inputs
+      if (config.var_file != null) {
+        if (fileExists(config.var_file)) {
+          cmd += " -var_file=${config.var_file}"
+        }
+        else {
+          throw new Exception("The var file ${config.var_file} does not exist!")
+        }
+      }
+
+      sh "${cmd} ${config.dir}"
     }
     catch(Exception error) {
       print 'Failure using terraform destroy.'
@@ -117,7 +141,19 @@ def plan(body) {
   if (fileExists(config.dir)) {
     // generate a plan from the config directory
     try {
-      sh "${config.bin} plan -no-color -out=${config.dir}/plan.tfplan ${config.dir}"
+      cmd = "${config.bin} plan -no-color -out=${config.dir}/plan.tfplan"
+
+      // check for optional inputs
+      if (config.var_file != null) {
+        if (fileExists(config.var_file)) {
+          cmd += " -var_file=${config.var_file}"
+        }
+        else {
+          throw new Exception("The var file ${config.var_file} does not exist!")
+        }
+      }
+
+      sh "${cmd} ${config.dir}"
     }
     catch(Exception error) {
       print 'Failure using terraform plan.'
@@ -140,9 +176,21 @@ def validate(config) {
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
   if (fileExists(config.dir)) {
-    // validates the config directory
+    // validate the config directory
     try {
-      sh "${bin} validate -no-color ${dir}"
+      cmd = "${config.bin} validate -no-color"
+
+      // check for optional inputs
+      if (config.var_file != null) {
+        if (fileExists(config.var_file)) {
+          cmd += " -var_file=${config.var_file}"
+        }
+        else {
+          throw new Exception("The var file ${config.var_file} does not exist!")
+        }
+      }
+
+      sh "${cmd} ${config.dir}"
     }
     catch(Exception error) {
       print 'Failure using terraform validate.'

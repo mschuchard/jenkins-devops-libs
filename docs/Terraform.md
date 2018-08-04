@@ -14,6 +14,7 @@ Uses Terraform to apply a config. Note that if `terraform.plan { path = config_d
 terraform.apply {
   bin = '/usr/bin/terraform' // optional path to terraform executable
   config_path = '/path/to/config_dir_or_plan_file' // path to config dir or plan file
+  var_file = '/path/to/variables.tf' // optional location of variables file
 }
 ```
 
@@ -24,6 +25,7 @@ Uses Terraform to destroy an applied config.
 terraform.destroy {
   bin = '/usr/bin/terraform' // optional path to terraform executable
   dir = '/path/to/config_dir' // path to config dir
+  var_file = '/path/to/variables.tf' // optional location of variables file
 }
 ```
 
@@ -52,6 +54,7 @@ Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will b
 terraform.plan {
   bin = '/usr/bin/terraform' // optional path to terraform executable
   dir = '/path/to/config_dir_or_plan_file' // path to config dir
+  var_file = '/path/to/variables.tf' // optional location of variables file
 }
 ```
 
@@ -62,6 +65,7 @@ Uses Terraform to validate a config directory.
 terraform.validate {
   bin = '/usr/bin/terraform' // optional path to terraform executable
   dir = '/path/to/config_dir' // path to config dir
+  var_file = '/path/to/variables.tf' // optional location of variables file
 }
 ```
 
