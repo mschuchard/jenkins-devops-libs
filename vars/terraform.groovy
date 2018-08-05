@@ -32,6 +32,14 @@ def apply(body) {
           cmd += " -var ${it}"
         }
       }
+      if (config.target != null) {
+        if (!(config.target instanceof String[])) {
+          throw new Exception('The target parameter must be an array of strings.')
+        }
+        config.target.each() {
+          cmd += " -target=${it}"
+        }
+      }
 
       sh "${cmd} ${config.config_path}"
     }
@@ -83,6 +91,14 @@ def destroy(body) {
         }
         config.var.each() {
           cmd += " -var ${it}"
+        }
+      }
+      if (config.target != null) {
+        if (!(config.target instanceof String[])) {
+          throw new Exception('The target parameter must be an array of strings.')
+        }
+        config.target.each() {
+          cmd += " -target=${it}"
         }
       }
 
@@ -174,6 +190,14 @@ def plan(body) {
         }
         config.var.each() {
           cmd += " -var ${it}"
+        }
+      }
+      if (config.target != null) {
+        if (!(config.target instanceof String[])) {
+          throw new Exception('The target parameter must be an array of strings.')
+        }
+        config.target.each() {
+          cmd += " -target=${it}"
         }
       }
 
