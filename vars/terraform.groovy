@@ -24,6 +24,14 @@ def apply(body) {
           throw new Exception("The var file ${config.var_file} does not exist!")
         }
       }
+      if (config.var != null) {
+        if (!(config.var instanceof String[])) {
+          throw new Exception('The var parameter must be an array of strings.')
+        }
+        config.var.each() {
+          cmd += " -var ${it}"
+        }
+      }
 
       sh "${cmd} ${config.config_path}"
     }
@@ -67,6 +75,14 @@ def destroy(body) {
         }
         else {
           throw new Exception("The var file ${config.var_file} does not exist!")
+        }
+      }
+      if (config.var != null) {
+        if (!(config.var instanceof String[])) {
+          throw new Exception('The var parameter must be an array of strings.')
+        }
+        config.var.each() {
+          cmd += " -var ${it}"
         }
       }
 
@@ -152,6 +168,14 @@ def plan(body) {
           throw new Exception("The var file ${config.var_file} does not exist!")
         }
       }
+      if (config.var != null) {
+        if (!(config.var instanceof String[])) {
+          throw new Exception('The var parameter must be an array of strings.')
+        }
+        config.var.each() {
+          cmd += " -var ${it}"
+        }
+      }
 
       sh "${cmd} ${config.dir}"
     }
@@ -187,6 +211,14 @@ def validate(config) {
         }
         else {
           throw new Exception("The var file ${config.var_file} does not exist!")
+        }
+      }
+      if (config.var != null) {
+        if (!(config.var instanceof String[])) {
+          throw new Exception('The var parameter must be an array of strings.')
+        }
+        config.var.each() {
+          cmd += " -var ${it}"
         }
       }
 
