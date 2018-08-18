@@ -47,7 +47,7 @@ Locally installs a specific version of Terraform.
 terraform.install {
   install_path = '/usr/bin' // optional location to install terraform
   platform = 'linux_amd64' // platform where terraform will be installed
-  version = '0.10.8' // version of terraform to install
+  version = '0.11.7' // version of terraform to install
 }
 ```
 
@@ -61,6 +61,13 @@ terraform.plan {
   var = ['foo=bar', 'bar=baz'] // optional variable setting
   var_file = '/path/to/variables.tf' // optional location of variables file
 }
+```
+
+### terraform.plugin_install(String url, String install_name)
+Locally installs a Terraform plugin. Note that these plugins need to be named appropriately in the nomenclature of `terraform-provider-NAME_vX.Y.Z`.
+
+```groovy
+terraform.plugin_install('https://github.com/org/terraform-provisioner-foo/releases/download/v1.0.0/terraform-provisioner-foo-v1.0.0-linux-amd64', 'terraform-provisioner-foo_v1.0.0')
 ```
 
 ### terraform.validate {}

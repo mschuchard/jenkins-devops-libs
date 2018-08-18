@@ -214,6 +214,20 @@ def plan(body) {
   }
 }
 
+def plugin_install(String url, String install_name) {
+  install_loc = "~/.terraform.d/plugins/${install_name}"
+
+  // check if plugin already installed
+  if (fileExists(install_loc)) {
+    print "Terraform plugin already installed at ${install_loc}."
+    return
+  }
+  // otherwise download and install plugin
+  new utils().download_file(url, install_loc)
+  sh "chmod +rx ${install_loc}"
+  print "Terraform plugin successfully installed at ${install_loc}."
+}
+
 def validate(config) {
   // evaluate the body block and collect configuration into the object
   def config = [:]
