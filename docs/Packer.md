@@ -27,8 +27,15 @@ Locally installs a specific version of Packer.
 packer.install {
   install_path = '/usr/bin' // optional location to install packer
   platform = 'linux_amd64' // platform where packer will be installed
-  version = '1.1.3' // version of packer to install
+  version = '1.2.5' // version of packer to install
 }
+```
+
+### packer.plugin_install(String url, String install_loc)
+Locally installs a Packer plugin. Note that these plugins need to either be installed in an executable path, or in the same directory as `packer`, and need to be named appropriately.
+
+```groovy
+packer.plugin_install('https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v0.3.0/packer-provisioner-goss-v0.3.0-linux-amd64', '/usr/bin/packer-provisioner-goss')
 ```
 
 ### packer.validate {}

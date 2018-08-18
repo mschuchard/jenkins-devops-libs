@@ -82,6 +82,18 @@ def install(body) {
   print "Packer successfully installed at ${config.install_path}/packer."
 }
 
+def plugin_install(String url, String install_loc) {
+  // check if plugin already installed
+  if (fileExists(install_loc)) {
+    print "Packer plugin already installed at ${install_loc}."
+    return
+  }
+  // otherwise download and install plugin
+  new utils().download_file(url, install_loc)
+  sh "chmod +rx ${install_loc}"
+  print "Packer plugin successfully installed at ${install_loc}."
+}
+
 def validate(body) {
   // evaluate the body block and collect configuration into the object
   def config = [:]
