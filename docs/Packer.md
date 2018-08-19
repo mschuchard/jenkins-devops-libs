@@ -32,7 +32,7 @@ packer.install {
 ```
 
 ### packer.plugin_install(String url, String install_loc)
-Locally installs a Packer plugin. Note that these plugins need to either be installed in an executable path, or in the same directory as `packer`, and need to be named appropriately.
+Locally installs a Packer plugin. Note that these plugins need to either be installed in an executable path, or in the same directory as `packer`, and need to be named appropriately. The remotely stored plugin should also be zipped or an executable.
 
 ```groovy
 packer.plugin_install('https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v0.3.0/packer-provisioner-goss-v0.3.0-linux-amd64', '/usr/bin/packer-provisioner-goss')

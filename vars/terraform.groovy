@@ -223,8 +223,18 @@ def plugin_install(String url, String install_name) {
     return
   }
   // otherwise download and install plugin
+  if (url =~ /\.zip$/) {
+    // append zip extension to avoid filename clashes
+    install_loc = "${install_loc}.zip"
+  }
   new utils().download_file(url, install_loc)
-  sh "chmod +rx ${install_loc}"
+  if (url =~ /\.zip$/) {
+    unzip(zipFile: install_loc)
+    new utils().remove_file(install_loc)
+  }
+  else {
+    sh "chmod +rx ${install_loc}"
+  }
   print "Terraform plugin successfully installed at ${install_loc}."
 }
 

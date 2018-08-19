@@ -64,7 +64,7 @@ terraform.plan {
 ```
 
 ### terraform.plugin_install(String url, String install_name)
-Locally installs a Terraform plugin. Note that these plugins need to be named appropriately in the nomenclature of `terraform-provider-NAME_vX.Y.Z`.
+Locally installs a Terraform plugin. Note that these plugins need to be named appropriately in the nomenclature of `terraform-provider-NAME_vX.Y.Z`. The remotely stored plugin should also be zipped or an executable.
 
 ```groovy
 terraform.plugin_install('https://github.com/org/terraform-provisioner-foo/releases/download/v1.0.0/terraform-provisioner-foo-v1.0.0-linux-amd64', 'terraform-provisioner-foo_v1.0.0')
