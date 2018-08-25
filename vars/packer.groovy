@@ -83,6 +83,13 @@ def install(body) {
 }
 
 def plugin_install(String url, String install_loc) {
+  install_dir = new File(install_loc).name.take(File(install_loc).name.lastIndexOf('/'))
+
+  // check if plugin dir exists and create if not
+  if (!(fileExists(install_dir))) {
+    new File(install_dir).mkdir()
+  }
+
   // check if plugin already installed
   if (fileExists(install_loc)) {
     print "Packer plugin already installed at ${install_loc}."

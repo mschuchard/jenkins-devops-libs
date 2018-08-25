@@ -217,6 +217,11 @@ def plan(body) {
 def plugin_install(String url, String install_name) {
   install_loc = "~/.terraform.d/plugins/${install_name}"
 
+  // check if plugin dir exists and create if not
+  if (!(fileExists('~/.terraform.d/plugins/'))) {
+    new File('~/.terraform.d/plugins/').mkdir()  
+  }
+
   // check if plugin already installed
   if (fileExists(install_loc)) {
     print "Terraform plugin already installed at ${install_loc}."
