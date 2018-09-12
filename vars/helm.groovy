@@ -48,6 +48,9 @@ def install(body) {
     if (config.set != null) {
       cmd += " --set ${config.set}"
     }
+    if (config.context != null) {
+      cmd += " --kube-context ${config.context}"
+    }
     if (config.name != null) {
       cmd += " --name ${config.name}"
     }
@@ -86,7 +89,13 @@ def rollback(body) {
 
   // rollback with helm
   try {
-    sh "${config.bin} rollback ${config.name} ${config.version}"
+    cmd = "${config.bin} rollback"
+
+    if (config.context != null) {
+      cmd += " --kube-context ${config.context}"
+    }
+
+    sh "${cmd} ${config.name} ${config.version}"
   }
   catch(Exception error) {
     print 'Failure using helm rollback.'
@@ -157,6 +166,9 @@ def upgrade(body) {
     }
     if (config.set != null) {
       cmd += " --set ${config.set}"
+    }
+    if (config.context != null) {
+      cmd += " --kube-context ${config.context}"
     }
     if (config.namespace != null) {
       cmd += " --namespace ${config.namespace}"
