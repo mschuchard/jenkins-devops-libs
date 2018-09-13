@@ -7,11 +7,15 @@ Interacts with Helm. Note that you should set the environment variable `KUBECONF
 - tar package (`setup`)
 - pipeline-utility-steps plugin (`setup`)
 
-### helm.delete(String release_obj, String bin = 'helm')
+### helm.delete {}
 Delete the release object from Kubernetes with helm.
 
 ```groovy
-helm.delete('happy-panda')
+helm.delete {
+  bin = '/usr/bin/helm' // optional executable path for helm
+  name = 'happy-panda' // name for the release object to be deleted
+  context = 'default' // optional kube-context from kube config
+}
 ```
 
 ### helm.install {}
@@ -25,7 +29,7 @@ helm.install {
   name = 'happy-panda' // optional name for the installed release object
   namespace = 'default' // optional namespace for the installed release object
   values = 'config.yaml' // optional value overrides yaml file
-  set = 'foo=bar' // optional value override
+  set = ['foo=bar', 'bar=baz'] // optional value override
 }
 ```
 
@@ -42,7 +46,7 @@ helm.rollback {
 ```
 
 ### helm.setup(String version, String install_path = '/usr/bin')
-Locally installs a specific version of helm and then initializes helm and installs tiller. If helm is already installed at the specified version, then helm is initialized for the jenkins user if it has not been already. It is strongly recommended to manage this with a software provisioner instead, but this can be helpful for quick one-offs.
+Locally installs a specific version of helm and then initializes helm and installs tiller. If helm is already installed at the specified version, then helm is initialized for the jenkins user if it has not been already. It is strongly recommended to manage this with a software provisioner instead, but this can be helpful for quick one-offs. Also, it is sometimes necessary to initialize helm for the jenkins user, and this will rectify that situation.
 
 ```groovy
 helm.setup('2.9.1', '/usr/local/bin')
@@ -59,6 +63,6 @@ helm.upgrade {
   name = 'happy-panda' // name of the upgraded release object
   namespace = 'default' // optional namespace for the upgraded release object
   values = 'config.yaml' // optional value overrides yaml file
-  set = 'foo=bar' // optional value override
+  set = ['foo=bar', 'bar=baz'] // optional value override
 }
 ```

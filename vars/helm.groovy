@@ -1,12 +1,30 @@
 //vars/helm.groovy
 import devops.common.utils
 
-def delete(String release_obj, String bin = 'helm') {
+def delete(body) {
+  // evaluate the body block, and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'helm' : config.bin
+  if (config.name == null) {
+    throw new Exception("The required parameter 'name' was not set.")
+  }
+
   // attempt to delete a release object
-  release_obj_list = sh(returnStdout: true, script: "${bin} list").trim()
-  if (release_obj_list =~ release_obj) {
+  release_obj_list = sh(returnStdout: true, script: "${config.bin} list").trim()
+  if (release_obj_list =~ config.name) {
     try {
-      sh "${bin} delete ${release_obj}"
+      cmd = "${config.bin} delete"
+
+      if (config.context != null) {
+        cmd += " --kube-context ${config.context}"
+      }
+
+      sh "${cmd} ${config.name}"
     }
     catch(Exception error) {
       print 'Failure using helm delete.'
@@ -14,7 +32,7 @@ def delete(String release_obj, String bin = 'helm') {
     }
   }
   else {
-    throw new Exception("Release object ${release_obj} does not exist!")
+    throw new Exception("Release object ${config.name} does not exist!")
   }
 }
 
@@ -46,7 +64,12 @@ def install(body) {
       cmd += " -f ${config.values}"
     }
     if (config.set != null) {
-      cmd += " --set ${config.set}"
+      if (!(config.set instanceof String[])) {
+        throw new Exception('The set parameter must be an array of strings.')
+      }
+      config.set.each() {
+        cmd += " --set ${it}"
+      }
     }
     if (config.context != null) {
       cmd += " --kube-context ${config.context}"
@@ -165,7 +188,12 @@ def upgrade(body) {
       cmd += " -f ${config.values}"
     }
     if (config.set != null) {
-      cmd += " --set ${config.set}"
+      if (!(config.set instanceof String[])) {
+        throw new Exception('The set parameter must be an array of strings.')
+      }
+      config.set.each() {
+        cmd += " --set ${it}"
+      }
     }
     if (config.context != null) {
       cmd += " --kube-context ${config.context}"
