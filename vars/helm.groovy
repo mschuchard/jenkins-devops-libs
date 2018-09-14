@@ -15,7 +15,9 @@ def delete(body) {
   }
 
   // attempt to delete a release object
-  release_obj_list = sh(returnStdout: true, script: "${config.bin} list").trim()
+  lister = config.context == null ? "${config.bin} list" : "${config.bin} --kube-context ${config.context} list"
+  release_obj_list = sh(returnStdout: true, script: lister).trim()
+
   if (release_obj_list =~ config.name) {
     try {
       cmd = "${config.bin} delete"
@@ -48,7 +50,8 @@ def install(body) {
   if (config.chart == null) {
     throw new Exception("The required parameter 'chart' was not set.")
   }
-  release_obj_list = sh(returnStdout: true, script: "${config.bin} list --all").trim()
+  lister = config.context == null ? "${config.bin} list" : "${config.bin} --kube-context ${config.context} list"
+  release_obj_list = sh(returnStdout: true, script: lister).trim()
   if ((config.name != null) && (release_obj_list =~ config.name)) {
     throw new Exception("Release object ${config.name} already exists!")
   }
@@ -105,7 +108,8 @@ def rollback(body) {
     throw new Exception("The required parameter 'name' was not set.")
   }
   config.bin = config.bin == null ? 'helm' : config.bin
-  release_obj_list = sh(returnStdout: true, script: "${config.bin} list --all").trim()
+  lister = config.context == null ? "${config.bin} list" : "${config.bin} --kube-context ${config.context} list"
+  release_obj_list = sh(returnStdout: true, script: lister).trim()
   if (!(release_obj_list =~ config.name)) {
     throw new Exception("Release object ${config.name} does not exist!")
   }
@@ -172,7 +176,8 @@ def upgrade(body) {
     throw new Exception("The required parameter 'name' was not set.")
   }
   config.bin = config.bin == null ? 'helm' : config.bin
-  release_obj_list = sh(returnStdout: true, script: "${config.bin} list").trim()
+  lister = config.context == null ? "${config.bin} list" : "${config.bin} --kube-context ${config.context} list"
+  release_obj_list = sh(returnStdout: true, script: lister).trim()
   if (!(release_obj_list =~ config.name)) {
     throw new Exception("Release object ${config.name} does not exist!")
   }

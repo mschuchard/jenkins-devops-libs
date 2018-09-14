@@ -10,14 +10,14 @@ Interacts with Goss.
 Locally installs a specific version of goss.
 
 ```groovy
-goss.install('0.3.5', '/usr/local/bin/')
+goss.install('0.3.6', '/usr/local/bin/')
 ```
 
 ### goss.install_dgoss(String version, String install_path = '/usr/bin')
 Locally installs a specific version of dgoss.
 
 ```groovy
-goss.install_dgoss('0.3.5', '/usr/local/bin/')
+goss.install_dgoss('0.3.6', '/usr/local/bin/')
 ```
 
 ### goss.server {}
