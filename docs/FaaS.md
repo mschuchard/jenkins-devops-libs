@@ -6,7 +6,7 @@ Interacts with OpenFaaS CLI.
 
 - pipeline-utility-steps plugin (`validate_template`)
 
-### faas.build
+### faas.build {}
 Builds OpenFaaS function containers.
 
 ```groovy
@@ -21,7 +21,7 @@ faas.build {
 }
 ```
 
-### faas.deploy
+### faas.deploy {}
 Deploys OpenFaaS function containers.
 
 ```groovy
@@ -37,7 +37,7 @@ faas.deploy {
 }
 ```
 
-### faas.install
+### faas.install {}
 Locally installs a specific version of the OpenFaaS CLI.
 
 ```groovy
