@@ -4,7 +4,7 @@ Interacts with Puppet Enterprise Software Endpoints. This library is considered 
 
 ### Dependencies
 
-None.
+- pipeline-utility-steps plugin
 
 ### puppet.code_deploy {}
 Deploys code and data with the Puppet Enterprise Code Manager.
@@ -13,7 +13,7 @@ Deploys code and data with the Puppet Enterprise Code Manager.
 puppet.code_deploy {
   bin = '/usr/bin/curl' // optional executable path for curl
   environments = ['development', 'production'] // optional environments to deploy (default is to deploy all environments)
-  server = 'https://puppet:8170' // optional server hosting code manager
+  server = 'puppet' // optional server hosting code manager
   token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for deploying with code manager
   wait = false // optional wait for code manager to finish deployment
 }
@@ -35,3 +35,5 @@ puppet.task {
   token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
 }
 ```
+
+https://github.com/glarizza/pe_curl_requests
