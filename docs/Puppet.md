@@ -7,7 +7,7 @@ Interacts with Puppet Enterprise Software Endpoints. This library is considered 
 - pipeline-utility-steps plugin
 
 ### puppet.code_deploy {}
-Deploys code and data with the Puppet Enterprise Code Manager.
+Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to `true`, errors returned by Code Manager will be returned and the pipeline will fatally error.
 
 ```groovy
 puppet.code_deploy {
