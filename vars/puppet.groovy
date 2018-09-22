@@ -62,11 +62,16 @@ def code_deploy(body) {
   }
   // check for errors if waited
   if (config.wait == true) {
+    errored = false
     response.each() {
       if (it.containsKey('error')) {
-        print "Response from Code Manager was an error of kind ${it['error']['kind']}."
-        throw it['error']['msg']
+        print "Response from Code Manager for environment ${it['environment']} was an error of kind ${it['error']['kind']}."
+        print it['error']['msg']
+        errored = true
       }
+    }
+    if (errored) {
+      throw 'Code Manager failed with above error info.'
     }
   }
 }
