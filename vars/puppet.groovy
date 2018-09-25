@@ -16,7 +16,10 @@ def code_deploy(body) {
     throw new Exception("The RBAC token ${config.token} does not exist!")
   }
   config.bin = config.bin == null ? 'curl' : config.bin
-  config.server = config.server == null ? 'puppet' : config.server
+  config.servers = config.servers == null ? ['puppet'] : config.servers
+  if (!(config.servers instanceof String[])) {
+    throw new Exception('The servers parameter must be an array of strings.')
+  }
 
   // check for environments
   if (config.environments == null) {
@@ -44,35 +47,38 @@ def code_deploy(body) {
     payload += '}'
   }
 
-  // trigger code manager deployment
-  try {
-    json = sh(returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' -H \"X-Authentication: `cat ${config.token}`\" \"https://${config.server}:8170/code-manager/v1/deploys\" -d '${payload}'")
-  }
-  catch(Exception error) {
-    print "Failure executing curl against ${config.server} with token at ${config.token}!"
-    throw error
-  }
-  // parse response
-  try {
-    response = readJSON(text: json)
-  }
-  catch(Exception error) {
-    print "Response from ${config.server} is not valid JSON!"
-    throw error
-  }
-  // check for errors if waited
-  if (config.wait == true) {
-    errored = false
-    response.each() {
-      if (it.containsKey('error')) {
-        print "Response from Code Manager for environment ${it['environment']} was an error of kind ${it['error']['kind']}."
-        print it['error']['msg']
-        errored = true
+  // iterate through servers
+  errored = false
+  config.servers.each() { server ->
+    // trigger code manager deployment
+    try {
+      json = sh(returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' -H \"X-Authentication: `cat ${config.token}`\" \"https://${server}:8170/code-manager/v1/deploys\" -d '${payload}'")
+    }
+    catch(Exception error) {
+      print "Failure executing curl against ${server} with token at ${config.token}!"
+      throw error
+    }
+    // parse response
+    try {
+      response = readJSON(text: json)
+    }
+    catch(Exception error) {
+      print "Response from ${server} is not valid JSON!"
+      throw error
+    }
+    // check for errors if waited
+    if (config.wait == true) {
+      response.each() { hash ->
+        if (hash.containsKey('error')) {
+          print "Response from Code Manager for environment ${hash['environment']} was an error of kind ${hash['error']['kind']}."
+          print hash['error']['msg']
+          errored = true
+        }
       }
     }
-    if (errored) {
-      throw 'Code Manager failed with above error info.'
-    }
+  }
+  if (errored) {
+    throw 'Code Manager failed with above error info.'
   }
 }
 

@@ -13,7 +13,7 @@ Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to
 puppet.code_deploy {
   bin = '/usr/bin/curl' // optional executable path for curl
   environments = ['development', 'production'] // optional environments to deploy (default is to deploy all environments)
-  server = 'puppet' // optional server hosting code manager
+  servers = ['puppet'] // optional server hosting code manager
   token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for deploying with code manager
   wait = false // optional wait for code manager to finish deployment
 }
