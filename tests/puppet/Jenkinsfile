@@ -1,1 +1,42 @@
 // experimental library
+// for dynamic retrieval
+library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
+  [$class: 'GitSCMSource',
+   remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
+// if added in Jenkins global config shared libraries
+//@Library('jenkins-devops-libs')
+// if added in Jenkins global config shared libraries and the github api plugin is bugging out and slamming github with requests
+//library('jenkins-devops-libs')
+
+pipeline {
+  agent any
+
+  stages {
+    stage('Tests') {
+      parallel {
+        stage('Code Deploy') {
+          steps {
+            scripts {
+              puppet.code_deploy {
+                bin = '/usr/bin/curl'
+                environments = ['development', 'production']
+                servers = ['puppet'] // optional server hosting code manager
+                token = '/var/lib/jenkins/.puppetlabs/token'
+                wait = true
+              }
+            }
+          }
+        }
+        stage('Execute Task') {
+          steps {
+            scripts {
+              puppet.task {
+                bin = '/usr/bin/curl'
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
