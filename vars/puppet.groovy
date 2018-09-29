@@ -82,4 +82,44 @@ def code_deploy(body) {
   }
 }
 
-// https://puppet.com/docs/pe/2018.1/orchestrator_api_commands_endpoint.html#reference-6045
+def task(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  if (config.token == null) {
+    throw new Exception('The required token parameter was not set.')
+  }
+  else if (!(fileExists(config.token))) {
+    throw new Exception("The RBAC token ${config.token} does not exist!")
+  }
+  config.bin = config.bin == null ? 'curl' : config.bin
+  config.server = config.server == null ? 'puppet' : config.server
+  if (config.task == null) {
+    throw new Exception('The required task parameter was not set.')
+  }
+
+  // construct payload
+  payload = '{'
+  if (config.environment != null) {
+    payload += " \"environment\":\"${config.environment}\","
+  }
+  if (config.description != null) {
+    payload += " \"description\":\"${config.description}\","
+  }
+  if (config.noop != null) {
+    payload += " \"noop\":${config.noop},"
+  }
+  if (config.params == null) {
+    payload += " \"params\": {},"
+  }
+  else {
+    payload += " \"params\": ${config.params},"
+  }
+  payload += " \"task\": \"${config.task}\","
+  // scope; terminate with ' }'' because last input
+  // https://puppet.com/docs/pe/2018.1/orchestrator_api_commands_endpoint.html#reference-6045
+}

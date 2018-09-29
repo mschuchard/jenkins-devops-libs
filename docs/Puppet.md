@@ -26,14 +26,12 @@ Triggers the execution of a Puppet Enterprise task.
 puppet.task {
   bin = '/usr/bin/curl' // optional executable path for curl
   description = 'my task' // optional description of the job
-  environment = 'production'] // optional environment to execute the task on (default is production)
+  environment = 'production' // optional environment to execute the task on (default is production)
   noop = true // optional execute task in noop (default is false)
   params = { "action":"install", "name":"httpd" } // optional json format input parameters (default is empty)
-  scope = //TODO
+  scope = //TODO nodes string array, query string, app string, or node_group string
   server = 'https://puppet:8170' // optional server hosting puppet orchestrator
   task = 'package' // name of the task to execute
   token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
 }
 ```
-
-https://github.com/glarizza/pe_curl_requests
