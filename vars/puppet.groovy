@@ -96,11 +96,14 @@ def task(body) {
   else if (!(fileExists(config.token))) {
     throw new Exception("The RBAC token ${config.token} does not exist!")
   }
-  config.bin = config.bin == null ? 'curl' : config.bin
-  config.server = config.server == null ? 'puppet' : config.server
   if (config.task == null) {
     throw new Exception('The required task parameter was not set.')
   }
+  if (config.scope == null) {
+    throw new Exception('The required scope parameter was not set.')
+  }
+  config.bin = config.bin == null ? 'curl' : config.bin
+  config.server = config.server == null ? 'puppet' : config.server
 
   // construct payload
   payload = '{'
@@ -120,6 +123,40 @@ def task(body) {
     payload += " \"params\": ${config.params},"
   }
   payload += " \"task\": \"${config.task}\","
-  // scope; terminate with ' }'' because last input
-  // https://puppet.com/docs/pe/2018.1/orchestrator_api_commands_endpoint.html#reference-6045
+  if (config.scope instanceof String[]) {
+    // node list
+    payload += ' \"scope\": {"nodes": ['
+    config.environments.each() { node ->
+      payload += "\"${node}\", "
+    }
+    // remove trailing ', ' and then end array
+    payload = payload.substring(0, payload.length() - 2)
+    payload += ']}'
+  }
+  else if (config.scope instanceof String) {
+    // node group
+    payload += " \"scope\": {\"node_group\": \"${config.scope}\"}"
+  }
+  else {
+    throw new Exception('The scope parameter is an invalid type!')
+  }
+
+  // trigger task orchestration
+  try {
+    json = sh(returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' -H \"X-Authentication: `cat ${config.token}`\" \"https://${server}:8143/orchestrator/v1/command/task\" -d '${payload}'")
+  }
+  catch(Exception error) {
+    print "Failure executing curl against ${server} with token at ${config.token}!"
+    throw error
+  }
+  // receive and parse response
+  try {
+    response = readJSON(text: json)
+  }
+  catch(Exception error) {
+    print "Response from ${server} is not valid JSON!"
+    throw error
+  }
+  // check for errors if waited
+  
 }
