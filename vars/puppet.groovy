@@ -80,6 +80,7 @@ def code_deploy(body) {
   if (errored) {
     throw 'Code Manager failed with above error info.'
   }
+  print 'Code manager deployment(s) was successful.'
 }
 
 def task(body) {
@@ -158,5 +159,22 @@ def task(body) {
     throw error
   }
   // check for errors if waited
-  
+  response.each() { hash ->
+    if (hash.containsKey('puppetlabs.orchestrator/unknown-environment')) {
+      throw new Exception('The environment does not exist!')
+    }
+    else if (hash.containsKey('puppetlabs.orchestrator/empty-target')) {
+      throw new Exception('The application instance specified to deploy does not exist or is empty!')
+    }
+    else if (hash.containsKey('puppetlabs.orchestrator/puppetdb-error')) {
+      throw new Exception('The orchestrator is unable to make a query to PuppetDB!')
+    }
+    else if (hash.containsKey('puppetlabs.orchestrator/query-error')) {
+      throw new Exception('The user does not have appropriate permissions to run a query, or the query is invalid!')
+    }
+    else if (hash.containsKey('puppetlabs.orchestrator/not-permitted')) {
+      throw new Exception('The user does not have permission to run the task on the requested nodes!')
+    }
+  }
+  print 'Puppet Orchestrator Task execution successfully requested.'
 }

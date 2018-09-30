@@ -28,8 +28,8 @@ puppet.task {
   description = 'my task' // optional description of the job
   environment = 'production' // optional environment to execute the task on (default is production)
   noop = true // optional execute task in noop (default is false)
-  params = { "action":"install", "name":"httpd" } // optional json format input parameters (default is empty)
-  scope = //TODO nodes string array, query string, app string, or node_group string
+  params = '{ "action":"install", "name":"httpd" }' // optional json format input parameters (default is empty)
+  scope = ['node1.example.com', 'node2.example.com'] // scope for deployment (if string, will be passed as `node_group`; if array of strings, will be passed as `nodes`)
   server = 'https://puppet:8170' // optional server hosting puppet orchestrator
   task = 'package' // name of the task to execute
   token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
