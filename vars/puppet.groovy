@@ -21,31 +21,27 @@ def code_deploy(body) {
     throw new Exception('The servers parameter must be an array of strings.')
   }
 
+  // init payload
+  payload = [:]
   // check for environments
   if (config.environments == null) {
-    payload = '{"deploy-all": true'
+    payload['deploy-all'] = true
   }
   else {
     if (!(config.environments instanceof String[])) {
       throw new Exception('The environments parameter must be an array of strings.')
     }
     // preface environments payload
-    payload = '{"environments": ['
-    // iterate through and append each environment into array
-    config.environments.each() {
-      payload += "\"${it}\", "
-    }
-    // remove trailing ', ' and then end array
-    payload = payload.substring(0, payload.length() - 2)
-    payload += ']'
+    payload['environments'] = config.environments
   }
   // check for wait
-  if (config.wait == true) {
-    payload += ', "wait": true}'
+  if (config.wait != null) {
+    payload['wait'] = config.wait
   }
-  else {
-    payload += '}'
-  }
+
+  // output map as json file and then read back in
+  writeJSON(file: 'payload.json', json: payload)
+  payload = readJSON(file: 'payload.json')
 
   // iterate through servers
   errored = false
@@ -107,40 +103,38 @@ def task(body) {
   config.server = config.server == null ? 'puppet' : config.server
 
   // construct payload
-  payload = '{'
+  payload = [:]
   if (config.environment != null) {
-    payload += " \"environment\":\"${config.environment}\","
+    payload['environment'] = config.environment
   }
   if (config.description != null) {
-    payload += " \"description\":\"${config.description}\","
+    payload['description'] = config.description
   }
   if (config.noop != null) {
-    payload += " \"noop\":${config.noop},"
+    payload['noop'] = config.noop
   }
   if (config.params == null) {
-    payload += " \"params\": {},"
+    payload['params'] = [:]
   }
   else {
-    payload += " \"params\": ${config.params},"
+    payload['params'] = config.params
   }
-  payload += " \"task\": \"${config.task}\","
+  payload['task'] = config.task
   if (config.scope instanceof String[]) {
     // node list
-    payload += ' \"scope\": {"nodes": ['
-    config.environments.each() { node ->
-      payload += "\"${node}\", "
-    }
-    // remove trailing ', ' and then end array
-    payload = payload.substring(0, payload.length() - 2)
-    payload += ']}'
+    payload['scope'] = config.scope
   }
   else if (config.scope instanceof String) {
     // node group
-    payload += " \"scope\": {\"node_group\": \"${config.scope}\"}"
+    payload['scope'] = config.scope
   }
   else {
     throw new Exception('The scope parameter is an invalid type!')
   }
+
+  // output map as json file and then read back in
+  writeJSON(file: 'payload.json', json: payload)
+  payload = readJSON(file: 'payload.json')
 
   // trigger task orchestration
   try {
@@ -158,7 +152,7 @@ def task(body) {
     print "Response from ${server} is not valid JSON!"
     throw error
   }
-  // check for errors if waited
+  // handle errors in response
   response.each() { hash ->
     if (hash.containsKey('puppetlabs.orchestrator/unknown-environment')) {
       throw new Exception('The environment does not exist!')
