@@ -7,7 +7,7 @@ Interacts with Puppet Enterprise Software Endpoints. This library is considered 
 - pipeline-utility-steps plugin
 
 ### puppet.code_deploy {}
-Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to `true`, errors returned by Code Manager will be returned and the pipeline will fatally error.
+Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to `true`, errors returned by Code Manager will be returned and cause the pipeline to fatally error.
 
 ```groovy
 puppet.code_deploy {
@@ -30,7 +30,7 @@ puppet.task {
   noop = true // optional execute task in noop (default is false)
   params = "['action':'install', 'name':'httpd']" // optional input parameters (default is empty)
   scope = ['node1.example.com', 'node2.example.com'] // scope for deployment (if string, will be passed as `node_group`; if array of strings, will be passed as `nodes`)
-  server = 'https://puppet:8170' // optional server hosting puppet orchestrator
+  server = 'puppet' // optional server hosting puppet orchestrator
   task = 'package' // name of the task to execute
   token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
 }

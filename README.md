@@ -43,6 +43,7 @@ library('jenkins-devops-libs')
 - Helm
 - OpenFaaS
 - Packer
+- Puppet Enterprise
 - Terraform
 
 ## Contributing
