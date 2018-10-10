@@ -1,4 +1,6 @@
-### 1.1.0 (Next)
+### Next
+
+### 1.1.0
 **Helm**
 - Added `context` argument to applicable methods.
 - Enabled multiple `set` parameter values for applicable methods.
