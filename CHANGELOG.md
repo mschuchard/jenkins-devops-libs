@@ -1,4 +1,6 @@
 ### Next
+**Puppet**
+- Fix `scope` param for `.task`.
 
 ### 1.1.0
 **Helm**

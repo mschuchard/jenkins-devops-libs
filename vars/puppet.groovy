@@ -120,13 +120,26 @@ def task(body) {
     payload['params'] = config.params
   }
   payload['task'] = config.task
+  payload['scope'] = [:]
   if (config.scope instanceof String[]) {
-    // node list
-    payload['scope'] = config.scope
+    // is the last element of the array a nested array
+    if (config.scope[-1] instanceof String[]) {
+      payload['scope']['query'] = config.scope
+    }
+    // otherwise it is an array which is then a node list
+    else {
+      payload['scope']['nodes'] = config.scope
+    }
   }
   else if (config.scope instanceof String) {
-    // node group
-    payload['scope'] = config.scope
+    // does the string look like an app orchestrator string
+    if (config.scope =~ /\[.*\]$/) {
+      payload['scope']['application'] = config.scope
+    }
+    // otherwise it is a node group string
+    else {
+      payload['scope']['node_group'] = config.scope
+    }
   }
   else {
     throw new Exception('The scope parameter is an invalid type!')
