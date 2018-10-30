@@ -83,6 +83,9 @@ def install(body) {
     if (config.namespace != null) {
       cmd += " --namespace ${config.namespace}"
     }
+    if (config.verify == true) {
+      cmd += " --verify"
+    }
 
     sh "${cmd} ${config.chart}"
   }
@@ -205,6 +208,9 @@ def upgrade(body) {
     }
     if (config.namespace != null) {
       cmd += " --namespace ${config.namespace}"
+    }
+    if (config.verify == true) {
+      cmd += " --verify"
     }
 
     sh "${cmd} ${config.name} ${config.chart}"

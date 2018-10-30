@@ -29,6 +29,7 @@ helm.install {
   name = 'happy-panda' // optional name for the installed release object
   namespace = 'default' // optional namespace for the installed release object
   values = 'config.yaml' // optional value overrides yaml file
+  verify = true // verify the provenance of the chart
   set = ['foo=bar', 'bar=baz'] // optional value override
 }
 ```
@@ -63,6 +64,7 @@ helm.upgrade {
   name = 'happy-panda' // name of the upgraded release object
   namespace = 'default' // optional namespace for the upgraded release object
   values = 'config.yaml' // optional value overrides yaml file
+  verify = true // verify the provenance of the chart
   set = ['foo=bar', 'bar=baz'] // optional value override
 }
 ```
