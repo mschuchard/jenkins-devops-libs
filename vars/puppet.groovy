@@ -39,9 +39,8 @@ def code_deploy(body) {
     payload['wait'] = config.wait
   }
 
-  // output map as json file and then read back in
-  writeJSON(file: 'payload.json', json: payload)
-  payload = readJSON(file: 'payload.json')
+  // convert map to json file
+  payload = new utils().to_json(payload)
 
   // iterate through servers
   errored = false
@@ -145,9 +144,8 @@ def task(body) {
     throw new Exception('The scope parameter is an invalid type!')
   }
 
-  // output map as json file and then read back in
-  writeJSON(file: 'payload.json', json: payload)
-  payload = readJSON(file: 'payload.json')
+  // convert map to json file
+  payload = new utils().to_json(payload)
 
   // trigger task orchestration
   try {
