@@ -55,23 +55,23 @@ def install(body) {
   if ((config.name != null) && (release_obj_list =~ config.name)) {
     throw new Exception("Release object ${config.name} already exists!")
   }
-  if ((config.values != null) && (!fileExists(config.values))) {
-    throw new Exception("Overrides file ${config.values} does not exist!")
-  }
 
   // install with helm
   try {
     cmd = "${config.bin} install"
 
     if (config.values != null) {
+      if (!fileExists(config.values)) {
+        throw new Exception("Overrides file ${config.values} does not exist!")
+      }
       cmd += " -f ${config.values}"
     }
     if (config.set != null) {
       if (!(config.set instanceof String[])) {
         throw new Exception('The set parameter must be an array of strings.')
       }
-      config.set.each() {
-        cmd += " --set ${it}"
+      config.set.each() { kv ->
+        cmd += " --set ${kv}"
       }
     }
     if (config.context != null) {
@@ -108,23 +108,23 @@ def lint(body) {
   if (config.chart == null) {
     throw new Exception("The required parameter 'chart' was not set.")
   }
-  if ((config.values != null) && (!fileExists(config.values))) {
-    throw new Exception("Overrides file ${config.values} does not exist!")
-  }
 
   // lint with helm
   try {
     cmd = "${config.bin} lint"
 
     if (config.values != null) {
+      if (!fileExists(config.values)) {
+        throw new Exception("Overrides file ${config.values} does not exist!")
+      }
       cmd += " -f ${config.values}"
     }
     if (config.set != null) {
       if (!(config.set instanceof String[])) {
         throw new Exception('The set parameter must be an array of strings.')
       }
-      config.set.each() {
-        cmd += " --set ${it}"
+      config.set.each() { kv ->
+        cmd += " --set ${kv}"
       }
     }
     if (config.context != null) {
@@ -243,23 +243,23 @@ def upgrade(body) {
   if (!(release_obj_list =~ config.name)) {
     throw new Exception("Release object ${config.name} does not exist!")
   }
-  if ((config.values != null) && (!fileExists(config.values))) {
-    throw new Exception("Overrides file ${config.values} does not exist!")
-  }
 
   // upgrade with helm
   try {
     cmd = "${config.bin} upgrade"
 
     if (config.values != null) {
+      if (!fileExists(config.values)) {
+        throw new Exception("Overrides file ${config.values} does not exist!")
+      }
       cmd += " -f ${config.values}"
     }
     if (config.set != null) {
       if (!(config.set instanceof String[])) {
         throw new Exception('The set parameter must be an array of strings.')
       }
-      config.set.each() {
-        cmd += " --set ${it}"
+      config.set.each() { kv ->
+        cmd += " --set ${kv}"
       }
     }
     if (config.context != null) {
