@@ -34,6 +34,21 @@ helm.install {
 }
 ```
 
+### helm.lint {}
+Runs a series of tests to verify that the chart is well-formed.
+
+```groovy
+helm.lint {
+  bin = '/usr/bin/helm' // optional executable path for helm
+  chart = 'chart' // chart repository, local archive, directory, or url to install
+  context = 'default' // optional kube-context from kube config
+  namespace = 'default' // optional namespace for the installed release object
+  values = 'config.yaml' // optional value overrides yaml file
+  set = ['foo=bar', 'bar=baz'] // optional value override
+  strict = false // optional fail on warnings
+}
+```
+
 ### helm.rollback {}
 Roll back the release object to a previous release with helm.
 

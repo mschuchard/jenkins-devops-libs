@@ -1,6 +1,7 @@
 ### Next
 **Helm**
 - Add chart provenance verification to applicable methods.
+- Add `lint` method.
 
 **Puppet**
 - Fix `scope` param for `.task`.
