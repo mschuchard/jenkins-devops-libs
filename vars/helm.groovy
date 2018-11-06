@@ -96,6 +96,65 @@ def install(body) {
   print 'Helm install executed successfully.'
 }
 
+def lint(body) {
+  // evaluate the body block, and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'helm' : config.bin
+  if (config.chart == null) {
+    throw new Exception("The required parameter 'chart' was not set.")
+  }
+  if ((config.values != null) && (!fileExists(config.values))) {
+    throw new Exception("Overrides file ${config.values} does not exist!")
+  }
+
+  // lint with helm
+  try {
+    cmd = "${config.bin} lint"
+
+    if (config.values != null) {
+      cmd += " -f ${config.values}"
+    }
+    if (config.set != null) {
+      if (!(config.set instanceof String[])) {
+        throw new Exception('The set parameter must be an array of strings.')
+      }
+      config.set.each() {
+        cmd += " --set ${it}"
+      }
+    }
+    if (config.context != null) {
+      cmd += " --kube-context ${config.context}"
+    }
+    if (config.namespace != null) {
+      cmd += " --namespace ${config.namespace}"
+    }
+    if (config.strict == true) {
+      cmd += " --strict"
+    }
+
+    lint_output = sh(returnStdout: true, script: "${cmd} ${config.chart}")
+
+    if (lint_output == '') {
+      print 'No errors or warnings from helm lint.'
+    }
+    else {
+      print 'Helm lint output is:'
+      print lint_output
+    }
+  }
+  catch(Exception error) {
+    print 'Chart failed helm lint. Output of helm lint is:'
+    print lint_output
+    throw error
+  }
+  print 'Helm lint executed successfully.'
+}
+
 def rollback(body) {
   // evaluate the body block, and collect configuration into the object
   def config = [:]
