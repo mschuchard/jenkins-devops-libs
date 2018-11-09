@@ -39,12 +39,12 @@ library('jenkins-devops-libs')
 ```
 
 ## Supported
-- Goss
-- Helm
-- OpenFaaS
-- Packer
-- Puppet Enterprise
-- Terraform
+- [Goss](docs/Goss.md)
+- [Helm](docs/Helm.md)
+- [OpenFaaS](docs/FaaS.md)
+- [Packer](docs/Packer.md)
+- [Puppet Enterprise](docs/Puppet.md)
+- [Terraform](docs/Terraform.md)
 
 ## Contributing
 Code should pass all acceptance tests. New features should involve new acceptance tests.
