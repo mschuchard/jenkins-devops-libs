@@ -28,7 +28,7 @@ helm.install {
   context = 'default' // optional kube-context from kube config
   name = 'happy-panda' // optional name for the installed release object
   namespace = 'default' // optional namespace for the installed release object
-  values = 'config.yaml' // optional value overrides yaml file
+  values = ['config.yaml'] // optional value overrides yaml file
   verify = true // verify the provenance of the chart
   set = ['foo=bar', 'bar=baz'] // optional value override
 }
@@ -43,7 +43,7 @@ helm.lint {
   chart = 'chart' // chart repository, local archive, directory, or url to install
   context = 'default' // optional kube-context from kube config
   namespace = 'default' // optional namespace for the installed release object
-  values = 'config.yaml' // optional value overrides yaml file
+  values = ['config.yaml'] // optional value overrides yaml file
   set = ['foo=bar', 'bar=baz'] // optional value override
   strict = false // optional fail on warnings
 }
@@ -78,7 +78,7 @@ helm.upgrade {
   context = 'default' // optional kube-context from kube config
   name = 'happy-panda' // name of the upgraded release object
   namespace = 'default' // optional namespace for the upgraded release object
-  values = 'config.yaml' // optional value overrides yaml file
+  values = ['config.yaml'] // optional value overrides yaml file
   verify = true // verify the provenance of the chart
   set = ['foo=bar', 'bar=baz'] // optional value override
 }

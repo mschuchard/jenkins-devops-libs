@@ -61,10 +61,15 @@ def install(body) {
     cmd = "${config.bin} install"
 
     if (config.values != null) {
-      if (!fileExists(config.values)) {
-        throw new Exception("Overrides file ${config.values} does not exist!")
+      if (!(config.values instanceof String[])) {
+        throw new Exception('The values parameter must be an array of strings.')
       }
-      cmd += " -f ${config.values}"
+      config.values.each() { value ->
+        if (!fileExists(value)) {
+          throw new Exception("Value overrides file ${value} does not exist!")
+        }
+        cmd += " -f ${config.value}"
+      }
     }
     if (config.set != null) {
       if (!(config.set instanceof String[])) {
@@ -114,10 +119,15 @@ def lint(body) {
     cmd = "${config.bin} lint"
 
     if (config.values != null) {
-      if (!fileExists(config.values)) {
-        throw new Exception("Overrides file ${config.values} does not exist!")
+      if (!(config.values instanceof String[])) {
+        throw new Exception('The values parameter must be an array of strings.')
       }
-      cmd += " -f ${config.values}"
+      config.values.each() { value ->
+        if (!fileExists(value)) {
+          throw new Exception("Value overrides file ${value} does not exist!")
+        }
+        cmd += " -f ${config.value}"
+      }
     }
     if (config.set != null) {
       if (!(config.set instanceof String[])) {
@@ -249,10 +259,15 @@ def upgrade(body) {
     cmd = "${config.bin} upgrade"
 
     if (config.values != null) {
-      if (!fileExists(config.values)) {
-        throw new Exception("Overrides file ${config.values} does not exist!")
+      if (!(config.values instanceof String[])) {
+        throw new Exception('The values parameter must be an array of strings.')
       }
-      cmd += " -f ${config.values}"
+      config.values.each() { value ->
+        if (!fileExists(value)) {
+          throw new Exception("Value overrides file ${value} does not exist!")
+        }
+        cmd += " -f ${config.value}"
+      }
     }
     if (config.set != null) {
       if (!(config.set instanceof String[])) {
