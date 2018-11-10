@@ -49,6 +49,19 @@ helm.lint {
 }
 ```
 
+### helm.package {}
+Package a chart directory into a chart archive.
+
+```groovy
+helm.package {
+  bin = '/usr/bin/helm' // optional executable path for helm
+  chart = 'path/to/chart' // absolute or relative path to chart
+  dest = '.' // optional location to write the chart
+  key = 'foo' // optional sign the package with this key name
+  update_deps = false // optional update dependencies from requirements prior to packaging
+  version = '1.0.0' // optional version set for the chart
+}
+
 ### helm.rollback {}
 Roll back the release object to a previous release with helm.
 
