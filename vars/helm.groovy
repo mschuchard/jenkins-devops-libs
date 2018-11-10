@@ -68,7 +68,7 @@ def install(body) {
         if (!fileExists(value)) {
           throw new Exception("Value overrides file ${value} does not exist!")
         }
-        cmd += " -f ${config.value}"
+        cmd += " -f ${value}"
       }
     }
     if (config.set != null) {
@@ -126,7 +126,7 @@ def lint(body) {
         if (!fileExists(value)) {
           throw new Exception("Value overrides file ${value} does not exist!")
         }
-        cmd += " -f ${config.value}"
+        cmd += " -f ${value}"
       }
     }
     if (config.set != null) {
@@ -163,6 +163,48 @@ def lint(body) {
     throw error
   }
   print 'Helm lint executed successfully.'
+}
+
+def package(body) {
+  // evaluate the body block, and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'helm' : config.bin
+  if (config.chart == null) {
+    throw new Exception("The required parameter 'chart' was not set.")
+  }
+  if (!fileExists("${config.chart}/Chart.yaml")) {
+    throw new Exception("The supplied path ${config.chart} to the chart does not contain a Chart.yaml!")
+  }
+
+  // package with helm
+  try {
+    cmd = "${config.bin} package"
+
+    if (config.dest != null) {
+      cmd += " -d ${config.dest}"
+    }
+    if (config.key != null) {
+      cmd += " --sign --key ${config.key}"
+    }
+    if (config.update_deps == true) {
+      cmd += " -u"
+    }
+    if (config.version != null) {
+      cmd += " --version ${config.version}"
+    }
+
+    sh "${cmd} ${config.chart}"
+  }
+  catch(Exception error) {
+    print 'Failure using helm package.'
+    throw error
+  }
+  print 'Helm package command was successful.'
 }
 
 def rollback(body) {
@@ -266,7 +308,7 @@ def upgrade(body) {
         if (!fileExists(value)) {
           throw new Exception("Value overrides file ${value} does not exist!")
         }
-        cmd += " -f ${config.value}"
+        cmd += " -f ${value}"
       }
     }
     if (config.set != null) {
