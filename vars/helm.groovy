@@ -65,7 +65,7 @@ def install(body) {
         throw new Exception('The values parameter must be an array of strings.')
       }
       config.values.each() { value ->
-        if (!fileExists(value)) {
+        if (!(fileExists(value))) {
           throw new Exception("Value overrides file ${value} does not exist!")
         }
         cmd += " -f ${value}"
@@ -123,7 +123,7 @@ def lint(body) {
         throw new Exception('The values parameter must be an array of strings.')
       }
       config.values.each() { value ->
-        if (!fileExists(value)) {
+        if (!(fileExists(value))) {
           throw new Exception("Value overrides file ${value} does not exist!")
         }
         cmd += " -f ${value}"
@@ -177,7 +177,7 @@ def package(body) {
   if (config.chart == null) {
     throw new Exception("The required parameter 'chart' was not set.")
   }
-  if (!fileExists("${config.chart}/Chart.yaml")) {
+  else if (!(fileExists("${config.chart}/Chart.yaml"))) {
     throw new Exception("The supplied path ${config.chart} to the chart does not contain a Chart.yaml!")
   }
 
@@ -186,6 +186,9 @@ def package(body) {
     cmd = "${config.bin} package"
 
     if (config.dest != null) {
+      if (!(fileExists(config.dest))) {
+        throw new Exception("The destination directory ${config.dest} for the chart archive does not exist!")
+      }
       cmd += " -d ${config.dest}"
     }
     if (config.key != null) {
@@ -305,7 +308,7 @@ def upgrade(body) {
         throw new Exception('The values parameter must be an array of strings.')
       }
       config.values.each() { value ->
-        if (!fileExists(value)) {
+        if (!(fileExists(value))) {
           throw new Exception("Value overrides file ${value} does not exist!")
         }
         cmd += " -f ${value}"
