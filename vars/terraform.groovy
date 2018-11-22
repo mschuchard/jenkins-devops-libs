@@ -115,11 +115,32 @@ def destroy(body) {
   }
 }
 
-def init(String dir, String bin = 'terraform') {
-  if (fileExists(dir)) {
+def init(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
+
+  if (fileExists(config.dir)) {
     // initialize the working config directory
     try {
-      sh "${bin} init -input=false -no-color ${dir}"
+      cmd = "${config.bin} init -input=false -no-color"
+
+      // check for optional inputs
+      if (config.plugin_dir != null) {
+        if (fileExists(config.plugin_dir)) {
+          cmd += " -plugin-dir=${config.plugin_dir}"
+        }
+        else {
+          throw new Exception("The plugin directory ${config.plugin_dir} does not exist!")
+        }
+      }
+
+      sh "${cmd} ${config.dir}"
     }
     catch(Exception error) {
       print 'Failure using terraform init.'
@@ -128,7 +149,7 @@ def init(String dir, String bin = 'terraform') {
     print 'Terraform init was successful.'
   }
   else {
-    throw new Exception("Working config directory ${dir} does not exist!")
+    throw new Exception("Working config directory ${config.dir} does not exist!")
   }
 }
 
@@ -173,7 +194,7 @@ def plan(body) {
   if (fileExists(config.dir)) {
     // generate a plan from the config directory
     try {
-      cmd = "${config.bin} plan -no-color -out=${config.dir}/plan.tfplan"
+      cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
 
       // check for optional inputs
       if (config.var_file != null) {
@@ -219,7 +240,7 @@ def plugin_install(String url, String install_name) {
 
   // check if plugin dir exists and create if not
   if (!(fileExists('~/.terraform.d/plugins/'))) {
-    new File('~/.terraform.d/plugins/').mkdir()  
+    new File('~/.terraform.d/plugins/').mkdir()
   }
 
   // check if plugin already installed
