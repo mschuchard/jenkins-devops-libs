@@ -8,6 +8,9 @@ def apply(body) {
   body.delegate = config
   body()
 
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
   if (fileExists(config.config_path)) {
@@ -60,6 +63,9 @@ def destroy(body) {
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
@@ -122,6 +128,9 @@ def init(body) {
   body.delegate = config
   body()
 
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
 
@@ -138,6 +147,9 @@ def init(body) {
         else {
           throw new Exception("The plugin directory ${config.plugin_dir} does not exist!")
         }
+      }
+      if (config.upgrade == true) {
+        cmd += ' -upgrade'
       }
 
       sh "${cmd} ${config.dir}"
@@ -159,6 +171,9 @@ def install(body) {
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
 
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
@@ -188,6 +203,9 @@ def plan(body) {
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
@@ -236,6 +254,9 @@ def plan(body) {
 }
 
 def plugin_install(String url, String install_name) {
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
   install_loc = "~/.terraform.d/plugins/${install_name}"
 
   // check if plugin dir exists and create if not
@@ -270,6 +291,9 @@ def validate(config) {
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
@@ -315,6 +339,9 @@ def workspace(body) {
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin

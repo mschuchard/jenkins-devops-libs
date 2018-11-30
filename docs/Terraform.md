@@ -1,6 +1,6 @@
 # Terraform
 
-Interacts with Terraform.
+Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each method.
 
 ### Dependencies
 
@@ -41,6 +41,7 @@ terraform.init {
   bin = '/usr/bin/terraform' // optional path to terraform executable
   dir = '/path/to/working_config_dir' // path to working config dir
   plugin_dir = '/path/to/plugin_dir' // optional path to (presumably shared) plugin/provider installation directory
+  upgrade = false // optional upgrade modules and plugins
 }
 ```
 

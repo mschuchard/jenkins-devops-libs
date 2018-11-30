@@ -8,7 +8,8 @@
 - Fix `scope` param for `.task`.
 
 **Terraform**
-- Changed `init` usage to block DSL and added `plugin_dir` param.
+- Changed `init` usage to block DSL and added `plugin_dir` and `upgrade` params.
+- `env.TF_IN_AUTOMATION` added to methods.
 
 ### 1.1.0
 **Helm**
