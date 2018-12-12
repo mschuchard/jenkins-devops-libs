@@ -9,6 +9,7 @@
 
 **Terraform**
 - Changed `init` usage to block DSL and added `plugin_dir` and `upgrade` params.
+- Modified `plugin_install` usage to block DSL and added `install_loc` param.
 - `env.TF_IN_AUTOMATION` added to methods.
 
 ### 1.1.0

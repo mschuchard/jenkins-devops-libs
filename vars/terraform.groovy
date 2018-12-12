@@ -253,15 +253,31 @@ def plan(body) {
   }
 }
 
-def plugin_install(String url, String install_name) {
+def plugin_install(config) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
-  install_loc = "~/.terraform.d/plugins/${install_name}"
+  // input checking
+  if (config.url == null) {
+    throw new Exception("The required parameter 'url' was not set.")
+  }
+  else if (config.install_name == null) {
+    throw new Exception("The required parameter 'install_name' was not set.")
+  }
+  config.install_path = config.install_path == null ? '~/.terraform.d/plugins' : config.install_path
+
+  // set and assign plugin install location
+  install_loc = "${config.install_path}/${config.install_name}"
 
   // check if plugin dir exists and create if not
-  if (!(fileExists('~/.terraform.d/plugins/'))) {
-    new File('~/.terraform.d/plugins/').mkdir()
+  if (!(fileExists(config.install_path))) {
+    new File(config.install_path).mkdir()
   }
 
   // check if plugin already installed
@@ -270,12 +286,12 @@ def plugin_install(String url, String install_name) {
     return
   }
   // otherwise download and install plugin
-  if (url =~ /\.zip$/) {
+  else if (config.url =~ /\.zip$/) {
     // append zip extension to avoid filename clashes
     install_loc = "${install_loc}.zip"
   }
-  new utils().download_file(url, install_loc)
-  if (url =~ /\.zip$/) {
+  new utils().download_file(config.url, install_loc)
+  if (config.url =~ /\.zip$/) {
     unzip(zipFile: install_loc)
     new utils().remove_file(install_loc)
   }
