@@ -278,6 +278,38 @@ def setup(String version, String install_path = '/usr/bin/') {
   }
 }
 
+def test(body) {
+  // evaluate the body block, and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'helm' : config.bin
+  if (config.name == null) {
+    throw new Exception("The required parameter 'name' was not set.")
+  }
+
+  // lint with helm
+  try {
+    cmd = "${config.bin} test"
+
+    if (config.cleanup == true) {
+      cmd += " --cleanup"
+    }
+    if (config.parallel == true) {
+      cmd += " --parallel"
+    }
+    if (config.context != null) {
+      cmd += " --kube-context ${config.context}"
+    }
+
+    test_output = sh(returnStdout: true, script: "${cmd} ${config.name}")
+  }
+  // continue off lint notes  
+}
+
 def upgrade(body) {
   // evaluate the body block, and collect configuration into the object
   def config = [:]
