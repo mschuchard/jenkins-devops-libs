@@ -291,10 +291,11 @@ def test(body) {
     throw new Exception("The required parameter 'name' was not set.")
   }
 
-  // lint with helm
+  // test with helm
   try {
     cmd = "${config.bin} test"
 
+    // optional inputs
     if (config.cleanup == true) {
       cmd += " --cleanup"
     }
@@ -305,9 +306,30 @@ def test(body) {
       cmd += " --kube-context ${config.context}"
     }
 
-    test_output = sh(returnStdout: true, script: "${cmd} ${config.name}")
+    sh "${cmd} ${config.name}"
   }
-  // continue off lint notes  
+  catch(Exception error) {
+    print 'Release failed helm test. kubectl will now access the logs of the test pods and display them for debugging (unless using cleanup param).'
+
+    if (config.cleanup == true) {
+      print 'Pods have already been cleaned up and are no longer accessible.'
+      return
+    }
+
+    //test_pods=$(helm status $helm_release -o json | jq -r .info.status.last_test_suite_run.results[].name)
+    //namespace=$(helm status $helm_release -o json | jq -r .namespace)
+
+    test_pods.each() { test_pod ->
+      logs = sh(returnStdout: true, script: "kubectl -n ${namespace} logs ${test_pod}")
+      print "Logs for ${test_pod} for release ${config.name} are:"
+      print logs
+      print "Removing test pod ${test_pod}."
+      sh "kubectl -n ${namespace} delete pod ${test_pod}"
+    }
+
+    throw new Exception('Helm test failed with above logs.')
+  }
+  print 'Helm test executed successfully.'
 }
 
 def upgrade(body) {
