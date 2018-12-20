@@ -316,9 +316,22 @@ def test(body) {
       return
     }
 
-    //test_pods=$(helm status $helm_release -o json | jq -r .info.status.last_test_suite_run.results[].name)
-    //namespace=$(helm status $helm_release -o json | jq -r .namespace)
+    // collect necessary information for displaying debug logs
+    // first grab the status of the release as a json
+    json_status = sh(returnStdout: true, script: "${config.helm} status  -o json ${config.name}")
+    // parse the json to return the status hash
+    status = readJSON(text: json_status)
+    // assign the namespace to a local var for kubectl logs
+    namespace = status['namespace']
+    // assign the results to a local var for assembling test pod names
+    results = status['info']['status']['last_test_suite_run']['results']
+    // iterate through results and store names of test pods
+    test_pods = []
+    results.each() { result ->
+      test_pods.push(result['name'])
+    }
 
+    // iterate through test pods, display the logs for each, and then delete the test pod
     test_pods.each() { test_pod ->
       logs = sh(returnStdout: true, script: "kubectl -n ${namespace} logs ${test_pod}")
       print "Logs for ${test_pod} for release ${config.name} are:"

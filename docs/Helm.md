@@ -81,6 +81,19 @@ Locally installs a specific version of helm and then initializes helm and instal
 helm.setup('2.9.1', '/usr/local/bin')
 ```
 
+### helm.test {}
+Runs the tests for a release. If the tests fail and `cleanup` is false, then the logs for the test pods will be displayed (this is still undergoing functionality verification/testing) and then the pods will be deleted 9both by `kubectl`).
+
+```groovy
+helm.lint {
+  bin = '/usr/bin/helm' // optional executable path for helm
+  cleanup = false // optional delete test pods upon completion
+  context = 'default' // optional kube-context from kube config
+  name = 'happy-panda' // name of a deployed release
+  parallel = false // optional run test pods in parallel
+}
+```
+
 ### helm.upgrade {}
 Updates and/or changes the configuration of a release with helm.
 

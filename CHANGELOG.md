@@ -1,7 +1,7 @@
 ### Next
 **Helm**
 - Add chart provenance verification to applicable methods.
-- Add `lint` and `package` methods.
+- Add `lint`, `package`, and `test` methods.
 - `values` param is now an array of strings.
 
 **Puppet**
