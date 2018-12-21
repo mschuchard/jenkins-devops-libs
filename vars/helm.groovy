@@ -15,26 +15,26 @@ def delete(body) {
   }
 
   // attempt to delete a release object
-  lister = config.context == null ? "${config.bin} list" : "${config.bin} --kube-context ${config.context} list"
-  release_obj_list = sh(returnStdout: true, script: lister).trim()
+  try {
+    cmd = "${config.bin} delete"
+    lister = "${config.bin} list"
 
-  if (release_obj_list =~ config.name) {
-    try {
-      cmd = "${config.bin} delete"
-
-      if (config.context != null) {
-        cmd += " --kube-context ${config.context}"
-      }
-
-      sh "${cmd} ${config.name}"
+    if (config.context != null) {
+      cmd += " --kube-context ${config.context}"
+      lister += " --kube-context ${config.context}"
     }
-    catch(Exception error) {
-      print 'Failure using helm delete.'
-      throw error
+
+    // check release object
+    release_obj_list = sh(returnStdout: true, script: lister).trim()
+    if (!(release_obj_list =~ config.name)) {
+      throw new Exception("Release object ${config.name} does not exist!")
     }
+
+    sh "${cmd} ${config.name}"
   }
-  else {
-    throw new Exception("Release object ${config.name} does not exist!")
+  catch(Exception error) {
+    print 'Failure using helm delete.'
+    throw error
   }
 }
 
@@ -50,15 +50,11 @@ def install(body) {
   if (config.chart == null) {
     throw new Exception("The required parameter 'chart' was not set.")
   }
-  lister = config.context == null ? "${config.bin} list" : "${config.bin} --kube-context ${config.context} list"
-  release_obj_list = sh(returnStdout: true, script: lister).trim()
-  if ((config.name != null) && (release_obj_list =~ config.name)) {
-    throw new Exception("Release object ${config.name} already exists!")
-  }
 
   // install with helm
   try {
     cmd = "${config.bin} install"
+    lister = "${config.bin} list"
 
     if (config.values != null) {
       if (!(config.values instanceof String[])) {
@@ -81,15 +77,23 @@ def install(body) {
     }
     if (config.context != null) {
       cmd += " --kube-context ${config.context}"
+      lister += " --kube-context ${config.context}"
     }
     if (config.name != null) {
       cmd += " --name ${config.name}"
     }
     if (config.namespace != null) {
       cmd += " --namespace ${config.namespace}"
+      lister += " --namespace ${config.namespace}"
     }
     if (config.verify == true) {
       cmd += " --verify"
+    }
+
+    // check release object
+    release_obj_list = sh(returnStdout: true, script: lister).trim()
+    if ((config.name != null) && (release_obj_list =~ config.name)) {
+      throw new Exception("Release object ${config.name} already exists!")
     }
 
     sh "${cmd} ${config.chart}"
@@ -225,18 +229,21 @@ def rollback(body) {
     throw new Exception("The required parameter 'name' was not set.")
   }
   config.bin = config.bin == null ? 'helm' : config.bin
-  lister = config.context == null ? "${config.bin} list" : "${config.bin} --kube-context ${config.context} list"
-  release_obj_list = sh(returnStdout: true, script: lister).trim()
-  if (!(release_obj_list =~ config.name)) {
-    throw new Exception("Release object ${config.name} does not exist!")
-  }
 
   // rollback with helm
   try {
     cmd = "${config.bin} rollback"
+    lister = "${config.bin} list"
 
     if (config.context != null) {
       cmd += " --kube-context ${config.context}"
+      lister += " --kube-context ${config.context}"
+    }
+
+    // check release object
+    release_obj_list = sh(returnStdout: true, script: lister).trim()
+    if (!(release_obj_list =~ config.name)) {
+      throw new Exception("Release object ${config.name} does not exist!")
     }
 
     sh "${cmd} ${config.name} ${config.version}"
@@ -361,15 +368,11 @@ def upgrade(body) {
     throw new Exception("The required parameter 'name' was not set.")
   }
   config.bin = config.bin == null ? 'helm' : config.bin
-  lister = config.context == null ? "${config.bin} list" : "${config.bin} --kube-context ${config.context} list"
-  release_obj_list = sh(returnStdout: true, script: lister).trim()
-  if (!(release_obj_list =~ config.name)) {
-    throw new Exception("Release object ${config.name} does not exist!")
-  }
 
   // upgrade with helm
   try {
     cmd = "${config.bin} upgrade"
+    lister = "${config.bin} list"
 
     if (config.values != null) {
       if (!(config.values instanceof String[])) {
@@ -392,12 +395,20 @@ def upgrade(body) {
     }
     if (config.context != null) {
       cmd += " --kube-context ${config.context}"
+      lister += " --kube-context ${config.context}"
     }
     if (config.namespace != null) {
       cmd += " --namespace ${config.namespace}"
+      lister += " --namespace ${config.namespace}"
     }
     if (config.verify == true) {
       cmd += " --verify"
+    }
+
+    // check release object
+    release_obj_list = sh(returnStdout: true, script: lister).trim()
+    if (!(release_obj_list =~ config.name)) {
+      throw new Exception("Release object ${config.name} does not exist!")
     }
 
     sh "${cmd} ${config.name} ${config.chart}"
