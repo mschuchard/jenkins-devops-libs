@@ -178,6 +178,45 @@ def login(body) {
   print 'Successfully logged in to FaaS gateway.'
 }
 
+def remove(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  if (config.template == null) {
+    throw new Exception('The required template parameter was not set.')
+  }
+  config.bin = config.bin == null ? 'faas-cli' : config.bin
+
+  if (fileExists(config.template)) {
+    // remove function with faas
+    try {
+      cmd = "${config.bin} rm"
+
+      // check for optional inputs
+      if (config.filter != null) {
+        cmd += " --filter '${config.filter}'"
+      }
+      if (config.regex != null) {
+        cmd += " --regex '${config.regex}'"
+      }
+
+      sh "${cmd} -f ${config.template}"
+    }
+    catch(Exception error) {
+      print 'Failure using faas-cli remove.'
+      throw error
+    }
+    print 'FaaS function removed successfully.'
+  }
+  else {
+    throw new Exception("The template file ${config.template} does not exist!")
+  }
+}
+
 def validate_template(String template) {
   // ensure template exists and then check yaml syntax
   if (fileExists(template)) {

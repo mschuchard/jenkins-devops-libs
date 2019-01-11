@@ -61,6 +61,18 @@ faas.login {
 }
 ```
 
+### faas.remove {}
+Removes/deletes deployed OpenFaaS functions.
+
+```groovy
+faas.remove {
+  bin = '/usr/bin/faas-cli' // optional executable path for faas-cli
+  filter = 'filter_string' // optional wildcard to match with function names in yaml file (default is unused)
+  regex = 'regexp_string' // optional regex to match with function names in yaml file (default is unused)
+  template = 'samples.yaml' // path to yaml file describing function(s)
+}
+```
+
 ### faas.validate_template(String template)
 Validates template syntax.
 
