@@ -17,7 +17,7 @@ def build(body) {
   if (fileExists(config.template)) {
     // create image with faas
     try {
-      cmd = "${config.bin} build -f ${config.template}"
+      cmd = "${config.bin} build"
 
       // check for optional inputs
       if (config.filter != null) {
@@ -36,7 +36,7 @@ def build(body) {
         cmd += ' --squash'
       }
 
-      sh "${cmd} ${config.template}"
+      sh "${cmd} -f ${config.template}"
     }
     catch(Exception error) {
       print 'Failure using faas-cli build.'
@@ -68,7 +68,7 @@ def deploy(body) {
   if (fileExists(config.template)) {
     // deploy function with faas
     try {
-      cmd = "${config.bin} deploy -f ${config.template}"
+      cmd = "${config.bin} deploy"
 
       // check for optional inputs
       if (config.filter != null) {
@@ -90,7 +90,7 @@ def deploy(body) {
         cmd += ' --update=true'
       }
 
-      sh "${cmd} ${config.template}"
+      sh "${cmd} -f ${config.template}"
     }
     catch(Exception error) {
       print 'Failure using faas-cli deploy.'
@@ -139,6 +139,43 @@ def install(body) {
   extension = null
   sh "chmod +rx ${config.install_path}/faas-cli"
   print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
+}
+
+def login(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  if (config.gateway == null) {
+    throw new Exception('The required gateway parameter was not set.')
+  }
+  else if (config.password == null) {
+    throw new Exception('The required password parameter was not set.')
+  }
+  else if (config.user == null) {
+    throw new Exception('The required user parameter was not set.')
+  }
+  config.bin = config.bin == null ? 'faas-cli' : config.bin
+
+  // login to faas gateway
+  try {
+    cmd = "${config.bin} login"
+
+    // check for optional inputs
+    if (config.tls == false) {
+      cmd += ' --tls-no-verify'
+    }
+
+    sh "${cmd} -u ${config.user} -p ${config.password} -g ${config.gateway}"
+  }
+  catch(Exception error) {
+    print 'Failure using faas-cli login.'
+    throw error
+  }
+  print 'Successfully logged in to FaaS gateway.'
 }
 
 def validate_template(String template) {

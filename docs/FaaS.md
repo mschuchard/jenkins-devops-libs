@@ -48,6 +48,19 @@ faas.install {
 }
 ```
 
+### faas.login {}
+Log in to the specified OpenFaaS gateway.
+
+```groovy
+faas.login {
+  bin = '/usr/bin/faas-cli' // optional executable path for faas-cli
+  gateway = 'http://127.0.0.1:8080' // gateway URL starting with http(s)://
+  password = 'password' // gateway password
+  user = 'username' // gateway username
+  tls = true // enable or disable tls verification/validation
+}
+```
+
 ### faas.validate_template(String template)
 Validates template syntax.
 
