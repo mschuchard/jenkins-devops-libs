@@ -178,6 +178,51 @@ def login(body) {
   print 'Successfully logged in to FaaS gateway.'
 }
 
+def push(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  if (config.template == null) {
+    throw new Exception('The required template parameter was not set.')
+  }
+  config.bin = config.bin == null ? 'faas-cli' : config.bin
+
+  if (fileExists(config.template)) {
+    // remove function with faas
+    try {
+      cmd = "${config.bin} push"
+
+      // check for optional inputs
+      if (config.filter != null) {
+        cmd += " --filter '${config.filter}'"
+      }
+      if (config.regex != null) {
+        cmd += " --regex '${config.regex}'"
+      }
+      if (config.parallel != null) {
+        cmd += " --parallel ${config.parallel}"
+      }
+      if (config.tag != null) {
+        cmd += " --tag ${config.tag}"
+      }
+
+      sh "${cmd} -f ${config.template}"
+    }
+    catch(Exception error) {
+      print 'Failure using faas-cli push.'
+      throw error
+    }
+    print 'FaaS function container image pushed successfully.'
+  }
+  else {
+    throw new Exception("The template file ${config.template} does not exist!")
+  }
+}
+
 def remove(body) {
   // evaluate the body block and collect configuration into the object
   def config = [:]

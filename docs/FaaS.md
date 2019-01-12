@@ -61,6 +61,20 @@ faas.login {
 }
 ```
 
+### faas.push {}
+Pushes the OpenFaaS function container image(s) to a remote repository. These container images must already be present in your local image cache.
+
+```groovy
+faas.push {
+  bin = '/usr/bin/faas-cli' // optional executable path for faas-cli
+  filter = 'filter_string' // optional wildcard to match with function names in yaml file (default is unused)
+  parallel = '1' // optional build in parallel to depth specified
+  regex = 'regexp_string' // optional regex to match with function names in yaml file (default is unused)
+  tag = 'latest' // override latest tag on function Docker image
+  template = 'samples.yaml' // path to yaml file describing function(s)
+}
+```
+
 ### faas.remove {}
 Removes/deletes deployed OpenFaaS functions.
 
