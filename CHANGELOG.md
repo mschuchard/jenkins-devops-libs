@@ -4,6 +4,10 @@
 - Add `lint`, `package`, and `test` methods.
 - `values` param is now an array of strings.
 
+**OpenFaaS**
+- Added `invoke`, `login`, `push`, and `remove` methods.
+- Fixed `deploy` and `build` invalid usage issue.
+
 **Puppet**
 - Fix `scope` param for `.task`.
 

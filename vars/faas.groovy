@@ -141,6 +141,54 @@ def install(body) {
   print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
 }
 
+def invoke(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // input checking
+  config.bin = config.bin == null ? 'faas-cli' : config.bin
+
+  // invoke faas function
+  try {
+    cmd = "${config.bin} invoke"
+
+    // check for optional inputs
+    if (config.async == true) {
+      cmd += ' -a'
+    }
+    if (config.content_type != null) {
+      cmd += " --content-type ${config.content_type}"
+    }
+    if (config.header != null) {
+      cmd += " -H ${config.header}"
+    }
+    if (config.method != null) {
+      cmd += " -m ${config.method}"
+    }
+    if (config.query != null) {
+      if (!(config.query instanceof String[])) {
+        throw new Exception('The query parameter must be an array of strings.')
+      }
+      config.query.each() {
+        cmd += " --query ${it}"
+      }
+    }
+    if (config.stdin != null) {
+      cmd += " < ${config.stdin}"
+    }
+
+    sh cmd
+  }
+  catch(Exception error) {
+    print 'Failure using faas-cli push.'
+    throw error
+  }
+  print 'FaaS function container image pushed successfully.'
+}
+
 def login(body) {
   // evaluate the body block and collect configuration into the object
   def config = [:]
@@ -192,7 +240,7 @@ def push(body) {
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
   if (fileExists(config.template)) {
-    // remove function with faas
+    // push function with faas
     try {
       cmd = "${config.bin} push"
 

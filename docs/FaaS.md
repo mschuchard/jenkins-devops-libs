@@ -48,6 +48,21 @@ faas.install {
 }
 ```
 
+### faas.invoke {}
+Invokes an OpenFaaS function.
+
+```groovy
+faas.invoke {
+  async = false // optional invoke the function asynchronously
+  bin = '/usr/bin/faas-cli' // optional executable path for faas-cli
+  content_type = 'text/plain' // optional content-type HTTP header
+  header = 'X-Callback-Url=http://gateway:8080/function/send2slack' // optional HTTP request header
+  method = 'POST' // optional HTTP request method
+  query = ['repo=faas-cli', 'org=openfaas']
+  stdin = 'image.png' // optional stdin for function to receive
+}
+```
+
 ### faas.login {}
 Log in to the specified OpenFaaS gateway.
 
