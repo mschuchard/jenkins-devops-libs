@@ -1,4 +1,6 @@
 ### Next
+
+### 1.2.0
 **Helm**
 - Add chart provenance verification to applicable methods.
 - Add `lint`, `package`, and `test` methods.

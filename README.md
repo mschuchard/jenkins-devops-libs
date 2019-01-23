@@ -2,7 +2,7 @@
 
 A collection of Jenkins Pipeline shared libraries for common DevOps software. Usage and dependencies for each can be found in the [documentation](docs).
 
-Unsure how to use these in your declarative syntax `Jenkinsfile`? Check the declarative Jenkinsfile shared library  [documentation](https://jenkins.io/doc/book/pipeline/shared-libraries/#using-libraries).
+Unsure how to use these in your declarative syntax `Jenkinsfile`? Check the declarative Jenkinsfile shared library [documentation](https://jenkins.io/doc/book/pipeline/shared-libraries/#using-libraries).
 
 Additionally, you can pare down the libraries available from this repo and then load those in yourself from your own git repo or otherwise.
 
@@ -11,7 +11,7 @@ Additionally, you can pare down the libraries available from this repo and then 
 Basically, if you have the GitHub Branch Source plugin installed, then you can [load a specific version](https://jenkins.io/doc/book/pipeline/shared-libraries/#library-versions) like:
 
 ```groovy
-@Library('github.com/mschuchard/jenkins-devops-libs@version')
+@Library('github.com/mschuchard/jenkins-devops-libs@version')_
 ```
 
 If you do not have this plugin installed, or want more flexibility over the version used, then you can use or expand upon this class:
