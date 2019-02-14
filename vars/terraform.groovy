@@ -31,16 +31,16 @@ def apply(body) {
         if (!(config.var instanceof String[])) {
           throw new Exception('The var parameter must be an array of strings.')
         }
-        config.var.each() {
-          cmd += " -var ${it}"
+        config.var.each() { var ->
+          cmd += " -var ${var}"
         }
       }
       if (config.target != null) {
         if (!(config.target instanceof String[])) {
           throw new Exception('The target parameter must be an array of strings.')
         }
-        config.target.each() {
-          cmd += " -target=${it}"
+        config.target.each() { target ->
+          cmd += " -target=${target}"
         }
       }
 
@@ -95,16 +95,16 @@ def destroy(body) {
         if (!(config.var instanceof String[])) {
           throw new Exception('The var parameter must be an array of strings.')
         }
-        config.var.each() {
-          cmd += " -var ${it}"
+        config.var.each() { var ->
+          cmd += " -var ${var}"
         }
       }
       if (config.target != null) {
         if (!(config.target instanceof String[])) {
           throw new Exception('The target parameter must be an array of strings.')
         }
-        config.target.each() {
-          cmd += " -target=${it}"
+        config.target.each() { target ->
+          cmd += " -target=${target}"
         }
       }
 
@@ -227,16 +227,16 @@ def plan(body) {
         if (!(config.var instanceof String[])) {
           throw new Exception('The var parameter must be an array of strings.')
         }
-        config.var.each() {
-          cmd += " -var ${it}"
+        config.var.each() { var ->
+          cmd += " -var ${var}"
         }
       }
       if (config.target != null) {
         if (!(config.target instanceof String[])) {
           throw new Exception('The target parameter must be an array of strings.')
         }
-        config.target.each() {
-          cmd += " -target=${it}"
+        config.target.each() { target ->
+          cmd += " -target=${target}"
         }
       }
 
@@ -331,8 +331,8 @@ def validate(config) {
         if (!(config.var instanceof String[])) {
           throw new Exception('The var parameter must be an array of strings.')
         }
-        config.var.each() {
-          cmd += " -var ${it}"
+        config.var.each() { var ->
+          cmd += " -var ${var}"
         }
       }
 

@@ -73,7 +73,7 @@ def code_deploy(body) {
     }
   }
   if (errored) {
-    throw 'Code Manager failed with above error info.'
+    throw 'One or more Code Manager deployment(s) failed with above error info.'
   }
   print 'Code manager deployment(s) was successful.'
 }

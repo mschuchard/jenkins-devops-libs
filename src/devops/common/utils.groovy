@@ -26,7 +26,7 @@ def download_file(String url, String dest) {
 
 // converts content object to json string
 def to_json(Object content) {
-  groovy.json.JsonBuilder(content).toString()
+  return groovy.json.JsonBuilder(content).toString()
 }
 
 //http://vertx.io/docs/groovydoc/io/vertx/groovy/core/file/FileSystem.html

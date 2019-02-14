@@ -172,8 +172,8 @@ def invoke(body) {
       if (!(config.query instanceof String[])) {
         throw new Exception('The query parameter must be an array of strings.')
       }
-      config.query.each() {
-        cmd += " --query ${it}"
+      config.query.each() { query ->
+        cmd += " --query ${query}"
       }
     }
     if (config.stdin != null) {
