@@ -128,15 +128,18 @@ def validate_docker(body) {
 
   // run with dgoss
   try {
-    flags = ''
+    cmd = "${config.bin} run"
     // check for optional inputs
-    if ((config.flags != null) && !(config.flags.empty)) {
-      for (flag in config.flags) {
-        flags += "-e ${flag} "
+    if (config.flags != null) {
+      if (!(config.flags instanceof String[])) {
+        throw new Exception('The flags parameter must be an array of strings.')
+      }
+      config.flags.each() { flag ->
+        cmd += " -e ${flag}"
       }
     }
 
-    sh "${config.bin} run ${config.image}"
+    sh "${cmd} ${config.image}"
   }
   catch(Exception error) {
     print 'Failure using dgoss run.'

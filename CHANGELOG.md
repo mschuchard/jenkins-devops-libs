@@ -1,4 +1,9 @@
-### Next
+### 1.2.1 (Roadmap)
+**General**
+Fix `json_return` common method.
+
+**Goss**
+Fix flag setting and usage in `validate_docker`.
 
 ### 1.2.0
 **Helm**
