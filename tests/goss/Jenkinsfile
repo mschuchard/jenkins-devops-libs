@@ -14,8 +14,8 @@ pipeline {
     stage('Install') {
       steps {
         script {
-          goss.install('0.3.5', '/tmp')
-          goss.install_dgoss('0.3.5', '/tmp')
+          goss.install('0.3.6', '/tmp')
+          goss.install_dgoss('0.3.6', '/tmp')
         }
       }
     }
@@ -45,6 +45,21 @@ pipeline {
             gossfile = '/tmp/goss.yaml' // optional location of gossfile
             format = 'documentation' // optional formatter to use for output
             bin = '/tmp/goss' // optional executable path for goss
+          }
+        }
+      }
+    }
+    stage('Validate Docker Image') {
+      environment {
+        GOSS_FILES_PATH = '/tmp/'
+        GOSS_FILES_STRATEGY = 'mount'
+      }
+      steps {
+        script {
+          goss.validate_docker {
+            bin = '/tmp/dgoss' // optional executable path for dgoss
+            flags = [''] // optional flags for container run
+            image = 'alpine:latest' // docker image to run container from
           }
         }
       }
