@@ -40,7 +40,7 @@ def code_deploy(body) {
   }
 
   // convert map to json file
-  payload = new utils().to_json(payload)
+  payload = new utils().map_to_json(payload)
 
   // iterate through servers
   errored = false
@@ -145,7 +145,7 @@ def task(body) {
   }
 
   // convert map to json file
-  payload = new utils().to_json(payload)
+  payload = new utils().map_to_json(payload)
 
   // trigger task orchestration
   try {

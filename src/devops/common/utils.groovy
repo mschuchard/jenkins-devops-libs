@@ -3,7 +3,7 @@ package devops.common;
 
 // imports
 import com.cloudbees.groovy.cps.NonCPS
-import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
 
 // checks input value for default value use if not set
 def default_input(input, default_value) {
@@ -24,9 +24,9 @@ def download_file(String url, String dest) {
   file.close()
 }
 
-// converts content object to json string
-def to_json(Object content) {
-  return groovy.json.JsonBuilder(content).toString()
+// converts content map to json string
+def map_to_json(Map content) {
+  return JsonOutput.toJson(content)
 }
 
 //http://vertx.io/docs/groovydoc/io/vertx/groovy/core/file/FileSystem.html

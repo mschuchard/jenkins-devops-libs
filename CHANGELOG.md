@@ -1,6 +1,6 @@
 ### 1.2.1 (Roadmap)
 **General**
-Fix `json_return` common method.
+Fix `map_to_json` common method and update per documented example.
 
 **Goss**
 Fix flag setting and usage in `validate_docker`.
