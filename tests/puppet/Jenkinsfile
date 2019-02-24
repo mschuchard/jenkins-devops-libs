@@ -18,11 +18,11 @@ pipeline {
           steps {
             scripts {
               puppet.code_deploy {
-                bin = '/usr/bin/curl'
-                environments = ['development', 'production']
+                bin = '/usr/bin/curl' // optional executable path for curl
+                environments = ['development', 'production'] // optional environments to deploy (default is to deploy all environments)
                 servers = ['puppet'] // optional server hosting code manager
-                token = '/var/lib/jenkins/.puppetlabs/token'
-                wait = true
+                token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for deploying with code manager
+                wait = true // optional wait for code manager to finish deployment
               }
             }
           }
@@ -31,7 +31,11 @@ pipeline {
           steps {
             scripts {
               puppet.task {
-                bin = '/usr/bin/curl'
+                bin = '/usr/bin/curl' // optional executable path for curl
+                params = "['action':'install', 'name':'httpd']" // optional input
+                scope = ['localhost'] // scope for deployment
+                task = 'package' // name of the task to execute
+                token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
               }
             }
           }
