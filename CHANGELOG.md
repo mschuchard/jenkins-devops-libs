@@ -1,9 +1,9 @@
 ### 1.2.1 (Roadmap)
 **General**
-Fix `map_to_json` common method and update per documented example.
+- Fix `map_to_json` common method and update per documented example.
 
 **Goss**
-Fix flag setting and usage in `validate_docker`.
+- Fix flag setting and usage in `validate_docker`.
 
 ### 1.2.0
 **Helm**

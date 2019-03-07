@@ -53,12 +53,9 @@ def server(body) {
 
     // check for optional inputs
     if (config.vars != null) {
-      if (fileExists(config.vars)) {
-        cmd += " --vars ${config.vars}"
-      }
-      else {
-        throw new Exception("The vars file ${config.vars} does not exist!")
-      }
+      assert fileExists(config.vars) : "The vars file ${config.vars} does not exist!"
+
+      cmd += " --vars ${config.vars}"
     }
     if (config.gossfile != null) {
       cmd += " -g ${config.gossfile}"
@@ -93,12 +90,9 @@ def validate(body) {
 
     // check for optional inputs
     if (config.vars != null) {
-      if (fileExists(config.vars)) {
-        cmd += " --vars ${config.vars}"
-      }
-      else {
-        throw new Exception("The vars file ${config.vars} does not exist!")
-      }
+      assert fileExists(config.vars) : "The vars file ${config.vars} does not exist!"
+
+      cmd += " --vars ${config.vars}"
     }
     if (config.gossfile != null) {
       cmd += " -g ${config.gossfile}"
@@ -121,9 +115,8 @@ def validate_docker(body) {
   body()
 
   // input checking
-  if (config.image == null) {
-    throw new Exception('The required image parameter was not set.')
-  }
+  assert config.image != null : 'The required image parameter was not set.'
+
   config.bin = config.bin == null ? 'dgoss' : config.bin
 
   // run with dgoss
@@ -131,9 +124,8 @@ def validate_docker(body) {
     cmd = "${config.bin} run"
     // check for optional inputs
     if (config.flags != null) {
-      if (!(config.flags instanceof String[])) {
-        throw new Exception('The flags parameter must be an array of strings.')
-      }
+      assert (config.flags instanceof String[]) : 'The flags parameter must be an array of strings.'
+
       config.flags.each() { flag ->
         cmd += " -e ${flag}"
       }
@@ -150,17 +142,14 @@ def validate_docker(body) {
 
 def validate_gossfile(String gossfile) {
   // ensure gossfile exists and then check yaml syntax
-  if (fileExists(gossfile)) {
-    try {
-      readYaml(file: gossfile)
-    }
-    catch(Exception error) {
-      print 'Gossfile failed YAML validation.'
-      throw error
-    }
-    print "${gossfile} is valid YAML."
+  assert fileExists(gossfile) : "Gossfile ${gossfile} does not exist!"
+
+  try {
+    readYaml(file: gossfile)
   }
-  else {
-    throw new Exception("Gossfile ${gossfile} does not exist!")
+  catch(Exception error) {
+    print 'Gossfile failed YAML validation.'
+    throw error
   }
+  print "${gossfile} is valid YAML."
 }

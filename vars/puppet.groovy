@@ -9,17 +9,12 @@ def code_deploy(body) {
   body()
 
   // input checking
-  if (config.token == null) {
-    throw new Exception('The required token parameter was not set.')
-  }
-  else if (!(fileExists(config.token))) {
-    throw new Exception("The RBAC token ${config.token} does not exist!")
-  }
+  assert config.token != null : 'The required token parameter was not set.'
+  assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
+
   config.bin = config.bin == null ? 'curl' : config.bin
   config.servers = config.servers == null ? ['puppet'] : config.servers
-  if (!(config.servers instanceof String[])) {
-    throw new Exception('The servers parameter must be an array of strings.')
-  }
+  assert (config.servers instanceof String[]) : 'The servers parameter must be an array of strings.'
 
   // init payload
   payload = [:]
@@ -28,9 +23,8 @@ def code_deploy(body) {
     payload['deploy-all'] = true
   }
   else {
-    if (!(config.environments instanceof String[])) {
-      throw new Exception('The environments parameter must be an array of strings.')
-    }
+    assert (config.environments instanceof String[]) : 'The environments parameter must be an array of strings.'
+
     // preface environments payload
     payload['environments'] = config.environments
   }
@@ -86,18 +80,11 @@ def task(body) {
   body()
 
   // input checking
-  if (config.token == null) {
-    throw new Exception('The required token parameter was not set.')
-  }
-  else if (!(fileExists(config.token))) {
-    throw new Exception("The RBAC token ${config.token} does not exist!")
-  }
-  if (config.task == null) {
-    throw new Exception('The required task parameter was not set.')
-  }
-  if (config.scope == null) {
-    throw new Exception('The required scope parameter was not set.')
-  }
+  assert config.token != null : 'The required token parameter was not set.'
+  assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
+  assert config.task != null : 'The required task parameter was not set.'
+  assert config.scope != null : 'The required scope parameter was not set.'
+
   config.bin = config.bin == null ? 'curl' : config.bin
   config.server = config.server == null ? 'puppet' : config.server
 

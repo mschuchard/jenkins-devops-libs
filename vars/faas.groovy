@@ -9,44 +9,40 @@ def build(body) {
   body()
 
   // input checking
-  if (config.template == null) {
-    throw new Exception('The required template parameter was not set.')
-  }
+  assert config.template != null : 'The required template parameter was not set.'
+
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
-  if (fileExists(config.template)) {
-    // create image with faas
-    try {
-      cmd = "${config.bin} build"
+  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
-      // check for optional inputs
-      if (config.filter != null) {
-        cmd += " --filter '${config.filter}'"
-      }
-      if (config.no_cache == true) {
-        cmd += ' --no-cache'
-      }
-      if (config.parallel != null) {
-        cmd += " --parallel ${config.parallel}"
-      }
-      if (config.regex != null) {
-        cmd += " --regex '${config.regex}'"
-      }
-      if (config.squash == true) {
-        cmd += ' --squash'
-      }
+  // create image with faas
+  try {
+    cmd = "${config.bin} build"
 
-      sh "${cmd} -f ${config.template}"
+    // check for optional inputs
+    if (config.filter != null) {
+      cmd += " --filter '${config.filter}'"
     }
-    catch(Exception error) {
-      print 'Failure using faas-cli build.'
-      throw error
+    if (config.no_cache == true) {
+      cmd += ' --no-cache'
     }
-    print 'FaaS build image created successfully.'
+    if (config.parallel != null) {
+      cmd += " --parallel ${config.parallel}"
+    }
+    if (config.regex != null) {
+      cmd += " --regex '${config.regex}'"
+    }
+    if (config.squash == true) {
+      cmd += ' --squash'
+    }
+
+    sh "${cmd} -f ${config.template}"
   }
-  else {
-    throw new Exception("The template file ${config.template} does not exist!")
+  catch(Exception error) {
+    print 'Failure using faas-cli build.'
+    throw error
   }
+  print 'FaaS build image created successfully.'
 }
 
 def deploy(body) {
@@ -57,50 +53,46 @@ def deploy(body) {
   body()
 
   // input checking
-  if (config.template == null) {
-    throw new Exception('The required template parameter was not set.')
-  }
+  assert config.template != null : 'The required template parameter was not set.'
+
   if (config.replace != null && config.update != null) {
     throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
   }
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
-  if (fileExists(config.template)) {
-    // deploy function with faas
-    try {
-      cmd = "${config.bin} deploy"
+  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
-      // check for optional inputs
-      if (config.filter != null) {
-        cmd += " --filter '${config.filter}'"
-      }
-      if (config.label != null) {
-        cmd += " --label ${config.label}"
-      }
-      if (config.regex != null) {
-        cmd += " --regex '${config.regex}'"
-      }
-      if (config.replace == false) {
-        cmd += ' --replace=false'
-      }
-      if (config.secret != null) {
-        cmd += " --secret ${config.secret}"
-      }
-      if (config.update == true) {
-        cmd += ' --update=true'
-      }
+  // deploy function with faas
+  try {
+    cmd = "${config.bin} deploy"
 
-      sh "${cmd} -f ${config.template}"
+    // check for optional inputs
+    if (config.filter != null) {
+      cmd += " --filter '${config.filter}'"
     }
-    catch(Exception error) {
-      print 'Failure using faas-cli deploy.'
-      throw error
+    if (config.label != null) {
+      cmd += " --label ${config.label}"
     }
-    print 'FaaS function deployed successfully.'
+    if (config.regex != null) {
+      cmd += " --regex '${config.regex}'"
+    }
+    if (config.replace == false) {
+      cmd += ' --replace=false'
+    }
+    if (config.secret != null) {
+      cmd += " --secret ${config.secret}"
+    }
+    if (config.update == true) {
+      cmd += ' --update=true'
+    }
+
+    sh "${cmd} -f ${config.template}"
   }
-  else {
-    throw new Exception("The template file ${config.template} does not exist!")
+  catch(Exception error) {
+    print 'Failure using faas-cli deploy.'
+    throw error
   }
+  print 'FaaS function deployed successfully.'
 }
 
 def install(body) {
@@ -112,9 +104,7 @@ def install(body) {
 
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
-  if (config.platform == null || config.version == null) {
-    throw new Exception('A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.')
-  }
+  assert (config.platform != null && config.version != null : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
 
   // check if current version already installed
   if (fileExists("${config.install_path}/faas-cli")) {
@@ -169,9 +159,8 @@ def invoke(body) {
       cmd += " -m ${config.method}"
     }
     if (config.query != null) {
-      if (!(config.query instanceof String[])) {
-        throw new Exception('The query parameter must be an array of strings.')
-      }
+      assert (config.query instanceof String[]) : 'The query parameter must be an array of strings.'
+
       config.query.each() { query ->
         cmd += " --query ${query}"
       }
@@ -197,15 +186,9 @@ def login(body) {
   body()
 
   // input checking
-  if (config.gateway == null) {
-    throw new Exception('The required gateway parameter was not set.')
-  }
-  else if (config.password == null) {
-    throw new Exception('The required password parameter was not set.')
-  }
-  else if (config.user == null) {
-    throw new Exception('The required user parameter was not set.')
-  }
+  assert config.gateway != null : 'The required gateway parameter was not set.'
+  assert config.password != null : 'The required password parameter was not set.'
+  assert config.user != null : 'The required user parameter was not set.'
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
   // login to faas gateway
@@ -234,41 +217,37 @@ def push(body) {
   body()
 
   // input checking
-  if (config.template == null) {
-    throw new Exception('The required template parameter was not set.')
-  }
+  assert config.template != null : 'The required template parameter was not set.'
+
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
-  if (fileExists(config.template)) {
-    // push function with faas
-    try {
-      cmd = "${config.bin} push"
+  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
-      // check for optional inputs
-      if (config.filter != null) {
-        cmd += " --filter '${config.filter}'"
-      }
-      if (config.regex != null) {
-        cmd += " --regex '${config.regex}'"
-      }
-      if (config.parallel != null) {
-        cmd += " --parallel ${config.parallel}"
-      }
-      if (config.tag != null) {
-        cmd += " --tag ${config.tag}"
-      }
+  // push function with faas
+  try {
+    cmd = "${config.bin} push"
 
-      sh "${cmd} -f ${config.template}"
+    // check for optional inputs
+    if (config.filter != null) {
+      cmd += " --filter '${config.filter}'"
     }
-    catch(Exception error) {
-      print 'Failure using faas-cli push.'
-      throw error
+    if (config.regex != null) {
+      cmd += " --regex '${config.regex}'"
     }
-    print 'FaaS function container image pushed successfully.'
+    if (config.parallel != null) {
+      cmd += " --parallel ${config.parallel}"
+    }
+    if (config.tag != null) {
+      cmd += " --tag ${config.tag}"
+    }
+
+    sh "${cmd} -f ${config.template}"
   }
-  else {
-    throw new Exception("The template file ${config.template} does not exist!")
+  catch(Exception error) {
+    print 'Failure using faas-cli push.'
+    throw error
   }
+  print 'FaaS function container image pushed successfully.'
 }
 
 def remove(body) {
@@ -279,50 +258,43 @@ def remove(body) {
   body()
 
   // input checking
-  if (config.template == null) {
-    throw new Exception('The required template parameter was not set.')
-  }
+  assert config.template != null : 'The required template parameter was not set.'
+
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
-  if (fileExists(config.template)) {
-    // remove function with faas
-    try {
-      cmd = "${config.bin} rm"
+  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
-      // check for optional inputs
-      if (config.filter != null) {
-        cmd += " --filter '${config.filter}'"
-      }
-      if (config.regex != null) {
-        cmd += " --regex '${config.regex}'"
-      }
+  // remove function with faas
+  try {
+    cmd = "${config.bin} rm"
 
-      sh "${cmd} -f ${config.template}"
+    // check for optional inputs
+    if (config.filter != null) {
+      cmd += " --filter '${config.filter}'"
     }
-    catch(Exception error) {
-      print 'Failure using faas-cli remove.'
-      throw error
+    if (config.regex != null) {
+      cmd += " --regex '${config.regex}'"
     }
-    print 'FaaS function removed successfully.'
+
+    sh "${cmd} -f ${config.template}"
   }
-  else {
-    throw new Exception("The template file ${config.template} does not exist!")
+  catch(Exception error) {
+    print 'Failure using faas-cli remove.'
+    throw error
   }
+  print 'FaaS function removed successfully.'
 }
 
 def validate_template(String template) {
   // ensure template exists and then check yaml syntax
-  if (fileExists(template)) {
-    try {
-      readYaml(file: template)
-    }
-    catch(Exception error) {
-      print 'Template failed YAML validation.'
-      throw error
-    }
-    print "${template} is valid YAML."
+  assert fileExists(template) : "Template ${template} does not exist!"
+
+  try {
+    readYaml(file: template)
   }
-  else {
-    throw new Exception("Template ${template} does not exist!")
+  catch(Exception error) {
+    print 'Template failed YAML validation.'
+    throw error
   }
+  print "${template} is valid YAML."
 }
