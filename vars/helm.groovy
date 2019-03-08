@@ -10,9 +10,7 @@ def delete(body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  if (config.name == null) {
-    throw new Exception("The required parameter 'name' was not set.")
-  }
+  assert config.name != null : "The required parameter 'name' was not set."
 
   // attempt to delete a release object
   try {
@@ -26,9 +24,7 @@ def delete(body) {
 
     // check release object
     release_obj_list = sh(returnStdout: true, script: lister).trim()
-    if (!(release_obj_list =~ config.name)) {
-      throw new Exception("Release object ${config.name} does not exist!")
-    }
+    assert (release_obj_list =~ config.name) : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name}"
   }
@@ -47,9 +43,7 @@ def install(body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  if (config.chart == null) {
-    throw new Exception("The required parameter 'chart' was not set.")
-  }
+  assert config.chart != null : "The required parameter 'chart' was not set."
 
   // install with helm
   try {
@@ -57,20 +51,17 @@ def install(body) {
     lister = "${config.bin} list"
 
     if (config.values != null) {
-      if (!(config.values instanceof String[])) {
-        throw new Exception('The values parameter must be an array of strings.')
-      }
+      assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
+
       config.values.each() { value ->
-        if (!(fileExists(value))) {
-          throw new Exception("Value overrides file ${value} does not exist!")
-        }
+        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+
         cmd += " -f ${value}"
       }
     }
     if (config.set != null) {
-      if (!(config.set instanceof String[])) {
-        throw new Exception('The set parameter must be an array of strings.')
-      }
+      assert (config.set instanceof String[]) : 'The set parameter must be an array of strings.'
+
       config.set.each() { kv ->
         cmd += " --set ${kv}"
       }
@@ -114,29 +105,24 @@ def lint(body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  if (config.chart == null) {
-    throw new Exception("The required parameter 'chart' was not set.")
-  }
+  assert config.chart != null : "The required parameter 'chart' was not set."
 
   // lint with helm
   try {
     cmd = "${config.bin} lint"
 
     if (config.values != null) {
-      if (!(config.values instanceof String[])) {
-        throw new Exception('The values parameter must be an array of strings.')
-      }
+      assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
+
       config.values.each() { value ->
-        if (!(fileExists(value))) {
-          throw new Exception("Value overrides file ${value} does not exist!")
-        }
+        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+
         cmd += " -f ${value}"
       }
     }
     if (config.set != null) {
-      if (!(config.set instanceof String[])) {
-        throw new Exception('The set parameter must be an array of strings.')
-      }
+      assert (config.set instanceof String[]) : 'The set parameter must be an array of strings.'
+
       config.set.each() { kv ->
         cmd += " --set ${kv}"
       }
@@ -178,21 +164,16 @@ def package(body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  if (config.chart == null) {
-    throw new Exception("The required parameter 'chart' was not set.")
-  }
-  else if (!(fileExists("${config.chart}/Chart.yaml"))) {
-    throw new Exception("The supplied path ${config.chart} to the chart does not contain a Chart.yaml!")
-  }
+  assert config.chart != null : "The required parameter 'chart' was not set."
+  assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not contain a Chart.yaml!"
 
   // package with helm
   try {
     cmd = "${config.bin} package"
 
     if (config.dest != null) {
-      if (!(fileExists(config.dest))) {
-        throw new Exception("The destination directory ${config.dest} for the chart archive does not exist!")
-      }
+      assert fileExists(config.dest) : "The destination directory ${config.dest} for the chart archive does not exist!"
+
       cmd += " -d ${config.dest}"
     }
     if (config.key != null) {
@@ -222,12 +203,8 @@ def rollback(body) {
   body()
 
   // input checking
-  if (config.version == null) {
-    throw new Exception("The required parameter 'version' was not set.")
-  }
-  if (config.name == null) {
-    throw new Exception("The required parameter 'name' was not set.")
-  }
+  assert config.version != null : "The required parameter 'version' was not set."
+  assert config.name != null : "The required parameter 'name' was not set."
   config.bin = config.bin == null ? 'helm' : config.bin
 
   // rollback with helm
@@ -242,9 +219,7 @@ def rollback(body) {
 
     // check release object
     release_obj_list = sh(returnStdout: true, script: lister).trim()
-    if (!(release_obj_list =~ config.name)) {
-      throw new Exception("Release object ${config.name} does not exist!")
-    }
+    assert release_obj_list =~ config.name : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name} ${config.version}"
   }
@@ -294,9 +269,7 @@ def test(body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  if (config.name == null) {
-    throw new Exception("The required parameter 'name' was not set.")
-  }
+  assert config.name != null : "The required parameter 'name' was not set."
 
   // test with helm
   try {
@@ -361,12 +334,8 @@ def upgrade(body) {
   body()
 
   // input checking
-  if (config.chart == null) {
-    throw new Exception("The required parameter 'chart' was not set.")
-  }
-  if (config.name == null) {
-    throw new Exception("The required parameter 'name' was not set.")
-  }
+  assert config.chart != null : "The required parameter 'chart' was not set."
+  assert config.name != null : "The required parameter 'name' was not set."
   config.bin = config.bin == null ? 'helm' : config.bin
 
   // upgrade with helm
@@ -375,20 +344,17 @@ def upgrade(body) {
     lister = "${config.bin} list"
 
     if (config.values != null) {
-      if (!(config.values instanceof String[])) {
-        throw new Exception('The values parameter must be an array of strings.')
-      }
+      assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
+
       config.values.each() { value ->
-        if (!(fileExists(value))) {
-          throw new Exception("Value overrides file ${value} does not exist!")
-        }
+        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+
         cmd += " -f ${value}"
       }
     }
     if (config.set != null) {
-      if (!(config.set instanceof String[])) {
-        throw new Exception('The set parameter must be an array of strings.')
-      }
+      assert (config.set instanceof String[]) : 'The set parameter must be an array of strings.'
+
       config.set.each() { kv ->
         cmd += " --set ${kv}"
       }
@@ -407,9 +373,7 @@ def upgrade(body) {
 
     // check release object
     release_obj_list = sh(returnStdout: true, script: lister).trim()
-    if (!(release_obj_list =~ config.name)) {
-      throw new Exception("Release object ${config.name} does not exist!")
-    }
+    assert release_obj_list =~ config.name : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name} ${config.chart}"
   }

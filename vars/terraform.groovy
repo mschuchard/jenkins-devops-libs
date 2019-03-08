@@ -13,48 +13,40 @@ def apply(body) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
-  if (fileExists(config.config_path)) {
-    // apply the config
-    try {
-      cmd = "${config.bin} apply -input=false -no-color -auto-approve"
+  assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
 
-      // check for optional inputs
-      if (config.var_file != null) {
-        if (fileExists(config.var_file)) {
-          cmd += " -var_file=${config.var_file}"
-        }
-        else {
-          throw new Exception("The var file ${config.var_file} does not exist!")
-        }
-      }
-      if (config.var != null) {
-        if (!(config.var instanceof String[])) {
-          throw new Exception('The var parameter must be an array of strings.')
-        }
-        config.var.each() { var ->
-          cmd += " -var ${var}"
-        }
-      }
-      if (config.target != null) {
-        if (!(config.target instanceof String[])) {
-          throw new Exception('The target parameter must be an array of strings.')
-        }
-        config.target.each() { target ->
-          cmd += " -target=${target}"
-        }
-      }
+  // apply the config
+  try {
+    cmd = "${config.bin} apply -input=false -no-color -auto-approve"
 
-      sh "${cmd} ${config.config_path}"
+    // check for optional inputs
+    if (config.var_file != null) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+      cmd += " -var_file=${config.var_file}"
     }
-    catch(Exception error) {
-      print 'Failure using terraform apply.'
-      throw error
+    if (config.var != null) {
+      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+
+      config.var.each() { var ->
+        cmd += " -var ${var}"
+      }
     }
-    print 'Terraform apply was successful.'
+    if (config.target != null) {
+      assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
+
+      config.target.each() { target ->
+        cmd += " -target=${target}"
+      }
+    }
+
+    sh "${cmd} ${config.config_path}"
   }
-  else {
-    throw new Exception("Terraform config/plan ${config.config_path} does not exist!")
+  catch(Exception error) {
+    print 'Failure using terraform apply.'
+    throw error
   }
+  print 'Terraform apply was successful.'
 }
 
 def destroy(body) {
@@ -77,48 +69,40 @@ def destroy(body) {
   else {
     no_input_flag = '-force'
   }
-  if (fileExists(config.dir)) {
-    // destroy the state
-    try {
-      cmd = "${config.bin} destroy -input=false -no-color ${no_input_flag}"
+  assert fileExists(config.dir) : "Terraform config ${config.dir} does not exist!"
 
-      // check for optional inputs
-      if (config.var_file != null) {
-        if (fileExists(config.var_file)) {
-          cmd += " -var_file=${config.var_file}"
-        }
-        else {
-          throw new Exception("The var file ${config.var_file} does not exist!")
-        }
-      }
-      if (config.var != null) {
-        if (!(config.var instanceof String[])) {
-          throw new Exception('The var parameter must be an array of strings.')
-        }
-        config.var.each() { var ->
-          cmd += " -var ${var}"
-        }
-      }
-      if (config.target != null) {
-        if (!(config.target instanceof String[])) {
-          throw new Exception('The target parameter must be an array of strings.')
-        }
-        config.target.each() { target ->
-          cmd += " -target=${target}"
-        }
-      }
+  // destroy the state
+  try {
+    cmd = "${config.bin} destroy -input=false -no-color ${no_input_flag}"
 
-      sh "${cmd} ${config.dir}"
+    // check for optional inputs
+    if (config.var_file != null) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+      cmd += " -var_file=${config.var_file}"
     }
-    catch(Exception error) {
-      print 'Failure using terraform destroy.'
-      throw error
+    if (config.var != null) {
+      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+
+      config.var.each() { var ->
+        cmd += " -var ${var}"
+      }
     }
-    print 'Terraform destroy was successful.'
+    if (config.target != null) {
+      assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
+
+      config.target.each() { target ->
+        cmd += " -target=${target}"
+      }
+    }
+
+    sh "${cmd} ${config.dir}"
   }
-  else {
-    throw new Exception("Terraform config ${config.dir} does not exist!")
+  catch(Exception error) {
+    print 'Failure using terraform destroy.'
+    throw error
   }
+  print 'Terraform destroy was successful.'
 }
 
 def init(body) {
@@ -134,35 +118,29 @@ def init(body) {
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
 
-  if (fileExists(config.dir)) {
-    // initialize the working config directory
-    try {
-      cmd = "${config.bin} init -input=false -no-color"
+  assert fileExists(config.dir) : "Working config directory ${config.dir} does not exist!"
 
-      // check for optional inputs
-      if (config.plugin_dir != null) {
-        if (fileExists(config.plugin_dir)) {
-          cmd += " -plugin-dir=${config.plugin_dir}"
-        }
-        else {
-          throw new Exception("The plugin directory ${config.plugin_dir} does not exist!")
-        }
-      }
-      if (config.upgrade == true) {
-        cmd += ' -upgrade'
-      }
+  // initialize the working config directory
+  try {
+    cmd = "${config.bin} init -input=false -no-color"
 
-      sh "${cmd} ${config.dir}"
+    // check for optional inputs
+    if (config.plugin_dir != null) {
+      assert fileExists(config.plugin_dir) : "The plugin directory ${config.plugin_dir} does not exist!"
+
+      cmd += " -plugin-dir=${config.plugin_dir}"
     }
-    catch(Exception error) {
-      print 'Failure using terraform init.'
-      throw error
+    if (config.upgrade == true) {
+      cmd += ' -upgrade'
     }
-    print 'Terraform init was successful.'
+
+    sh "${cmd} ${config.dir}"
   }
-  else {
-    throw new Exception("Working config directory ${config.dir} does not exist!")
+  catch(Exception error) {
+    print 'Failure using terraform init.'
+    throw error
   }
+  print 'Terraform init was successful.'
 }
 
 def install(body) {
@@ -177,9 +155,7 @@ def install(body) {
 
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
-  if (config.platform == null || config.version == null) {
-    throw new Exception('A required parameter is missing from this terraform.install block. Please consult the documentation for proper usage.')
-  }
+  assert (config.platform != null && config.version != null) : 'A required parameter is missing from this terraform.install block. Please consult the documentation for proper usage.'
 
   // check if current version already installed
   if (fileExists("${config.install_path}/terraform")) {
@@ -209,48 +185,40 @@ def plan(body) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
-  if (fileExists(config.dir)) {
-    // generate a plan from the config directory
-    try {
-      cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
+  assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
 
-      // check for optional inputs
-      if (config.var_file != null) {
-        if (fileExists(config.var_file)) {
-          cmd += " -var_file=${config.var_file}"
-        }
-        else {
-          throw new Exception("The var file ${config.var_file} does not exist!")
-        }
-      }
-      if (config.var != null) {
-        if (!(config.var instanceof String[])) {
-          throw new Exception('The var parameter must be an array of strings.')
-        }
-        config.var.each() { var ->
-          cmd += " -var ${var}"
-        }
-      }
-      if (config.target != null) {
-        if (!(config.target instanceof String[])) {
-          throw new Exception('The target parameter must be an array of strings.')
-        }
-        config.target.each() { target ->
-          cmd += " -target=${target}"
-        }
-      }
+  // generate a plan from the config directory
+  try {
+    cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
 
-      sh "${cmd} ${config.dir}"
+    // check for optional inputs
+    if (config.var_file != null) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+      cmd += " -var_file=${config.var_file}"
     }
-    catch(Exception error) {
-      print 'Failure using terraform plan.'
-      throw error
+    if (config.var != null) {
+      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+
+      config.var.each() { var ->
+        cmd += " -var ${var}"
+      }
     }
-    print 'Terraform plan was successful.'
+    if (config.target != null) {
+      assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
+
+      config.target.each() { target ->
+        cmd += " -target=${target}"
+      }
+    }
+
+    sh "${cmd} ${config.dir}"
   }
-  else {
-    throw new Exception("Config directory ${config.dir} does not exist!")
+  catch(Exception error) {
+    print 'Failure using terraform plan.'
+    throw error
   }
+  print 'Terraform plan was successful.'
 }
 
 def plugin_install(config) {
@@ -264,12 +232,9 @@ def plugin_install(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  if (config.url == null) {
-    throw new Exception("The required parameter 'url' was not set.")
-  }
-  else if (config.install_name == null) {
-    throw new Exception("The required parameter 'install_name' was not set.")
-  }
+  assert config.url != null : "The required parameter 'url' was not set."
+  assert config.install_name != null : "The required parameter 'install_name' was not set."
+
   config.install_path = config.install_path == null ? '~/.terraform.d/plugins' : config.install_path
 
   // set and assign plugin install location
@@ -313,40 +278,34 @@ def validate(config) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
-  if (fileExists(config.dir)) {
-    // validate the config directory
-    try {
-      cmd = "${config.bin} validate -no-color"
 
-      // check for optional inputs
-      if (config.var_file != null) {
-        if (fileExists(config.var_file)) {
-          cmd += " -var_file=${config.var_file}"
-        }
-        else {
-          throw new Exception("The var file ${config.var_file} does not exist!")
-        }
-      }
-      if (config.var != null) {
-        if (!(config.var instanceof String[])) {
-          throw new Exception('The var parameter must be an array of strings.')
-        }
-        config.var.each() { var ->
-          cmd += " -var ${var}"
-        }
-      }
+  assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
 
-      sh "${cmd} ${config.dir}"
+  // validate the config directory
+  try {
+    cmd = "${config.bin} validate -no-color"
+
+    // check for optional inputs
+    if (config.var_file != null) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+      cmd += " -var_file=${config.var_file}"
     }
-    catch(Exception error) {
-      print 'Failure using terraform validate.'
-      throw error
+    if (config.var != null) {
+      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+
+      config.var.each() { var ->
+        cmd += " -var ${var}"
+      }
     }
-    print 'Terraform validate was successful.'
+
+    sh "${cmd} ${config.dir}"
   }
-  else {
-    throw new Exception("Config directory ${config.dir} does not exist!")
+  catch(Exception error) {
+    print 'Failure using terraform validate.'
+    throw error
   }
+  print 'Terraform validate was successful.'
 }
 
 def workspace(body) {
@@ -361,24 +320,19 @@ def workspace(body) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
-  if (config.directory == null || config.workspace == null) {
-    throw new Exception('A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.')
-  }
+  assert (config.directory != null && config.workspace != null) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
 
-  if (fileExists(config.dir)) {
-    dir(config.dir) {
-      // select workspace in terraform config directory
-      try {
-        sh "${config.bin} workspace select -no-color ${config.workspace}"
-      }
-      catch(Exception error) {
-        print 'Failure using terraform workspace select.'
-        throw error
-      }
-      print 'Terraform workspace selected successfully.'
+  assert fileExists(config.dir) : "The config directory ${config.dir} does not exist!"
+
+  dir(config.dir) {
+    // select workspace in terraform config directory
+    try {
+      sh "${config.bin} workspace select -no-color ${config.workspace}"
     }
-  }
-  else {
-    throw new Exception("The config directory ${config.dir} does not exist!")
+    catch(Exception error) {
+      print 'Failure using terraform workspace select.'
+      throw error
+    }
+    print 'Terraform workspace selected successfully.'
   }
 }

@@ -9,48 +9,40 @@ def build(body) {
   body()
 
   // input checking
-  if (config.template == null) {
-    throw new Exception('The required template parameter was not set.')
-  }
+  assert config.template != null : 'The required template parameter was not set.'
+
   config.bin = config.bin == null ? 'packer' : config.bin
 
-  if (fileExists(config.template)) {
-    // create artifact with packer
-    try {
-      cmd = "${config.bin} build -color=false"
+  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
-      // check for optional inputs
-      if (config.var_file != null) {
-        if (fileExists(config.var_file)) {
-          cmd += " -var_file=${config.var_file}"
-        }
-        else {
-          throw new Exception("The var file ${config.var_file} does not exist!")
-        }
-      }
-      if (config.var != null) {
-        if (!(config.var instanceof String[])) {
-          throw new Exception('The var parameter must be an array of strings.')
-        }
-        config.var.each() { var ->
-          cmd += " -var ${var}"
-        }
-      }
-      if (config.only != null) {
-        cmd += " -only=${config.only}"
-      }
+  // create artifact with packer
+  try {
+    cmd = "${config.bin} build -color=false"
 
-      sh "${cmd} ${config.template}"
+    // check for optional inputs
+    if (config.var_file != null) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+      cmd += " -var_file=${config.var_file}"
     }
-    catch(Exception error) {
-      print 'Failure using packer build.'
-      throw error
+    if (config.var != null) {
+      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+
+      config.var.each() { var ->
+        cmd += " -var ${var}"
+      }
     }
-    print 'Packer build artifact created successfully.'
+    if (config.only != null) {
+      cmd += " -only=${config.only}"
+    }
+
+    sh "${cmd} ${config.template}"
   }
-  else {
-    throw new Exception("The template file ${config.template} does not exist!")
+  catch(Exception error) {
+    print 'Failure using packer build.'
+    throw error
   }
+  print 'Packer build artifact created successfully.'
 }
 
 def install(body) {
@@ -62,9 +54,7 @@ def install(body) {
 
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
-  if (config.platform == null || config.version == null) {
-    throw new Exception('A required parameter is missing from this packer.install block. Please consult the documentation for proper usage.')
-  }
+  assert (config.platform != null && config.version != null : 'A required parameter is missing from this packer.install block. Please consult the documentation for proper usage.'
 
   // check if current version already installed
   if (fileExists("${config.install_path}/packer")) {
@@ -119,46 +109,38 @@ def validate(body) {
   body()
 
   // input checking
-  if (config.template == null) {
-    throw new Exception('The required template parameter was not set.')
-  }
+  assert config.template != null : 'The required template parameter was not set.'
+
   config.bin = config.bin == null ? 'packer' : config.bin
 
-  if (fileExists(config.template)) {
-    // validate template with packer
-    try {
-      cmd = "${config.bin} validate"
+  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
-      // check for optional inputs
-      if (config.var_file != null) {
-        if (fileExists(config.var_file)) {
-          cmd += " -var_file=${config.var_file}"
-        }
-        else {
-          throw new Exception("The var file ${config.var_file} does not exist!")
-        }
-      }
-      if (config.var != null) {
-        if (!(config.var instanceof String[])) {
-          throw new Exception('The var parameter must be an array of strings.')
-        }
-        config.var.each() { var ->
-          cmd += " -var ${var}"
-        }
-      }
-      if (config.only != null) {
-        cmd += " -only=${config.only}"
-      }
+  // validate template with packer
+  try {
+    cmd = "${config.bin} validate"
 
-      sh "${cmd} ${config.template}"
+    // check for optional inputs
+    if (config.var_file != null) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+      cmd += " -var_file=${config.var_file}"
     }
-    catch(Exception error) {
-      print 'Failure using packer validate.'
-      throw error
+    if (config.var != null) {
+      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+
+      config.var.each() { var ->
+        cmd += " -var ${var}"
+      }
     }
-    print 'Packer validate executed successfully.'
+    if (config.only != null) {
+      cmd += " -only=${config.only}"
+    }
+
+    sh "${cmd} ${config.template}"
   }
-  else {
-    throw new Exception("The template file ${config.template} does not exist!")
+  catch(Exception error) {
+    print 'Failure using packer validate.'
+    throw error
   }
+  print 'Packer validate executed successfully.'
 }
