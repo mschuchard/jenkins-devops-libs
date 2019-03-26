@@ -254,7 +254,7 @@ def setup(String version, String install_path = '/usr/bin/') {
     }
     print "Helm and Tiller successfully initialized."
   }
-  if (!(fileExists("${install_path}/.helm"))) {
+  if (!(fileExists("${env.HOME}/.helm"))) {
     sh "${install_path}/helm init --client-only "
     print "Helm successfully initialized."
   }
@@ -368,7 +368,7 @@ def upgrade(body) {
       lister += " --namespace ${config.namespace}"
     }
     if (config.verify == true) {
-      cmd += " --verify"
+      cmd += ' --verify'
     }
 
     // check release object

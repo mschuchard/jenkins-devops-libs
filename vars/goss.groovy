@@ -25,6 +25,8 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
       return
     }
   }
+  assert (!(fileExists("${install_path}/dgoss"))) : 'Dgoss is installed but goss is not. Dgoss execution requires goss.'
+
   // otherwise download and install specified version
   new utils().download_file("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${install_path}/dgoss")
   sh "chmod +rx ${install_path}/dgoss"
@@ -61,7 +63,7 @@ def server(body) {
       cmd += " -g ${config.gossfile}"
     }
 
-    sh "${cmd} serve -f ${config.format} -e ${config.endpoint} -l ${config.port} &"
+    sh "nohup ${cmd} serve -f ${config.format} -e ${config.endpoint} -l ${config.port} &"
   }
   catch(Exception error) {
     print 'Failure using goss serve.'
