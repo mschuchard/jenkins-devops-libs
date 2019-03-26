@@ -5,6 +5,9 @@
 **Goss**
 - Fix flag setting and usage in `validate_docker`.
 
+**OpenFaaS**
+- Add necessary `function` and optional `tls` params to `invoke` method.
+
 ### 1.2.0
 **Helm**
 - Add chart provenance verification to applicable methods.

@@ -56,10 +56,12 @@ faas.invoke {
   async = false // optional invoke the function asynchronously
   bin = '/usr/bin/faas-cli' // optional executable path for faas-cli
   content_type = 'text/plain' // optional content-type HTTP header
+  function = 'echo' // name of the deployed function
   header = 'X-Callback-Url=http://gateway:8080/function/send2slack' // optional HTTP request header
   method = 'POST' // optional HTTP request method
   query = ['repo=faas-cli', 'org=openfaas']
   stdin = 'image.png' // optional stdin for function to receive
+  tls = true // optional TLS validation (enabled by default)
 }
 ```
 

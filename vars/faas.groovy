@@ -140,6 +140,7 @@ def invoke(body) {
 
   // input checking
   config.bin = config.bin == null ? 'faas-cli' : config.bin
+  assert config.function != null : 'The required parameter function was not set.'
 
   // invoke faas function
   try {
@@ -165,11 +166,14 @@ def invoke(body) {
         cmd += " --query ${query}"
       }
     }
+    if (config.tls == false) {
+      cmd += ' --tls-no-verify'
+    }
     if (config.stdin != null) {
       cmd += " < ${config.stdin}"
     }
 
-    sh cmd
+    sh "${cmd} ${config.function}"
   }
   catch(Exception error) {
     print 'Failure using faas-cli push.'
