@@ -126,7 +126,9 @@ def init(body) {
 
     // check for optional inputs
     if (config.plugin_dir != null) {
-      assert fileExists(config.plugin_dir) : "The plugin directory ${config.plugin_dir} does not exist!"
+      if (!fileExists(config.plugin_dir)) {
+        new File(config.plugin_dir).mkdir()
+      }
 
       cmd += " -plugin-dir=${config.plugin_dir}"
     }
@@ -155,7 +157,7 @@ def install(body) {
 
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
-  assert (config.platform != null && config.version != null) : 'A required parameter is missing from this terraform.install block. Please consult the documentation for proper usage.'
+  assert (config.platform != null && config.version != null) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
 
   // check if current version already installed
   if (fileExists("${config.install_path}/terraform")) {

@@ -63,6 +63,10 @@ def code_deploy(body) {
           print hash['error']['msg']
           errored = true
         }
+        else {
+          print "Successful response from Code Manager below:"
+          print hash.toMapString()
+        }
       }
     }
   }
@@ -112,7 +116,7 @@ def task(body) {
     if (config.scope[-1] instanceof String[]) {
       payload['scope']['query'] = config.scope
     }
-    // otherwise it is an array which is then a node list
+    // otherwise it is an array of strings which is then a node list
     else {
       payload['scope']['nodes'] = config.scope
     }
@@ -166,6 +170,10 @@ def task(body) {
     }
     else if (hash.containsKey('puppetlabs.orchestrator/not-permitted')) {
       throw new Exception('The user does not have permission to run the task on the requested nodes!')
+    }
+    else {
+      print "Successful response from Orchestrator below:"
+      print hash.toMapString()
     }
   }
   print 'Puppet Orchestrator Task execution successfully requested.'
