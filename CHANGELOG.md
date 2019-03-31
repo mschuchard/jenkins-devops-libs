@@ -1,9 +1,7 @@
 ### 1.2.1 (Roadmap)
-**All**
-- Various fixes, cleanup, and optimization.
-
 **General**
 - Fix `map_to_json` common method and update per documented example.
+- Various fixes, cleanup, and optimization.
 
 **Goss**
 - Fix flag setting and usage in `validate_docker`.

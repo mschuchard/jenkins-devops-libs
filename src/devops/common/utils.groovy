@@ -4,6 +4,8 @@ package devops.common;
 // imports
 import com.cloudbees.groovy.cps.NonCPS
 import groovy.json.JsonOutput
+import hudson.FilePath
+import jenkins.model.Jenkins
 
 // checks input value for default value use if not set
 def default_input(input, default_value) {
@@ -13,13 +15,29 @@ def default_input(input, default_value) {
 // removes file
 @NonCPS
 def remove_file(String file) {
-  new File(file).delete()
+  // delete a file off of the master
+  if (env['NODE_NAME'].equals('master')) {
+    new File(file).delete()
+  }
+  // delete a file off of the build node
+  else {
+    new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), file).delete();
+  }
 }
 
 // downloads file
 @NonCPS
 def download_file(String url, String dest) {
-  def file = new File(dest).newOutputStream()
+  def file = null
+  // establish the file download for the master
+  if (env['NODE_NAME'].equals('master')) {
+    file = new File(dest).newOutputStream()
+  }
+  // establish the file download for the build node
+  else {
+    file = new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dest).newOutputStream();
+  }
+  // download the file and close the ostream
   file << new URL(url).openStream()
   file.close()
 }
@@ -28,5 +46,3 @@ def download_file(String url, String dest) {
 def map_to_json(Map content) {
   return JsonOutput.toJson(content)
 }
-
-//http://vertx.io/docs/groovydoc/io/vertx/groovy/core/file/FileSystem.html
