@@ -2,6 +2,8 @@
 import devops.common.utils
 
 def install(String version, String install_path = '/usr/bin/') {
+  assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
+
   // check if current version already installed
   if (fileExists("${install_path}/goss")) {
     installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()
@@ -17,6 +19,8 @@ def install(String version, String install_path = '/usr/bin/') {
 }
 
 def install_dgoss(String version, String install_path = '/usr/bin/') {
+  assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
+
   // check if current version already installed
   if (fileExists("${install_path}/dgoss") && fileExists("${install_path}/goss")) {
     installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()

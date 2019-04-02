@@ -55,6 +55,7 @@ def install(body) {
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
   assert (config.platform != null && config.version != null) : 'A required parameter is missing from the packer.install method. Please consult the documentation for proper usage.'
+  assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
 
   // check if current version already installed
   if (fileExists("${config.install_path}/packer")) {

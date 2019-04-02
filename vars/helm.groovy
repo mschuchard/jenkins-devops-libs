@@ -231,6 +231,8 @@ def rollback(body) {
 }
 
 def setup(String version, String install_path = '/usr/bin/') {
+  assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
+
   // check if current version already installed
   if (fileExists("${install_path}/helm")) {
     installed_version = sh(returnStdout: true, script: "${install_path}/helm version").trim()
