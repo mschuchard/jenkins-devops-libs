@@ -1,4 +1,4 @@
-### 1.2.1 (Roadmap)
+### 1.2.1
 **General**
 - Fix `map_to_json` common method and update per documented example.
 - Various fixes, cleanup, and optimization.
