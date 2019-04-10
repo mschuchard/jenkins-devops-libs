@@ -79,6 +79,17 @@ terraform.plugin_install {
 }
 ```
 
+### terraform.taint {}
+Manually marks a resource as tainted. This forces a destroy and recreate on the next plan or apply.
+
+```groovy
+terraform.taint {
+  bin = '/usr/bin/terraform' // optional path to terraform executable
+  module = 'my-module' // optional module path where the resource lives
+  resources = ['resource.name', 'other.name'] // names of the resources to taint
+  state = 'terraform.tfstate' // optional path to read and save state
+}
+
 ### terraform.validate {}
 Uses Terraform to validate a config directory.
 

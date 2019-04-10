@@ -1,3 +1,7 @@
+### 1.3.0 (Next)
+**Terraform**
+- Add `taint` method.
+
 ### 1.2.1
 **General**
 - Fix `map_to_json` common method and update per documented example.

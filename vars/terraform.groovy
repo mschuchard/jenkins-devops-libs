@@ -269,6 +269,46 @@ def plugin_install(config) {
   print "Terraform plugin successfully installed at ${install_loc}."
 }
 
+def taint(config) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
+  assert config.resources != null : 'Parameter resources must be specified.'
+  assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings.'
+
+  // taint the resources
+  try {
+    cmd = "${config.bin} taint -no-color"
+
+    // check for optional inputs
+    if (config.module != null) {
+      cmd += " -module=${config.module}"
+    }
+    if (config.state != null) {
+      assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+      cmd += " -state=${config.state}"
+    }
+
+    config.resources.each() { resource ->
+      sh "${cmd} ${resource}"
+    }
+  }
+  catch(Exception error) {
+    print 'Failure using terraform taint.'
+    throw error
+  }
+  print 'Terraform taint was successful.'
+}
+
 def validate(config) {
   // evaluate the body block and collect configuration into the object
   def config = [:]
