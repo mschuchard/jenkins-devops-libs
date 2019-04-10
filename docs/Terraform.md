@@ -45,6 +45,21 @@ terraform.init {
 }
 ```
 
+### terraform.import {}
+Imports existing infrastructure into your Terraform state.
+
+```groovy
+terraform.import {
+  bin = '/usr/bin/terraform' // optional path to terraform executable
+  dir = '/path/to/config' // optional path to terraform config for provider
+  resources = ['resource.name', 'other.name'] // names of the resources to import
+  provider = 'template' // optional specific provider for import
+  state = 'terraform.tfstate' // optional path to the source state file
+  var = ['foo=bar', 'bar=baz'] // optional variable setting
+  var_file = '/path/to/variables.tf' // optional location of variables file
+}
+```
+
 ### terraform.install {}
 Locally installs a specific version of Terraform.
 
@@ -89,6 +104,7 @@ terraform.taint {
   resources = ['resource.name', 'other.name'] // names of the resources to taint
   state = 'terraform.tfstate' // optional path to read and save state
 }
+```
 
 ### terraform.validate {}
 Uses Terraform to validate a config directory.

@@ -145,6 +145,59 @@ def init(body) {
   print 'Terraform init was successful.'
 }
 
+def import(body) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
+  assert config.resources != null : 'Parameter resources must be specified.'
+  assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings.'
+
+  // import the resources
+  try {
+    cmd = "${config.bin} import -no-color -input=false"
+
+    // check for optional inputs
+    if (config.var_file != null) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+      cmd += " -var_file=${config.var_file}"
+    }
+    if (config.var != null) {
+      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+
+      config.var.each() { var ->
+        cmd += " -var ${var}"
+      }
+    }
+    if (config.dir != null) {
+      assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+
+      cmd += " -config=${config.dir}"
+    }
+    if (config.provider != null) {
+      cmd += " -provider=${config.provider}"
+    }
+    if (config.state != null) {
+      assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+      cmd += " -state=${config.state}"
+    }
+
+    // import each resource
+    config.resources.each() { resource ->
+      sh "${cmd} ${resource}"
+    }
+  }
+}
+
 def install(body) {
   // evaluate the body block and collect configuration into the object
   def config = [:]
@@ -298,6 +351,7 @@ def taint(config) {
       cmd += " -state=${config.state}"
     }
 
+    // taint each resource
     config.resources.each() { resource ->
       sh "${cmd} ${resource}"
     }

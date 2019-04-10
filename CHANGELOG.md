@@ -1,6 +1,6 @@
 ### 1.3.0 (Next)
 **Terraform**
-- Add `taint` method.
+- Add `taint` and `import` methods.
 
 ### 1.2.1
 **General**
