@@ -196,6 +196,11 @@ def import(body) {
       sh "${cmd} ${resource}"
     }
   }
+  catch(Exception error) {
+    print 'Failure using terraform import.'
+    throw error
+  }
+  print 'Terraform imports were successful.'
 }
 
 def install(body) {
@@ -322,6 +327,48 @@ def plugin_install(config) {
   print "Terraform plugin successfully installed at ${install_loc}."
 }
 
+def state(config) {
+  // evaluate the body block and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  config.bin = config.bin == null ? 'terraform' : config.bin
+
+  // TODO: type checking on config.resources
+
+  cmd = config.bin
+
+  switch (config.cmd) {
+    case 'move': cmd += ' mv'
+    case 'remove': cmd += ' rm'
+    case 'push': cmd += ' push'
+    default: throw new Exception("Unknown Terraform state command ${config.cmd} specified.")
+  }
+
+  try {
+    if (config.state != null) {
+      assert config.cmd != 'push' : 'The state parameter is incompatible with state pushing.'
+      assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+      cmd += " -state=${config.state}"
+    }
+
+    // TODO: config.resources usage vary depending upon config.cmd
+    //sh "${cmd} ${config.resources}"
+  }
+  catch(Exception error) {
+    print 'Failure using terraform state manipulation.'
+    throw error
+  }
+  print 'Terraform state manipulation was successful.'
+}
+
 def taint(config) {
   // evaluate the body block and collect configuration into the object
   def config = [:]
@@ -360,7 +407,7 @@ def taint(config) {
     print 'Failure using terraform taint.'
     throw error
   }
-  print 'Terraform taint was successful.'
+  print 'Terraform taints were successful.'
 }
 
 def validate(config) {
