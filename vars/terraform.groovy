@@ -339,26 +339,9 @@ def state(config) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
-
   cmd = config.bin
 
-  // TODO: combo switches
-  switch (config.cmd) {
-    case 'move':
-      cmd += ' mv';
-      assert (config.resources[0] instanceof String[]) : 'Parameter resources must be a nested array of strings for move command.';
-      break;
-    case 'remove':
-      cmd += ' rm';
-      assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings for remove command.';
-      break;
-    case 'push':
-      cmd += ' push';
-      assert config.resources == null : 'Resources parameter is not allowed for push command.';
-      break;
-    default: throw new Exception("Unknown Terraform state command ${config.cmd} specified.");
-  }
-
+  // perform state manipulation
   try {
     if (config.state != null) {
       assert config.cmd != 'push' : 'The state parameter is incompatible with state pushing.'
@@ -367,20 +350,29 @@ def state(config) {
       cmd += " -state=${config.state}"
     }
 
+    // perform different commands based upon type of state action
     switch (config.cmd) {
       case 'move':
+        assert (config.resources[0] instanceof String[]) : 'Parameter resources must be a nested array of strings for move command.';
+
         config.resources.each() { resource_pair ->
-          sh "${cmd} ${resource_pair}[0] ${resource_pair}[1]"
+          sh "${cmd} mv ${resource_pair}[0] ${resource_pair}[1]"
         };
         break;
       case 'remove':
+        assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings for remove command.';
+
         config.resources.each() { resource ->
-          sh "${cmd} ${resource}"
+          sh "${cmd} rm ${resource}"
         };
         break;
       case 'push':
-        sh $cmd;
+        assert config.resources == null : 'Resources parameter is not allowed for push command.';
+
+        sh "${cmd} push";
         break;
+      default:
+        default: throw new Exception("Unknown Terraform state command ${config.cmd} specified.");
     }
   }
   catch(Exception error) {
