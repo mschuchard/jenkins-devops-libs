@@ -12,8 +12,8 @@ Delete the release object from Kubernetes with helm.
 
 ```groovy
 helm.delete {
-  bin = '/usr/bin/helm' // optional executable path for helm
-  name = 'happy-panda' // name for the release object to be deleted
+  bin     = '/usr/bin/helm' // optional executable path for helm
+  name    = 'happy-panda' // name for the release object to be deleted
   context = 'default' // optional kube-context from kube config
 }
 ```
@@ -23,14 +23,14 @@ Performs an installation with helm onto the Kubernetes cluster.
 
 ```groovy
 helm.install {
-  bin = '/usr/bin/helm' // optional executable path for helm
-  chart = 'chart' // chart repository, local archive, directory, or url to install
-  context = 'default' // optional kube-context from kube config
-  name = 'happy-panda' // optional name for the installed release object
+  bin       = '/usr/bin/helm' // optional executable path for helm
+  chart     = 'chart' // chart repository, local archive, directory, or url to install
+  context   = 'default' // optional kube-context from kube config
+  name      = 'happy-panda' // optional name for the installed release object
   namespace = 'default' // optional namespace for the installed release object
-  values = ['config.yaml'] // optional value overrides yaml file
-  verify = true // verify the provenance of the chart
-  set = ['foo=bar', 'bar=baz'] // optional value override
+  values    = ['config.yaml'] // optional value overrides yaml file
+  verify    = true // verify the provenance of the chart
+  set       = ['foo=bar', 'bar=baz'] // optional value override
 }
 ```
 
@@ -39,13 +39,13 @@ Runs a series of tests to verify that the chart is well-formed.
 
 ```groovy
 helm.lint {
-  bin = '/usr/bin/helm' // optional executable path for helm
-  chart = 'chart' // chart repository, local archive, directory, or url to install
-  context = 'default' // optional kube-context from kube config
+  bin       = '/usr/bin/helm' // optional executable path for helm
+  chart     = 'chart' // chart repository, local archive, directory, or url to install
+  context   = 'default' // optional kube-context from kube config
   namespace = 'default' // optional namespace for the installed release object
-  values = ['config.yaml'] // optional value overrides yaml file
-  set = ['foo=bar', 'bar=baz'] // optional value override
-  strict = false // optional fail on warnings
+  values    = ['config.yaml'] // optional value overrides yaml file
+  set       = ['foo=bar', 'bar=baz'] // optional value override
+  strict    = false // optional fail on warnings
 }
 ```
 
@@ -54,22 +54,23 @@ Package a chart directory into a chart archive.
 
 ```groovy
 helm.package {
-  bin = '/usr/bin/helm' // optional executable path for helm
-  chart = 'path/to/chart' // absolute or relative path to chart
-  dest = '.' // optional location to write the chart
-  key = 'foo' // optional sign the package with this key name
+  bin         = '/usr/bin/helm' // optional executable path for helm
+  chart       = 'path/to/chart' // absolute or relative path to chart
+  dest        = '.' // optional location to write the chart
+  key         = 'foo' // optional sign the package with this key name
   update_deps = false // optional update dependencies from requirements prior to packaging
-  version = '1.0.0' // optional version set for the chart
+  version     = '1.0.0' // optional version set for the chart
 }
+```
 
 ### helm.rollback {}
 Roll back the release object to a previous release with helm.
 
 ```groovy
 helm.rollback {
-  bin = '/usr/local/bin/helm' // optional executable path for helm
+  bin     = '/usr/local/bin/helm' // optional executable path for helm
   context = 'default' // optional kube-context from kube config
-  name = 'happy-panda' // release object name to rollback
+  name    = 'happy-panda' // release object name to rollback
   version = '1' // version of release-object to rollback to
 }
 ```
@@ -86,11 +87,11 @@ Runs the tests for a release. If the tests fail and `cleanup` is false, then the
 
 ```groovy
 helm.test {
-  bin = '/usr/bin/helm' // optional executable path for helm
-  cleanup = false // optional delete test pods upon completion
-  context = 'default' // optional kube-context from kube config
-  kubectl = '/usr/bin/kubectl' // optional executable path for kubectl
-  name = 'happy-panda' // name of a deployed release
+  bin      = '/usr/bin/helm' // optional executable path for helm
+  cleanup  = false // optional delete test pods upon completion
+  context  = 'default' // optional kube-context from kube config
+  kubectl  = '/usr/bin/kubectl' // optional executable path for kubectl
+  name     = 'happy-panda' // name of a deployed release
   parallel = false // optional run test pods in parallel
 }
 ```
@@ -100,13 +101,13 @@ Updates and/or changes the configuration of a release with helm.
 
 ```groovy
 helm.upgrade {
-  bin = '/usr/bin/helm' // optional executable path for helm
-  chart = 'chart' // chart repository, local archive, directory, or url to upgrade
-  context = 'default' // optional kube-context from kube config
-  name = 'happy-panda' // name of the upgraded release object
+  bin       = '/usr/bin/helm' // optional executable path for helm
+  chart     = 'chart' // chart repository, local archive, directory, or url to upgrade
+  context   = 'default' // optional kube-context from kube config
+  name      = 'happy-panda' // name of the upgraded release object
   namespace = 'default' // optional namespace for the upgraded release object
-  values = ['config.yaml'] // optional value overrides yaml file
-  verify = true // verify the provenance of the chart
-  set = ['foo=bar', 'bar=baz'] // optional value override
+  values    = ['config.yaml'] // optional value overrides yaml file
+  verify    = true // verify the provenance of the chart
+  set       = ['foo=bar', 'bar=baz'] // optional value override
 }
 ```

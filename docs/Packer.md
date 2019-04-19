@@ -12,10 +12,10 @@ Uses Packer to build an artifact from a template.
 
 ```groovy
 packer.build {
-  bin = '/usr/bin/packer' // optional location of packer install
-  only = 'foo,bar,baz' // optional comma-separated builder names to build
+  bin      = '/usr/bin/packer' // optional location of packer install
+  only     = 'foo,bar,baz' // optional comma-separated builder names to build
   template = '/path/to/template.json' // location of packer template
-  var = ['foo=bar', 'bar=baz'] // optional variable setting
+  var      = ['foo=bar', 'bar=baz'] // optional variable setting
   var_file = '/path/to/variables.json' // optional location of variables file
 }
 ```
@@ -26,8 +26,8 @@ Locally installs a specific version of Packer.
 ```groovy
 packer.install {
   install_path = '/usr/bin' // optional location to install packer
-  platform = 'linux_amd64' // platform where packer will be installed
-  version = '1.2.5' // version of packer to install
+  platform     = 'linux_amd64' // platform where packer will be installed
+  version      = '1.2.5' // version of packer to install
 }
 ```
 
@@ -43,10 +43,10 @@ Uses Packer to validate a build template.
 
 ```groovy
 packer.validate {
-  bin = '/usr/bin/packer' // optional location of packer install
-  only = 'foo,bar,baz' // optional comma-separated builder names to build
+  bin      = '/usr/bin/packer' // optional location of packer install
+  only     = 'foo,bar,baz' // optional comma-separated builder names to build
   template = '/path/to/template.json' // location of packer template
-  var = ['foo=bar', 'bar=baz'] // optional variable setting
+  var      = ['foo=bar', 'bar=baz'] // optional variable setting
   var_file = '/path/to/variables.json' // optional location of variables file
 }
 ```

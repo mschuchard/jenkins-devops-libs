@@ -25,12 +25,12 @@ Creates a persistent REST API endpoint with goss.
 
 ```groovy
 goss.server {
-  bin = '/usr/bin/goss' // optional executable path for goss
+  bin      = '/usr/bin/goss' // optional executable path for goss
   endpoint = '/healthz' // optional endpoint to expose
   gossfile = 'goss.yaml' // optional location of gossfile
-  format = 'rspecish' // optional formatter to use for output
-  port = '8080' // optional specified port to listen on
-  vars = 'vars.yaml' // optional vars file to use with gossfile
+  format   = 'rspecish' // optional formatter to use for output
+  port     = '8080' // optional specified port to listen on
+  vars     = 'vars.yaml' // optional vars file to use with gossfile
 }
 ```
 
@@ -39,10 +39,10 @@ Locally executes a gossfile with goss.
 
 ```groovy
 goss.validate {
-  bin = '/usr/bin/goss' // optional executable path for goss
+  bin      = '/usr/bin/goss' // optional executable path for goss
   gossfile = 'goss.yaml' // optional location of gossfile
-  format = 'rspecish' // optional formatter to use for output
-  vars = 'vars.yaml' // optional vars file to use with gossfile
+  format   = 'rspecish' // optional formatter to use for output
+  vars     = 'vars.yaml' // optional vars file to use with gossfile
 }
 ```
 
@@ -52,7 +52,7 @@ Note that dgoss [environment variables](https://github.com/aelsabbahy/goss/tree/
 
 ```groovy
 goss.validate_docker {
-  bin = '/usr/bin/dgoss' // optional executable path for dgoss
+  bin   = '/usr/bin/dgoss' // optional executable path for dgoss
   flags = ['JENKINS_OPTS="--httpPort=8080 --httpsPort=-1"', 'JAVA_OPTS="-Xmx1048m"'] // optional flags for container run
   image = 'alpine:latest' // docker image to run container from
 }
