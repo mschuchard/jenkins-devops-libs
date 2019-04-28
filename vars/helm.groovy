@@ -54,7 +54,9 @@ def install(body) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
-        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        if (!(value =~ /:\/\//)) {
+          assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        }
 
         cmd += " -f ${value}"
       }
@@ -115,7 +117,9 @@ def lint(body) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
-        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        if (!(value =~ /:\/\//)) {
+          assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        }
 
         cmd += " -f ${value}"
       }
@@ -349,7 +353,9 @@ def upgrade(body) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
-        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        if (!(value =~ /:\/\//)) {
+          assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        }
 
         cmd += " -f ${value}"
       }

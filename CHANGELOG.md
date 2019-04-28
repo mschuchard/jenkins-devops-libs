@@ -2,6 +2,9 @@
 **Terraform**
 - Add `taint`, `state`, and `import` methods.
 
+**Helm**
+- Allow values override to also be a URL.
+
 ### 1.2.1
 **General**
 - Fix `map_to_json` common method and update per documented example.
