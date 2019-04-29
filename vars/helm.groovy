@@ -183,6 +183,11 @@ def package(body) {
     if (config.key != null) {
       cmd += " --sign --key ${config.key}"
     }
+    else if (config.keyring != null) {
+      assert fileExists(config.keyring) : "The keyring ${config.keyring} does not exist."
+
+      cmd += " --sign --keyring ${config.keyring}"
+    }
     if (config.update_deps == true) {
       cmd += " -u"
     }

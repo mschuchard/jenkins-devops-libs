@@ -57,7 +57,8 @@ helm.package {
   bin         = '/usr/bin/helm' // optional executable path for helm
   chart       = 'path/to/chart' // absolute or relative path to chart
   dest        = '.' // optional location to write the chart
-  key         = 'foo' // optional sign the package with this key name
+  key         = 'foo' // optional sign the package with this key name (mutually exclusive with keyring)
+  keyring     = '/home/dir/.gnupg/pubring.gpg' // optional sign the package with the public keyring at this location (mutually exclusive with key)
   update_deps = false // optional update dependencies from requirements prior to packaging
   version     = '1.0.0' // optional version set for the chart
 }
