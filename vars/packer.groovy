@@ -45,6 +45,23 @@ def build(body) {
   print 'Packer build artifact created successfully.'
 }
 
+def inspect(String template, String bin = '/usr/bin/packer') {
+  // inspect the packer template
+
+  // input checking
+  assert fileExists(bin) : "A file does not exist at ${bin}."
+  assert fileExists(template) : "A file does not exist at ${template}."
+
+  // inspect the template
+  try {
+    sh "${bin} ${template}"
+  }
+  catch(Exception error) {
+    print 'Failure inspecting the template.'
+    throw error
+  }
+}
+
 def install(body) {
   // evaluate the body block and collect configuration into the object
   def config = [:]

@@ -20,6 +20,13 @@ packer.build {
 }
 ```
 
+### packer.inspect(String template, String bin = '/usr/bin/packer')
+Inspects a template and parses and outputs the components a template defines.
+
+```groovy
+packer.inspect('/path/to/template.json', '/usr/local/bin/packer')
+```
+
 ### packer.install {}
 Locally installs a specific version of Packer.
 

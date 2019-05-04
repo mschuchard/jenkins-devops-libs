@@ -1,10 +1,13 @@
 ### 1.3.0 (Next)
-**Terraform**
-- Add `taint`, `state`, and `import` methods.
-
 **Helm**
 - Allow values override to also be a URL.
 - Add `keyring` param to `.package` method.
+
+**Packer**
+- Add `inspect` method.
+
+**Terraform**
+- Add `taint`, `state`, and `import` methods.
 
 ### 1.2.1
 **General**
