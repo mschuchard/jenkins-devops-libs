@@ -124,11 +124,11 @@ Uses Terraform to validate a config directory.
 
 ```groovy
 terraform.validate {
-  bin      = '/usr/bin/terraform' // optional path to terraform executable
-  dir      = '/path/to/config_dir' // path to config dir
-  target   = ['aws_instance.example', 'aws_eip.ip'] // optional resource targets
-  var      = ['foo=bar', 'bar=baz'] // optional variable setting
-  var_file = '/path/to/variables.tf' // optional location of variables file
+  bin        = '/usr/bin/terraform' // optional path to terraform executable
+  dir        = '/path/to/config_dir' // path to config dir
+  check_vars = true // optional check whether all required variables have been specified
+  var        = ['foo=bar', 'bar=baz'] // optional variable setting
+  var_file   = '/path/to/variables.tf' // optional location of variables file
 }
 ```
 

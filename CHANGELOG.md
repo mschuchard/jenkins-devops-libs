@@ -8,6 +8,7 @@
 
 **Terraform**
 - Add `taint`, `state`, and `import` methods.
+- Add `check_vars` parameter to `validate` method.
 
 ### 1.2.1
 **General**

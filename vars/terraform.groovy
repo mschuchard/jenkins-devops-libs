@@ -39,6 +39,9 @@ def apply(body) {
         cmd += " -target=${target}"
       }
     }
+    if (config.check_vars == false) {
+      cmd += ' -check-variables=false'
+    }
 
     sh "${cmd} ${config.config_path}"
   }
