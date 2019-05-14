@@ -10,7 +10,8 @@
 - Add `taint`, `state`, and `import` methods.
 - Add `check_vars` parameter to `validate` method.
 - Add `destroy` parameter to `plan` method.
-- Check for `dir` parameter input to `plan` method.
+- Checks for required parameters to methods.
+- Change `dir` to `config_path` param for `destroy` method, and also allow for plan file arguments.
 
 ### 1.2.1
 **General**

@@ -25,11 +25,11 @@ Uses Terraform to destroy an applied config.
 
 ```groovy
 terraform.destroy {
-  bin      = '/usr/bin/terraform' // optional path to terraform executable
-  dir      = '/path/to/config_dir' // path to config dir
-  target   = ['aws_instance.example', 'aws_eip.ip'] // optional resource targets
-  var      = ['foo=bar', 'bar=baz'] // optional variable setting
-  var_file = '/path/to/variables.tf' // optional location of variables file
+  bin         = '/usr/bin/terraform' // optional path to terraform executable
+  config_path = '/path/to/config_dir' // path to config dir or plan file
+  target      = ['aws_instance.example', 'aws_eip.ip'] // optional resource targets
+  var         = ['foo=bar', 'bar=baz'] // optional variable setting
+  var_file    = '/path/to/variables.tf' // optional location of variables file
 }
 ```
 

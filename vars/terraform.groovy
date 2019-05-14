@@ -13,6 +13,8 @@ def apply(body) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
+
+  assert config.config_path != null : '"config_path" is a required parameter for terraform.apply.'
   assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
 
   // apply the config
@@ -72,7 +74,9 @@ def destroy(body) {
   else {
     no_input_flag = '-force'
   }
-  assert fileExists(config.dir) : "Terraform config ${config.dir} does not exist!"
+
+  assert config.config_path != null : '"config_path" is a required parameter for terraform.destroy.'
+  assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
 
   // destroy the state
   try {
@@ -99,7 +103,7 @@ def destroy(body) {
       }
     }
 
-    sh "${cmd} ${config.dir}"
+    sh "${cmd} ${config.config_path}"
   }
   catch(Exception error) {
     print 'Failure using terraform destroy.'
