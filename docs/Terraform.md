@@ -72,11 +72,12 @@ terraform.install {
 ```
 
 ### terraform.plan {}
-Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will be written to the same directory as the input config directory. This is mostly useful in a Pipeline for validating the config set and then speeding up a subsequent `apply` by providing an input plan file.
+Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will be written to the same directory as the input config directory. This is mostly useful in a Pipeline for validating the config set and then speeding up a subsequent `apply` or `destroy` by providing an input plan file.
 
 ```groovy
 terraform.plan {
   bin      = '/usr/bin/terraform' // optional path to terraform executable
+  destroy  = false // optional generate a plan to destroy resources
   dir      = '/path/to/config_dir_or_plan_file' // path to config dir
   var      = ['foo=bar', 'bar=baz'] // optional variable setting
   var_file = '/path/to/variables.tf' // optional location of variables file

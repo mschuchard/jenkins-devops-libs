@@ -9,6 +9,8 @@
 **Terraform**
 - Add `taint`, `state`, and `import` methods.
 - Add `check_vars` parameter to `validate` method.
+- Add `destroy` parameter to `plan` method.
+- Check for `dir` parameter input to `plan` method.
 
 ### 1.2.1
 **General**

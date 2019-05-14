@@ -249,6 +249,8 @@ def plan(body) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
+
+  assert config.dir != null : '"dir" is a required parameter for terraform.plan.'
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
 
   // generate a plan from the config directory
@@ -274,6 +276,9 @@ def plan(body) {
       config.target.each() { target ->
         cmd += " -target=${target}"
       }
+    }
+    if (config.destroy == true) {
+      cmd += ' -destroy'
     }
 
     sh "${cmd} ${config.dir}"
