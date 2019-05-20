@@ -21,7 +21,7 @@ terraform.apply {
 ```
 
 ### terraform.destroy {}
-Uses Terraform to destroy an applied config.
+Uses Terraform to destroy an applied config. Note that if `terraform.plan { path = config_dir }` with `destroy = true` was invoked before this, the resulting plan file is in `config_dir/plan.tfplan`.
 
 ```groovy
 terraform.destroy {
@@ -121,7 +121,7 @@ terraform.taint {
 ```
 
 ### terraform.validate {}
-Uses Terraform to validate a config directory.
+Uses Terraform to validate a config directory. Note that Terraform >= 0.12 does not allow variables to be input or checked in this method, and those parameters will be ignored for that version range.
 
 ```groovy
 terraform.validate {

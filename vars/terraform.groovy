@@ -454,17 +454,22 @@ def validate(config) {
   try {
     cmd = "${config.bin} validate -no-color"
 
-    // check for optional inputs
-    if (config.var_file != null) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+    // check for terraform >= 0.12 (those versions have flag for json output)
+    new_validate = sh(returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
 
-      cmd += " -var_file=${config.var_file}"
-    }
-    if (config.var != null) {
-      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+    if (!(new_validate)) {
+      // check for optional inputs
+      if (config.var_file != null) {
+        assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
-      config.var.each() { var ->
-        cmd += " -var ${var}"
+        cmd += " -var_file=${config.var_file}"
+      }
+      if (config.var != null) {
+        assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+
+        config.var.each() { var ->
+          cmd += " -var ${var}"
+        }
       }
     }
 

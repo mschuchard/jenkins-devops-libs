@@ -1,7 +1,7 @@
 ### 1.3.0 (Next)
 **Helm**
 - Allow values override to also be a URL.
-- Add `keyring` param to `.package` method.
+- Add `keyring` param to `package` method.
 
 **Packer**
 - Add `inspect` method.
@@ -10,6 +10,7 @@
 - Add `taint`, `state`, and `import` methods.
 - Add `check_vars` parameter to `validate` method.
 - Add `destroy` parameter to `plan` method.
+- Handle 0.12 changes to `validate` method.
 - Checks for required parameters to methods.
 - Change `dir` to `config_path` param for `destroy` method, and also allow for plan file arguments.
 
