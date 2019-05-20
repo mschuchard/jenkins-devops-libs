@@ -123,7 +123,7 @@ def task(body) {
   }
   else if (config.scope instanceof String) {
     // does the string look like an app orchestrator string
-    if (config.scope =~ /\[.*\]$/) {
+    if (config.scope ==~ /\[.*\]$/) {
       payload['scope']['application'] = config.scope
     }
     // otherwise it is a node group string

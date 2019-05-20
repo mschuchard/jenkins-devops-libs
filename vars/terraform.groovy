@@ -41,9 +41,6 @@ def apply(body) {
         cmd += " -target=${target}"
       }
     }
-    if (config.check_vars == false) {
-      cmd += ' -check-variables=false'
-    }
 
     sh "${cmd} ${config.config_path}"
   }
@@ -68,7 +65,7 @@ def destroy(body) {
   config.bin = config.bin == null ? 'terraform' : config.bin
   // -force changed to -auto-approve in 0.11.4
   installed_version = sh(returnStdout: true, script: "${config.bin} version").trim()
-  if (installed_version =~ /0\.1[2-9]\.[0-9]|0\.11\.[4-9]/) {
+  if (installed_version ==~ /0\.1[2-9]\.[0-9]|0\.11\.[4-9]/) {
     no_input_flag = '-auto-approve'
   }
   else {
@@ -228,7 +225,7 @@ def install(body) {
   // check if current version already installed
   if (fileExists("${config.install_path}/terraform")) {
     installed_version = sh(returnStdout: true, script: "${config.install_path}/terraform version").trim()
-    if (installed_version =~ config.version) {
+    if (installed_version ==~ config.version) {
       print "Terraform version ${config.version} already installed at ${config.install_path}."
       return
     }
@@ -324,12 +321,12 @@ def plugin_install(config) {
     return
   }
   // otherwise download and install plugin
-  else if (config.url =~ /\.zip$/) {
+  else if (config.url ==~ /\.zip$/) {
     // append zip extension to avoid filename clashes
     install_loc = "${install_loc}.zip"
   }
   new utils().download_file(config.url, install_loc)
-  if (config.url =~ /\.zip$/) {
+  if (config.url ==~ /\.zip$/) {
     unzip(zipFile: install_loc)
     new utils().remove_file(install_loc)
   }
@@ -470,6 +467,9 @@ def validate(config) {
         config.var.each() { var ->
           cmd += " -var ${var}"
         }
+      }
+      if (config.check_vars == false) {
+        cmd += ' -check-variables=false'
       }
     }
 

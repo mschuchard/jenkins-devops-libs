@@ -24,7 +24,7 @@ def delete(body) {
 
     // check release object
     release_obj_list = sh(returnStdout: true, script: lister).trim()
-    assert (release_obj_list =~ config.name) : "Release object ${config.name} does not exist!"
+    assert (release_obj_list ==~ config.name) : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name}"
   }
@@ -54,7 +54,7 @@ def install(body) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
-        if (!(value =~ /:\/\//)) {
+        if (!(value ==~ /:\/\//)) {
           assert fileExists(value) : "Value overrides file ${value} does not exist!"
         }
 
@@ -85,7 +85,7 @@ def install(body) {
 
     // check release object
     release_obj_list = sh(returnStdout: true, script: lister).trim()
-    if ((config.name != null) && (release_obj_list =~ config.name)) {
+    if ((config.name != null) && (release_obj_list ==~ config.name)) {
       throw new Exception("Release object ${config.name} already exists!")
     }
 
@@ -117,7 +117,7 @@ def lint(body) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
-        if (!(value =~ /:\/\//)) {
+        if (!(value ==~ /:\/\//)) {
           assert fileExists(value) : "Value overrides file ${value} does not exist!"
         }
 
@@ -228,7 +228,7 @@ def rollback(body) {
 
     // check release object
     release_obj_list = sh(returnStdout: true, script: lister).trim()
-    assert release_obj_list =~ config.name : "Release object ${config.name} does not exist!"
+    assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name} ${config.version}"
   }
@@ -245,7 +245,7 @@ def setup(String version, String install_path = '/usr/bin/') {
   // check if current version already installed
   if (fileExists("${install_path}/helm")) {
     installed_version = sh(returnStdout: true, script: "${install_path}/helm version").trim()
-    if (installed_version =~ version) {
+    if (installed_version ==~ version) {
       print "Helm version ${version} already installed at ${install_path}."
     }
   }
@@ -358,7 +358,7 @@ def upgrade(body) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
-        if (!(value =~ /:\/\//)) {
+        if (!(value ==~ /:\/\//)) {
           assert fileExists(value) : "Value overrides file ${value} does not exist!"
         }
 
@@ -386,7 +386,7 @@ def upgrade(body) {
 
     // check release object
     release_obj_list = sh(returnStdout: true, script: lister).trim()
-    assert release_obj_list =~ config.name : "Release object ${config.name} does not exist!"
+    assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name} ${config.chart}"
   }

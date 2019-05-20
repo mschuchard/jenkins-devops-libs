@@ -7,7 +7,7 @@ def install(String version, String install_path = '/usr/bin/') {
   // check if current version already installed
   if (fileExists("${install_path}/goss")) {
     installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()
-    if (installed_version =~ version) {
+    if (installed_version ==~ version) {
       print "Goss version ${version} already installed at ${install_path}."
       return
     }
@@ -24,7 +24,7 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
   // check if current version already installed
   if (fileExists("${install_path}/dgoss") && fileExists("${install_path}/goss")) {
     installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()
-    if (installed_version =~ version) {
+    if (installed_version ==~ version) {
       print "Dgoss version ${version} already installed at ${install_path}."
       return
     }
