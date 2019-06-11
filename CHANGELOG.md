@@ -2,6 +2,7 @@
 **Helm**
 - Allow values override to also be a URL.
 - Add `keyring` param to `package` method.
+- Add `kubectl` method.
 
 **Packer**
 - Add `inspect` method.

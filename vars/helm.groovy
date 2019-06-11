@@ -98,6 +98,23 @@ def install(body) {
   print 'Helm install executed successfully.'
 }
 
+def kubectl(String version, String install_path = '/usr/bin/') {
+  assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
+
+  // check if current version already installed
+  if (fileExists("${install_path}/kubectl")) {
+    installed_version = sh(returnStdout: true, script: "${install_path}/kubectl version").trim()
+    if (installed_version ==~ version) {
+      print "Kubectl version ${version} already installed at ${install_path}."
+      return
+    }
+  }
+  // otherwise download specified version
+  new utils().download_file("https://storage.googleapis.com/kubernetes-release/release/v${version}/bin/linux/amd64/kubectl", "${install_path}/kubectl")
+  sh "chmod ug+rx ${install_path}/kubectl"
+  print "Kubectl successfully installed at ${install_path}/kubectl."
+}
+
 def lint(body) {
   // evaluate the body block, and collect configuration into the object
   def config = [:]
