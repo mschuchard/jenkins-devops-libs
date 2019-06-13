@@ -14,7 +14,7 @@ def install(String version, String install_path = '/usr/bin/') {
   }
   // otherwise download and install specified version
   new utils().download_file("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${install_path}/goss")
-  sh "chmod +rx ${install_path}/goss"
+  sh "chmod ug+rx ${install_path}/goss"
   print "Goss successfully installed at ${install_path}/goss."
 }
 
@@ -33,7 +33,7 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
 
   // otherwise download and install specified version
   new utils().download_file("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${install_path}/dgoss")
-  sh "chmod +rx ${install_path}/dgoss"
+  sh "chmod ug+rx ${install_path}/dgoss"
   print "Dgoss successfully installed at ${install_path}/dgoss."
 }
 

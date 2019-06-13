@@ -85,7 +85,7 @@ def install(body) {
   // otherwise download and install specified version
   new utils().download_file("https://releases.hashicorp.com/packer/${config.version}/packer_${config.version}_${config.platform}.zip", 'packer.zip')
   unzip(zipFile: 'packer.zip', dir: config.install_path)
-  sh "chmod +rx ${config.install_path}/packer"
+  sh "chmod ug+rx ${config.install_path}/packer"
   new utils().remove_file('packer.zip')
   print "Packer successfully installed at ${config.install_path}/packer."
 }
@@ -114,7 +114,7 @@ def plugin_install(String url, String install_loc) {
     new utils().remove_file(install_loc)
   }
   else {
-    sh "chmod +rx ${install_loc}"
+    sh "chmod ug+rx ${install_loc}"
   }
   print "Packer plugin successfully installed at ${install_loc}."
 }

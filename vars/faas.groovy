@@ -128,7 +128,7 @@ def install(body) {
   // download and install specified version
   new utils().download_file("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.install_path}/faas-cli")
   extension = null
-  sh "chmod +rx ${config.install_path}/faas-cli"
+  sh "chmod ug+rx ${config.install_path}/faas-cli"
   print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
 }
 
