@@ -43,7 +43,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        scripts {
+        script {
           helm.test {
             bin = '/usr/bin/helm' // optional executable path for helm
             chart = 'stable/mariadb' // chart repository, local archive, directory, or url to install

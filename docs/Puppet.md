@@ -1,6 +1,6 @@
 # Puppet
 
-Interacts with Puppet Enterprise Software Endpoints. This library is considered experimental and users are encouraged to file issues when and where they are found.
+Interacts with Puppet Enterprise endpoints. This library is considered experimental and users are encouraged to file issues when and where they are found.
 
 ### Dependencies
 
@@ -20,7 +20,7 @@ puppet.code_deploy {
 ```
 
 ### puppet.task {}
-Triggers the execution of a Puppet Enterprise task.
+Triggers the execution of a Puppet Enterprise task via the Puppet Enterprise Orchestrator.
 
 ```groovy
 puppet.task {

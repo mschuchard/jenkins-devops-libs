@@ -16,7 +16,7 @@ pipeline {
       parallel {
         stage('Code Deploy') {
           steps {
-            scripts {
+            script {
               puppet.code_deploy {
                 bin = '/usr/bin/curl' // optional executable path for curl
                 environments = ['development', 'production'] // optional environments to deploy (default is to deploy all environments)
@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Execute Task') {
           steps {
-            scripts {
+            script {
               puppet.task {
                 bin = '/usr/bin/curl' // optional executable path for curl
                 params = "['action':'install', 'name':'httpd']" // optional input

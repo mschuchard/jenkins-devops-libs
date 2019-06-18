@@ -71,7 +71,7 @@ pipeline {
     }
     stage('Destroy') {
       steps {
-        scripts {
+        script {
           terraform.destroy {
             bin = '/tmp/terraform'
             dir = '/tmp'
