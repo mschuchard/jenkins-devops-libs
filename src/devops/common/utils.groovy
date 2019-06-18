@@ -14,10 +14,10 @@ def default_input(input, default_value) {
 
 // removes file
 @NonCPS
-def remove_file(String file) {
+void remove_file(String file) {
   // delete a file off of the master
   if (env['NODE_NAME'].equals('master')) {
-    new File(file).delete()
+    new File(file).delete();
   }
   // delete a file off of the build node
   else {
@@ -27,22 +27,22 @@ def remove_file(String file) {
 
 // downloads file
 @NonCPS
-def download_file(String url, String dest) {
-  def file = null
+void download_file(String url, String dest) {
+  def file = null;
   // establish the file download for the master
   if (env['NODE_NAME'].equals('master')) {
-    file = new File(dest).newOutputStream()
+    file = new File(dest).newOutputStream();
   }
   // establish the file download for the build node
   else {
     file = new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dest).newOutputStream();
   }
   // download the file and close the ostream
-  file << new URL(url).openStream()
-  file.close()
+  file << new URL(url).openStream();
+  file.close();
 }
 
 // converts content map to json string
-def map_to_json(Map content) {
-  return JsonOutput.toJson(content)
+String map_to_json(Map content) {
+  return JsonOutput.toJson(content);
 }
