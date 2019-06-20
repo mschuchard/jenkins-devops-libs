@@ -33,7 +33,9 @@ def build(body) {
       }
     }
     if (config.only != null) {
-      cmd += " -only=${config.only}"
+      assert (config.only instanceof String[]) : 'The only parameter must be an array of strings.'
+
+      cmd += " -only=${config.only.join(',')}"
     }
 
     sh "${cmd} ${config.template}"
@@ -151,7 +153,9 @@ def validate(body) {
       }
     }
     if (config.only != null) {
-      cmd += " -only=${config.only}"
+      assert (config.only instanceof String[]) : 'The only parameter must be an array of strings.'
+
+      cmd += " -only=${config.only.join(',')}"
     }
 
     sh "${cmd} ${config.template}"

@@ -6,6 +6,7 @@
 
 **Packer**
 - Add `inspect` method.
+- Change `only` parameter input type.
 
 **Terraform**
 - Add `taint`, `state`, and `import` methods.
