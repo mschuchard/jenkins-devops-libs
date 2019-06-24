@@ -8,6 +8,9 @@
 - Add `inspect` method.
 - Change `only` parameter input type.
 
+**Puppet**
+- Add `token` method.
+
 **Terraform**
 - Add `taint`, `state`, and `import` methods.
 - Add `check_vars` parameter to `validate` method.

@@ -35,3 +35,14 @@ puppet.task {
   token       = '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
 }
 ```
+
+### puppet.token {}
+Generates a RBAC token for use with Puppet Enterprise endpoints, and saves it as a file in the default location. Recommended to use `withCredentials` in conjunction with this.
+
+```groovy
+puppet.token {
+  bin      = '/usr/bin/curl' // optional executable path for curl
+  username = 'username' // username for the rbac token
+  password = 'password' // password for the rbac token
+}
+```
