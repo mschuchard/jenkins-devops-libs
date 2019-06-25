@@ -194,33 +194,35 @@ def token (body) {
   config.server = config.server == null ? 'puppet' : config.server
 
   //construct payload
-  payload = [:]
+  Map payload = [:]
   payload['username'] = config.username
   payload['password'] = config.password
 
   // convert map to json file
   payload = new utils().map_to_json(payload)
 
+  // check for secure ssl connection option
+  String secure = config.secure == false ? '-k' : ''
+
   // trigger token generation
   try {
-    json = sh(returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' \"https://${server}:4433/rbac-api/v1/auth/token\" -d '${payload}'")
+    String json = sh(returnStdout: true, script: "${config.bin} ${secure} -X POST -H 'Content-Type: application/json' \"https://${server}:4433/rbac-api/v1/auth/token\" -d '${payload}'")
   }
   catch(Exception error) {
-    print "Failure executing curl against ${server} with token at ${config.token}!"
+    print "Failure executing curl against ${server} with username ${config.username}."
     throw error
   }
   // receive and parse response
   try {
-    response = readJSON(text: json)
+    Map response = readJSON(text: json)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON!"
     throw error
   }
+
+  // acess token value and save it to file
+  writeFile(file: "${env.JENKINS_HOME}/.puppetlabs/token", text: response['token'])
+
   print "RBAC Token retrieved successfully and stored at ${env.JENKINS_HOME}/.puppetlabs/token."
-
-
-  //The the command will return a JSON object containing the key token and the token itself.
-  //Copy the token to a text file, and create subdir first.
-  //CAUTION: If you are using curl commands with the -k insecure SSL connection option, keep in mind that you are vulnerable to a person-in-the-middle attack.
 }
