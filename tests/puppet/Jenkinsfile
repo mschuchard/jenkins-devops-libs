@@ -14,6 +14,21 @@ pipeline {
   stages {
     stage('Tests') {
       parallel {
+        stage('Token Generate') {
+          steps {
+            script {
+              puppet.token {
+                puppet.token {
+                  bin      = '/usr/bin/curl' // optional executable path for curl
+                  password = 'password' // password for the rbac token
+                  secure   = false // optional verify ssl connection
+                  server   = 'puppet' // optional server hosting puppet server
+                  username = 'username' // username for the rbac token
+                }
+              }
+            }
+          }
+        }
         stage('Code Deploy') {
           steps {
             script {
