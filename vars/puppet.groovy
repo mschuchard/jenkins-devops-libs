@@ -192,6 +192,7 @@ def token (body) {
 
   config.bin = config.bin == null ? 'curl' : config.bin
   config.server = config.server == null ? 'puppet' : config.server
+  config.path = config.path == null ? "${env.JENKINS_HOME}/.puppetlabs/token" : config.path
 
   //construct payload
   Map payload = [:]
@@ -221,8 +222,13 @@ def token (body) {
     throw error
   }
 
+  // check if desired token save path exists and create if not
+  if (!(fileExists(config.path))) {
+    new File(config.path).mkdir()
+  }
+
   // acess token value and save it to file
-  writeFile(file: "${env.JENKINS_HOME}/.puppetlabs/token", text: response['token'])
+  writeFile(file: config.path, text: response['token'])
 
   print "RBAC Token retrieved successfully and stored at ${env.JENKINS_HOME}/.puppetlabs/token."
 }

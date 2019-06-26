@@ -43,6 +43,7 @@ Generates a RBAC token for use with Puppet Enterprise endpoints, and saves it as
 puppet.token {
   bin      = '/usr/bin/curl' // optional executable path for curl
   password = 'password' // password for the rbac token
+  path     = '$HOME/.puppetlabs' // optional path to save rbac token to
   secure   = true // optional verify ssl connection
   server   = 'puppet' // optional server hosting puppet server
   username = 'username' // username for the rbac token
