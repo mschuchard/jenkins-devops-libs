@@ -1,4 +1,4 @@
-### 1.3.0 (Next)
+### 1.3.0
 **Helm**
 - Allow values override to also be a URL.
 - Add `keyring` param to `package` method.
