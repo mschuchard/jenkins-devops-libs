@@ -17,7 +17,7 @@ def build(body) {
 
   // create artifact with packer
   try {
-    cmd = "${config.bin} build -color=false"
+    String cmd = "${config.bin} build -color=false"
 
     // check for optional inputs
     if (config.var_file != null) {
@@ -48,13 +48,11 @@ def build(body) {
 }
 
 def inspect(String template, String bin = '/usr/bin/packer') {
-  // inspect the packer template
-
   // input checking
   assert fileExists(bin) : "A file does not exist at ${bin}."
   assert fileExists(template) : "A file does not exist at ${template}."
 
-  // inspect the template
+  // inspect the packer template
   try {
     sh "${bin} ${template}"
   }
@@ -78,7 +76,7 @@ def install(body) {
 
   // check if current version already installed
   if (fileExists("${config.install_path}/packer")) {
-    installed_version = sh(returnStdout: true, script: "${config.install_path}/packer version").trim()
+    String installed_version = sh(returnStdout: true, script: "${config.install_path}/packer version").trim()
     if (installed_version ==~ config.version) {
       print "Packer version ${config.version} already installed at ${config.install_path}."
       return
@@ -93,7 +91,7 @@ def install(body) {
 }
 
 def plugin_install(String url, String install_loc) {
-  install_dir = new File(install_loc).name.take(File(install_loc).name.lastIndexOf('/'))
+  String install_dir = new File(install_loc).name.take(File(install_loc).name.lastIndexOf('/'))
 
   // check if plugin dir exists and create if not
   if (!(fileExists(install_dir))) {
@@ -137,7 +135,7 @@ def validate(body) {
 
   // validate template with packer
   try {
-    cmd = "${config.bin} validate"
+    String cmd = "${config.bin} validate"
 
     // check for optional inputs
     if (config.var_file != null) {

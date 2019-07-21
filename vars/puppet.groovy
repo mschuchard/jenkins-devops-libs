@@ -17,7 +17,8 @@ def code_deploy(body) {
   assert (config.servers instanceof String[]) : 'The servers parameter must be an array of strings.'
 
   // init payload
-  payload = [:]
+  def payload = [:]
+
   // check for environments
   if (config.environments == null) {
     payload['deploy-all'] = true
@@ -37,7 +38,7 @@ def code_deploy(body) {
   payload = new utils().map_to_json(payload)
 
   // iterate through servers
-  errored = false
+  boolean errored = false
   config.servers.each() { server ->
     // trigger code manager deployment
     try {
@@ -49,7 +50,7 @@ def code_deploy(body) {
     }
     // parse response
     try {
-      response = readJSON(text: json)
+      def response = readJSON(text: json)
     }
     catch(Exception error) {
       print "Response from ${server} is not valid JSON!"
@@ -93,7 +94,8 @@ def task(body) {
   config.server = config.server == null ? 'puppet' : config.server
 
   // construct payload
-  payload = [:]
+  def payload = [:]
+
   if (config.environment != null) {
     payload['environment'] = config.environment
   }
@@ -109,8 +111,10 @@ def task(body) {
   else {
     payload['params'] = config.params
   }
+
   payload['task'] = config.task
   payload['scope'] = [:]
+
   if (config.scope instanceof String[]) {
     // is the last element of the array a nested array
     if (config.scope[-1] instanceof String[]) {
@@ -148,7 +152,7 @@ def task(body) {
   }
   // receive and parse response
   try {
-    response = readJSON(text: json)
+    def response = readJSON(text: json)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON!"
@@ -195,7 +199,7 @@ def token (body) {
   config.path = config.path == null ? "${env.JENKINS_HOME}/.puppetlabs" : config.path
 
   //construct payload
-  Map payload = [:]
+  def payload = [:]
   payload['username'] = config.username
   payload['password'] = config.password
 
@@ -215,7 +219,7 @@ def token (body) {
   }
   // receive and parse response
   try {
-    Map response = readJSON(text: json)
+    def response = readJSON(text: json)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON!"

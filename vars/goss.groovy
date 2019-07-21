@@ -6,7 +6,7 @@ def install(String version, String install_path = '/usr/bin/') {
 
   // check if current version already installed
   if (fileExists("${install_path}/goss")) {
-    installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()
+    String installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()
     if (installed_version ==~ version) {
       print "Goss version ${version} already installed at ${install_path}."
       return
@@ -23,7 +23,7 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
 
   // check if current version already installed
   if (fileExists("${install_path}/dgoss") && fileExists("${install_path}/goss")) {
-    installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()
+    String installed_version = sh(returnStdout: true, script: "${install_path}/goss --version").trim()
     if (installed_version ==~ version) {
       print "Dgoss version ${version} already installed at ${install_path}."
       return
@@ -55,7 +55,7 @@ def server(body) {
 
   // create goss rest api endpoint
   try {
-    cmd = "${config.bin}"
+    String cmd = "${config.bin}"
 
     // check for optional inputs
     if (config.vars != null) {
@@ -92,7 +92,7 @@ def validate(body) {
 
   // validate with goss
   try {
-    cmd = "${config.bin}"
+    String cmd = "${config.bin}"
 
     // check for optional inputs
     if (config.vars != null) {
@@ -127,7 +127,8 @@ def validate_docker(body) {
 
   // run with dgoss
   try {
-    cmd = "${config.bin} run"
+    String cmd = "${config.bin} run"
+
     // check for optional inputs
     if (config.flags != null) {
       assert (config.flags instanceof String[]) : 'The flags parameter must be an array of strings.'
