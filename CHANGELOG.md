@@ -1,3 +1,10 @@
+### Next (Roadmap)
+**General**
+- Add type specification checks.
+
+**Terraform**
+- Add `target` parameter to `plan` method.
+
 ### 1.3.0
 **Helm**
 - Allow values override to also be a URL.

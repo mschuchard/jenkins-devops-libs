@@ -285,6 +285,13 @@ def plan(body) {
     if (config.destroy == true) {
       cmd += ' -destroy'
     }
+    if (config.target != null) {
+      assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
+
+      config.target.each() { target ->
+        cmd += " -target=${target}"
+      }
+    }
 
     sh "${cmd} ${config.dir}"
   }

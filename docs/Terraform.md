@@ -79,6 +79,7 @@ terraform.plan {
   bin      = '/usr/bin/terraform' // optional path to terraform executable
   destroy  = false // optional generate a plan to destroy resources
   dir      = '/path/to/config_dir_or_plan_file' // path to config dir
+  target   = ['aws_instance.example', 'aws_eip.ip'] // optional resource targets
   var      = ['foo=bar', 'bar=baz'] // optional variable setting
   var_file = '/path/to/variables.tf' // optional location of variables file
 }
