@@ -8,7 +8,7 @@ Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each metho
 - pipeline-utility-steps plugin (`install`)
 
 ### terraform.apply {}
-Uses Terraform to apply a config. Note that if `terraform.plan { path = config_dir }` was invoked before this, the resulting plan file is in `config_dir/plan.tfplan`.
+Uses Terraform to apply a config. Note that if `terraform.plan { path = config_dir }` was invoked before this, the resulting plan file is in `config_dir/plan.tfplan`. If a plan file is specified as the `config_path`, then vars cannot be specified.
 
 ```groovy
 terraform.apply {

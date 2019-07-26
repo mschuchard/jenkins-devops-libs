@@ -21,19 +21,23 @@ def apply(body) {
   try {
     cmd = "${config.bin} apply -input=false -no-color -auto-approve"
 
-    // check for optional inputs
-    if (config.var_file != null) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+    // check if a directory was passed for the config path
+    if (!(config.config_path ==~ /plan\.tfplan/)) {
+      // check for optional var inputs
+      if (config.var_file != null) {
+        assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
-      cmd += " -var_file=${config.var_file}"
-    }
-    if (config.var != null) {
-      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+        cmd += " -var_file=${config.var_file}"
+      }
+      if (config.var != null) {
+        assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
 
-      config.var.each() { var ->
-        cmd += " -var ${var}"
+        config.var.each() { var ->
+          cmd += " -var ${var}"
+        }
       }
     }
+    // check for optional targets input
     if (config.target != null) {
       assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
 
