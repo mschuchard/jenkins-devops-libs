@@ -14,8 +14,8 @@ def delete(body) {
 
   // attempt to delete a release object
   try {
-    cmd = "${config.bin} delete"
-    lister = "${config.bin} list"
+    String cmd = "${config.bin} delete"
+    String lister = "${config.bin} list"
 
     if (config.context != null) {
       cmd += " --kube-context ${config.context}"
@@ -23,7 +23,7 @@ def delete(body) {
     }
 
     // check release object
-    release_obj_list = sh(returnStdout: true, script: lister).trim()
+    String release_obj_list = sh(returnStdout: true, script: lister).trim()
     assert (release_obj_list ==~ config.name) : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name}"
@@ -47,8 +47,8 @@ def install(body) {
 
   // install with helm
   try {
-    cmd = "${config.bin} install"
-    lister = "${config.bin} list"
+    String cmd = "${config.bin} install"
+    String lister = "${config.bin} list"
 
     if (config.values != null) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
@@ -84,7 +84,7 @@ def install(body) {
     }
 
     // check release object
-    release_obj_list = sh(returnStdout: true, script: lister).trim()
+    String release_obj_list = sh(returnStdout: true, script: lister).trim()
     if ((config.name != null) && (release_obj_list ==~ config.name)) {
       throw new Exception("Release object ${config.name} already exists!")
     }
@@ -103,7 +103,7 @@ def kubectl(String version, String install_path = '/usr/bin/') {
 
   // check if current version already installed
   if (fileExists("${install_path}/kubectl")) {
-    installed_version = sh(returnStdout: true, script: "${install_path}/kubectl version").trim()
+    String installed_version = sh(returnStdout: true, script: "${install_path}/kubectl version").trim()
     if (installed_version ==~ version) {
       print "Kubectl version ${version} already installed at ${install_path}."
       return
@@ -128,7 +128,7 @@ def lint(body) {
 
   // lint with helm
   try {
-    cmd = "${config.bin} lint"
+    String cmd = "${config.bin} lint"
 
     if (config.values != null) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
@@ -158,7 +158,7 @@ def lint(body) {
       cmd += " --strict"
     }
 
-    lint_output = sh(returnStdout: true, script: "${cmd} ${config.chart}")
+    String lint_output = sh(returnStdout: true, script: "${cmd} ${config.chart}")
 
     if (lint_output == '') {
       print 'No errors or warnings from helm lint.'
@@ -190,7 +190,7 @@ def package(body) {
 
   // package with helm
   try {
-    cmd = "${config.bin} package"
+    String cmd = "${config.bin} package"
 
     if (config.dest != null) {
       assert fileExists(config.dest) : "The destination directory ${config.dest} for the chart archive does not exist!"
@@ -235,8 +235,8 @@ def rollback(body) {
 
   // rollback with helm
   try {
-    cmd = "${config.bin} rollback"
-    lister = "${config.bin} list"
+    String cmd = "${config.bin} rollback"
+    String lister = "${config.bin} list"
 
     if (config.context != null) {
       cmd += " --kube-context ${config.context}"
@@ -244,7 +244,7 @@ def rollback(body) {
     }
 
     // check release object
-    release_obj_list = sh(returnStdout: true, script: lister).trim()
+    String release_obj_list = sh(returnStdout: true, script: lister).trim()
     assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name} ${config.version}"
@@ -261,7 +261,7 @@ def setup(String version, String install_path = '/usr/bin/') {
 
   // check if current version already installed
   if (fileExists("${install_path}/helm")) {
-    installed_version = sh(returnStdout: true, script: "${install_path}/helm version").trim()
+    String installed_version = sh(returnStdout: true, script: "${install_path}/helm version").trim()
     if (installed_version ==~ version) {
       print "Helm version ${version} already installed at ${install_path}."
     }
@@ -301,7 +301,7 @@ def test(body) {
 
   // test with helm
   try {
-    cmd = "${config.bin} test"
+    String cmd = "${config.bin} test"
 
     // optional inputs
     if (config.cleanup == true) {
@@ -326,13 +326,13 @@ def test(body) {
 
     // collect necessary information for displaying debug logs
     // first grab the status of the release as a json
-    json_status = sh(returnStdout: true, script: "${config.bin} status -o json ${config.name}")
+    String json_status = sh(returnStdout: true, script: "${config.bin} status -o json ${config.name}")
     // parse the json to return the status hash
-    status = readJSON(text: json_status)
+    def status = readJSON(text: json_status)
     // assign the namespace to a local var for kubectl logs
-    namespace = status['namespace']
+    String namespace = status['namespace']
     // iterate through results and store names of test pods
-    test_pods = []
+    def test_pods = []
     status['info']['status']['last_test_suite_run']['results'].each() { result ->
       test_pods.push(result['name'])
     }
@@ -368,8 +368,8 @@ def upgrade(body) {
 
   // upgrade with helm
   try {
-    cmd = "${config.bin} upgrade"
-    lister = "${config.bin} list"
+    String cmd = "${config.bin} upgrade"
+    String lister = "${config.bin} list"
 
     if (config.values != null) {
       assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
@@ -402,7 +402,7 @@ def upgrade(body) {
     }
 
     // check release object
-    release_obj_list = sh(returnStdout: true, script: lister).trim()
+    String release_obj_list = sh(returnStdout: true, script: lister).trim()
     assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
 
     sh "${cmd} ${config.name} ${config.chart}"

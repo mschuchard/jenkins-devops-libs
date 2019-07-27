@@ -17,7 +17,7 @@ def build(body) {
 
   // create image with faas
   try {
-    cmd = "${config.bin} build"
+    String cmd = "${config.bin} build"
 
     // check for optional inputs
     if (config.filter != null) {
@@ -64,7 +64,7 @@ def deploy(body) {
 
   // deploy function with faas
   try {
-    cmd = "${config.bin} deploy"
+    String cmd = "${config.bin} deploy"
 
     // check for optional inputs
     if (config.filter != null) {
@@ -109,14 +109,14 @@ def install(body) {
 
   // check if current version already installed
   if (fileExists("${config.install_path}/faas-cli")) {
-    installed_version = sh(returnStdout: true, script: "${config.install_path}/faas-cli version").trim()
+    String installed_version = sh(returnStdout: true, script: "${config.install_path}/faas-cli version").trim()
     if (installed_version ==~ config.version) {
       print "FaaS CLI version ${config.version} already installed at ${config.install_path}."
       return
     }
   }
   // otherwise determine extension based on platform
-  def extension = ''
+  String extension = ''
   switch (config.platform) {
     case 'linux': extension = ''; break;
     case 'windows': extension = '.exe'; break;
@@ -145,7 +145,7 @@ def invoke(body) {
 
   // invoke faas function
   try {
-    cmd = "${config.bin} invoke"
+    String cmd = "${config.bin} invoke"
 
     // check for optional inputs
     if (config.async == true) {
@@ -198,7 +198,7 @@ def login(body) {
 
   // login to faas gateway
   try {
-    cmd = "${config.bin} login"
+    String cmd = "${config.bin} login"
 
     // check for optional inputs
     if (config.tls == false) {
@@ -223,14 +223,12 @@ def push(body) {
 
   // input checking
   assert config.template != null : 'The required template parameter was not set.'
-
-  config.bin = config.bin == null ? 'faas-cli' : config.bin
-
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+  config.bin = config.bin == null ? 'faas-cli' : config.bin
 
   // push function with faas
   try {
-    cmd = "${config.bin} push"
+    String cmd = "${config.bin} push"
 
     // check for optional inputs
     if (config.filter != null) {
@@ -264,14 +262,12 @@ def remove(body) {
 
   // input checking
   assert config.template != null : 'The required template parameter was not set.'
-
-  config.bin = config.bin == null ? 'faas-cli' : config.bin
-
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+  config.bin = config.bin == null ? 'faas-cli' : config.bin
 
   // remove function with faas
   try {
-    cmd = "${config.bin} rm"
+    String cmd = "${config.bin} rm"
 
     // check for optional inputs
     if (config.filter != null) {
