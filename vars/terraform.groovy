@@ -12,14 +12,13 @@ def apply(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = config.bin == null ? 'terraform' : config.bin
-
   assert config.config_path != null : '"config_path" is a required parameter for terraform.apply.'
   assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
+  config.bin = config.bin == null ? 'terraform' : config.bin
 
   // apply the config
   try {
-    cmd = "${config.bin} apply -input=false -no-color -auto-approve"
+    String cmd = "${config.bin} apply -input=false -no-color -auto-approve"
 
     // check if a directory was passed for the config path
     if (!(config.config_path ==~ /plan\.tfplan/)) {
@@ -68,12 +67,12 @@ def destroy(body) {
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
   // -force changed to -auto-approve in 0.11.4
-  installed_version = sh(returnStdout: true, script: "${config.bin} version").trim()
+  String installed_version = sh(returnStdout: true, script: "${config.bin} version").trim()
   if (installed_version ==~ /0\.1[2-9]\.[0-9]|0\.11\.[4-9]/) {
-    no_input_flag = '-auto-approve'
+    String no_input_flag = '-auto-approve'
   }
   else {
-    no_input_flag = '-force'
+    String no_input_flag = '-force'
   }
 
   assert config.config_path != null : '"config_path" is a required parameter for terraform.destroy.'
@@ -81,7 +80,7 @@ def destroy(body) {
 
   // destroy the state
   try {
-    cmd = "${config.bin} destroy -input=false -no-color ${no_input_flag}"
+    String cmd = "${config.bin} destroy -input=false -no-color ${no_input_flag}"
 
     // check for optional inputs
     if (config.var_file != null) {
@@ -124,13 +123,12 @@ def init(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = config.bin == null ? 'terraform' : config.bin
-
   assert fileExists(config.dir) : "Working config directory ${config.dir} does not exist!"
+  config.bin = config.bin == null ? 'terraform' : config.bin
 
   // initialize the working config directory
   try {
-    cmd = "${config.bin} init -input=false -no-color"
+    String cmd = "${config.bin} init -input=false -no-color"
 
     // check for optional inputs
     if (config.plugin_dir != null) {
@@ -164,13 +162,13 @@ def import(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = config.bin == null ? 'terraform' : config.bin
   assert config.resources != null : 'Parameter resources must be specified.'
   assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings.'
+  config.bin = config.bin == null ? 'terraform' : config.bin
 
   // import the resources
   try {
-    cmd = "${config.bin} import -no-color -input=false"
+    String cmd = "${config.bin} import -no-color -input=false"
 
     // check for optional inputs
     if (config.var_file != null) {
@@ -228,7 +226,7 @@ def install(body) {
 
   // check if current version already installed
   if (fileExists("${config.install_path}/terraform")) {
-    installed_version = sh(returnStdout: true, script: "${config.install_path}/terraform version").trim()
+    String installed_version = sh(returnStdout: true, script: "${config.install_path}/terraform version").trim()
     if (installed_version ==~ config.version) {
       print "Terraform version ${config.version} already installed at ${config.install_path}."
       return
@@ -253,14 +251,13 @@ def plan(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = config.bin == null ? 'terraform' : config.bin
-
   assert config.dir != null : '"dir" is a required parameter for terraform.plan.'
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  config.bin = config.bin == null ? 'terraform' : config.bin
 
   // generate a plan from the config directory
   try {
-    cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
+    String cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
 
     // check for optional inputs
     if (config.var_file != null) {
@@ -319,7 +316,7 @@ def plugin_install(config) {
   config.install_path = config.install_path == null ? '~/.terraform.d/plugins' : config.install_path
 
   // set and assign plugin install location
-  install_loc = "${config.install_path}/${config.install_name}"
+  String install_loc = "${config.install_path}/${config.install_name}"
 
   // check if plugin dir exists and create if not
   if (!(fileExists(config.install_path))) {
@@ -359,7 +356,7 @@ def state(config) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
-  cmd = config.bin
+  String cmd = config.bin
 
   // perform state manipulation
   try {
@@ -413,13 +410,13 @@ def taint(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = config.bin == null ? 'terraform' : config.bin
   assert config.resources != null : 'Parameter resources must be specified.'
   assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings.'
+  config.bin = config.bin == null ? 'terraform' : config.bin
 
   // taint the resources
   try {
-    cmd = "${config.bin} taint -no-color"
+    String cmd = "${config.bin} taint -no-color"
 
     // check for optional inputs
     if (config.module != null) {
@@ -454,16 +451,15 @@ def validate(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = config.bin == null ? 'terraform' : config.bin
-
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  config.bin = config.bin == null ? 'terraform' : config.bin
 
   // validate the config directory
   try {
-    cmd = "${config.bin} validate -no-color"
+    String cmd = "${config.bin} validate -no-color"
 
     // check for terraform >= 0.12 (those versions have flag for json output)
-    new_validate = sh(returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
+    String new_validate = sh(returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
 
     if (!(new_validate)) {
       // check for optional inputs
@@ -504,8 +500,8 @@ def workspace(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = config.bin == null ? 'terraform' : config.bin
   assert (config.directory != null && config.workspace != null) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
+  config.bin = config.bin == null ? 'terraform' : config.bin
 
   assert fileExists(config.dir) : "The config directory ${config.dir} does not exist!"
 
@@ -518,6 +514,6 @@ def workspace(body) {
       print 'Failure using terraform workspace select.'
       throw error
     }
-    print 'Terraform workspace selected successfully.'
+    print "Terraform workspace ${config.workspace} selected successfully."
   }
 }
