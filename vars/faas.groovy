@@ -1,9 +1,9 @@
 // vars/faas.groovy
 import devops.common.utils
 
-def build(body) {
+def build(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -45,9 +45,9 @@ def build(body) {
   print 'FaaS build image created successfully.'
 }
 
-def deploy(body) {
+def deploy(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -95,9 +95,9 @@ def deploy(body) {
   print 'FaaS function deployed successfully.'
 }
 
-def install(body) {
+def install(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -132,9 +132,9 @@ def install(body) {
   print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
 }
 
-def invoke(body) {
+def invoke(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -183,9 +183,9 @@ def invoke(body) {
   print 'FaaS function container image pushed successfully.'
 }
 
-def login(body) {
+def login(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -214,9 +214,9 @@ def login(body) {
   print 'Successfully logged in to FaaS gateway.'
 }
 
-def push(body) {
+def push(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -253,9 +253,9 @@ def push(body) {
   print 'FaaS function container image pushed successfully.'
 }
 
-def remove(body) {
+def remove(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()

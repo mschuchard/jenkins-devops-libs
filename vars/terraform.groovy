@@ -1,9 +1,9 @@
 // vars/terraform.groovy
 import devops.common.utils
 
-def apply(body) {
+def apply(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -54,9 +54,9 @@ def apply(body) {
   print 'Terraform apply was successful.'
 }
 
-def destroy(body) {
+def destroy(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -112,9 +112,9 @@ def destroy(body) {
   print 'Terraform destroy was successful.'
 }
 
-def init(body) {
+def init(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -151,9 +151,9 @@ def init(body) {
   print 'Terraform init was successful.'
 }
 
-def import(body) {
+def import(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -209,9 +209,9 @@ def import(body) {
   print 'Terraform imports were successful.'
 }
 
-def install(body) {
+def install(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -240,9 +240,9 @@ def install(body) {
   print "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
-def plan(body) {
+def plan(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -301,7 +301,7 @@ def plan(body) {
 
 def plugin_install(config) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -346,7 +346,7 @@ def plugin_install(config) {
 
 def state(config) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -401,7 +401,7 @@ def state(config) {
 
 def taint(config) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -442,7 +442,7 @@ def taint(config) {
 
 def validate(config) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -489,9 +489,9 @@ def validate(config) {
   print 'Terraform validate was successful.'
 }
 
-def workspace(body) {
+def workspace(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()

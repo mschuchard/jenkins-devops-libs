@@ -1,9 +1,9 @@
 // vars/packer.groovy
 import devops.common.utils
 
-def build(body) {
+def build(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -62,9 +62,9 @@ def inspect(String template, String bin = '/usr/bin/packer') {
   }
 }
 
-def install(body) {
+def install(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -119,9 +119,9 @@ def plugin_install(String url, String install_loc) {
   print "Packer plugin successfully installed at ${install_loc}."
 }
 
-def validate(body) {
+def validate(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()

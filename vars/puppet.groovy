@@ -1,9 +1,9 @@
 // vars/puppet.groovy
 import devops.common.utils
 
-def code_deploy(body) {
+def code_deploy(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -17,7 +17,7 @@ def code_deploy(body) {
   assert (config.servers instanceof String[]) : 'The servers parameter must be an array of strings.'
 
   // init payload
-  def payload = [:]
+  Map payload = [:]
 
   // check for environments
   if (config.environments == null) {
@@ -50,7 +50,7 @@ def code_deploy(body) {
     }
     // parse response
     try {
-      def response = readJSON(text: json)
+      Map response = readJSON(text: json)
     }
     catch(Exception error) {
       print "Response from ${server} is not valid JSON!"
@@ -77,9 +77,9 @@ def code_deploy(body) {
   print 'Code manager deployment(s) was successful.'
 }
 
-def task(body) {
+def task(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -94,7 +94,7 @@ def task(body) {
   config.server = config.server == null ? 'puppet' : config.server
 
   // construct payload
-  def payload = [:]
+  Map payload = [:]
 
   if (config.environment != null) {
     payload['environment'] = config.environment
@@ -152,7 +152,7 @@ def task(body) {
   }
   // receive and parse response
   try {
-    def response = readJSON(text: json)
+    Map response = readJSON(text: json)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON!"
@@ -183,9 +183,9 @@ def task(body) {
   print 'Puppet Orchestrator Task execution successfully requested.'
 }
 
-def token (body) {
+def token (Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -199,7 +199,7 @@ def token (body) {
   config.path = config.path == null ? "${env.JENKINS_HOME}/.puppetlabs" : config.path
 
   //construct payload
-  def payload = [:]
+  Map payload = [:]
   payload['username'] = config.username
   payload['password'] = config.password
 
@@ -219,7 +219,7 @@ def token (body) {
   }
   // receive and parse response
   try {
-    def response = readJSON(text: json)
+    Map response = readJSON(text: json)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON!"

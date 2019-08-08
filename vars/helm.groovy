@@ -1,9 +1,9 @@
 //vars/helm.groovy
 import devops.common.utils
 
-def delete(body) {
+def delete(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -34,9 +34,9 @@ def delete(body) {
   }
 }
 
-def install(body) {
+def install(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -115,9 +115,9 @@ def kubectl(String version, String install_path = '/usr/bin/') {
   print "Kubectl successfully installed at ${install_path}/kubectl."
 }
 
-def lint(body) {
+def lint(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -176,9 +176,9 @@ def lint(body) {
   print 'Helm lint executed successfully.'
 }
 
-def package(body) {
+def package(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -221,9 +221,9 @@ def package(body) {
   print 'Helm package command was successful.'
 }
 
-def rollback(body) {
+def rollback(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -288,9 +288,9 @@ def setup(String version, String install_path = '/usr/bin/') {
   }
 }
 
-def test(body) {
+def test(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -354,9 +354,9 @@ def test(body) {
   print 'Helm test executed successfully.'
 }
 
-def upgrade(body) {
+def upgrade(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()

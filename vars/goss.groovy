@@ -37,9 +37,9 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
   print "Dgoss successfully installed at ${install_path}/dgoss."
 }
 
-def server(body) {
+def server(Closure body) {
   // evaluate the body block and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -76,9 +76,9 @@ def server(body) {
   print 'Goss endpoint created successfully.'
 }
 
-def validate(body) {
+def validate(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
@@ -113,9 +113,9 @@ def validate(body) {
   print 'Goss validate command was successful.'
 }
 
-def validate_docker(body) {
+def validate_docker(Closure body) {
   // evaluate the body block, and collect configuration into the object
-  def config = [:]
+  Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
   body.delegate = config
   body()
