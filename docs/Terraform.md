@@ -45,11 +45,11 @@ terraform.init {
 }
 ```
 
-### terraform.import {}
+### terraform.imports {}
 Imports existing infrastructure into your Terraform state.
 
 ```groovy
-terraform.import {
+terraform.imports {
   bin       = '/usr/bin/terraform' // optional path to terraform executable
   dir       = '/path/to/config' // optional path to terraform config for provider
   resources = ['resource.name', 'other.name'] // names of the resources to import

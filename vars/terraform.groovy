@@ -151,7 +151,7 @@ def init(Closure body) {
   print 'Terraform init was successful.'
 }
 
-def import(Closure body) {
+def imports(Closure body) {
   // evaluate the body block and collect configuration into the object
   Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
