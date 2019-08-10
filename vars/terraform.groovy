@@ -389,7 +389,7 @@ def state(config) {
         sh "${cmd} push";
         break;
       default:
-        default: throw new Exception("Unknown Terraform state command ${config.cmd} specified.");
+        throw new Exception("Unknown Terraform state command ${config.cmd} specified.");
     }
   }
   catch(Exception error) {
