@@ -299,7 +299,7 @@ def plan(Closure body) {
   print 'Terraform plan was successful.'
 }
 
-def plugin_install(config) {
+def plugin_install(Closure body) {
   // evaluate the body block and collect configuration into the object
   Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
@@ -344,7 +344,7 @@ def plugin_install(config) {
   print "Terraform plugin successfully installed at ${install_loc}."
 }
 
-def state(config) {
+def state(Closure body) {
   // evaluate the body block and collect configuration into the object
   Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
@@ -399,7 +399,7 @@ def state(config) {
   print 'Terraform state manipulation was successful.'
 }
 
-def taint(config) {
+def taint(Closure body) {
   // evaluate the body block and collect configuration into the object
   Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
@@ -440,7 +440,7 @@ def taint(config) {
   print 'Terraform taints were successful.'
 }
 
-def validate(config) {
+def validate(Closure body) {
   // evaluate the body block and collect configuration into the object
   Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST
