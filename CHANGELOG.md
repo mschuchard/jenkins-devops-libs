@@ -3,7 +3,7 @@
 - Add type specification checks.
 
 **Terraform**
-- Add `target` parameter to `plan` method.
+- Add `target` and `display` parameters to `plan` method.
 - Rename `import` method to `imports` to avoid reserved name collision.
 
 ### 1.3.0

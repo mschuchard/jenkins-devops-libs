@@ -290,7 +290,13 @@ def plan(Closure body) {
       }
     }
 
-    sh "${cmd} ${config.dir}"
+    plan_output = sh(script: "${cmd} ${config.dir}", returnStdout: true)
+
+    // display plan output if specified
+    if (config.display == true) {
+      print 'Terraform plan output is:'
+      print plan_output
+    }
   }
   catch(Exception error) {
     print 'Failure using terraform plan.'
