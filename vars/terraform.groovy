@@ -506,7 +506,7 @@ def workspace(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (config.directory != null && config.workspace != null) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
+  assert (config.dir != null && config.workspace != null) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
   config.bin = config.bin == null ? 'terraform' : config.bin
 
   assert fileExists(config.dir) : "The config directory ${config.dir} does not exist!"

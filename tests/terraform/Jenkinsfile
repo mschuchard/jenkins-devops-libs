@@ -3,9 +3,9 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
   [$class: 'GitSCMSource',
    remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
 // if added in Jenkins global config shared libraries
-//@Library('jenkins-devops-libs')
+//@Library('jenkins-devops-libs')_
 // if added in Jenkins global config shared libraries and the github api plugin is bugging out and slamming github with requests
-//library('jenkins-devops-libs')
+//library('jenkins-devops-libs')_
 
 pipeline {
   agent any
@@ -15,7 +15,7 @@ pipeline {
       steps {
         script {
           terraform.install {
-            version = '0.10.8'
+            version = '0.11.14'
             install_path = '/tmp'
             platform = 'linux_amd64'
           }
@@ -27,7 +27,10 @@ pipeline {
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/terraform/main.tf -o /tmp/main.tf'
 
         script {
-          terraform.init('/tmp', '/tmp/terraform')
+          terraform.init {
+            bin = '/tmp/terraform'
+            dir = '/tmp'
+          }
         }
       }
     }
