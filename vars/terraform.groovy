@@ -66,13 +66,16 @@ def destroy(Closure body) {
 
   // input checking
   config.bin = config.bin == null ? 'terraform' : config.bin
+
   // -force changed to -auto-approve in 0.11.4
   String installed_version = sh(returnStdout: true, script: "${config.bin} version").trim()
+  // apply correct tag based on installed version
+  String no_input_flag = ''
   if (installed_version ==~ /0\.1[2-9]\.[0-9]|0\.11\.[4-9]/) {
-    String no_input_flag = '-auto-approve'
+    no_input_flag = '-auto-approve'
   }
   else {
-    String no_input_flag = '-force'
+    no_input_flag = '-force'
   }
 
   assert config.config_path != null : '"config_path" is a required parameter for terraform.destroy.'

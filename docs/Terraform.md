@@ -128,8 +128,8 @@ Uses Terraform to validate a config directory. Note that Terraform >= 0.12 does 
 ```groovy
 terraform.validate {
   bin        = '/usr/bin/terraform' // optional path to terraform executable
-  dir        = '/path/to/config_dir' // path to config dir
   check_vars = true // optional check whether all required variables have been specified
+  dir        = '/path/to/config_dir' // path to config dir
   var        = ['foo=bar', 'bar=baz'] // optional variable setting
   var_file   = '/path/to/variables.tf' // optional location of variables file
 }

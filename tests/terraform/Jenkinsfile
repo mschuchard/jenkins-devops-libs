@@ -48,7 +48,11 @@ pipeline {
     stage('Validate') {
       steps {
         script {
-          terraform.validate('/tmp', '/tmp/terraform')
+          terraform.validate {
+            bin        = '/tmp/terraform'
+            check_vars = false
+            dir        = '/tmp'
+          }
         }
       }
     }
@@ -76,8 +80,8 @@ pipeline {
       steps {
         script {
           terraform.destroy {
-            bin = '/tmp/terraform'
-            dir = '/tmp'
+            bin         = '/tmp/terraform'
+            config_path = '/tmp'
           }
         }
       }
