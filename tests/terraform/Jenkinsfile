@@ -56,6 +56,18 @@ pipeline {
         }
       }
     }
+    stage('Fmt') {
+      steps {
+        script {
+          terraform.fmt {
+            dir   = '/tmp'
+            bin   = '/tmp/terraform'
+            check = true
+            diff  = true
+          }
+        }
+      }
+    }
     stage('Plan') {
       steps {
         script {
