@@ -33,6 +33,23 @@ terraform.destroy {
 }
 ```
 
+### terraform.fmt {}
+Uses Terraform to check for properly formatted code. Note that in Terraform
+0.12.x the `recursive` option was added (Terraform < 0.12 automatically
+recursed through subdirectories). The `check` and `write` parameters are
+mutually exclusive, so only one of them may be enabled at a time.
+
+```groovy
+terraform.fmt {
+  bin        = '/usr/bin/terraform' // optional path to terraform executable
+  check      = true // optional check files within config dir and return an error if any files are not formatted correctly (cannot be used with `write`)
+  diff       = true // optional present a diff if any files within config dir are not formatted correctly
+  dir        = '/path/to/working_config_dir' // path to working config dir
+  recursive  = false // optional check subdirectories of config dir recursively (only available in Terraform 0.12 and greater)
+  write      = false // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
+}
+```
+
 ### terraform.init {}
 Uses Terraform to initialize a working directory.
 

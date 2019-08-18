@@ -115,6 +115,63 @@ def destroy(Closure body) {
   print 'Terraform destroy was successful.'
 }
 
+def fmt(Closure body) {
+  // evaluate the body block and collect configuration into the object
+  Map config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  config.bin = config.bin == null ? 'terraform' : config.bin
+
+  try {
+    String cmd = "${config.bin} fmt -no-color"
+
+    // check for mutually exclusive options
+    if ((config.write == true) && (config.check == true)) {
+      error("The 'write' and 'check' options for terraform.fmt are mutually exclusive - only one can be enabled.")
+    }
+
+    // check for terraform >= 0.12 (those versions have flag for recursive processing)
+    String new_fmt = sh(returnStdout: true, script: "${config.bin} fmt --help") ==~ /-recursive/
+
+    if (new_fmt) {
+      // check for optional inputs
+      if (config.recursive == true) {
+        cmd += " -recursive"
+      }
+    }
+
+    if (config.diff == true) {
+      cmd += " -diff"
+    }
+
+    if (config.check == true) {
+      cmd += " -check"
+    }
+
+    if (config.write == true) {
+      cmd += " -write"
+    }
+
+    sh "${cmd} ${config.dir}"
+  }
+  catch(Exception error) {
+    if (config.check == true) {
+      print 'Terraform fmt has detected formatting errors.'
+    } else {
+      print 'Failure using terraform fmt.'
+    }
+    throw error
+  }
+  print 'Terraform fmt was successful.'
+}
+
 def init(Closure body) {
   // evaluate the body block and collect configuration into the object
   Map config = [:]
