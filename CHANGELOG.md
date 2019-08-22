@@ -2,9 +2,13 @@
 **General**
 - Add type specification checks.
 
+**Packer**
+- Fix bugs in methods.
+
 **Terraform**
 - Add `target` and `display` parameters to `plan` method.
 - Rename `import` method to `imports` to avoid reserved name collision.
+- Fix bugs in methods.
 
 ### 1.3.0
 **Helm**

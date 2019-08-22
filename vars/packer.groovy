@@ -54,7 +54,7 @@ def inspect(String template, String bin = '/usr/bin/packer') {
 
   // inspect the packer template
   try {
-    sh "${bin} ${template}"
+    sh "${bin} inspect ${template}"
   }
   catch(Exception error) {
     print 'Failure inspecting the template.'
@@ -91,7 +91,10 @@ def install(Closure body) {
 }
 
 def plugin_install(String url, String install_loc) {
-  String install_dir = new File(install_loc).name.take(File(install_loc).name.lastIndexOf('/'))
+  // determine number of elements in loc up to final slash
+  String elem_count = new File(install_loc).name.lastIndexOf('/')
+  // return file path up to final slash element
+  String install_dir = new File(install_loc).name.take(elem_count)
 
   // check if plugin dir exists and create if not
   if (!(fileExists(install_dir))) {
