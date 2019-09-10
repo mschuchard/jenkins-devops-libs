@@ -26,14 +26,14 @@ def build(Closure body) {
       cmd += " -var_file=${config.var_file}"
     }
     if (config.var != null) {
-      assert (config.var instanceof List : 'The var parameter must be an array of strings.'
+      assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
     if (config.only != null) {
-      assert (config.only instanceof List : 'The only parameter must be an array of strings.'
+      assert (config.only instanceof List) : 'The only parameter must be an array of strings.'
 
       cmd += " -only=${config.only.join(',')}"
     }
@@ -147,14 +147,14 @@ def validate(Closure body) {
       cmd += " -var_file=${config.var_file}"
     }
     if (config.var != null) {
-      assert (config.var instanceof List : 'The var parameter must be an array of strings.'
+      assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
     if (config.only != null) {
-      assert (config.only instanceof List : 'The only parameter must be an array of strings.'
+      assert (config.only instanceof List) : 'The only parameter must be an array of strings.'
 
       cmd += " -only=${config.only.join(',')}"
     }

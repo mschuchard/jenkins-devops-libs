@@ -161,7 +161,7 @@ def invoke(Closure body) {
       cmd += " -m ${config.method}"
     }
     if (config.query != null) {
-      assert (config.query instanceof List : 'The query parameter must be an array of strings.'
+      assert (config.query instanceof List) : 'The query parameter must be an array of strings.'
 
       config.query.each() { query ->
         cmd += " --query ${query}"
