@@ -3,9 +3,9 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
   [$class: 'GitSCMSource',
    remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
 // if added in Jenkins global config shared libraries
-//@Library('jenkins-devops-libs')
+//@Library('jenkins-devops-libs')_
 // if added in Jenkins global config shared libraries and the github api plugin is bugging out and slamming github with requests
-//library('jenkins-devops-libs')
+//library('jenkins-devops-libs')_
 
 pipeline {
   agent any
@@ -14,8 +14,8 @@ pipeline {
     stage('Install') {
       steps {
         script {
-          goss.install('0.3.6', '/tmp')
-          goss.install_dgoss('0.3.6', '/tmp')
+          goss.install('0.3.7', '/tmp')
+          goss.install_dgoss('0.3.7', '/tmp')
         }
       }
     }
@@ -33,7 +33,7 @@ pipeline {
         script {
           goss.validate {
             gossfile = '/tmp/goss.yaml' // optional location of gossfile
-            bin = '/tmp/goss' // optional executable path for goss
+            bin      = '/tmp/goss' // optional executable path for goss
           }
         }
       }
@@ -43,22 +43,22 @@ pipeline {
         script {
           goss.server {
             gossfile = '/tmp/goss.yaml' // optional location of gossfile
-            format = 'documentation' // optional formatter to use for output
-            bin = '/tmp/goss' // optional executable path for goss
+            format   = 'documentation' // optional formatter to use for output
+            bin      = '/tmp/goss' // optional executable path for goss
           }
         }
       }
     }
     stage('Validate Docker Image') {
       environment {
-        GOSS_FILES_PATH = '/tmp/'
+        GOSS_FILES_PATH     = '/tmp/'
         GOSS_FILES_STRATEGY = 'mount'
       }
       steps {
         script {
           goss.validate_docker {
-            bin = '/tmp/dgoss' // optional executable path for dgoss
-            flags = [''] // optional flags for container run
+            bin   = '/tmp/dgoss' // optional executable path for dgoss
+            flags = ['JAVA_OPTS="-Xmx1048m"'] // optional flags for container run
             image = 'alpine:latest' // docker image to run container from
           }
         }

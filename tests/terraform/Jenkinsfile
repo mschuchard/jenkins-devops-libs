@@ -15,9 +15,9 @@ pipeline {
       steps {
         script {
           terraform.install {
-            version = '0.11.14'
+            version      = '0.11.14'
             install_path = '/tmp'
-            platform = 'linux_amd64'
+            platform     = 'linux_amd64'
           }
         }
       }
@@ -38,8 +38,8 @@ pipeline {
       steps {
         script {
           terraform.workspace {
-            bin = '/tmp/terraform'
-            dir = '/tmp'
+            bin       = '/tmp/terraform'
+            dir       = '/tmp'
             workspace = 'default'
           }
         }
@@ -82,7 +82,7 @@ pipeline {
       steps {
         script {
           terraform.apply {
-            bin = '/tmp/terraform'
+            bin         = '/tmp/terraform'
             config_path = '/tmp/plan.tfplan'
           }
         }
