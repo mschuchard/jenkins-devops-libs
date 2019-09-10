@@ -4,9 +4,9 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
   [$class: 'GitSCMSource',
    remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
 // if added in Jenkins global config shared libraries
-//@Library('jenkins-devops-libs')
+//@Library('jenkins-devops-libs')_
 // if added in Jenkins global config shared libraries and the github api plugin is bugging out and slamming github with requests
-//library('jenkins-devops-libs')
+//library('jenkins-devops-libs')_
 
 pipeline {
   agent any
@@ -33,11 +33,11 @@ pipeline {
           steps {
             script {
               puppet.code_deploy {
-                bin = '/usr/bin/curl' // optional executable path for curl
+                bin     = '/usr/bin/curl' // optional executable path for curl
                 environments = ['development', 'production'] // optional environments to deploy (default is to deploy all environments)
                 servers = ['puppet'] // optional server hosting code manager
-                token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for deploying with code manager
-                wait = true // optional wait for code manager to finish deployment
+                token   = '/var/lib/jenkins/.puppetlabs/token' // rbac token for deploying with code manager
+                wait    = true // optional wait for code manager to finish deployment
               }
             }
           }
@@ -46,11 +46,11 @@ pipeline {
           steps {
             script {
               puppet.task {
-                bin = '/usr/bin/curl' // optional executable path for curl
+                bin    = '/usr/bin/curl' // optional executable path for curl
                 params = "['action':'install', 'name':'httpd']" // optional input
-                scope = ['localhost'] // scope for deployment
-                task = 'package' // name of the task to execute
-                token = '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
+                scope  = ['localhost'] // scope for deployment
+                task   = 'package' // name of the task to execute
+                token  = '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
               }
             }
           }
