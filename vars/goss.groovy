@@ -131,7 +131,7 @@ def validate_docker(Closure body) {
 
     // check for optional inputs
     if (config.flags != null) {
-      assert (config.flags instanceof String[]) : 'The flags parameter must be an array of strings.'
+      assert (config.flags instanceof List : 'The flags parameter must be an array of strings.'
 
       config.flags.each() { flag ->
         cmd += " -e ${flag}"

@@ -14,7 +14,7 @@ def code_deploy(Closure body) {
 
   config.bin = config.bin == null ? 'curl' : config.bin
   config.servers = config.servers == null ? ['puppet'] : config.servers
-  assert (config.servers instanceof String[]) : 'The servers parameter must be an array of strings.'
+  assert (config.servers instanceof List : 'The servers parameter must be an array of strings.'
 
   // init payload
   Map payload = [:]
@@ -24,7 +24,7 @@ def code_deploy(Closure body) {
     payload['deploy-all'] = true
   }
   else {
-    assert (config.environments instanceof String[]) : 'The environments parameter must be an array of strings.'
+    assert (config.environments instanceof List : 'The environments parameter must be an array of strings.'
 
     // preface environments payload
     payload['environments'] = config.environments
@@ -115,9 +115,9 @@ def task(Closure body) {
   payload['task'] = config.task
   payload['scope'] = [:]
 
-  if (config.scope instanceof String[]) {
+  if (config.scope instanceof List {
     // is the last element of the array a nested array
-    if (config.scope[-1] instanceof String[]) {
+    if (config.scope[-1] instanceof List {
       payload['scope']['query'] = config.scope
     }
     // otherwise it is an array of strings which is then a node list

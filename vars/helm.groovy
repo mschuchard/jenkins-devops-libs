@@ -51,7 +51,7 @@ def install(Closure body) {
     String lister = "${config.bin} list"
 
     if (config.values != null) {
-      assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
+      assert (config.values instanceof List : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
         if (!(value ==~ /:\/\//)) {
@@ -62,7 +62,7 @@ def install(Closure body) {
       }
     }
     if (config.set != null) {
-      assert (config.set instanceof String[]) : 'The set parameter must be an array of strings.'
+      assert (config.set instanceof List : 'The set parameter must be an array of strings.'
 
       config.set.each() { kv ->
         cmd += " --set ${kv}"
@@ -131,7 +131,7 @@ def lint(Closure body) {
     String cmd = "${config.bin} lint"
 
     if (config.values != null) {
-      assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
+      assert (config.values instanceof List : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
         if (!(value ==~ /:\/\//)) {
@@ -142,7 +142,7 @@ def lint(Closure body) {
       }
     }
     if (config.set != null) {
-      assert (config.set instanceof String[]) : 'The set parameter must be an array of strings.'
+      assert (config.set instanceof List : 'The set parameter must be an array of strings.'
 
       config.set.each() { kv ->
         cmd += " --set ${kv}"
@@ -372,7 +372,7 @@ def upgrade(Closure body) {
     String lister = "${config.bin} list"
 
     if (config.values != null) {
-      assert (config.values instanceof String[]) : 'The values parameter must be an array of strings.'
+      assert (config.values instanceof List : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
         if (!(value ==~ /:\/\//)) {
@@ -383,7 +383,7 @@ def upgrade(Closure body) {
       }
     }
     if (config.set != null) {
-      assert (config.set instanceof String[]) : 'The set parameter must be an array of strings.'
+      assert (config.set instanceof List : 'The set parameter must be an array of strings.'
 
       config.set.each() { kv ->
         cmd += " --set ${kv}"

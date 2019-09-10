@@ -29,7 +29,7 @@ def apply(Closure body) {
         cmd += " -var_file=${config.var_file}"
       }
       if (config.var != null) {
-        assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+        assert (config.var instanceof List : 'The var parameter must be an array of strings.'
 
         config.var.each() { var ->
           cmd += " -var ${var}"
@@ -38,7 +38,7 @@ def apply(Closure body) {
     }
     // check for optional targets input
     if (config.target != null) {
-      assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
+      assert (config.target instanceof List : 'The target parameter must be an array of strings.'
 
       config.target.each() { target ->
         cmd += " -target=${target}"
@@ -92,14 +92,14 @@ def destroy(Closure body) {
       cmd += " -var_file=${config.var_file}"
     }
     if (config.var != null) {
-      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+      assert (config.var instanceof List : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
     if (config.target != null) {
-      assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
+      assert (config.target instanceof List : 'The target parameter must be an array of strings.'
 
       config.target.each() { target ->
         cmd += " -target=${target}"
@@ -223,7 +223,7 @@ def imports(Closure body) {
 
   // input checking
   assert config.resources != null : 'Parameter resources must be specified.'
-  assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings.'
+  assert (config.resources instanceof List : 'Parameter resources must be an array of strings.'
   config.bin = config.bin == null ? 'terraform' : config.bin
 
   // import the resources
@@ -237,7 +237,7 @@ def imports(Closure body) {
       cmd += " -var_file=${config.var_file}"
     }
     if (config.var != null) {
-      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+      assert (config.var instanceof List : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
@@ -326,14 +326,14 @@ def plan(Closure body) {
       cmd += " -var_file=${config.var_file}"
     }
     if (config.var != null) {
-      assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+      assert (config.var instanceof List : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
     if (config.target != null) {
-      assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
+      assert (config.target instanceof List : 'The target parameter must be an array of strings.'
 
       config.target.each() { target ->
         cmd += " -target=${target}"
@@ -343,7 +343,7 @@ def plan(Closure body) {
       cmd += ' -destroy'
     }
     if (config.target != null) {
-      assert (config.target instanceof String[]) : 'The target parameter must be an array of strings.'
+      assert (config.target instanceof List : 'The target parameter must be an array of strings.'
 
       config.target.each() { target ->
         cmd += " -target=${target}"
@@ -436,14 +436,14 @@ def state(Closure body) {
     // perform different commands based upon type of state action
     switch (config.cmd) {
       case 'move':
-        assert (config.resources[0] instanceof String[]) : 'Parameter resources must be a nested array of strings for move command.';
+        assert (config.resources[0] instanceof List : 'Parameter resources must be a nested array of strings for move command.';
 
         config.resources.each() { resource_pair ->
           sh "${cmd} mv ${resource_pair}[0] ${resource_pair}[1]"
         };
         break;
       case 'remove':
-        assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings for remove command.';
+        assert (config.resources instanceof List : 'Parameter resources must be an array of strings for remove command.';
 
         config.resources.each() { resource ->
           sh "${cmd} rm ${resource}"
@@ -477,7 +477,7 @@ def taint(Closure body) {
 
   // input checking
   assert config.resources != null : 'Parameter resources must be specified.'
-  assert (config.resources instanceof String[]) : 'Parameter resources must be an array of strings.'
+  assert (config.resources instanceof List : 'Parameter resources must be an array of strings.'
   config.bin = config.bin == null ? 'terraform' : config.bin
 
   // taint the resources
@@ -535,7 +535,7 @@ def validate(Closure body) {
         cmd += " -var_file=${config.var_file}"
       }
       if (config.var != null) {
-        assert (config.var instanceof String[]) : 'The var parameter must be an array of strings.'
+        assert (config.var instanceof List : 'The var parameter must be an array of strings.'
 
         config.var.each() { var ->
           cmd += " -var ${var}"
