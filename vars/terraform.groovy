@@ -68,10 +68,10 @@ def destroy(Closure body) {
   config.bin = config.bin == null ? 'terraform' : config.bin
 
   // -force changed to -auto-approve in 0.11.4
-  String installed_version = sh(returnStdout: true, script: "${config.bin} version").trim()
-  // apply correct tag based on installed version
+  String no_input_check = sh(returnStdout: true, script: "${config.bin} destroy --help")
+  // apply correct flag based on installed version
   String no_input_flag = ''
-  if (installed_version ==~ /0\.1[2-9]\.[0-9]|0\.11\.[4-9]/) {
+  if (no_input_check ==~ /-auto-approve/) {
     no_input_flag = '-auto-approve'
   }
   else {
