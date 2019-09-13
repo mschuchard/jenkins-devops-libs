@@ -1,11 +1,13 @@
 ### Next (Roadmap)
 **General**
 - Add type specification checks.
+- Fixed explicit List type check on params.
 
 **Packer**
 - Fix bugs in methods.
 
 **Terraform**
+- Add `fmt` method as beta.
 - Add `target` and `display` parameters to `plan` method.
 - Rename `import` method to `imports` to avoid reserved name collision.
 - Fix bugs in methods.

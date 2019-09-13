@@ -34,6 +34,7 @@ terraform.destroy {
 ```
 
 ### terraform.fmt {}
+**BETA**
 Uses Terraform to check for properly formatted code. Note that in Terraform
 0.12.x the `recursive` option was added (Terraform < 0.12 automatically
 recursed through subdirectories). The `check` and `write` parameters are
