@@ -169,8 +169,14 @@ def lint(Closure body) {
     }
   }
   catch(Exception error) {
-    print 'Chart failed helm lint. Output of helm lint is:'
-    print lint_output
+    print 'Chart failed helm lint.'
+
+    // if the chart caused the error, then give more information about that
+    if (lint_output != '') {
+      print 'Output of helm lint is:'
+      print lint_output
+    }
+
     throw error
   }
   print 'Helm lint executed successfully.'
