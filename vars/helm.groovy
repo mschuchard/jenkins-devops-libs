@@ -176,7 +176,7 @@ def lint(Closure body) {
   print 'Helm lint executed successfully.'
 }
 
-def package(Closure body) {
+def packages(Closure body) {
   // evaluate the body block, and collect configuration into the object
   Map config = [:]
   body.resolveStrategy = Closure.DELEGATE_FIRST

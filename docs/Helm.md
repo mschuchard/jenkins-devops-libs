@@ -56,11 +56,11 @@ helm.lint {
 }
 ```
 
-### helm.package {}
+### helm.packages {}
 Package a chart directory into a chart archive.
 
 ```groovy
-helm.package {
+helm.packages {
   bin         = '/usr/bin/helm' // optional executable path for helm
   chart       = 'path/to/chart' // absolute or relative path to chart
   dest        = '.' // optional location to write the chart

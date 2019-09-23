@@ -3,6 +3,9 @@
 - Add type specification checks.
 - Fixed explicit List type check on params.
 
+**Helm**
+- Rename `package` method to `packages` to avoid reserved name collision.
+
 **Packer**
 - Fix bugs in methods.
 
