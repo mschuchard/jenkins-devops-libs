@@ -9,7 +9,7 @@ def build(Closure body) {
   body()
 
   // input checking
-  assert config.template != null : 'The required template parameter was not set.'
+  assert config.template : 'The required template parameter was not set.'
 
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
@@ -20,16 +20,16 @@ def build(Closure body) {
     String cmd = "${config.bin} build"
 
     // check for optional inputs
-    if (config.filter != null) {
+    if (config.filter) {
       cmd += " --filter '${config.filter}'"
     }
     if (config.no_cache == true) {
       cmd += ' --no-cache'
     }
-    if (config.parallel != null) {
+    if (config.parallel) {
       cmd += " --parallel ${config.parallel}"
     }
-    if (config.regex != null) {
+    if (config.regex) {
       cmd += " --regex '${config.regex}'"
     }
     if (config.squash == true) {
@@ -53,9 +53,9 @@ def deploy(Closure body) {
   body()
 
   // input checking
-  assert config.template != null : 'The required template parameter was not set.'
+  assert config.template : 'The required template parameter was not set.'
 
-  if (config.replace != null && config.update != null) {
+  if (config.replace && config.update) {
     throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
   }
   config.bin = config.bin == null ? 'faas-cli' : config.bin
@@ -67,19 +67,19 @@ def deploy(Closure body) {
     String cmd = "${config.bin} deploy"
 
     // check for optional inputs
-    if (config.filter != null) {
+    if (config.filter) {
       cmd += " --filter '${config.filter}'"
     }
-    if (config.label != null) {
+    if (config.label) {
       cmd += " --label ${config.label}"
     }
-    if (config.regex != null) {
+    if (config.regex) {
       cmd += " --regex '${config.regex}'"
     }
     if (config.replace == false) {
       cmd += ' --replace=false'
     }
-    if (config.secret != null) {
+    if (config.secret) {
       cmd += " --secret ${config.secret}"
     }
     if (config.update == true) {
@@ -104,7 +104,7 @@ def install(Closure body) {
 
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
-  assert (config.platform != null && config.version != null) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
+  assert (config.platform && config.version) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
   assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
 
   // check if current version already installed
@@ -141,7 +141,7 @@ def invoke(Closure body) {
 
   // input checking
   config.bin = config.bin == null ? 'faas-cli' : config.bin
-  assert config.function != null : 'The required parameter function was not set.'
+  assert config.function : 'The required parameter function was not set.'
 
   // invoke faas function
   try {
@@ -151,16 +151,16 @@ def invoke(Closure body) {
     if (config.async == true) {
       cmd += ' -a'
     }
-    if (config.content_type != null) {
+    if (config.content_type) {
       cmd += " --content-type ${config.content_type}"
     }
-    if (config.header != null) {
+    if (config.header) {
       cmd += " -H ${config.header}"
     }
-    if (config.method != null) {
+    if (config.method) {
       cmd += " -m ${config.method}"
     }
-    if (config.query != null) {
+    if (config.query) {
       assert (config.query instanceof List) : 'The query parameter must be an array of strings.'
 
       config.query.each() { query ->
@@ -170,7 +170,7 @@ def invoke(Closure body) {
     if (config.tls == false) {
       cmd += ' --tls-no-verify'
     }
-    if (config.stdin != null) {
+    if (config.stdin) {
       cmd += " < ${config.stdin}"
     }
 
@@ -191,9 +191,9 @@ def login(Closure body) {
   body()
 
   // input checking
-  assert config.gateway != null : 'The required gateway parameter was not set.'
-  assert config.password != null : 'The required password parameter was not set.'
-  assert config.user != null : 'The required user parameter was not set.'
+  assert config.gateway : 'The required gateway parameter was not set.'
+  assert config.password : 'The required password parameter was not set.'
+  assert config.user : 'The required user parameter was not set.'
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
   // login to faas gateway
@@ -222,7 +222,7 @@ def push(Closure body) {
   body()
 
   // input checking
-  assert config.template != null : 'The required template parameter was not set.'
+  assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
@@ -231,16 +231,16 @@ def push(Closure body) {
     String cmd = "${config.bin} push"
 
     // check for optional inputs
-    if (config.filter != null) {
+    if (config.filter) {
       cmd += " --filter '${config.filter}'"
     }
-    if (config.regex != null) {
+    if (config.regex) {
       cmd += " --regex '${config.regex}'"
     }
-    if (config.parallel != null) {
+    if (config.parallel) {
       cmd += " --parallel ${config.parallel}"
     }
-    if (config.tag != null) {
+    if (config.tag) {
       cmd += " --tag ${config.tag}"
     }
 
@@ -261,7 +261,7 @@ def remove(Closure body) {
   body()
 
   // input checking
-  assert config.template != null : 'The required template parameter was not set.'
+  assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
   config.bin = config.bin == null ? 'faas-cli' : config.bin
 
@@ -270,10 +270,10 @@ def remove(Closure body) {
     String cmd = "${config.bin} rm"
 
     // check for optional inputs
-    if (config.filter != null) {
+    if (config.filter) {
       cmd += " --filter '${config.filter}'"
     }
-    if (config.regex != null) {
+    if (config.regex) {
       cmd += " --regex '${config.regex}'"
     }
 

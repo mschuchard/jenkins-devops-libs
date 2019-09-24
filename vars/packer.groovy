@@ -9,7 +9,7 @@ def build(Closure body) {
   body()
 
   // input checking
-  assert config.template != null : 'The required template parameter was not set.'
+  assert config.template : 'The required template parameter was not set.'
 
   config.bin = config.bin == null ? 'packer' : config.bin
 
@@ -20,19 +20,19 @@ def build(Closure body) {
     String cmd = "${config.bin} build -color=false"
 
     // check for optional inputs
-    if (config.var_file != null) {
+    if (config.var_file) {
       assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
       cmd += " -var_file=${config.var_file}"
     }
-    if (config.var != null) {
+    if (config.var) {
       assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
-    if (config.only != null) {
+    if (config.only) {
       assert (config.only instanceof List) : 'The only parameter must be an array of strings.'
 
       cmd += " -only=${config.only.join(',')}"
@@ -71,7 +71,7 @@ def install(Closure body) {
 
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
-  assert (config.platform != null && config.version != null) : 'A required parameter is missing from the packer.install method. Please consult the documentation for proper usage.'
+  assert (config.platform && config.version) : 'A required parameter is missing from the packer.install method. Please consult the documentation for proper usage.'
   assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
 
   // check if current version already installed
@@ -129,7 +129,7 @@ def validate(Closure body) {
   body()
 
   // input checking
-  assert config.template != null : 'The required template parameter was not set.'
+  assert config.template : 'The required template parameter was not set.'
 
   config.bin = config.bin == null ? 'packer' : config.bin
 
@@ -140,19 +140,19 @@ def validate(Closure body) {
     String cmd = "${config.bin} validate"
 
     // check for optional inputs
-    if (config.var_file != null) {
+    if (config.var_file) {
       assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
       cmd += " -var_file=${config.var_file}"
     }
-    if (config.var != null) {
+    if (config.var) {
       assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
-    if (config.only != null) {
+    if (config.only) {
       assert (config.only instanceof List) : 'The only parameter must be an array of strings.'
 
       cmd += " -only=${config.only.join(',')}"

@@ -9,7 +9,7 @@ def code_deploy(Closure body) {
   body()
 
   // input checking
-  assert config.token != null : 'The required token parameter was not set.'
+  assert config.token : 'The required token parameter was not set.'
   assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
 
   config.bin = config.bin == null ? 'curl' : config.bin
@@ -30,7 +30,7 @@ def code_deploy(Closure body) {
     payload['environments'] = config.environments
   }
   // check for wait
-  if (config.wait != null) {
+  if (config.wait) {
     payload['wait'] = config.wait
   }
 
@@ -85,10 +85,10 @@ def task(Closure body) {
   body()
 
   // input checking
-  assert config.token != null : 'The required token parameter was not set.'
+  assert config.token : 'The required token parameter was not set.'
   assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
-  assert config.task != null : 'The required task parameter was not set.'
-  assert config.scope != null : 'The required scope parameter was not set.'
+  assert config.task : 'The required task parameter was not set.'
+  assert config.scope : 'The required scope parameter was not set.'
 
   config.bin = config.bin == null ? 'curl' : config.bin
   config.server = config.server == null ? 'puppet' : config.server
@@ -96,13 +96,13 @@ def task(Closure body) {
   // construct payload
   Map payload = [:]
 
-  if (config.environment != null) {
+  if (config.environment) {
     payload['environment'] = config.environment
   }
-  if (config.description != null) {
+  if (config.description) {
     payload['description'] = config.description
   }
-  if (config.noop != null) {
+  if (config.noop) {
     payload['noop'] = config.noop
   }
   if (config.params == null) {
@@ -191,8 +191,8 @@ def token (Closure body) {
   body()
 
   // input checking
-  assert config.username != null : 'The username parameter is required.'
-  assert config.password != null : 'The password parameter is required.'
+  assert config.username : 'The username parameter is required.'
+  assert config.password : 'The password parameter is required.'
 
   config.bin = config.bin == null ? 'curl' : config.bin
   config.server = config.server == null ? 'puppet' : config.server

@@ -10,14 +10,14 @@ def delete(Closure body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  assert config.name != null : "The required parameter 'name' was not set."
+  assert config.name : "The required parameter 'name' was not set."
 
   // attempt to delete a release object
   try {
     String cmd = "${config.bin} delete"
     String lister = "${config.bin} list"
 
-    if (config.context != null) {
+    if (config.context) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
     }
@@ -43,14 +43,14 @@ def install(Closure body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  assert config.chart != null : "The required parameter 'chart' was not set."
+  assert config.chart : "The required parameter 'chart' was not set."
 
   // install with helm
   try {
     String cmd = "${config.bin} install"
     String lister = "${config.bin} list"
 
-    if (config.values != null) {
+    if (config.values) {
       assert (config.values instanceof List) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
@@ -61,21 +61,21 @@ def install(Closure body) {
         cmd += " -f ${value}"
       }
     }
-    if (config.set != null) {
+    if (config.set) {
       assert (config.set instanceof List) : 'The set parameter must be an array of strings.'
 
       config.set.each() { kv ->
         cmd += " --set ${kv}"
       }
     }
-    if (config.context != null) {
+    if (config.context) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
     }
-    if (config.name != null) {
+    if (config.name) {
       cmd += " --name ${config.name}"
     }
-    if (config.namespace != null) {
+    if (config.namespace) {
       cmd += " --namespace ${config.namespace}"
       lister += " --namespace ${config.namespace}"
     }
@@ -85,7 +85,7 @@ def install(Closure body) {
 
     // check release object
     String release_obj_list = sh(returnStdout: true, script: lister).trim()
-    if ((config.name != null) && (release_obj_list ==~ config.name)) {
+    if ((config.name) && (release_obj_list ==~ config.name)) {
       throw new Exception("Release object ${config.name} already exists!")
     }
 
@@ -124,13 +124,13 @@ def lint(Closure body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  assert config.chart != null : "The required parameter 'chart' was not set."
+  assert config.chart : "The required parameter 'chart' was not set."
 
   // lint with helm
   try {
     String cmd = "${config.bin} lint"
 
-    if (config.values != null) {
+    if (config.values) {
       assert (config.values instanceof List) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
@@ -141,17 +141,17 @@ def lint(Closure body) {
         cmd += " -f ${value}"
       }
     }
-    if (config.set != null) {
+    if (config.set) {
       assert (config.set instanceof List) : 'The set parameter must be an array of strings.'
 
       config.set.each() { kv ->
         cmd += " --set ${kv}"
       }
     }
-    if (config.context != null) {
+    if (config.context) {
       cmd += " --kube-context ${config.context}"
     }
-    if (config.namespace != null) {
+    if (config.namespace) {
       cmd += " --namespace ${config.namespace}"
     }
     if (config.strict == true) {
@@ -191,22 +191,22 @@ def packages(Closure body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  assert config.chart != null : "The required parameter 'chart' was not set."
+  assert config.chart : "The required parameter 'chart' was not set."
   assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not contain a Chart.yaml!"
 
   // package with helm
   try {
     String cmd = "${config.bin} package"
 
-    if (config.dest != null) {
+    if (config.dest) {
       assert fileExists(config.dest) : "The destination directory ${config.dest} for the chart archive does not exist!"
 
       cmd += " -d ${config.dest}"
     }
-    if (config.key != null) {
+    if (config.key) {
       cmd += " --sign --key ${config.key}"
     }
-    else if (config.keyring != null) {
+    else if (config.keyring) {
       assert fileExists(config.keyring) : "The keyring ${config.keyring} does not exist."
 
       cmd += " --sign --keyring ${config.keyring}"
@@ -214,7 +214,7 @@ def packages(Closure body) {
     if (config.update_deps == true) {
       cmd += " -u"
     }
-    if (config.version != null) {
+    if (config.version) {
       cmd += " --version ${config.version}"
     }
 
@@ -235,8 +235,8 @@ def rollback(Closure body) {
   body()
 
   // input checking
-  assert config.version != null : "The required parameter 'version' was not set."
-  assert config.name != null : "The required parameter 'name' was not set."
+  assert config.version : "The required parameter 'version' was not set."
+  assert config.name : "The required parameter 'name' was not set."
   config.bin = config.bin == null ? 'helm' : config.bin
 
   // rollback with helm
@@ -244,7 +244,7 @@ def rollback(Closure body) {
     String cmd = "${config.bin} rollback"
     String lister = "${config.bin} list"
 
-    if (config.context != null) {
+    if (config.context) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
     }
@@ -303,7 +303,7 @@ def test(Closure body) {
 
   // input checking
   config.bin = config.bin == null ? 'helm' : config.bin
-  assert config.name != null : "The required parameter 'name' was not set."
+  assert config.name : "The required parameter 'name' was not set."
 
   // test with helm
   try {
@@ -316,7 +316,7 @@ def test(Closure body) {
     if (config.parallel == true) {
       cmd += " --parallel"
     }
-    if (config.context != null) {
+    if (config.context) {
       cmd += " --kube-context ${config.context}"
     }
 
@@ -368,8 +368,8 @@ def upgrade(Closure body) {
   body()
 
   // input checking
-  assert config.chart != null : "The required parameter 'chart' was not set."
-  assert config.name != null : "The required parameter 'name' was not set."
+  assert config.chart : "The required parameter 'chart' was not set."
+  assert config.name : "The required parameter 'name' was not set."
   config.bin = config.bin == null ? 'helm' : config.bin
 
   // upgrade with helm
@@ -377,7 +377,7 @@ def upgrade(Closure body) {
     String cmd = "${config.bin} upgrade"
     String lister = "${config.bin} list"
 
-    if (config.values != null) {
+    if (config.values) {
       assert (config.values instanceof List) : 'The values parameter must be an array of strings.'
 
       config.values.each() { value ->
@@ -388,18 +388,18 @@ def upgrade(Closure body) {
         cmd += " -f ${value}"
       }
     }
-    if (config.set != null) {
+    if (config.set) {
       assert (config.set instanceof List) : 'The set parameter must be an array of strings.'
 
       config.set.each() { kv ->
         cmd += " --set ${kv}"
       }
     }
-    if (config.context != null) {
+    if (config.context) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
     }
-    if (config.namespace != null) {
+    if (config.namespace) {
       cmd += " --namespace ${config.namespace}"
       lister += " --namespace ${config.namespace}"
     }

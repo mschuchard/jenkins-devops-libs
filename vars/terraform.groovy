@@ -12,7 +12,7 @@ def apply(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.config_path != null : '"config_path" is a required parameter for terraform.apply.'
+  assert config.config_path : '"config_path" is a required parameter for terraform.apply.'
   assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
   config.bin = config.bin == null ? 'terraform' : config.bin
 
@@ -23,12 +23,12 @@ def apply(Closure body) {
     // check if a directory was passed for the config path
     if (!(config.config_path ==~ /plan\.tfplan/)) {
       // check for optional var inputs
-      if (config.var_file != null) {
+      if (config.var_file) {
         assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
         cmd += " -var_file=${config.var_file}"
       }
-      if (config.var != null) {
+      if (config.var) {
         assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
         config.var.each() { var ->
@@ -37,7 +37,7 @@ def apply(Closure body) {
       }
     }
     // check for optional targets input
-    if (config.target != null) {
+    if (config.target) {
       assert (config.target instanceof List) : 'The target parameter must be an array of strings.'
 
       config.target.each() { target ->
@@ -78,7 +78,7 @@ def destroy(Closure body) {
     no_input_flag = '-force'
   }
 
-  assert config.config_path != null : '"config_path" is a required parameter for terraform.destroy.'
+  assert config.config_path : '"config_path" is a required parameter for terraform.destroy.'
   assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
 
   // destroy the state
@@ -86,19 +86,19 @@ def destroy(Closure body) {
     String cmd = "${config.bin} destroy -input=false -no-color ${no_input_flag}"
 
     // check for optional inputs
-    if (config.var_file != null) {
+    if (config.var_file) {
       assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
       cmd += " -var_file=${config.var_file}"
     }
-    if (config.var != null) {
+    if (config.var) {
       assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
-    if (config.target != null) {
+    if (config.target) {
       assert (config.target instanceof List) : 'The target parameter must be an array of strings.'
 
       config.target.each() { target ->
@@ -191,7 +191,7 @@ def init(Closure body) {
     String cmd = "${config.bin} init -input=false -no-color"
 
     // check for optional inputs
-    if (config.plugin_dir != null) {
+    if (config.plugin_dir) {
       if (!fileExists(config.plugin_dir)) {
         new File(config.plugin_dir).mkdir()
       }
@@ -222,7 +222,7 @@ def imports(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.resources != null : 'Parameter resources must be specified.'
+  assert config.resources : 'Parameter resources must be specified.'
   assert (config.resources instanceof List) : 'Parameter resources must be an array of strings.'
   config.bin = config.bin == null ? 'terraform' : config.bin
 
@@ -231,27 +231,27 @@ def imports(Closure body) {
     String cmd = "${config.bin} import -no-color -input=false"
 
     // check for optional inputs
-    if (config.var_file != null) {
+    if (config.var_file) {
       assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
       cmd += " -var_file=${config.var_file}"
     }
-    if (config.var != null) {
+    if (config.var) {
       assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
-    if (config.dir != null) {
+    if (config.dir) {
       assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
 
       cmd += " -config=${config.dir}"
     }
-    if (config.provider != null) {
+    if (config.provider) {
       cmd += " -provider=${config.provider}"
     }
-    if (config.state != null) {
+    if (config.state) {
       assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
       cmd += " -state=${config.state}"
@@ -281,7 +281,7 @@ def install(Closure body) {
 
   // input checking
   config.install_path = config.install_path == null ? '/usr/bin' : config.install_path
-  assert (config.platform != null && config.version != null) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
+  assert (config.platform && config.version) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
   assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
 
   // check if current version already installed
@@ -310,7 +310,7 @@ def plan(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.dir != null : '"dir" is a required parameter for terraform.plan.'
+  assert config.dir : '"dir" is a required parameter for terraform.plan.'
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   config.bin = config.bin == null ? 'terraform' : config.bin
 
@@ -319,19 +319,19 @@ def plan(Closure body) {
     String cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
 
     // check for optional inputs
-    if (config.var_file != null) {
+    if (config.var_file) {
       assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
       cmd += " -var_file=${config.var_file}"
     }
-    if (config.var != null) {
+    if (config.var) {
       assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
       config.var.each() { var ->
         cmd += " -var ${var}"
       }
     }
-    if (config.target != null) {
+    if (config.target) {
       assert (config.target instanceof List) : 'The target parameter must be an array of strings.'
 
       config.target.each() { target ->
@@ -341,7 +341,7 @@ def plan(Closure body) {
     if (config.destroy == true) {
       cmd += ' -destroy'
     }
-    if (config.target != null) {
+    if (config.target) {
       assert (config.target instanceof List) : 'The target parameter must be an array of strings.'
 
       config.target.each() { target ->
@@ -375,8 +375,8 @@ def plugin_install(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.url != null : "The required parameter 'url' was not set."
-  assert config.install_name != null : "The required parameter 'install_name' was not set."
+  assert config.url : "The required parameter 'url' was not set."
+  assert config.install_name : "The required parameter 'install_name' was not set."
 
   config.install_path = config.install_path == null ? '~/.terraform.d/plugins' : config.install_path
 
@@ -425,7 +425,7 @@ def state(Closure body) {
 
   // perform state manipulation
   try {
-    if (config.state != null) {
+    if (config.state) {
       assert config.cmd != 'push' : 'The state parameter is incompatible with state pushing.'
       assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
@@ -475,7 +475,7 @@ def taint(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.resources != null : 'Parameter resources must be specified.'
+  assert config.resources : 'Parameter resources must be specified.'
   assert (config.resources instanceof List) : 'Parameter resources must be an array of strings.'
   config.bin = config.bin == null ? 'terraform' : config.bin
 
@@ -484,10 +484,10 @@ def taint(Closure body) {
     String cmd = "${config.bin} taint -no-color"
 
     // check for optional inputs
-    if (config.module != null) {
+    if (config.module) {
       cmd += " -module=${config.module}"
     }
-    if (config.state != null) {
+    if (config.state) {
       assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
       cmd += " -state=${config.state}"
@@ -528,12 +528,12 @@ def validate(Closure body) {
 
     if (!(new_validate)) {
       // check for optional inputs
-      if (config.var_file != null) {
+      if (config.var_file) {
         assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
         cmd += " -var_file=${config.var_file}"
       }
-      if (config.var != null) {
+      if (config.var) {
         assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
 
         config.var.each() { var ->
@@ -565,7 +565,7 @@ def workspace(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (config.dir != null && config.workspace != null) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
+  assert (config.dir && config.workspace) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
   config.bin = config.bin == null ? 'terraform' : config.bin
 
   assert fileExists(config.dir) : "The config directory ${config.dir} does not exist!"

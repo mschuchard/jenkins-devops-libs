@@ -45,7 +45,7 @@ def server(Closure body) {
   body()
 
   // input checking
-  if ((config.gossfile != null) && (!fileExists(config.gossfile))) {
+  if ((config.gossfile) && (!fileExists(config.gossfile))) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
   }
   config.endpoint = config.endpoint == null ? '/healthz' : config.endpoint
@@ -58,12 +58,12 @@ def server(Closure body) {
     String cmd = "${config.bin}"
 
     // check for optional inputs
-    if (config.vars != null) {
+    if (config.vars) {
       assert fileExists(config.vars) : "The vars file ${config.vars} does not exist!"
 
       cmd += " --vars ${config.vars}"
     }
-    if (config.gossfile != null) {
+    if (config.gossfile) {
       cmd += " -g ${config.gossfile}"
     }
 
@@ -84,7 +84,7 @@ def validate(Closure body) {
   body()
 
   // input checking
-  if ((config.gossfile != null) && (!fileExists(config.gossfile))) {
+  if ((config.gossfile) && (!fileExists(config.gossfile))) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
   }
   config.format = config.format == null ? 'rspecish' : config.format
@@ -95,12 +95,12 @@ def validate(Closure body) {
     String cmd = "${config.bin}"
 
     // check for optional inputs
-    if (config.vars != null) {
+    if (config.vars) {
       assert fileExists(config.vars) : "The vars file ${config.vars} does not exist!"
 
       cmd += " --vars ${config.vars}"
     }
-    if (config.gossfile != null) {
+    if (config.gossfile) {
       cmd += " -g ${config.gossfile}"
     }
 
@@ -121,7 +121,7 @@ def validate_docker(Closure body) {
   body()
 
   // input checking
-  assert config.image != null : 'The required image parameter was not set.'
+  assert config.image : 'The required image parameter was not set.'
 
   config.bin = config.bin == null ? 'dgoss' : config.bin
 
@@ -130,7 +130,7 @@ def validate_docker(Closure body) {
     String cmd = "${config.bin} run"
 
     // check for optional inputs
-    if (config.flags != null) {
+    if (config.flags) {
       assert (config.flags instanceof List) : 'The flags parameter must be an array of strings.'
 
       config.flags.each() { flag ->
