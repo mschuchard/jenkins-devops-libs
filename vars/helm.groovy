@@ -9,7 +9,7 @@ def delete(Closure body) {
   body()
 
   // input checking
-  config.bin = config.bin == null ? 'helm' : config.bin
+  config.bin = !config.bin ? 'helm' : config.bin
   assert config.name : "The required parameter 'name' was not set."
 
   // attempt to delete a release object
@@ -42,7 +42,7 @@ def install(Closure body) {
   body()
 
   // input checking
-  config.bin = config.bin == null ? 'helm' : config.bin
+  config.bin = !config.bin ? 'helm' : config.bin
   assert config.chart : "The required parameter 'chart' was not set."
 
   // install with helm
@@ -123,7 +123,7 @@ def lint(Closure body) {
   body()
 
   // input checking
-  config.bin = config.bin == null ? 'helm' : config.bin
+  config.bin = !config.bin ? 'helm' : config.bin
   assert config.chart : "The required parameter 'chart' was not set."
 
   // lint with helm
@@ -160,7 +160,7 @@ def lint(Closure body) {
 
     String lint_output = sh(returnStdout: true, script: "${cmd} ${config.chart}")
 
-    if (lint_output == '') {
+    if (!(lint_output)) {
       print 'No errors or warnings from helm lint.'
     }
     else {
@@ -172,7 +172,7 @@ def lint(Closure body) {
     print 'Chart failed helm lint.'
 
     // if the chart caused the error, then give more information about that
-    if (lint_output != '') {
+    if (lint_output) {
       print 'Output of helm lint is:'
       print lint_output
     }
@@ -190,7 +190,7 @@ def packages(Closure body) {
   body()
 
   // input checking
-  config.bin = config.bin == null ? 'helm' : config.bin
+  config.bin = !config.bin ? 'helm' : config.bin
   assert config.chart : "The required parameter 'chart' was not set."
   assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not contain a Chart.yaml!"
 
@@ -237,7 +237,7 @@ def rollback(Closure body) {
   // input checking
   assert config.version : "The required parameter 'version' was not set."
   assert config.name : "The required parameter 'name' was not set."
-  config.bin = config.bin == null ? 'helm' : config.bin
+  config.bin = !config.bin ? 'helm' : config.bin
 
   // rollback with helm
   try {
@@ -302,7 +302,7 @@ def test(Closure body) {
   body()
 
   // input checking
-  config.bin = config.bin == null ? 'helm' : config.bin
+  config.bin = !config.bin ? 'helm' : config.bin
   assert config.name : "The required parameter 'name' was not set."
 
   // test with helm
@@ -344,7 +344,7 @@ def test(Closure body) {
     }
 
     // input check default value for kubectl path
-    config.kubectl = config.kubectl == null ? 'kubectl' : config.kubectl
+    config.kubectl = !config.kubectl ? 'kubectl' : config.kubectl
 
     // iterate through test pods, display the logs for each, and then delete the test pod
     test_pods.each() { test_pod ->
@@ -370,7 +370,7 @@ def upgrade(Closure body) {
   // input checking
   assert config.chart : "The required parameter 'chart' was not set."
   assert config.name : "The required parameter 'name' was not set."
-  config.bin = config.bin == null ? 'helm' : config.bin
+  config.bin = !config.bin ? 'helm' : config.bin
 
   // upgrade with helm
   try {

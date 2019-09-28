@@ -12,15 +12,15 @@ def code_deploy(Closure body) {
   assert config.token : 'The required token parameter was not set.'
   assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
 
-  config.bin = config.bin == null ? 'curl' : config.bin
-  config.servers = config.servers == null ? ['puppet'] : config.servers
+  config.bin = !config.bin ? 'curl' : config.bin
+  config.servers = !config.servers ? ['puppet'] : config.servers
   assert (config.servers instanceof List) : 'The servers parameter must be an array of strings.'
 
   // init payload
   Map payload = [:]
 
   // check for environments
-  if (config.environments == null) {
+  if (!config.environments) {
     payload['deploy-all'] = true
   }
   else {
@@ -90,8 +90,8 @@ def task(Closure body) {
   assert config.task : 'The required task parameter was not set.'
   assert config.scope : 'The required scope parameter was not set.'
 
-  config.bin = config.bin == null ? 'curl' : config.bin
-  config.server = config.server == null ? 'puppet' : config.server
+  config.bin = !config.bin ? 'curl' : config.bin
+  config.server = !config.server ? 'puppet' : config.server
 
   // construct payload
   Map payload = [:]
@@ -105,7 +105,7 @@ def task(Closure body) {
   if (config.noop) {
     payload['noop'] = config.noop
   }
-  if (config.params == null) {
+  if (!config.params) {
     payload['params'] = [:]
   }
   else {
@@ -194,9 +194,9 @@ def token (Closure body) {
   assert config.username : 'The username parameter is required.'
   assert config.password : 'The password parameter is required.'
 
-  config.bin = config.bin == null ? 'curl' : config.bin
-  config.server = config.server == null ? 'puppet' : config.server
-  config.path = config.path == null ? "${env.JENKINS_HOME}/.puppetlabs" : config.path
+  config.bin = !config.bin ? 'curl' : config.bin
+  config.server = !config.server ? 'puppet' : config.server
+  config.path = !config.path ? "${env.JENKINS_HOME}/.puppetlabs" : config.path
 
   //construct payload
   Map payload = [:]
