@@ -50,7 +50,7 @@ def server(Closure body) {
   }
   config.endpoint = !config.endpoint ? '/healthz' : config.endpoint
   config.format = !config.format ? 'rspecish' : config.format
-  config.port = !config.port ? ':8080' : config.port
+  config.port = !config.port ? '8080' : config.port
   config.bin = !config.bin ? 'goss' : config.bin
 
   // create goss rest api endpoint
