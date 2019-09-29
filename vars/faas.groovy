@@ -11,7 +11,7 @@ def build(Closure body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
 
-  config.bin = !config.bin ? 'faas-cli' : config.bin
+  config.bin = config.bin ? config.bin : 'faas-cli'
 
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
@@ -58,7 +58,7 @@ def deploy(Closure body) {
   if (config.replace && config.update) {
     throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
   }
-  config.bin = !config.bin ? 'faas-cli' : config.bin
+  config.bin = config.bin ? config.bin : 'faas-cli'
 
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
@@ -103,7 +103,7 @@ def install(Closure body) {
   body()
 
   // input checking
-  config.install_path = !config.install_path ? '/usr/bin' : config.install_path
+  config.install_path = config.install_path ? config.install_path : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
   assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
 
@@ -140,7 +140,7 @@ def invoke(Closure body) {
   body()
 
   // input checking
-  config.bin = !config.bin ? 'faas-cli' : config.bin
+  config.bin = config.bin ? config.bin : 'faas-cli'
   assert config.function : 'The required parameter function was not set.'
 
   // invoke faas function
@@ -194,7 +194,7 @@ def login(Closure body) {
   assert config.gateway : 'The required gateway parameter was not set.'
   assert config.password : 'The required password parameter was not set.'
   assert config.user : 'The required user parameter was not set.'
-  config.bin = !config.bin ? 'faas-cli' : config.bin
+  config.bin = config.bin ? config.bin : 'faas-cli'
 
   // login to faas gateway
   try {
@@ -224,7 +224,7 @@ def push(Closure body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
-  config.bin = !config.bin ? 'faas-cli' : config.bin
+  config.bin = config.bin ? config.bin : 'faas-cli'
 
   // push function with faas
   try {
@@ -263,7 +263,7 @@ def remove(Closure body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
-  config.bin = !config.bin ? 'faas-cli' : config.bin
+  config.bin = config.bin ? config.bin : 'faas-cli'
 
   // remove function with faas
   try {

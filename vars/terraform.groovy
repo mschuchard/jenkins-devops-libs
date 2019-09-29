@@ -14,7 +14,7 @@ def apply(Closure body) {
   // input checking
   assert config.config_path : '"config_path" is a required parameter for terraform.apply.'
   assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   // apply the config
   try {
@@ -65,7 +65,7 @@ def destroy(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   // -force changed to -auto-approve in 0.11.4
   String no_input_check = sh(returnStdout: true, script: "${config.bin} destroy --help")
@@ -127,7 +127,7 @@ def fmt(Closure body) {
 
   // input checking
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   try {
     String cmd = "${config.bin} fmt -no-color"
@@ -184,7 +184,7 @@ def init(Closure body) {
 
   // input checking
   assert fileExists(config.dir) : "Working config directory ${config.dir} does not exist!"
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   // initialize the working config directory
   try {
@@ -224,7 +224,7 @@ def imports(Closure body) {
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
   assert (config.resources instanceof List) : 'Parameter resources must be an array of strings.'
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   // import the resources
   try {
@@ -280,7 +280,7 @@ def install(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.install_path = !config.install_path ? '/usr/bin' : config.install_path
+  config.install_path = config.install_path ? config.install_path : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
   assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
 
@@ -312,7 +312,7 @@ def plan(Closure body) {
   // input checking
   assert config.dir : '"dir" is a required parameter for terraform.plan.'
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   // generate a plan from the config directory
   try {
@@ -378,7 +378,7 @@ def plugin_install(Closure body) {
   assert config.url : "The required parameter 'url' was not set."
   assert config.install_name : "The required parameter 'install_name' was not set."
 
-  config.install_path = !config.install_path ? '~/.terraform.d/plugins' : config.install_path
+  config.install_path = config.install_path ? config.install_path : '~/.terraform.d/plugins'
 
   // set and assign plugin install location
   String install_loc = "${config.install_path}/${config.install_name}"
@@ -420,7 +420,7 @@ def state(Closure body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
   String cmd = config.bin
 
   // perform state manipulation
@@ -477,7 +477,7 @@ def taint(Closure body) {
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
   assert (config.resources instanceof List) : 'Parameter resources must be an array of strings.'
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   // taint the resources
   try {
@@ -517,7 +517,7 @@ def validate(Closure body) {
 
   // input checking
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   // validate the config directory
   try {
@@ -566,7 +566,7 @@ def workspace(Closure body) {
 
   // input checking
   assert (config.dir && config.workspace) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
-  config.bin = !config.bin ? 'terraform' : config.bin
+  config.bin = config.bin ? config.bin : 'terraform'
 
   assert fileExists(config.dir) : "The config directory ${config.dir} does not exist!"
 

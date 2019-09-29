@@ -9,7 +9,7 @@ def delete(Closure body) {
   body()
 
   // input checking
-  config.bin = !config.bin ? 'helm' : config.bin
+  config.bin = config.bin ? config.bin : 'helm'
   assert config.name : "The required parameter 'name' was not set."
 
   // attempt to delete a release object
@@ -42,7 +42,7 @@ def install(Closure body) {
   body()
 
   // input checking
-  config.bin = !config.bin ? 'helm' : config.bin
+  config.bin = config.bin ? config.bin : 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
 
   // install with helm
@@ -123,7 +123,7 @@ def lint(Closure body) {
   body()
 
   // input checking
-  config.bin = !config.bin ? 'helm' : config.bin
+  config.bin = config.bin ? config.bin : 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
 
   // lint with helm
@@ -190,7 +190,7 @@ def packages(Closure body) {
   body()
 
   // input checking
-  config.bin = !config.bin ? 'helm' : config.bin
+  config.bin = config.bin ? config.bin : 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
   assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not contain a Chart.yaml!"
 
@@ -237,7 +237,7 @@ def rollback(Closure body) {
   // input checking
   assert config.version : "The required parameter 'version' was not set."
   assert config.name : "The required parameter 'name' was not set."
-  config.bin = !config.bin ? 'helm' : config.bin
+  config.bin = config.bin ? config.bin : 'helm'
 
   // rollback with helm
   try {
@@ -302,7 +302,7 @@ def test(Closure body) {
   body()
 
   // input checking
-  config.bin = !config.bin ? 'helm' : config.bin
+  config.bin = config.bin ? config.bin : 'helm'
   assert config.name : "The required parameter 'name' was not set."
 
   // test with helm
@@ -344,7 +344,7 @@ def test(Closure body) {
     }
 
     // input check default value for kubectl path
-    config.kubectl = !config.kubectl ? 'kubectl' : config.kubectl
+    config.kubectl = config.kubectl ? config.kubectl : 'kubectl'
 
     // iterate through test pods, display the logs for each, and then delete the test pod
     test_pods.each() { test_pod ->
@@ -370,7 +370,7 @@ def upgrade(Closure body) {
   // input checking
   assert config.chart : "The required parameter 'chart' was not set."
   assert config.name : "The required parameter 'name' was not set."
-  config.bin = !config.bin ? 'helm' : config.bin
+  config.bin = config.bin ? config.bin : 'helm'
 
   // upgrade with helm
   try {

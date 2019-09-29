@@ -11,7 +11,7 @@ def build(Closure body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
 
-  config.bin = !config.bin ? 'packer' : config.bin
+  config.bin = config.bin ? config.bin : 'packer'
 
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
@@ -70,7 +70,7 @@ def install(Closure body) {
   body()
 
   // input checking
-  config.install_path = !config.install_path ? '/usr/bin' : config.install_path
+  config.install_path = config.install_path ? config.install_path : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from the packer.install method. Please consult the documentation for proper usage.'
   assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
 
@@ -131,7 +131,7 @@ def validate(Closure body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
 
-  config.bin = !config.bin ? 'packer' : config.bin
+  config.bin = config.bin ? config.bin : 'packer'
 
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
