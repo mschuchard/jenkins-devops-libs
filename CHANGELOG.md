@@ -1,4 +1,4 @@
-### Next (Roadmap)
+### 1.3.1
 **General**
 - Add type specification checks.
 - Fixed explicit List type check on params.
