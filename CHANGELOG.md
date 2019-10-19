@@ -1,3 +1,7 @@
+### Next (Roadmap)
+**Terraform**
+- Update `taint` method for new 0.12 usage.
+
 ### 1.3.1
 **General**
 - Add type specification checks.

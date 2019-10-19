@@ -483,8 +483,11 @@ def taint(Closure body) {
   try {
     String cmd = "${config.bin} taint -no-color"
 
+    // check for terraform >= 0.12 (taint usage changed)
+    String new_taint = sh(returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
+
     // check for optional inputs
-    if (config.module) {
+    if (config.module && !(new_taint)) {
       cmd += " -module=${config.module}"
     }
     if (config.state) {

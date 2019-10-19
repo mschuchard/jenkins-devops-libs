@@ -129,7 +129,7 @@ terraform.state {
 ```
 
 ### terraform.taint {}
-Manually marks a resource as tainted. This forces a destroy and recreate on the next plan or apply.
+Manually marks a resource as tainted. This forces a destroy and recreate on the next plan or apply. Note that Terrform >= 0.12 has different usage, and consequently the module parameter will be ignored and the module should be provided as part of the resource parameter.
 
 ```groovy
 terraform.taint {
