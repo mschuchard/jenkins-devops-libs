@@ -309,6 +309,12 @@ def test(Closure body) {
   try {
     String cmd = "${config.bin} test"
 
+    // check if helm test has logging functionality
+    String logs = sh(returnStdout: true, script: "${config.bin} test --help") ==~ /--logs/
+    if (logs) {
+      cmd += " --logs"
+    }
+
     // optional inputs
     if (config.cleanup == true) {
       cmd += " --cleanup"
@@ -323,36 +329,38 @@ def test(Closure body) {
     sh "${cmd} ${config.name}"
   }
   catch(Exception error) {
-    print 'Release failed helm test. kubectl will now access the logs of the test pods and display them for debugging (unless using cleanup param).'
+    if (!(logs)) {
+      print 'Release failed helm test. kubectl will now access the logs of the test pods and display them for debugging (unless using cleanup param).'
 
-    if (config.cleanup == true) {
-      print 'Pods have already been cleaned up and are no longer accessible.'
-      return
-    }
+      if (config.cleanup == true) {
+        print 'Pods have already been cleaned up and are no longer accessible.'
+        return
+      }
 
-    // collect necessary information for displaying debug logs
-    // first grab the status of the release as a json
-    String json_status = sh(returnStdout: true, script: "${config.bin} status -o json ${config.name}")
-    // parse the json to return the status hash
-    def status = readJSON(text: json_status)
-    // assign the namespace to a local var for kubectl logs
-    String namespace = status['namespace']
-    // iterate through results and store names of test pods
-    def test_pods = []
-    status['info']['status']['last_test_suite_run']['results'].each() { result ->
-      test_pods.push(result['name'])
-    }
+      // collect necessary information for displaying debug logs
+      // first grab the status of the release as a json
+      String json_status = sh(returnStdout: true, script: "${config.bin} status -o json ${config.name}")
+      // parse the json to return the status hash
+      def status = readJSON(text: json_status)
+      // assign the namespace to a local var for kubectl logs
+      String namespace = status['namespace']
+      // iterate through results and store names of test pods
+      def test_pods = []
+      status['info']['status']['last_test_suite_run']['results'].each() { result ->
+        test_pods.push(result['name'])
+      }
 
-    // input check default value for kubectl path
-    config.kubectl = config.kubectl ? config.kubectl : 'kubectl'
+      // input check default value for kubectl path
+      config.kubectl = config.kubectl ? config.kubectl : 'kubectl'
 
-    // iterate through test pods, display the logs for each, and then delete the test pod
-    test_pods.each() { test_pod ->
-      logs = sh(returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${test_pod}")
-      print "Logs for ${test_pod} for release ${config.name} are:"
-      print logs
-      print "Removing test pod ${test_pod}."
-      sh "${config.kubectl} -n ${namespace} delete pod ${test_pod}"
+      // iterate through test pods, display the logs for each, and then delete the test pod
+      test_pods.each() { test_pod ->
+        logs = sh(returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${test_pod}")
+        print "Logs for ${test_pod} for release ${config.name} are:"
+        print logs
+        print "Removing test pod ${test_pod}."
+        sh "${config.kubectl} -n ${namespace} delete pod ${test_pod}"
+      }
     }
 
     throw new Exception('Helm test failed with above logs.')

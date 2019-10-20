@@ -91,7 +91,7 @@ helm.setup('2.14.3', '/usr/local/bin')
 ```
 
 ### helm.test {}
-Runs the tests for a release. If the tests fail and `cleanup` is false, then the logs for the test pods will be displayed (this is still undergoing functionality verification/testing) and then the pods will be deleted (both by `kubectl`).
+Runs the tests for a release. If Helm is at least version 2.15.0, then `--logs` will be enabled for diagnostics by default. Otherwise, if the tests fail and `cleanup` is false, then the logs for the test pods will be displayed through an alternative solution (this is still undergoing functionality verification/testing), and then the pods will be deleted (both by `kubectl`).
 
 ```groovy
 helm.test {

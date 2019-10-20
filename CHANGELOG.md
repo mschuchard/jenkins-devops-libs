@@ -1,4 +1,7 @@
 ### Next (Roadmap)
+**Helm**
+- Enable native logging for `test` method if available.
+
 **Terraform**
 - Update `taint` method for new 0.12 usage.
 
