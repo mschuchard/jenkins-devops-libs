@@ -362,6 +362,11 @@ def plan(Closure body) {
     throw error
   }
   print 'Terraform plan was successful.'
+
+  // return plan output if requested
+  if (config.return == true) {
+    return plan_output
+  }
 }
 
 def plugin_install(Closure body) {
