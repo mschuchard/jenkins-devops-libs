@@ -140,21 +140,16 @@ def fmt(Closure body) {
     // check for terraform >= 0.12 (those versions have flag for recursive processing)
     String new_fmt = sh(returnStdout: true, script: "${config.bin} fmt --help") ==~ /-recursive/
 
-    if (new_fmt) {
-      // check for optional inputs
-      if (config.recursive == true) {
-        cmd += " -recursive"
-      }
+    // check for optional inputs
+    if ((new_fmt) && (config.recursive == true)) {
+      cmd += " -recursive"
     }
-
     if (config.diff == true) {
       cmd += " -diff"
     }
-
     if (config.check == true) {
       cmd += " -check"
     }
-
     if (config.write == true) {
       cmd += " -write"
     }
@@ -164,7 +159,8 @@ def fmt(Closure body) {
   catch(Exception error) {
     if (config.check == true) {
       print 'Terraform fmt has detected formatting errors.'
-    } else {
+    }
+    else {
       print 'Failure using terraform fmt.'
     }
     throw error
