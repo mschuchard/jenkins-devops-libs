@@ -127,15 +127,14 @@ def fmt(Closure body) {
 
   // input checking
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  
+  if (config.write && config.check) {
+    throw new Exception("The 'write' and 'check' options for terraform.fmt are mutually exclusive - only one can be enabled.")
+  }
   config.bin = config.bin ? config.bin : 'terraform'
 
   try {
     String cmd = "${config.bin} fmt -no-color"
-
-    // check for mutually exclusive options
-    if ((config.write == true) && (config.check == true)) {
-      error("The 'write' and 'check' options for terraform.fmt are mutually exclusive - only one can be enabled.")
-    }
 
     // check for terraform >= 0.12 (those versions have flag for recursive processing)
     String new_fmt = sh(returnStdout: true, script: "${config.bin} fmt --help") ==~ /-recursive/
@@ -399,7 +398,9 @@ def plugin_install(Closure body) {
     // append zip extension to avoid filename clashes
     install_loc = "${install_loc}.zip"
   }
+
   new utils().download_file(config.url, install_loc)
+
   if (config.url ==~ /\.zip$/) {
     unzip(zipFile: install_loc)
     new utils().remove_file(install_loc)

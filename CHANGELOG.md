@@ -5,6 +5,7 @@
 **Terraform**
 - Update `taint` method for new 0.12 usage.
 - Add `return` parameter to `plan` method.
+- Promote `fmt` method to supported.
 
 ### 1.3.1
 **General**
