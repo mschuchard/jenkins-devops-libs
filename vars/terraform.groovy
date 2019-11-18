@@ -1,12 +1,9 @@
 // vars/terraform.groovy
 import devops.common.utils
 
-def apply(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def apply(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -54,12 +51,9 @@ def apply(Closure body) {
   print 'Terraform apply was successful.'
 }
 
-def destroy(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def destroy(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -115,19 +109,16 @@ def destroy(Closure body) {
   print 'Terraform destroy was successful.'
 }
 
-def fmt(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def fmt(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
   // input checking
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
-  
+
   if (config.write && config.check) {
     throw new Exception("The 'write' and 'check' options for terraform.fmt are mutually exclusive - only one can be enabled.")
   }
@@ -167,12 +158,9 @@ def fmt(Closure body) {
   print 'Terraform fmt was successful.'
 }
 
-def init(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def init(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -206,12 +194,9 @@ def init(Closure body) {
   print 'Terraform init was successful.'
 }
 
-def imports(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def imports(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -264,12 +249,9 @@ def imports(Closure body) {
   print 'Terraform imports were successful.'
 }
 
-def install(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def install(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -294,12 +276,9 @@ def install(Closure body) {
   print "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
-def plan(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def plan(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -364,12 +343,9 @@ def plan(Closure body) {
   }
 }
 
-def plugin_install(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def plugin_install(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -411,12 +387,9 @@ def plugin_install(Closure body) {
   print "Terraform plugin successfully installed at ${install_loc}."
 }
 
-def state(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def state(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -466,12 +439,9 @@ def state(Closure body) {
   print 'Terraform state manipulation was successful.'
 }
 
-def taint(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def taint(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -510,12 +480,9 @@ def taint(Closure body) {
   print 'Terraform taints were successful.'
 }
 
-def validate(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def validate(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -559,12 +526,9 @@ def validate(Closure body) {
   print 'Terraform validate was successful.'
 }
 
-def workspace(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def workspace(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true

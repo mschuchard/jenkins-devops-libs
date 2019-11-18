@@ -1,12 +1,9 @@
 // vars/faas.groovy
 import devops.common.utils
 
-def build(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def build(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
@@ -45,12 +42,9 @@ def build(Closure body) {
   print 'FaaS build image created successfully.'
 }
 
-def deploy(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def deploy(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
@@ -95,12 +89,9 @@ def deploy(Closure body) {
   print 'FaaS function deployed successfully.'
 }
 
-def install(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def install(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   config.install_path = config.install_path ? config.install_path : '/usr/bin'
@@ -132,12 +123,9 @@ def install(Closure body) {
   print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
 }
 
-def invoke(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def invoke(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'faas-cli'
@@ -183,12 +171,9 @@ def invoke(Closure body) {
   print 'FaaS function container image pushed successfully.'
 }
 
-def login(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def login(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.gateway : 'The required gateway parameter was not set.'
@@ -214,12 +199,9 @@ def login(Closure body) {
   print 'Successfully logged in to FaaS gateway.'
 }
 
-def push(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def push(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
@@ -253,12 +235,9 @@ def push(Closure body) {
   print 'FaaS function container image pushed successfully.'
 }
 
-def remove(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def remove(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'

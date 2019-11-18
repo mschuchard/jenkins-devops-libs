@@ -1,12 +1,9 @@
 //vars/helm.groovy
 import devops.common.utils
 
-def delete(Closure body) {
+def delete(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -34,12 +31,9 @@ def delete(Closure body) {
   }
 }
 
-def install(Closure body) {
+def install(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -115,12 +109,9 @@ def kubectl(String version, String install_path = '/usr/bin/') {
   print "Kubectl successfully installed at ${install_path}/kubectl."
 }
 
-def lint(Closure body) {
+def lint(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -182,12 +173,9 @@ def lint(Closure body) {
   print 'Helm lint executed successfully.'
 }
 
-def packages(Closure body) {
+def packages(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -227,12 +215,9 @@ def packages(Closure body) {
   print 'Helm package command was successful.'
 }
 
-def rollback(Closure body) {
+def rollback(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.version : "The required parameter 'version' was not set."
@@ -294,12 +279,9 @@ def setup(String version, String install_path = '/usr/bin/') {
   }
 }
 
-def test(Closure body) {
+def test(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -368,12 +350,9 @@ def test(Closure body) {
   print 'Helm test executed successfully.'
 }
 
-def upgrade(Closure body) {
+def upgrade(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.chart : "The required parameter 'chart' was not set."

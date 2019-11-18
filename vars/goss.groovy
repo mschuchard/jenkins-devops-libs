@@ -37,12 +37,9 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
   print "Dgoss successfully installed at ${install_path}/dgoss."
 }
 
-def server(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def server(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
@@ -76,12 +73,9 @@ def server(Closure body) {
   print 'Goss endpoint created successfully.'
 }
 
-def validate(Closure body) {
+def validate(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
@@ -113,12 +107,9 @@ def validate(Closure body) {
   print 'Goss validate command was successful.'
 }
 
-def validate_docker(Closure body) {
+def validate_docker(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.image : 'The required image parameter was not set.'

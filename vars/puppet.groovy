@@ -1,12 +1,9 @@
 // vars/puppet.groovy
 import devops.common.utils
 
-def code_deploy(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def code_deploy(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.token : 'The required token parameter was not set.'
@@ -77,12 +74,9 @@ def code_deploy(Closure body) {
   print 'Code manager deployment(s) was successful.'
 }
 
-def task(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def task(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.token : 'The required token parameter was not set.'
@@ -183,12 +177,9 @@ def task(Closure body) {
   print 'Puppet Orchestrator Task execution successfully requested.'
 }
 
-def token (Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def token (body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.username : 'The username parameter is required.'

@@ -1,12 +1,9 @@
 // vars/packer.groovy
 import devops.common.utils
 
-def build(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def build(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
@@ -62,12 +59,9 @@ def inspect(String template, String bin = '/usr/bin/packer') {
   }
 }
 
-def install(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def install(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   config.install_path = config.install_path ? config.install_path : '/usr/bin'
@@ -121,12 +115,9 @@ def plugin_install(String url, String install_loc) {
   print "Packer plugin successfully installed at ${install_loc}."
 }
 
-def validate(Closure body) {
-  // evaluate the body block and collect configuration into the object
-  Map config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
+def validate(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().params_converter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
