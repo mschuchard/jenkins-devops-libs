@@ -46,6 +46,27 @@ library('jenkins-devops-libs')
 - [Puppet Enterprise](docs/Puppet.md)
 - [Terraform](docs/Terraform.md)
 
+## DSL Change
+Starting with version 1.4.0 of the libraries, the new DSL will be supported. The new DSL appears like the following format:
+
+```groovy
+library.method(
+  param_one: value,
+  param_two: value
+)
+```
+
+The documentation has also been updated to reflect the new DSL. The old DSL will be supported until version 2.0.0. The old DSL appears like the following format:
+
+```groovy
+library.method {
+  param_one = value
+  param_two = value
+}
+```
+
+It is recommended to update your usage at your earliest convenience, but both will be supported for versions >= 1.4.0 < 2.0.0.
+
 ## Contributing
 Code should pass all acceptance tests. New features should involve new acceptance tests.
 
