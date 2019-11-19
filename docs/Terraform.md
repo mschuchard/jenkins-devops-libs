@@ -12,11 +12,11 @@ Uses Terraform to apply a config. Note that if `terraform.plan(path: config_dir)
 
 ```groovy
 terraform.apply(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  config_path: '/path/to/config_dir_or_plan_file' // path to config dir or plan file
-  target: ['aws_instance.example', 'aws_eip.ip'] // optional resource targets
-  var: ['foo=bar', 'bar=baz'] // optional variable setting
-  var_file: '/path/to/variables.tf' // optional location of variables file
+  bin:         '/usr/bin/terraform', // optional path to terraform executable
+  config_path: '/path/to/config_dir_or_plan_file', // path to config dir or plan file
+  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:         ['foo=bar', 'bar=baz'], // optional variable setting
+  var_file:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
@@ -25,11 +25,11 @@ Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: 
 
 ```groovy
 terraform.destroy(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  config_path: '/path/to/config_dir' // path to config dir or plan file
-  target: ['aws_instance.example', 'aws_eip.ip'] // optional resource targets
-  var: ['foo=bar', 'bar=baz'] // optional variable setting
-  var_file: '/path/to/variables.tf' // optional location of variables file
+  bin:         '/usr/bin/terraform', // optional path to terraform executable
+  config_path: '/path/to/config_dir', // path to config dir or plan file
+  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:         ['foo=bar', 'bar=baz'], // optional variable setting
+  var_file:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
@@ -41,12 +41,12 @@ mutually exclusive, so only one of them may be enabled at a time.
 
 ```groovy
 terraform.fmt(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  check: false // optional check files within config dir and return an error if any files are not formatted correctly (cannot be used with `write`)
-  diff: false // optional present a diff if any files within config dir are not formatted correctly
-  dir: '/path/to/working_config_dir' // path to working config dir
-  recursive: false // optional check subdirectories of config dir recursively (only available in Terraform 0.12 and greater)
-  write: false // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
+  bin:       '/usr/bin/terraform', // optional path to terraform executable
+  check:     false, // optional check files within config dir and return an error if any files are not formatted correctly (cannot be used with `write`)
+  diff:      false, // optional present a diff if any files within config dir are not formatted correctly
+  dir:       '/path/to/working_config_dir', // path to working config dir
+  recursive: false, // optional check subdirectories of config dir recursively (only available in Terraform 0.12 and greater)
+  write:     false // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
 )
 ```
 
@@ -55,10 +55,10 @@ Uses Terraform to initialize a working directory.
 
 ```groovy
 terraform.init(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  dir: '/path/to/working_config_dir' // path to working config dir
-  plugin_dir: '/path/to/plugin_dir' // optional path to (presumably shared) plugin/provider installation directory
-  upgrade: false // optional upgrade modules and plugins
+  bin:        '/usr/bin/terraform', // optional path to terraform executable
+  dir:        '/path/to/working_config_dir', // path to working config dir
+  plugin_dir: '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
+  upgrade:    false // optional upgrade modules and plugins
 )
 ```
 
@@ -67,13 +67,13 @@ Imports existing infrastructure into your Terraform state.
 
 ```groovy
 terraform.imports(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  dir: '/path/to/config' // optional path to terraform config for provider
-  resources: ['resource.name', 'other.name'] // names of the resources to import
-  provider: 'template' // optional specific provider for import
-  state: 'terraform.tfstate' // optional path to the source state file
-  var: ['foo=bar', 'bar=baz'] // optional variable setting
-  var_file: '/path/to/variables.tf' // optional location of variables file
+  bin:       '/usr/bin/terraform', // optional path to terraform executable
+  dir:       '/path/to/config', // optional path to terraform config for provider
+  resources: ['resource.name', 'other.name'], // names of the resources to import
+  provider:  'template', // optional specific provider for import
+  state:     'terraform.tfstate', // optional path to the source state file
+  var:       ['foo=bar', 'bar=baz'], // optional variable setting
+  var_file:  '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
@@ -82,9 +82,9 @@ Locally installs a specific version of Terraform.
 
 ```groovy
 terraform.install(
-  install_path: '/usr/bin' // optional location to install terraform
-  platform: 'linux_amd64' // platform where terraform will be installed
-  version: '0.11.7' // version of terraform to install
+  install_path: '/usr/bin', // optional location to install terraform
+  platform:     'linux_amd64', // platform where terraform will be installed
+  version:      '0.11.7' // version of terraform to install
 )
 ```
 
@@ -93,13 +93,13 @@ Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will b
 
 ```groovy
 terraform.plan(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  destroy: false // optional generate a plan to destroy resources
-  dir: '/path/to/config_dir_or_plan_file' // path to config dir
-  display: false // optional display plan output
-  return: false // optional return plan output from method
-  target: ['aws_instance.example', 'aws_eip.ip'] // optional resource targets
-  var: ['foo=bar', 'bar=baz'] // optional variable setting
+  bin:      '/usr/bin/terraform', // optional path to terraform executable
+  destroy:  false, // optional generate a plan to destroy resources
+  dir:      '/path/to/config_dir_or_plan_file', // path to config dir
+  display:  false, // optional display plan output
+  return:   false, // optional return plan output from method
+  target:   ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:      ['foo=bar', 'bar=baz'], // optional variable setting
   var_file: '/path/to/variables.tf' // optional location of variables file
 )
 ```
@@ -109,9 +109,9 @@ Locally installs a Terraform plugin. Note that these plugins need to be named ap
 
 ```groovy
 terraform.plugin_install(
-  install_loc: '~/.terraform.d/plugins' // optional path to install plugin into
-  install_name: 'terraform-provisioner-foo_v1.0.0' // post-install name of plugin
-  url: 'https://github.com/org/terraform-provisioner-foo/releases/download/v1.0.0/terraform-provisioner-foo-v1.0.0-linux-amd64' // url to retrieve plugin from
+  install_loc:  '~/.terraform.d/plugins', // optional path to install plugin into
+  install_name: 'terraform-provisioner-foo_v1.0.0', // post-install name of plugin
+  url:          'https://github.com/org/terraform-provisioner-foo/releases/download/v1.0.0/terraform-provisioner-foo-v1.0.0-linux-amd64' // url to retrieve plugin from
 )
 ```
 
@@ -120,11 +120,11 @@ Manipulate the Terraform state. The resources parameter should be `null` for a `
 
 ```groovy
 terraform.state(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  cmd: 'move' // state command; one of 'move', 'remove', or 'push'
-  resources: [['resource.from', 'resource.to'], ['resource.other_from', 'resource.other_to']] // resources to move
-  resources: ['resource.one', 'resource.two'] // resources to remove
-  state: 'terraform.tfstate' // optional path to read and save state
+  bin:       '/usr/bin/terraform', // optional path to terraform executable
+  cmd:       'move', // state command; one of 'move', 'remove', or 'push'
+  resources: [['resource.from', 'resource.to'], ['resource.other_from', 'resource.other_to']], // resources to move
+  resources: ['resource.one', 'resource.two'], // resources to remove
+  state:     'terraform.tfstate' // optional path to read and save state
 )
 ```
 
@@ -133,10 +133,10 @@ Manually marks a resource as tainted. This forces a destroy and recreate on the 
 
 ```groovy
 terraform.taint(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  module: 'my-module' // optional module path where the resource lives
-  resources: ['resource.name', 'other.name'] // names of the resources to taint
-  state: 'terraform.tfstate' // optional path to read and save state
+  bin:       '/usr/bin/terraform', // optional path to terraform executable
+  module:    'my-module', // optional module path where the resource lives
+  resources: ['resource.name', 'other.name'], // names of the resources to taint
+  state:     'terraform.tfstate' // optional path to read and save state
 )
 ```
 
@@ -145,11 +145,11 @@ Uses Terraform to validate a config directory. Note that Terraform >= 0.12 does 
 
 ```groovy
 terraform.validate(
-  bin: '/usr/bin/terraform' // optional path to terraform executable
-  check_vars: true // optional check whether all required variables have been specified
-  dir: '/path/to/config_dir' // path to config dir
-  var: ['foo=bar', 'bar=baz'] // optional variable setting
-  var_file: '/path/to/variables.tf' // optional location of variables file
+  bin:        '/usr/bin/terraform', // optional path to terraform executable
+  check_vars: true, // optional check whether all required variables have been specified
+  dir:        '/path/to/config_dir', // path to config dir
+  var:        ['foo=bar', 'bar=baz'], // optional variable setting
+  var_file:   '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
@@ -158,8 +158,8 @@ Selects the Terraform workspace for a config directory. Ideally executed in Pipe
 
 ```groovy
 terraform.workspace(
-  bin: '/usr/bin' // optional location of terraform install
-  dir: '/path/to/config' // location of terraform config directory
+  bin:       '/usr/bin', // optional location of terraform install
+  dir:       '/path/to/config', // location of terraform config directory
   workspace: 'default' // terraform workspace to select
 )
 ```

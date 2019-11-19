@@ -1,3 +1,5 @@
+format doc; main readme note about changed dsl, log change here
+
 ### Next (Roadmap)
 **Helm**
 - Enable native logging for `test` method if available.
