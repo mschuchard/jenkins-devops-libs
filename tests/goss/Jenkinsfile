@@ -35,6 +35,10 @@ pipeline {
             gossfile = '/tmp/goss.yaml' // optional location of gossfile
             bin      = '/tmp/goss' // optional executable path for goss
           }
+          goss.validate(
+            gossfile: '/tmp/goss.yaml', // optional location of gossfile
+            bin:      '/tmp/goss' // optional executable path for goss
+          )
         }
       }
     }
@@ -46,6 +50,11 @@ pipeline {
             format   = 'documentation' // optional formatter to use for output
             bin      = '/tmp/goss' // optional executable path for goss
           }
+          goss.server(
+            gossfile: '/tmp/goss.yaml', // optional location of gossfile
+            format:   'documentation', // optional formatter to use for output
+            bin:      '/tmp/goss' // optional executable path for goss
+          )
         }
       }
     }

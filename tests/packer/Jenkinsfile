@@ -19,6 +19,11 @@ pipeline {
             install_path = '/tmp'
             platform     = 'linux_amd64'
           }
+          packer.install(
+            version:      '1.3.5',
+            install_path: '/tmp',
+            platform:     'linux_amd64'
+          )
         }
       }
     }
@@ -38,6 +43,10 @@ pipeline {
             bin      = '/tmp/packer'
             template = '/tmp/docker.json'
           }
+          packer.validate(
+            bin:      '/tmp/packer',
+            template: '/tmp/docker.json'
+          )
         }
       }
     }
@@ -51,10 +60,10 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          packer.build {
-            bin      = '/tmp/packer'
-            template = '/tmp/docker.json'
-          }
+          packer.build(
+            bin:      '/tmp/packer',
+            template: '/tmp/docker.json'
+          )
         }
       }
     }
