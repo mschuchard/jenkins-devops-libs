@@ -14,7 +14,7 @@ def install(String version, String install_path = '/usr/bin/') {
   }
   // otherwise download and install specified version
   new utils().download_file("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${install_path}/goss")
-  sh "chmod ug+rx ${install_path}/goss"
+  sh(label: 'GoSS CLI Executable Permissions', script: "chmod ug+rx ${install_path}/goss")
   print "Goss successfully installed at ${install_path}/goss."
 }
 
@@ -33,7 +33,7 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
 
   // otherwise download and install specified version
   new utils().download_file("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${install_path}/dgoss")
-  sh "chmod ug+rx ${install_path}/dgoss"
+  sh(label: 'DGoSS CLI Executable Permissions', script: "chmod ug+rx ${install_path}/dgoss")
   print "Dgoss successfully installed at ${install_path}/dgoss."
 }
 
@@ -64,7 +64,7 @@ def server(body) {
       cmd += " -g ${config.gossfile}"
     }
 
-    sh "nohup ${cmd} serve -f ${config.format} -e ${config.endpoint} -l ${config.port} &"
+    sh(label: 'GoSS Server', script: "nohup ${cmd} serve -f ${config.format} -e ${config.endpoint} -l ${config.port} &")
   }
   catch(Exception error) {
     print 'Failure using goss serve.'
@@ -98,7 +98,7 @@ def validate(body) {
       cmd += " -g ${config.gossfile}"
     }
 
-    sh "${cmd} validate -f ${config.format}"
+    sh(label: 'GoSS Validate', script: "${cmd} validate -f ${config.format}")
   }
   catch(Exception error) {
     print 'Failure using goss validate.'
@@ -129,7 +129,7 @@ def validate_docker(body) {
       }
     }
 
-    sh "${cmd} ${config.image}"
+    sh(label: 'DGoSS Validate Docker', script: "${cmd} ${config.image}")
   }
   catch(Exception error) {
     print 'Failure using dgoss run.'

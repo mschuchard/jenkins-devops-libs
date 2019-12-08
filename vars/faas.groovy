@@ -33,7 +33,7 @@ def build(body) {
       cmd += ' --squash'
     }
 
-    sh "${cmd} -f ${config.template}"
+    sh(label: 'OpenFaaS Build', script: "${cmd} -f ${config.template}")
   }
   catch(Exception error) {
     print 'Failure using faas-cli build.'
@@ -80,7 +80,7 @@ def deploy(body) {
       cmd += ' --update=true'
     }
 
-    sh "${cmd} -f ${config.template}"
+    sh(label: 'OpenFaaS Deploy', script: "${cmd} -f ${config.template}")
   }
   catch(Exception error) {
     print 'Failure using faas-cli deploy.'
@@ -119,7 +119,7 @@ def install(body) {
   // download and install specified version
   new utils().download_file("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.install_path}/faas-cli")
   extension = null
-  sh "chmod ug+rx ${config.install_path}/faas-cli"
+  sh(label: 'OpenFaaS CLI Executable Permissions', script: "chmod ug+rx ${config.install_path}/faas-cli")
   print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
 }
 
@@ -162,7 +162,7 @@ def invoke(body) {
       cmd += " < ${config.stdin}"
     }
 
-    sh "${cmd} ${config.function}"
+    sh(label: 'OpenFaaS Invoke', script: "${cmd} ${config.function}")
   }
   catch(Exception error) {
     print 'Failure using faas-cli push.'
@@ -190,7 +190,7 @@ def login(body) {
       cmd += ' --tls-no-verify'
     }
 
-    sh "${cmd} -u ${config.user} -p ${config.password} -g ${config.gateway}"
+    sh(label: 'OpenFaaS Login', script: "${cmd} -u ${config.user} -p ${config.password} -g ${config.gateway}")
   }
   catch(Exception error) {
     print 'Failure using faas-cli login.'
@@ -226,7 +226,7 @@ def push(body) {
       cmd += " --tag ${config.tag}"
     }
 
-    sh "${cmd} -f ${config.template}"
+    sh(label: 'OpenFaaS Push', script: "${cmd} -f ${config.template}")
   }
   catch(Exception error) {
     print 'Failure using faas-cli push.'
@@ -256,7 +256,7 @@ def remove(body) {
       cmd += " --regex '${config.regex}'"
     }
 
-    sh "${cmd} -f ${config.template}"
+    sh(label: 'OpenFaaS Remove', script: "${cmd} -f ${config.template}")
   }
   catch(Exception error) {
     print 'Failure using faas-cli remove.'
