@@ -70,7 +70,7 @@ def install(body) {
 
   // check if current version already installed
   if (fileExists("${config.install_path}/packer")) {
-    String installed_version = sh(returnStdout: true, script: "${config.install_path}/packer version").trim()
+    String installed_version = sh(label: 'Check Packer Version', returnStdout: true, script: "${config.install_path}/packer version").trim()
     if (installed_version ==~ config.version) {
       print "Packer version ${config.version} already installed at ${config.install_path}."
       return

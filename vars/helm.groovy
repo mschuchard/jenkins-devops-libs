@@ -23,7 +23,7 @@ def delete(body) {
     String release_obj_list = sh(returnStdout: true, script: lister).trim()
     assert (release_obj_list ==~ config.name) : "Release object ${config.name} does not exist!"
 
-    sh "${cmd} ${config.name}"
+    sh(label: 'Helm Delete', script: "${cmd} ${config.name}")
   }
   catch(Exception error) {
     print 'Failure using helm delete.'
@@ -83,7 +83,7 @@ def install(body) {
       throw new Exception("Release object ${config.name} already exists!")
     }
 
-    sh "${cmd} ${config.chart}"
+    sh(label: 'Helm Install', script: "${cmd} ${config.chart}")
   }
   catch(Exception error) {
     print 'Failure using helm install.'
@@ -105,7 +105,7 @@ def kubectl(String version, String install_path = '/usr/bin/') {
   }
   // otherwise download specified version
   new utils().download_file("https://storage.googleapis.com/kubernetes-release/release/v${version}/bin/linux/amd64/kubectl", "${install_path}/kubectl")
-  sh "chmod ug+rx ${install_path}/kubectl"
+  sh(label: 'Kubectl Executable Permissions', script: "chmod ug+rx ${install_path}/kubectl")
   print "Kubectl successfully installed at ${install_path}/kubectl."
 }
 
@@ -206,7 +206,7 @@ def packages(body) {
       cmd += " --version ${config.version}"
     }
 
-    sh "${cmd} ${config.chart}"
+    sh(label: 'Helm Package', script: "${cmd} ${config.chart}")
   }
   catch(Exception error) {
     print 'Failure using helm package.'
@@ -238,7 +238,7 @@ def rollback(body) {
     String release_obj_list = sh(returnStdout: true, script: lister).trim()
     assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
 
-    sh "${cmd} ${config.name} ${config.version}"
+    sh(label: 'Helm rollback', script: "${cmd} ${config.name} ${config.version}")
   }
   catch(Exception error) {
     print 'Failure using helm rollback.'
@@ -260,12 +260,12 @@ def setup(String version, String install_path = '/usr/bin/') {
   // otherwise download and untar specified version
   else {
     new utils().download_file("https://storage.googleapis.com/kubernetes-helm/helm-v${version}-linux-amd64.tar.gz", '/tmp/helm.tar.gz')
-    sh "tar -xzf /tmp/helm.tar.gz -C ${install_path} --strip-components 1 linux-amd64/helm"
+    sh(label: 'Untar Helm CLI', script: "tar -xzf /tmp/helm.tar.gz -C ${install_path} --strip-components 1 linux-amd64/helm")
     new utils().remove_file('/tmp/helm.tar.gz')
     print "Helm successfully installed at ${install_path}/helm."
     // and then initialize helm
     try {
-      sh "${install_path}/helm init"
+      sh(label: 'Helm Init', script: "${install_path}/helm init")
     }
     catch(Exception error) {
       print 'Failure initializing helm.'
@@ -274,7 +274,7 @@ def setup(String version, String install_path = '/usr/bin/') {
     print "Helm and Tiller successfully initialized."
   }
   if (!(fileExists("${env.HOME}/.helm"))) {
-    sh "${install_path}/helm init --client-only "
+    sh(label: 'Helm Init Client', script: "${install_path}/helm init --client-only ")
     print "Helm successfully initialized."
   }
 }
@@ -308,7 +308,7 @@ def test(body) {
       cmd += " --kube-context ${config.context}"
     }
 
-    sh "${cmd} ${config.name}"
+    sh(label: 'Helm Test', script: "${cmd} ${config.name}")
   }
   catch(Exception error) {
     if (!(logs)) {
@@ -341,7 +341,7 @@ def test(body) {
         print "Logs for ${test_pod} for release ${config.name} are:"
         print logs
         print "Removing test pod ${test_pod}."
-        sh "${config.kubectl} -n ${namespace} delete pod ${test_pod}"
+        sh(label: 'Test Pod Cleanup', script: "${config.kubectl} -n ${namespace} delete pod ${test_pod}")
       }
     }
 
@@ -398,7 +398,7 @@ def upgrade(body) {
     String release_obj_list = sh(returnStdout: true, script: lister).trim()
     assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
 
-    sh "${cmd} ${config.name} ${config.chart}"
+    sh(label: 'Helm Upgrade', script: "${cmd} ${config.name} ${config.chart}")
   }
   catch(Exception error) {
     print 'Failure using helm upgrade.'

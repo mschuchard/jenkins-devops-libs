@@ -100,7 +100,7 @@ def install(body) {
 
   // check if current version already installed
   if (fileExists("${config.install_path}/faas-cli")) {
-    String installed_version = sh(returnStdout: true, script: "${config.install_path}/faas-cli version").trim()
+    String installed_version = sh(label: 'Check OpenFaaS CLI Version', returnStdout: true, script: "${config.install_path}/faas-cli version").trim()
     if (installed_version ==~ config.version) {
       print "FaaS CLI version ${config.version} already installed at ${config.install_path}."
       return
