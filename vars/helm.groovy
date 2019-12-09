@@ -20,7 +20,7 @@ def delete(body) {
     }
 
     // check release object
-    String release_obj_list = sh(returnStdout: true, script: lister).trim()
+    String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
     assert (release_obj_list ==~ config.name) : "Release object ${config.name} does not exist!"
 
     sh(label: 'Helm Delete', script: "${cmd} ${config.name}")
@@ -78,7 +78,7 @@ def install(body) {
     }
 
     // check release object
-    String release_obj_list = sh(returnStdout: true, script: lister).trim()
+    String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
     if ((config.name) && (release_obj_list ==~ config.name)) {
       throw new Exception("Release object ${config.name} already exists!")
     }
@@ -97,7 +97,7 @@ def kubectl(String version, String install_path = '/usr/bin/') {
 
   // check if current version already installed
   if (fileExists("${install_path}/kubectl")) {
-    String installed_version = sh(returnStdout: true, script: "${install_path}/kubectl version").trim()
+    String installed_version = sh(label: 'Check Kubectl Version', returnStdout: true, script: "${install_path}/kubectl version").trim()
     if (installed_version ==~ version) {
       print "Kubectl version ${version} already installed at ${install_path}."
       return
@@ -149,7 +149,7 @@ def lint(body) {
       cmd += " --strict"
     }
 
-    String lint_output = sh(returnStdout: true, script: "${cmd} ${config.chart}")
+    String lint_output = sh(label: 'Helm Lint', returnStdout: true, script: "${cmd} ${config.chart}")
 
     if (!(lint_output)) {
       print 'No errors or warnings from helm lint.'
@@ -235,7 +235,7 @@ def rollback(body) {
     }
 
     // check release object
-    String release_obj_list = sh(returnStdout: true, script: lister).trim()
+    String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
     assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
 
     sh(label: 'Helm rollback', script: "${cmd} ${config.name} ${config.version}")
@@ -252,7 +252,7 @@ def setup(String version, String install_path = '/usr/bin/') {
 
   // check if current version already installed
   if (fileExists("${install_path}/helm")) {
-    String installed_version = sh(returnStdout: true, script: "${install_path}/helm version").trim()
+    String installed_version = sh(label: 'Check Helm Version', returnStdout: true, script: "${install_path}/helm version").trim()
     if (installed_version ==~ version) {
       print "Helm version ${version} already installed at ${install_path}."
     }
@@ -292,7 +292,7 @@ def test(body) {
     String cmd = "${config.bin} test"
 
     // check if helm test has logging functionality
-    String logs = sh(returnStdout: true, script: "${config.bin} test --help") ==~ /--logs/
+    String logs = sh(label: 'Check Helm Usage', returnStdout: true, script: "${config.bin} test --help") ==~ /--logs/
     if (logs) {
       cmd += " --logs"
     }
@@ -321,7 +321,7 @@ def test(body) {
 
       // collect necessary information for displaying debug logs
       // first grab the status of the release as a json
-      String json_status = sh(returnStdout: true, script: "${config.bin} status -o json ${config.name}")
+      String json_status = sh(label: 'Check Release Object Status', returnStdout: true, script: "${config.bin} status -o json ${config.name}")
       // parse the json to return the status hash
       def status = readJSON(text: json_status)
       // assign the namespace to a local var for kubectl logs
@@ -337,7 +337,7 @@ def test(body) {
 
       // iterate through test pods, display the logs for each, and then delete the test pod
       test_pods.each() { test_pod ->
-        logs = sh(returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${test_pod}")
+        logs = sh(label: 'List Pod Logs', returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${test_pod}")
         print "Logs for ${test_pod} for release ${config.name} are:"
         print logs
         print "Removing test pod ${test_pod}."
@@ -395,7 +395,7 @@ def upgrade(body) {
     }
 
     // check release object
-    String release_obj_list = sh(returnStdout: true, script: lister).trim()
+    String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
     assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
 
     sh(label: 'Helm Upgrade', script: "${cmd} ${config.name} ${config.chart}")

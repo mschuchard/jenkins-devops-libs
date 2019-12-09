@@ -62,7 +62,7 @@ def destroy(body) {
   config.bin = config.bin ? config.bin : 'terraform'
 
   // -force changed to -auto-approve in 0.11.4
-  String no_input_check = sh(returnStdout: true, script: "${config.bin} destroy --help")
+  String no_input_check = sh(label: 'Check Terraform Usage', returnStdout: true, script: "${config.bin} destroy --help")
   // apply correct flag based on installed version
   String no_input_flag = ''
   if (no_input_check ==~ /-auto-approve/) {
@@ -128,7 +128,7 @@ def fmt(body) {
     String cmd = "${config.bin} fmt -no-color"
 
     // check for terraform >= 0.12 (those versions have flag for recursive processing)
-    String new_fmt = sh(returnStdout: true, script: "${config.bin} fmt --help") ==~ /-recursive/
+    String new_fmt = sh(label: 'Check Terraform Usage', returnStdout: true, script: "${config.bin} fmt --help") ==~ /-recursive/
 
     // check for optional inputs
     if ((new_fmt) && (config.recursive == true)) {
@@ -263,7 +263,7 @@ def install(body) {
 
   // check if current version already installed
   if (fileExists("${config.install_path}/terraform")) {
-    String installed_version = sh(returnStdout: true, script: "${config.install_path}/terraform version").trim()
+    String installed_version = sh(label: 'Check Terraform Version', returnStdout: true, script: "${config.install_path}/terraform version").trim()
     if (installed_version ==~ config.version) {
       print "Terraform version ${config.version} already installed at ${config.install_path}."
       return
@@ -323,7 +323,7 @@ def plan(body) {
       }
     }
 
-    plan_output = sh(script: "${cmd} ${config.dir}", returnStdout: true)
+    plan_output = sh(label: 'Terraform Plan', script: "${cmd} ${config.dir}", returnStdout: true)
 
     // display plan output if specified
     if (config.display == true) {
@@ -456,7 +456,7 @@ def taint(body) {
     String cmd = "${config.bin} taint -no-color"
 
     // check for terraform >= 0.12 (taint usage changed)
-    String new_taint = sh(returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
+    String new_taint = sh(label: 'Check Terraform Usage', returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
 
     // check for optional inputs
     if (config.module && !(new_taint)) {
@@ -496,7 +496,7 @@ def validate(body) {
     String cmd = "${config.bin} validate -no-color"
 
     // check for terraform >= 0.12 (those versions have flag for json output)
-    String new_validate = sh(returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
+    String new_validate = sh(label: 'Check Terraform Usage', returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
 
     if (!(new_validate)) {
       // check for optional inputs

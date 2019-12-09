@@ -39,7 +39,7 @@ def code_deploy(body) {
   config.servers.each() { server ->
     // trigger code manager deployment
     try {
-      json = sh(returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' -H \"X-Authentication: `cat ${config.token}`\" \"https://${server}:8170/code-manager/v1/deploys\" -d '${payload}'")
+      json = sh(label: 'Puppet Code Deploy Request', returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' -H \"X-Authentication: `cat ${config.token}`\" \"https://${server}:8170/code-manager/v1/deploys\" -d '${payload}'")
     }
     catch(Exception error) {
       print "Failure executing curl against ${server} with token at ${config.token}!"
@@ -138,7 +138,7 @@ def task(body) {
 
   // trigger task orchestration
   try {
-    json = sh(returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' -H \"X-Authentication: `cat ${config.token}`\" \"https://${server}:8143/orchestrator/v1/command/task\" -d '${payload}'")
+    json = sh(label: 'Puppet Task Request', returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' -H \"X-Authentication: `cat ${config.token}`\" \"https://${server}:8143/orchestrator/v1/command/task\" -d '${payload}'")
   }
   catch(Exception error) {
     print "Failure executing curl against ${server} with token at ${config.token}!"
@@ -202,7 +202,7 @@ def token (body) {
 
   // trigger token generation
   try {
-    String json = sh(returnStdout: true, script: "${config.bin} ${secure} -X POST -H 'Content-Type: application/json' \"https://${server}:4433/rbac-api/v1/auth/token\" -d '${payload}'")
+    String json = sh(label: 'Puppet Token Request', returnStdout: true, script: "${config.bin} ${secure} -X POST -H 'Content-Type: application/json' \"https://${server}:4433/rbac-api/v1/auth/token\" -d '${payload}'")
   }
   catch(Exception error) {
     print "Failure executing curl against ${server} with username ${config.username}."
