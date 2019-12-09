@@ -42,7 +42,7 @@ def apply(body) {
       }
     }
 
-    sh "${cmd} ${config.config_path}"
+    sh(label: 'Terraform Apply', script: "${cmd} ${config.config_path}")
   }
   catch(Exception error) {
     print 'Failure using terraform apply.'
@@ -100,7 +100,7 @@ def destroy(body) {
       }
     }
 
-    sh "${cmd} ${config.config_path}"
+    sh(label: 'Terraform Destroy', script: "${cmd} ${config.config_path}")
   }
   catch(Exception error) {
     print 'Failure using terraform destroy.'
@@ -144,7 +144,7 @@ def fmt(body) {
       cmd += " -write"
     }
 
-    sh "${cmd} ${config.dir}"
+    sh(label: 'Terraform Format', script: "${cmd} ${config.dir}")
   }
   catch(Exception error) {
     if (config.check == true) {
@@ -185,7 +185,7 @@ def init(body) {
       cmd += ' -upgrade'
     }
 
-    sh "${cmd} ${config.dir}"
+    sh(label: 'Terraform Init', script: "${cmd} ${config.dir}")
   }
   catch(Exception error) {
     print 'Failure using terraform init.'
@@ -239,7 +239,7 @@ def imports(body) {
 
     // import each resource
     config.resources.each() { resource ->
-      sh "${cmd} ${resource}"
+      sh(label: 'Terraform Import', script: "${cmd} ${resource}")
     }
   }
   catch(Exception error) {
@@ -382,7 +382,7 @@ def plugin_install(body) {
     new utils().remove_file(install_loc)
   }
   else {
-    sh "chmod ug+rx ${install_loc}"
+    sh(label: 'Terraform CLI Executable Permissions', script: "chmod ug+rx ${install_loc}")
   }
   print "Terraform plugin successfully installed at ${install_loc}."
 }
@@ -413,20 +413,20 @@ def state(body) {
         assert (config.resources[0] instanceof List) : 'Parameter resources must be a nested array of strings for move command.';
 
         config.resources.each() { resource_pair ->
-          sh "${cmd} mv ${resource_pair}[0] ${resource_pair}[1]"
+          sh(label: 'Terraform State Move', script: "${cmd} mv ${resource_pair}[0] ${resource_pair}[1]")
         };
         break;
       case 'remove':
         assert (config.resources instanceof List) : 'Parameter resources must be an array of strings for remove command.';
 
         config.resources.each() { resource ->
-          sh "${cmd} rm ${resource}"
+          sh(label: 'Terraform State Remove', script: "${cmd} rm ${resource}")
         };
         break;
       case 'push':
         assert !config.resources : 'Resources parameter is not allowed for push command.';
 
-        sh "${cmd} push";
+        sh(label: 'Terraform State Push', script: "${cmd} push");
         break;
       default:
         throw new Exception("Unknown Terraform state command ${config.cmd} specified.");
@@ -470,7 +470,7 @@ def taint(body) {
 
     // taint each resource
     config.resources.each() { resource ->
-      sh "${cmd} ${resource}"
+      sh(label: 'Terraform Taint', script: "${cmd} ${resource}")
     }
   }
   catch(Exception error) {
@@ -517,7 +517,7 @@ def validate(body) {
       }
     }
 
-    sh "${cmd} ${config.dir}"
+    sh(label: 'Terraform Validate', script: "${cmd} ${config.dir}")
   }
   catch(Exception error) {
     print 'Failure using terraform validate.'
@@ -542,7 +542,7 @@ def workspace(body) {
   dir(config.dir) {
     // select workspace in terraform config directory
     try {
-      sh "${config.bin} workspace select -no-color ${config.workspace}"
+      sh(label: 'Terraform Workspace', script: "${config.bin} workspace select -no-color ${config.workspace}")
     }
     catch(Exception error) {
       print 'Failure using terraform workspace select.'

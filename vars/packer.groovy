@@ -35,7 +35,7 @@ def build(body) {
       cmd += " -only=${config.only.join(',')}"
     }
 
-    sh "${cmd} ${config.template}"
+    sh(label: 'Packer Build', script: "${cmd} ${config.template}")
   }
   catch(Exception error) {
     print 'Failure using packer build.'
@@ -51,7 +51,7 @@ def inspect(String template, String bin = '/usr/bin/packer') {
 
   // inspect the packer template
   try {
-    sh "${bin} inspect ${template}"
+    sh(label: 'Packer Inspect', script: "${bin} inspect ${template}"
   }
   catch(Exception error) {
     print 'Failure inspecting the template.'
@@ -110,7 +110,7 @@ def plugin_install(String url, String install_loc) {
     new utils().remove_file(install_loc)
   }
   else {
-    sh "chmod ug+rx ${install_loc}"
+    sh(label: 'Packer CLI Executable Permissions', script: "chmod ug+rx ${install_loc}")
   }
   print "Packer plugin successfully installed at ${install_loc}."
 }
@@ -149,7 +149,7 @@ def validate(body) {
       cmd += " -only=${config.only.join(',')}"
     }
 
-    sh "${cmd} ${config.template}"
+    sh(label: 'Packer Validate', script: "${cmd} ${config.template}")
   }
   catch(Exception error) {
     print 'Failure using packer validate.'
