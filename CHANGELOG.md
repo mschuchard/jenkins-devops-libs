@@ -1,6 +1,7 @@
 ### Next (Roadmap)
 **General**
 - Support new and old DSL.
+- Add labels to shell methods for clarity.
 
 **Helm**
 - Enable native logging for `test` method if available.

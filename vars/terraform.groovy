@@ -144,15 +144,15 @@ def fmt(body) {
       cmd += " -write"
     }
 
-    sh(label: 'Terraform Format', script: "${cmd} ${config.dir}")
-  }
-  catch(Exception error) {
-    if (config.check == true) {
+    fmt_status = sh(label: 'Terraform Format', returnStatus: true, script: "${cmd} ${config.dir}")
+
+    // report if formatting check detected issues
+    if (config.check == true) && (fmt_status != 0) {
       print 'Terraform fmt has detected formatting errors.'
     }
-    else {
-      print 'Failure using terraform fmt.'
-    }
+  }
+  catch(Exception error) {
+    print 'Failure using terraform fmt.'
     throw error
   }
   print 'Terraform fmt was successful.'
