@@ -17,6 +17,7 @@ pipeline {
       steps {
         script {
           helm.setup('2.14.3', '/usr/bin')
+          helm.kubectl('1.14.6', '/usr/bin')
         }
       }
     }

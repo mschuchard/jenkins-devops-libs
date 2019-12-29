@@ -15,7 +15,7 @@ pipeline {
       steps {
         script {
           terraform.install {
-            version      = '0.11.14'
+            version      = '0.12.18'
             install_path = '/tmp'
             platform     = 'linux_amd64'
           }

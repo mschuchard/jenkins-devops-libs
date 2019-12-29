@@ -84,7 +84,7 @@ Locally installs a specific version of Terraform.
 terraform.install(
   install_path: '/usr/bin', // optional location to install terraform
   platform:     'linux_amd64', // platform where terraform will be installed
-  version:      '0.11.7' // version of terraform to install
+  version:      '0.12.18' // version of terraform to install
 )
 ```
 

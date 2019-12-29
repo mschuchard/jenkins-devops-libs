@@ -34,7 +34,7 @@ Locally installs a specific version of Packer.
 packer.install(
   install_path: '/usr/bin', // optional location to install packer
   platform:     'linux_amd64', // platform where packer will be installed
-  version:      '1.2.5' // version of packer to install
+  version:      '1.4.5' // version of packer to install
 )
 ```
 

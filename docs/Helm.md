@@ -38,7 +38,7 @@ helm.install(
 Performs a local installation of `kubectl` at a specified version and path.
 
 ```groovy
-helm.kubectl('1.13.6', '/usr/local/bin')
+helm.kubectl('1.14.6', '/usr/local/bin')
 ```
 
 ### helm.lint()
