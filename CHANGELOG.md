@@ -1,6 +1,6 @@
-### Next (Roadmap)
+### 1.4.0
 **General**
-- Support new and old DSL.
+- Support new and old Pipeline DSL.
 - Add labels to shell methods for clarity.
 
 **Helm**
