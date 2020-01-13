@@ -8,14 +8,14 @@ def install(String version, String install_path = '/usr/bin/') {
   if (fileExists("${install_path}/goss")) {
     String installed_version = sh(label: 'Check GoSS Version', returnStdout: true, script: "${install_path}/goss --version").trim()
     if (installed_version ==~ version) {
-      print "Goss version ${version} already installed at ${install_path}."
+      print "GoSS version ${version} already installed at ${install_path}."
       return
     }
   }
   // otherwise download and install specified version
   new utils().download_file("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${install_path}/goss")
   sh(label: 'GoSS CLI Executable Permissions', script: "chmod ug+rx ${install_path}/goss")
-  print "Goss successfully installed at ${install_path}/goss."
+  print "GoSS successfully installed at ${install_path}/goss."
 }
 
 def install_dgoss(String version, String install_path = '/usr/bin/') {
@@ -25,7 +25,7 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
   if (fileExists("${install_path}/dgoss") && fileExists("${install_path}/goss")) {
     String installed_version = sh(label: 'Check DGoSS Version', returnStdout: true, script: "${install_path}/goss --version").trim()
     if (installed_version ==~ version) {
-      print "Dgoss version ${version} already installed at ${install_path}."
+      print "DGoSS version ${version} already installed at ${install_path}."
       return
     }
   }
@@ -34,7 +34,7 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
   // otherwise download and install specified version
   new utils().download_file("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${install_path}/dgoss")
   sh(label: 'DGoSS CLI Executable Permissions', script: "chmod ug+rx ${install_path}/dgoss")
-  print "Dgoss successfully installed at ${install_path}/dgoss."
+  print "DGoSS successfully installed at ${install_path}/dgoss."
 }
 
 def server(body) {
@@ -64,13 +64,13 @@ def server(body) {
       cmd += " -g ${config.gossfile}"
     }
 
-    sh(label: 'GoSS Server', script: "nohup ${cmd} serve -f ${config.format} -e ${config.endpoint} -l ${config.port} &")
+    sh(label: 'GoSS Server', script: "nohup ${cmd} serve -f ${config.format} -e ${config.endpoint} -l :${config.port} &")
   }
   catch(Exception error) {
     print 'Failure using goss serve.'
     throw error
   }
-  print 'Goss endpoint created successfully.'
+  print 'GoSS server endpoint created successfully.'
 }
 
 def validate(body) {
@@ -104,7 +104,7 @@ def validate(body) {
     print 'Failure using goss validate.'
     throw error
   }
-  print 'Goss validate command was successful.'
+  print 'GoSS validate command was successful.'
 }
 
 def validate_docker(body) {
@@ -135,7 +135,7 @@ def validate_docker(body) {
     print 'Failure using dgoss run.'
     throw error
   }
-  print 'Dgoss run command was successful.'
+  print 'DGoSS run command was successful.'
 }
 
 def validate_gossfile(String gossfile) {

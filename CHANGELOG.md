@@ -1,3 +1,7 @@
+### Next
+**GoSS**
+- Fix `serve` port specification.
+
 ### 1.4.0
 **General**
 - Support new and old Pipeline DSL.
@@ -16,7 +20,7 @@
 - Add type specification checks.
 - Fixed explicit List type check on params.
 
-**Goss**
+**GoSS**
 - Fix port default value in `server` method.
 
 **Helm**
@@ -57,7 +61,7 @@
 - Fix `map_to_json` common method and update per documented example.
 - Various fixes, cleanup, and optimization.
 
-**Goss**
+**GoSS**
 - Fix flag setting and usage in `validate_docker`.
 
 **OpenFaaS**
