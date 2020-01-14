@@ -1,4 +1,7 @@
 ### Next
+**General**
+- Fine tune type specifications, especially in global var method returns.
+
 **GoSS**
 - Fix `serve` port specification.
 

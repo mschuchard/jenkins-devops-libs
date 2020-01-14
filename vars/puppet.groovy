@@ -1,7 +1,7 @@
 // vars/puppet.groovy
 import devops.common.utils
 
-def code_deploy(body) {
+void code_deploy(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -74,7 +74,7 @@ def code_deploy(body) {
   print 'Code manager deployment(s) was successful.'
 }
 
-def task(body) {
+void task(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -177,7 +177,7 @@ def task(body) {
   print 'Puppet Orchestrator Task execution successfully requested.'
 }
 
-def token (body) {
+void token (body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 

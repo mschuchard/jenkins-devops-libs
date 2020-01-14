@@ -1,7 +1,7 @@
 // vars/packer.groovy
 import devops.common.utils
 
-def build(body) {
+void build(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -44,7 +44,7 @@ def build(body) {
   print 'Packer build artifact created successfully.'
 }
 
-def inspect(String template, String bin = '/usr/bin/packer') {
+void inspect(String template, String bin = '/usr/bin/packer') {
   // input checking
   assert fileExists(bin) : "A file does not exist at ${bin}."
   assert fileExists(template) : "A file does not exist at ${template}."
@@ -59,7 +59,7 @@ def inspect(String template, String bin = '/usr/bin/packer') {
   }
 }
 
-def install(body) {
+void install(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -83,7 +83,7 @@ def install(body) {
   print "Packer successfully installed at ${config.install_path}/packer."
 }
 
-def plugin_install(String url, String install_loc) {
+void plugin_install(String url, String install_loc) {
   // determine number of elements in loc up to final slash
   String elem_count = new File(install_loc).name.lastIndexOf('/')
   // return file path up to final slash element
@@ -115,7 +115,7 @@ def plugin_install(String url, String install_loc) {
   print "Packer plugin successfully installed at ${install_loc}."
 }
 
-def validate(body) {
+void validate(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 

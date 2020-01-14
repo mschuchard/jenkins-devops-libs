@@ -1,7 +1,7 @@
 // vars/goss.groovy
 import devops.common.utils
 
-def install(String version, String install_path = '/usr/bin/') {
+void install(String version, String install_path = '/usr/bin/') {
   assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
 
   // check if current version already installed
@@ -18,7 +18,7 @@ def install(String version, String install_path = '/usr/bin/') {
   print "GoSS successfully installed at ${install_path}/goss."
 }
 
-def install_dgoss(String version, String install_path = '/usr/bin/') {
+void install_dgoss(String version, String install_path = '/usr/bin/') {
   assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
 
   // check if current version already installed
@@ -37,7 +37,7 @@ def install_dgoss(String version, String install_path = '/usr/bin/') {
   print "DGoSS successfully installed at ${install_path}/dgoss."
 }
 
-def server(body) {
+void server(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -73,7 +73,7 @@ def server(body) {
   print 'GoSS server endpoint created successfully.'
 }
 
-def validate(body) {
+void validate(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 
@@ -107,7 +107,7 @@ def validate(body) {
   print 'GoSS validate command was successful.'
 }
 
-def validate_docker(body) {
+void validate_docker(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 
@@ -138,7 +138,7 @@ def validate_docker(body) {
   print 'DGoSS run command was successful.'
 }
 
-def validate_gossfile(String gossfile) {
+void validate_gossfile(String gossfile) {
   // ensure gossfile exists and then check yaml syntax
   assert fileExists(gossfile) : "Gossfile ${gossfile} does not exist!"
 

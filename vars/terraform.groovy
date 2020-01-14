@@ -1,7 +1,7 @@
 // vars/terraform.groovy
 import devops.common.utils
 
-def apply(body) {
+void apply(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -51,7 +51,7 @@ def apply(body) {
   print 'Terraform apply was successful.'
 }
 
-def destroy(body) {
+void destroy(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -109,7 +109,7 @@ def destroy(body) {
   print 'Terraform destroy was successful.'
 }
 
-def fmt(body) {
+void fmt(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -158,7 +158,7 @@ def fmt(body) {
   print 'Terraform fmt was successful.'
 }
 
-def init(body) {
+void init(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -194,7 +194,7 @@ def init(body) {
   print 'Terraform init was successful.'
 }
 
-def imports(body) {
+void imports(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -249,7 +249,7 @@ def imports(body) {
   print 'Terraform imports were successful.'
 }
 
-def install(body) {
+void install(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -343,7 +343,7 @@ def plan(body) {
   }
 }
 
-def plugin_install(body) {
+void plugin_install(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -387,7 +387,7 @@ def plugin_install(body) {
   print "Terraform plugin successfully installed at ${install_loc}."
 }
 
-def state(body) {
+void state(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -439,7 +439,7 @@ def state(body) {
   print 'Terraform state manipulation was successful.'
 }
 
-def taint(body) {
+void taint(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -480,7 +480,7 @@ def taint(body) {
   print 'Terraform taints were successful.'
 }
 
-def validate(body) {
+void validate(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -526,7 +526,7 @@ def validate(body) {
   print 'Terraform validate was successful.'
 }
 
-def workspace(body) {
+void workspace(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 

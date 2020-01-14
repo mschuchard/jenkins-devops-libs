@@ -1,7 +1,7 @@
 //vars/helm.groovy
 import devops.common.utils
 
-def delete(body) {
+void delete(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 
@@ -31,7 +31,7 @@ def delete(body) {
   }
 }
 
-def install(body) {
+void install(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 
@@ -92,7 +92,7 @@ def install(body) {
   print 'Helm install executed successfully.'
 }
 
-def kubectl(String version, String install_path = '/usr/bin/') {
+void kubectl(String version, String install_path = '/usr/bin/') {
   assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
 
   // check if current version already installed
@@ -109,7 +109,7 @@ def kubectl(String version, String install_path = '/usr/bin/') {
   print "Kubectl successfully installed at ${install_path}/kubectl."
 }
 
-def lint(body) {
+void lint(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 
@@ -173,7 +173,7 @@ def lint(body) {
   print 'Helm lint executed successfully.'
 }
 
-def packages(body) {
+void packages(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 
@@ -215,7 +215,7 @@ def packages(body) {
   print 'Helm package command was successful.'
 }
 
-def rollback(body) {
+void rollback(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 
@@ -247,7 +247,7 @@ def rollback(body) {
   print 'Helm rollback command was successful.'
 }
 
-def setup(String version, String install_path = '/usr/bin/') {
+void setup(String version, String install_path = '/usr/bin/') {
   assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
 
   // check if current version already installed
@@ -279,7 +279,7 @@ def setup(String version, String install_path = '/usr/bin/') {
   }
 }
 
-def test(body) {
+void test(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 
@@ -322,12 +322,12 @@ def test(body) {
       // collect necessary information for displaying debug logs
       // first grab the status of the release as a json
       String json_status = sh(label: 'Check Release Object Status', returnStdout: true, script: "${config.bin} status -o json ${config.name}")
-      // parse the json to return the status hash
-      def status = readJSON(text: json_status)
+      // parse the json to return the status map
+      Map status = readJSON(text: json_status)
       // assign the namespace to a local var for kubectl logs
       String namespace = status['namespace']
       // iterate through results and store names of test pods
-      def test_pods = []
+      List test_pods = []
       status['info']['status']['last_test_suite_run']['results'].each() { result ->
         test_pods.push(result['name'])
       }
@@ -350,7 +350,7 @@ def test(body) {
   print 'Helm test executed successfully.'
 }
 
-def upgrade(body) {
+void upgrade(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().params_converter(body)
 

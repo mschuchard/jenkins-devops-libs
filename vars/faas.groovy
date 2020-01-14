@@ -1,7 +1,7 @@
 // vars/faas.groovy
 import devops.common.utils
 
-def build(body) {
+void build(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -42,7 +42,7 @@ def build(body) {
   print 'FaaS build image created successfully.'
 }
 
-def deploy(body) {
+void deploy(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -89,7 +89,7 @@ def deploy(body) {
   print 'FaaS function deployed successfully.'
 }
 
-def install(body) {
+void install(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -123,7 +123,7 @@ def install(body) {
   print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
 }
 
-def invoke(body) {
+void invoke(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -171,7 +171,7 @@ def invoke(body) {
   print 'FaaS function container image pushed successfully.'
 }
 
-def login(body) {
+void login(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -199,7 +199,7 @@ def login(body) {
   print 'Successfully logged in to FaaS gateway.'
 }
 
-def push(body) {
+void push(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -235,7 +235,7 @@ def push(body) {
   print 'FaaS function container image pushed successfully.'
 }
 
-def remove(body) {
+void remove(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().params_converter(body)
 
@@ -265,7 +265,7 @@ def remove(body) {
   print 'FaaS function removed successfully.'
 }
 
-def validate_template(String template) {
+void validate_template(String template) {
   // ensure template exists and then check yaml syntax
   assert fileExists(template) : "Template ${template} does not exist!"
 
