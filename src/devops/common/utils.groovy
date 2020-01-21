@@ -8,13 +8,13 @@ import hudson.FilePath
 import jenkins.model.Jenkins
 
 // checks input value for default value use if not set
-def default_input(input, default_value) {
+def defaultInput(input, default_value) {
   return input == null ? default_value : input
 }
 
 // removes file
 @NonCPS
-void remove_file(String file) {
+void removeFile(String file) {
   // delete a file off of the master
   if (env['NODE_NAME'].equals('master')) {
     new File(file).delete();
@@ -27,7 +27,7 @@ void remove_file(String file) {
 
 // downloads file
 @NonCPS
-void download_file(String url, String dest) {
+void downloadFile(String url, String dest) {
   def file = null;
   // establish the file download for the master
   if (env['NODE_NAME'].equals('master')) {
@@ -43,13 +43,13 @@ void download_file(String url, String dest) {
 }
 
 // converts content map to json string
-String map_to_json(Map content) {
+String mapToJSON(Map content) {
   return JsonOutput.toJson(content);
 }
 
 // converts closure body to config map, or returns same config map
 // bridges gap between users of older DSL and newer DSL
-Map params_converter(body) {
+Map paramsConverter(body) {
   // initialize config
   Map config = [:]
 

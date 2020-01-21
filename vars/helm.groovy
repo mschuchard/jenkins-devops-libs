@@ -3,7 +3,7 @@ import devops.common.utils
 
 void delete(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -33,7 +33,7 @@ void delete(body) {
 
 void install(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -104,14 +104,14 @@ void kubectl(String version, String install_path = '/usr/bin/') {
     }
   }
   // otherwise download specified version
-  new utils().download_file("https://storage.googleapis.com/kubernetes-release/release/v${version}/bin/linux/amd64/kubectl", "${install_path}/kubectl")
+  new utils().downloadFile("https://storage.googleapis.com/kubernetes-release/release/v${version}/bin/linux/amd64/kubectl", "${install_path}/kubectl")
   sh(label: 'Kubectl Executable Permissions', script: "chmod ug+rx ${install_path}/kubectl")
   print "Kubectl successfully installed at ${install_path}/kubectl."
 }
 
 void lint(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -175,7 +175,7 @@ void lint(body) {
 
 void packages(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -217,7 +217,7 @@ void packages(body) {
 
 void rollback(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.version : "The required parameter 'version' was not set."
@@ -259,9 +259,9 @@ void setup(String version, String install_path = '/usr/bin/') {
   }
   // otherwise download and untar specified version
   else {
-    new utils().download_file("https://storage.googleapis.com/kubernetes-helm/helm-v${version}-linux-amd64.tar.gz", '/tmp/helm.tar.gz')
+    new utils().downloadFile("https://storage.googleapis.com/kubernetes-helm/helm-v${version}-linux-amd64.tar.gz", '/tmp/helm.tar.gz')
     sh(label: 'Untar Helm CLI', script: "tar -xzf /tmp/helm.tar.gz -C ${install_path} --strip-components 1 linux-amd64/helm")
-    new utils().remove_file('/tmp/helm.tar.gz')
+    new utils().removeFile('/tmp/helm.tar.gz')
     print "Helm successfully installed at ${install_path}/helm."
     // and then initialize helm
     try {
@@ -281,7 +281,7 @@ void setup(String version, String install_path = '/usr/bin/') {
 
 void test(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'helm'
@@ -352,7 +352,7 @@ void test(body) {
 
 void upgrade(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.chart : "The required parameter 'chart' was not set."

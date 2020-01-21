@@ -3,7 +3,7 @@ import devops.common.utils
 
 void code_deploy(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.token : 'The required token parameter was not set.'
@@ -32,7 +32,7 @@ void code_deploy(body) {
   }
 
   // convert map to json string
-  payload = new utils().map_to_json(payload)
+  payload = new utils().mapToJSON(payload)
 
   // iterate through servers
   boolean errored = false
@@ -76,7 +76,7 @@ void code_deploy(body) {
 
 void task(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.token : 'The required token parameter was not set.'
@@ -134,7 +134,7 @@ void task(body) {
   }
 
   // convert map to json file
-  payload = new utils().map_to_json(payload)
+  payload = new utils().mapToJSON(payload)
 
   // trigger task orchestration
   try {
@@ -179,7 +179,7 @@ void task(body) {
 
 void token (body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.username : 'The username parameter is required.'
@@ -195,7 +195,7 @@ void token (body) {
   payload['password'] = config.password
 
   // convert map to json file
-  payload = new utils().map_to_json(payload)
+  payload = new utils().mapToJSON(payload)
 
   // check for secure ssl connection option
   String secure = config.secure == false ? '-k' : ''

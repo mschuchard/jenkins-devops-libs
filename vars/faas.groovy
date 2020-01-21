@@ -3,7 +3,7 @@ import devops.common.utils
 
 void build(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
@@ -44,7 +44,7 @@ void build(body) {
 
 void deploy(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
@@ -91,7 +91,7 @@ void deploy(body) {
 
 void install(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   config.install_path = config.install_path ? config.install_path : '/usr/bin'
@@ -117,7 +117,7 @@ void install(body) {
     default: throw new Exception("Unsupported platform ${config.platform} specified!");
   }
   // download and install specified version
-  new utils().download_file("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.install_path}/faas-cli")
+  new utils().downloadFile("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.install_path}/faas-cli")
   extension = null
   sh(label: 'OpenFaaS CLI Executable Permissions', script: "chmod ug+rx ${config.install_path}/faas-cli")
   print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
@@ -125,7 +125,7 @@ void install(body) {
 
 void invoke(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   config.bin = config.bin ? config.bin : 'faas-cli'
@@ -173,7 +173,7 @@ void invoke(body) {
 
 void login(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.gateway : 'The required gateway parameter was not set.'
@@ -201,7 +201,7 @@ void login(body) {
 
 void push(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
@@ -237,7 +237,7 @@ void push(body) {
 
 void remove(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'

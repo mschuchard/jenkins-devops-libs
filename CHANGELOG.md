@@ -61,7 +61,7 @@
 
 ### 1.2.1
 **General**
-- Fix `map_to_json` common method and update per documented example.
+- Fix `mapToJSON` common method and update per documented example.
 - Various fixes, cleanup, and optimization.
 
 **GoSS**

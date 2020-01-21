@@ -3,7 +3,7 @@ import devops.common.utils
 
 void build(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
@@ -61,7 +61,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
 
 void install(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   config.install_path = config.install_path ? config.install_path : '/usr/bin'
@@ -77,9 +77,9 @@ void install(body) {
     }
   }
   // otherwise download and install specified version
-  new utils().download_file("https://releases.hashicorp.com/packer/${config.version}/packer_${config.version}_${config.platform}.zip", 'packer.zip')
+  new utils().downloadFile("https://releases.hashicorp.com/packer/${config.version}/packer_${config.version}_${config.platform}.zip", 'packer.zip')
   unzip(zipFile: 'packer.zip', dir: config.install_path)
-  new utils().remove_file('packer.zip')
+  new utils().removeFile('packer.zip')
   print "Packer successfully installed at ${config.install_path}/packer."
 }
 
@@ -104,10 +104,10 @@ void plugin_install(String url, String install_loc) {
     // append zip extension to avoid filename clashes
     install_loc = "${install_loc}.zip"
   }
-  new utils().download_file(url, install_loc)
+  new utils().downloadFile(url, install_loc)
   if (url ==~ /\.zip$/) {
     unzip(zipFile: install_loc)
-    new utils().remove_file(install_loc)
+    new utils().removeFile(install_loc)
   }
   else {
     sh(label: 'Packer CLI Executable Permissions', script: "chmod ug+rx ${install_loc}")
@@ -117,7 +117,7 @@ void plugin_install(String url, String install_loc) {
 
 void validate(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.template : 'The required template parameter was not set.'

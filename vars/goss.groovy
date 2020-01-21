@@ -13,7 +13,7 @@ void install(String version, String install_path = '/usr/bin/') {
     }
   }
   // otherwise download and install specified version
-  new utils().download_file("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${install_path}/goss")
+  new utils().downloadFile("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${install_path}/goss")
   sh(label: 'GoSS CLI Executable Permissions', script: "chmod ug+rx ${install_path}/goss")
   print "GoSS successfully installed at ${install_path}/goss."
 }
@@ -32,14 +32,14 @@ void install_dgoss(String version, String install_path = '/usr/bin/') {
   assert (!(fileExists("${install_path}/dgoss"))) : 'Dgoss is installed but goss is not. Dgoss execution requires goss.'
 
   // otherwise download and install specified version
-  new utils().download_file("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${install_path}/dgoss")
+  new utils().downloadFile("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${install_path}/dgoss")
   sh(label: 'DGoSS CLI Executable Permissions', script: "chmod ug+rx ${install_path}/dgoss")
   print "DGoSS successfully installed at ${install_path}/dgoss."
 }
 
 void server(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
@@ -75,7 +75,7 @@ void server(body) {
 
 void validate(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
@@ -109,7 +109,7 @@ void validate(body) {
 
 void validate_docker(body) {
   // evaluate the body block, and collect configuration into the object
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // input checking
   assert config.image : 'The required image parameter was not set.'

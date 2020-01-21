@@ -3,7 +3,7 @@ import devops.common.utils
 
 void apply(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -53,7 +53,7 @@ void apply(body) {
 
 void destroy(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -111,7 +111,7 @@ void destroy(body) {
 
 void fmt(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -160,7 +160,7 @@ void fmt(body) {
 
 void init(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -196,7 +196,7 @@ void init(body) {
 
 void imports(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -251,7 +251,7 @@ void imports(body) {
 
 void install(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -270,15 +270,15 @@ void install(body) {
     }
   }
   // otherwise download and install specified version
-  new utils().download_file("https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip", 'terraform.zip')
+  new utils().downloadFile("https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip", 'terraform.zip')
   unzip(zipFile: 'terraform.zip', dir: config.install_path)
-  new utils().remove_file('terraform.zip')
+  new utils().removeFile('terraform.zip')
   print "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
 def plan(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -345,7 +345,7 @@ def plan(body) {
 
 void plugin_install(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -375,11 +375,11 @@ void plugin_install(body) {
     install_loc = "${install_loc}.zip"
   }
 
-  new utils().download_file(config.url, install_loc)
+  new utils().downloadFile(config.url, install_loc)
 
   if (config.url ==~ /\.zip$/) {
     unzip(zipFile: install_loc)
-    new utils().remove_file(install_loc)
+    new utils().removeFile(install_loc)
   }
   else {
     sh(label: 'Terraform CLI Executable Permissions', script: "chmod ug+rx ${install_loc}")
@@ -389,7 +389,7 @@ void plugin_install(body) {
 
 void state(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -441,7 +441,7 @@ void state(body) {
 
 void taint(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -482,7 +482,7 @@ void taint(body) {
 
 void validate(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
@@ -528,7 +528,7 @@ void validate(body) {
 
 void workspace(body) {
   // pass in params body and ensure proper config of type map
-  Map config = new utils().params_converter(body)
+  Map config = new utils().paramsConverter(body)
 
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
