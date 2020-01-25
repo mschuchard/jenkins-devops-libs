@@ -52,7 +52,7 @@ void server(body) {
 
   // create goss rest api endpoint
   try {
-    String cmd = "${config.bin}"
+    String cmd = "${config.bin} serve"
 
     // check for optional inputs
     if (config.vars) {
@@ -64,7 +64,7 @@ void server(body) {
       cmd += " -g ${config.gossfile}"
     }
 
-    sh(label: 'GoSS Server', script: "nohup ${cmd} serve -f ${config.format} -e ${config.endpoint} -l :${config.port} &")
+    sh(label: 'GoSS Server', script: "nohup ${cmd} -f ${config.format} -e ${config.endpoint} -l :${config.port} &")
   }
   catch(Exception error) {
     print 'Failure using goss serve.'
@@ -86,7 +86,7 @@ void validate(body) {
 
   // validate with goss
   try {
-    String cmd = "${config.bin}"
+    String cmd = "${config.bin} validate --no-color"
 
     // check for optional inputs
     if (config.vars) {
@@ -98,7 +98,7 @@ void validate(body) {
       cmd += " -g ${config.gossfile}"
     }
 
-    sh(label: 'GoSS Validate', script: "${cmd} validate -f ${config.format}")
+    sh(label: 'GoSS Validate', script: "${cmd} -f ${config.format}")
   }
   catch(Exception error) {
     print 'Failure using goss validate.'
