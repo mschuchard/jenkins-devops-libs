@@ -382,6 +382,12 @@ void upgrade(body) {
         cmd += " --set ${kv}"
       }
     }
+    if (config.verify == true) {
+      cmd += ' --verify'
+    }
+    if (config.install == true) {
+      cmd += ' --install'
+    }
     if (config.context) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
@@ -390,13 +396,12 @@ void upgrade(body) {
       cmd += " --namespace ${config.namespace}"
       lister += " --namespace ${config.namespace}"
     }
-    if (config.verify == true) {
-      cmd += ' --verify'
-    }
 
-    // check release object
-    String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-    assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
+    // check release object presence if install param is not true (i.e. false or null)
+    if (!(config.install == true)) {
+      String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+      assert release_obj_list ==~ config.name : "Release object ${config.name} does not exist!"
+    }
 
     sh(label: 'Helm Upgrade', script: "${cmd} ${config.name} ${config.chart}")
   }

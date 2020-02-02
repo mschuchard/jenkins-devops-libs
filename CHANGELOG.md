@@ -5,6 +5,9 @@
 **GoSS**
 - Fix `serve` port specification.
 
+**Helm**
+- Add `install` parameter to `upgrade` method.
+
 ### 1.4.0
 **General**
 - Support new and old Pipeline DSL.
