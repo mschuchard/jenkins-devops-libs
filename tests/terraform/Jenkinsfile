@@ -14,11 +14,11 @@ pipeline {
     stage('Install') {
       steps {
         script {
-          terraform.install {
-            version      = '0.12.18'
-            install_path = '/tmp'
-            platform     = 'linux_amd64'
-          }
+          terraform.install(
+            version:      '0.12.18',
+            install_path: '/tmp',
+            platform:     'linux_amd64'
+          )
         }
       }
     }
@@ -27,74 +27,74 @@ pipeline {
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/terraform/main.tf -o /tmp/main.tf'
 
         script {
-          terraform.init {
-            bin = '/tmp/terraform'
-            dir = '/tmp'
-          }
+          terraform.init(
+            bin: '/tmp/terraform',
+            dir: '/tmp'
+          )
         }
       }
     }
     stage('Workspace') {
       steps {
         script {
-          terraform.workspace {
-            bin       = '/tmp/terraform'
-            dir       = '/tmp'
-            workspace = 'default'
-          }
+          terraform.workspace(
+            bin:       '/tmp/terraform',
+            dir:       '/tmp',
+            workspace: 'default'
+          )
         }
       }
     }
     stage('Validate') {
       steps {
         script {
-          terraform.validate {
-            bin        = '/tmp/terraform'
-            check_vars = false
-            dir        = '/tmp'
-          }
+          terraform.validate(
+            bin:        '/tmp/terraform',
+            check_vars: false,
+            dir:        '/tmp'
+          )
         }
       }
     }
     stage('Fmt') {
       steps {
         script {
-          terraform.fmt {
-            dir   = '/tmp'
-            bin   = '/tmp/terraform'
-            check = true
-            diff  = true
-          }
+          terraform.fmt(
+            dir:   '/tmp',
+            bin:   '/tmp/terraform',
+            check: true,
+            diff:  true
+          )
         }
       }
     }
     stage('Plan') {
       steps {
         script {
-          terraform.plan {
-            bin = '/tmp/terraform'
-            dir = '/tmp'
-          }
+          terraform.plan(
+            bin: '/tmp/terraform',
+            dir: '/tmp'
+          )
         }
       }
     }
     stage('Apply') {
       steps {
         script {
-          terraform.apply {
-            bin         = '/tmp/terraform'
-            config_path = '/tmp/plan.tfplan'
-          }
+          terraform.apply(
+            bin:         '/tmp/terraform',
+            config_path: '/tmp/plan.tfplan'
+          )
         }
       }
     }
     stage('Destroy') {
       steps {
         script {
-          terraform.destroy {
-            bin         = '/tmp/terraform'
-            config_path = '/tmp'
-          }
+          terraform.destroy(
+            bin:         '/tmp/terraform',
+            config_path: '/tmp'
+          )
         }
       }
     }

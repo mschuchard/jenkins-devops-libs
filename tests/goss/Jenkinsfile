@@ -65,11 +65,11 @@ pipeline {
       }
       steps {
         script {
-          goss.validate_docker {
-            bin   = '/tmp/dgoss' // optional executable path for dgoss
-            flags = ['JAVA_OPTS="-Xmx1048m"'] // optional flags for container run
-            image = 'alpine:latest' // docker image to run container from
-          }
+          goss.validate_docker(
+            bin:   '/tmp/dgoss', // optional executable path for dgoss
+            flags: ['JAVA_OPTS="-Xmx1048m"'], // optional flags for container run
+            image: 'alpine:latest' // docker image to run container from
+          )
         }
       }
     }

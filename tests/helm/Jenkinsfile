@@ -23,34 +23,34 @@ pipeline {
     }
     stage('Lint') {
       steps {
-        script {
-          helm.lint {
-            bin   = '/usr/bin/helm' // optional executable path for helm
-            chart = 'stable/mariadb' // chart repository, local archive, directory, or url to install
-          }
+        script(
+          helm.lint(
+            bin:   '/usr/bin/helm', // optional executable path for helm
+            chart: 'stable/mariadb' // chart repository, local archive, directory, or url to install
+          )
         }
       }
     }
     stage('Install') {
       steps {
         script {
-          helm.install {
-            bin   = '/usr/bin/helm' // optional executable path for helm
-            chart = 'stable/mariadb' // chart repository, local archive, directory, or url to install
-            name  = 'happy-panda' // optional name for the installed release object
-          }
+          helm.install(
+            bin:   '/usr/bin/helm', // optional executable path for helm
+            chart: 'stable/mariadb', // chart repository, local archive, directory, or url to install
+            name:  'happy-panda' // optional name for the installed release object
+          )
         }
       }
     }
     stage('Test') {
       steps {
         script {
-          helm.test {
-            bin     = '/usr/bin/helm' // optional executable path for helm
-            chart   = 'stable/mariadb' // chart repository, local archive, directory, or url to install
-            kubectl = '/usr/bin/kubectl' // optional executable path for kubectl
-            name    = 'happy-panda' // name of a deployed release
-          }
+          helm.test(
+            bin:     '/usr/bin/helm', // optional executable path for helm
+            chart:   'stable/mariadb', // chart repository, local archive, directory, or url to install
+            kubectl: '/usr/bin/kubectl', // optional executable path for kubectl
+            name:    'happy-panda' // name of a deployed release
+          )
         }
       }
     }
