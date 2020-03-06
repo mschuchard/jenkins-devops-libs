@@ -16,14 +16,14 @@ pipeline {
     stage('Setup') {
       steps {
         script {
-          helm.setup('2.14.3', '/usr/bin')
-          helm.kubectl('1.14.6', '/usr/bin')
+          helm.setup('2.16.1', '/usr/bin')
+          helm.kubectl('1.16.6', '/usr/bin')
         }
       }
     }
     stage('Lint') {
       steps {
-        script(
+        script {
           helm.lint(
             bin:   '/usr/bin/helm', // optional executable path for helm
             chart: 'stable/mariadb' // chart repository, local archive, directory, or url to install

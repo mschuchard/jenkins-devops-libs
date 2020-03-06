@@ -1,4 +1,4 @@
-# Puppet
+# Puppet Enterprise
 
 Interacts with Puppet Enterprise endpoints. This library is considered experimental and users are encouraged to file issues when and where they are found.
 
