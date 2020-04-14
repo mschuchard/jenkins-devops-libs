@@ -147,7 +147,7 @@ void fmt(body) {
     fmt_status = sh(label: 'Terraform Format', returnStatus: true, script: "${cmd} ${config.dir}")
 
     // report if formatting check detected issues
-    if (config.check == true) && (fmt_status != 0) {
+    if ((config.check == true) && (fmt_status != 0)) {
       print 'Terraform fmt has detected formatting errors.'
     }
   }
