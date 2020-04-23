@@ -1,4 +1,4 @@
-### Next
+### 1.4.1
 **General**
 - Fine tune type specifications, especially in global var method returns.
 
@@ -7,6 +7,9 @@
 
 **Helm**
 - Add `install` parameter to `upgrade` method.
+
+**Terraform**
+- Fix syntax error in `fmt` method.
 
 ### 1.4.0
 **General**
