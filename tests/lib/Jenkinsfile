@@ -1,0 +1,37 @@
+// for dynamic retrieval
+library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
+  [$class: 'GitSCMSource',
+   remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
+// if added in Jenkins global config shared libraries
+//@Library('jenkins-devops-libs')_
+// if added in Jenkins global config shared libraries and the github api plugin is bugging out and slamming github with requests
+//library('jenkins-devops-libs')_
+
+pipeline {
+  agent any
+
+  stages {
+    stage('Test Rest') {
+      steps {
+        script {
+          testRest.get(url: 'http://www.google.com')
+          testRest.post(
+            url:     'url',
+            headers: [key: value],
+            body:    [key: value]
+          )
+          testRest.put(
+            url:     'url',
+            headers: [key: value],
+            body:    [key: value]
+          )
+          testRest.error(
+            url:     'http://localhost:8080',
+            headers: [key: 'value'],
+            body:    [key: 'value']
+          )
+        }
+      }
+    }
+  }
+}

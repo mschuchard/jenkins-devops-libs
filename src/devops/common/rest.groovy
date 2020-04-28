@@ -1,4 +1,4 @@
-// src/devops/common/http.groovy
+// src/devops/common/rest.groovy
 package devops.common;
 
 // imports
@@ -6,11 +6,11 @@ package devops.common;
 import groovyx.net.http.RESTClient
 
 // defines a method for interacting with rest apis
-Map rest(String url, Map headers, Map body, String method) {
+Map request(String url, Map headers = [:], Map body = [:], String method = 'get') {
   // initialize client
   def client = new RESTClient(url)
 
-  // invoke helper method depending upon interaction method
+  // invoke helper request method depending upon interaction method
   switch(method) {
     case 'get':
       response = client.get(headers: headers, body: body)
