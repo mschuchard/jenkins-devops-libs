@@ -58,7 +58,8 @@ terraform.init(
   bin:        '/usr/bin/terraform', // optional path to terraform executable
   dir:        '/path/to/working_config_dir', // path to working config dir
   plugin_dir: '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
-  upgrade:    false // optional upgrade modules and plugins
+  upgrade:    false, // optional upgrade modules and plugins
+  backend:    true  // optional initialize backend as configured (false to init re-usable modules)
 )
 ```
 
