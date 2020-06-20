@@ -184,6 +184,9 @@ void init(body) {
     if (config.upgrade == true) {
       cmd += ' -upgrade'
     }
+    if (config.backend == false) {
+      cmd += ' -backend=false'
+    }
 
     sh(label: 'Terraform Init', script: "${cmd} ${config.dir}")
   }
