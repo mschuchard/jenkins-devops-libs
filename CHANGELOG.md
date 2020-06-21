@@ -1,3 +1,10 @@
+### 1.5.0 (Next)
+**Helm**
+- Add `uninstall` method alias.
+
+**Terraform**
+- Add `backend` parameter to `init` method.
+
 ### 1.4.1
 **General**
 - Fine tune type specifications, especially in global var method returns.

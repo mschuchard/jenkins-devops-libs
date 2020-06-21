@@ -57,7 +57,7 @@ pipeline {
     stage('Delete') {
       steps {
         script {
-          helm.delete('happy-panda')
+          helm.uninstall(name: 'happy-panda')
         }
       }
     }

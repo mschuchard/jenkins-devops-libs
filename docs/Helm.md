@@ -7,17 +7,6 @@ Interacts with Helm. Note that you should set the environment variable `KUBECONF
 - tar package (`setup`)
 - pipeline-utility-steps plugin (`setup`)
 
-### helm.delete()
-Delete the release object from Kubernetes with helm.
-
-```groovy
-helm.delete(
-  bin:     '/usr/bin/helm', // optional executable path for helm
-  name:    'happy-panda', // name for the release object to be deleted
-  context: 'default' // optional kube-context from kube config
-)
-```
-
 ### helm.install()
 Performs an installation with helm onto the Kubernetes cluster.
 
@@ -101,6 +90,19 @@ helm.test(
   kubectl:  '/usr/bin/kubectl', // optional executable path for kubectl
   name:     'happy-panda', // name of a deployed release
   parallel: false // optional run test pods in parallel
+)
+```
+
+### helm.uninstall() / helm.delete()
+**Notice: `uninstall` is compatible with version >= 3.0, and `delete` is compatible with version 2.x. Please invokve each method appropriately.**
+
+Delete the release object from Kubernetes with helm.
+
+```groovy
+helm.delete(
+  bin:     '/usr/bin/helm', // optional executable path for helm
+  name:    'happy-panda', // name for the release object to be deleted
+  context: 'default' // optional kube-context from kube config
 )
 ```
 
