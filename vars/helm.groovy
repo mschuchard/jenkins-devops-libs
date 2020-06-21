@@ -9,9 +9,12 @@ void delete(body) {
   config.bin = config.bin ? config.bin : 'helm'
   assert config.name : "The required parameter 'name' was not set."
 
+  // determine subcommand
+  subcmd = config.new_cmd ? 'uninstall' : 'delete'
+
   // attempt to delete a release object
   try {
-    String cmd = "${config.bin} delete"
+    String cmd = "${config.bin} ${subcmd}"
     String lister = "${config.bin} list"
 
     if (config.context) {
@@ -348,6 +351,15 @@ void test(body) {
     throw new Exception('Helm test failed with above logs.')
   }
   print 'Helm test executed successfully.'
+}
+
+void uninstall(body) {
+  // evaluate the body block, and collect configuration into the object
+  Map config = new utils().paramsConverter(body)
+
+  // redirect to delete method with key value indicating helm 3
+  config['new_cmd'] = true
+  delete(config)
 }
 
 void upgrade(body) {
