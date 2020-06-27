@@ -266,19 +266,25 @@ void setup(String version, String install_path = '/usr/bin/') {
     sh(label: 'Untar Helm CLI', script: "tar -xzf /tmp/helm.tar.gz -C ${install_path} --strip-components 1 linux-amd64/helm")
     new utils().removeFile('/tmp/helm.tar.gz')
     print "Helm successfully installed at ${install_path}/helm."
-    // and then initialize helm
-    try {
-      sh(label: 'Helm Init', script: "${install_path}/helm init")
-    }
-    catch(Exception error) {
-      print 'Failure initializing helm.'
-      throw error
-    }
-    print "Helm and Tiller successfully initialized."
   }
-  if (!(fileExists("${env.HOME}/.helm"))) {
-    sh(label: 'Helm Init Client', script: "${install_path}/helm init --client-only ")
-    print "Helm successfully initialized."
+  // initialize helm if version < 3
+  if (version ==~ /^2\./) {
+    // if tiller already installed, then only initialize the helm client
+    if (!(fileExists("${env.HOME}/.helm"))) {
+      sh(label: 'Helm Init Client', script: "${install_path}/helm init --client-only ")
+      print "Helm successfully initialized."
+    }
+    // otherwise fully initialize helm
+    else {
+      try {
+        sh(label: 'Helm Init', script: "${install_path}/helm init")
+      }
+      catch(Exception error) {
+        print 'Failure initializing helm.'
+        throw error
+      }
+      print "Helm and Tiller successfully initialized."
+    }
   }
 }
 
