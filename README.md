@@ -47,7 +47,7 @@ library('jenkins-devops-libs')
 - [Terraform](docs/Terraform.md)
 
 ## DSL Change
-Starting with version 1.4.0 of the libraries, the new DSL will be supported. The new DSL appears like the following format:
+Starting with version 1.4.0 of the libraries, the new DSL will be supported. The new DSL appears like the following syntax:
 
 ```groovy
 library.method(
@@ -56,7 +56,7 @@ library.method(
 )
 ```
 
-The documentation has also been updated to reflect the new DSL. The old DSL will be supported until version 2.0.0. The old DSL appears like the following format:
+The documentation has also been updated to reflect the new DSL. The old DSL will be supported until version 2.0.0. The old DSL appears like the following syntax:
 
 ```groovy
 library.method {

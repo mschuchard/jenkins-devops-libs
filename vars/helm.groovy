@@ -42,9 +42,15 @@ void install(body) {
   config.bin = config.bin ? config.bin : 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
 
+  // version check and required param check
+  helm_help = sh(label: 'Check Helm Version', script: "${config.bin} --help", returnStdout: true)
+  if (!(helm_help =~ /init/)) {
+    assert config.name : "The required parameter 'name' was not set."
+  }
+
   // install with helm
   try {
-    String cmd = "${config.bin} install"
+    String cmd = helm_help =~ /init/ ? "${config.bin} install" : "${config.bin} install ${config.name}"
     String lister = "${config.bin} list"
 
     if (config.values) {
@@ -69,7 +75,8 @@ void install(body) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
     }
-    if (config.name) {
+    // TODO: when dropping 2 support, use else for generate-name flag
+    if ((config.name) && (helm_help =~ /init/)) {
       cmd += " --name ${config.name}"
     }
     if (config.namespace) {

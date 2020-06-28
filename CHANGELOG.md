@@ -1,6 +1,8 @@
 ### 1.5.0 (Next)
 **Helm**
 - Add `uninstall` method alias.
+- Prevent initialization for versions >= 3.
+- Require `name` parameter for `install` method.
 
 **Terraform**
 - Add `backend` parameter to `init` method.
