@@ -238,6 +238,15 @@ void repo(body) {
     String cmd = "${config.bin} repo add"
 
     // optional inputs
+    if (config.insecure) {
+      cmd += ' --insecure-skip-tls-verify'
+    }
+    else if ((config.ca) && (config.cert) && (config.key)) {
+      cmd += " --ca-file ${config.ca} --cert-file ${config.cert} --key-file ${config.key}"
+    }
+    if ((config.user) && (config.password)) {
+      cmd += " --username ${config.user} --password ${config.password}"
+    }
 
     sh(label: 'Helm Repo Add', script: "${cmd} ${config.repo}")
   }
