@@ -225,6 +225,29 @@ void packages(body) {
   print 'Helm package command was successful.'
 }
 
+void repo(body) {
+  // evaluate the body block, and collect configuration into the object
+  Map config = new utils().paramsConverter(body)
+
+  // input checking
+  assert config.repo : "The required parameter 'repo' was not set."
+  config.bin = config.bin ? config.bin : 'helm'
+
+  // add a repo with helm
+  try {
+    String cmd = "${config.bin} repo add"
+
+    // optional inputs
+
+    sh(label: 'Helm Repo Add', script: "${cmd} ${config.repo}")
+  }
+  catch(Exception error) {
+    print 'Failure using helm repo add.'
+    throw error
+  }
+  print 'Helm repo add executed successfully.'
+}
+
 void rollback(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().paramsConverter(body)
@@ -239,6 +262,7 @@ void rollback(body) {
     String cmd = "${config.bin} rollback"
     String lister = "${config.bin} list"
 
+    // optional inputs
     if (config.context) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
