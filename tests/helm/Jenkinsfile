@@ -31,6 +31,15 @@ pipeline {
         }
       }
     }
+    stage('Repo') {
+      steps {
+        script {
+          helm.repo(
+            repo: 'stable https://kubernetes-charts.storage.googleapis.com'
+          )
+        }
+      }
+    }
     stage('Install') {
       steps {
         script {

@@ -60,6 +60,22 @@ helm.packages(
 )
 ```
 
+### helm.repo()
+Add a Helm chart repository. The repository will update if it has already been added.
+
+```groovy
+helm.repo(
+  bin:      '/usr/local/bin/helm', // optional executable path
+  ca:       '/path/to/crt.ca', // optional path to CA bundle to verify certificates of HTTPS servers
+  cert:     '/path/to/ca.crt', // optional path to HTTPS client SSL certificate file
+  insecure: false, // optional skip tls certificate checks
+  key:      '/path/to/rsa.key', // optional path to HTTPS client SSL key file
+  password: 'mypassword', // optional chart repository password
+  repo:     'stable https://kubernetes-charts.storage.googleapis.com',
+  user:     'myuser', // optional chart repository username
+)
+```
+
 ### helm.rollback()
 Roll back the release object to a previous release with helm.
 
@@ -74,6 +90,8 @@ helm.rollback(
 
 ### helm.setup(String version, String install_path = '/usr/bin')
 Locally installs a specific version of helm and then initializes helm and installs tiller. If helm is already installed at the specified version, then helm is initialized for the jenkins user if it has not been already. It is strongly recommended to manage this with a software provisioner instead, but this can be helpful for quick one-offs. Also, it is sometimes necessary to initialize helm for the jenkins user, and this will rectify that situation.
+
+**Notice: initialization for Helm is disabled in version 3.x**
 
 ```groovy
 helm.setup('2.16.1', '/usr/local/bin')
@@ -94,7 +112,7 @@ helm.test(
 ```
 
 ### helm.uninstall() / helm.delete()
-**Notice: `uninstall` is compatible with version >= 3.0, and `delete` is compatible with version 2.x. Please invokve each method appropriately.**
+**Notice: `uninstall` is compatible with version >= 3.0, and `delete` is compatible with version 2.x. Please invoke each method appropriately.**
 
 Delete the release object from Kubernetes with helm.
 

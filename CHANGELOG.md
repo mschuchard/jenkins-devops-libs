@@ -1,6 +1,7 @@
 ### 1.5.0 (Next)
 **Helm**
 - Add `uninstall` method alias.
+- Add `repo` method.
 - Prevent initialization for versions >= 3.
 - Require `name` parameter for `install` method.
 
