@@ -231,6 +231,7 @@ void repo(body) {
 
   // input checking
   assert config.repo : "The required parameter 'repo' was not set."
+  assert config.url : "The required parameter 'url' was not set."
   config.bin = config.bin ? config.bin : 'helm'
 
   // add a repo with helm
@@ -248,7 +249,7 @@ void repo(body) {
       cmd += " --username ${config.user} --password ${config.password}"
     }
 
-    sh(label: 'Helm Repo Add', script: "${cmd} ${config.repo}")
+    sh(label: 'Helm Repo Add', script: "${cmd} ${config.repo} ${config.url}")
   }
   catch(Exception error) {
     print 'Failure using helm repo add.'

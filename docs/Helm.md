@@ -71,7 +71,8 @@ helm.repo(
   insecure: false, // optional skip tls certificate checks
   key:      '/path/to/rsa.key', // optional path to HTTPS client SSL key file
   password: 'mypassword', // optional chart repository password
-  repo:     'stable https://kubernetes-charts.storage.googleapis.com',
+  repo:     'stable', // name of the chart repository
+  url:      'https://kubernetes-charts.storage.googleapis.com', // url of the chart repository
   user:     'myuser', // optional chart repository username
 )
 ```

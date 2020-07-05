@@ -35,7 +35,8 @@ pipeline {
       steps {
         script {
           helm.repo(
-            repo: 'stable https://kubernetes-charts.storage.googleapis.com'
+            repo: 'stable',
+            url:  'https://kubernetes-charts.storage.googleapis.com'
           )
         }
       }
