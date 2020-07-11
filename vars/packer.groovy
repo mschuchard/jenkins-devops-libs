@@ -7,10 +7,8 @@ void build(body) {
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
-
-  config.bin = config.bin ? config.bin : 'packer'
-
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+  config.bin = config.bin ? config.bin : 'packer'
 
   // create artifact with packer
   try {
@@ -46,7 +44,6 @@ void build(body) {
 
 void inspect(String template, String bin = '/usr/bin/packer') {
   // input checking
-  assert fileExists(bin) : "A file does not exist at ${bin}."
   assert fileExists(template) : "A file does not exist at ${template}."
 
   // inspect the packer template
@@ -65,7 +62,7 @@ void install(body) {
 
   // input checking
   config.install_path = config.install_path ? config.install_path : '/usr/bin'
-  assert (config.platform && config.version) : 'A required parameter is missing from the packer.install method. Please consult the documentation for proper usage.'
+  assert (config.platform && config.version) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
   assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
 
   // check if current version already installed
@@ -121,10 +118,8 @@ void validate(body) {
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
-
-  config.bin = config.bin ? config.bin : 'packer'
-
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+  config.bin = config.bin ? config.bin : 'packer'
 
   // validate template with packer
   try {
