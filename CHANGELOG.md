@@ -7,6 +7,7 @@
 
 **Terraform**
 - Add `backend` parameter to `init` method.
+- Convert `var` parameters from `list(string)` to `map` type.
 
 ### 1.4.1
 **General**

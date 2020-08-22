@@ -15,7 +15,7 @@ terraform.apply(
   bin:         '/usr/bin/terraform', // optional path to terraform executable
   config_path: '/path/to/config_dir_or_plan_file', // path to config dir or plan file
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:         ['foo=bar', 'bar=baz'], // optional variable setting
+  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
@@ -28,7 +28,7 @@ terraform.destroy(
   bin:         '/usr/bin/terraform', // optional path to terraform executable
   config_path: '/path/to/config_dir', // path to config dir or plan file
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:         ['foo=bar', 'bar=baz'], // optional variable setting
+  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
@@ -73,7 +73,7 @@ terraform.imports(
   resources: ['resource.name', 'other.name'], // names of the resources to import
   provider:  'template', // optional specific provider for import
   state:     'terraform.tfstate', // optional path to the source state file
-  var:       ['foo=bar', 'bar=baz'], // optional variable setting
+  var:       ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file:  '/path/to/variables.tf' // optional location of variables file
 )
 ```
@@ -100,7 +100,7 @@ terraform.plan(
   display:  false, // optional display plan output
   return:   false, // optional return plan output from method
   target:   ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:      ['foo=bar', 'bar=baz'], // optional variable setting
+  var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file: '/path/to/variables.tf' // optional location of variables file
 )
 ```
@@ -149,7 +149,7 @@ terraform.validate(
   bin:        '/usr/bin/terraform', // optional path to terraform executable
   check_vars: true, // optional check whether all required variables have been specified
   dir:        '/path/to/config_dir', // path to config dir
-  var:        ['foo=bar', 'bar=baz'], // optional variable setting
+  var:        ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file:   '/path/to/variables.tf' // optional location of variables file
 )
 ```
