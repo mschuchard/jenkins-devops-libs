@@ -5,6 +5,9 @@
 - Prevent initialization for versions >= 3.
 - Require `name` parameter for `install` method.
 
+**Packer**
+- Convert `var` parameters from `list(string)` to `map` type.
+
 **Terraform**
 - Add `backend` parameter to `init` method.
 - Convert `var` parameters from `list(string)` to `map` type.

@@ -21,10 +21,10 @@ void build(body) {
       cmd += " -var_file=${config.var_file}"
     }
     if (config.var) {
-      assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
+      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-      config.var.each() { var ->
-        cmd += " -var ${var}"
+      config.var.each() { var, value ->
+        cmd += " -var ${var}=${value}"
       }
     }
     if (config.only) {
@@ -132,10 +132,10 @@ void validate(body) {
       cmd += " -var_file=${config.var_file}"
     }
     if (config.var) {
-      assert (config.var instanceof List) : 'The var parameter must be an array of strings.'
+      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-      config.var.each() { var ->
-        cmd += " -var ${var}"
+      config.var.each() { var, value ->
+        cmd += " -var ${var}=${value}"
       }
     }
     if (config.only) {
