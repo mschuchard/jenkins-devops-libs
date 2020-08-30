@@ -122,10 +122,10 @@ void validate_docker(body) {
 
     // check for optional inputs
     if (config.flags) {
-      assert (config.flags instanceof List) : 'The flags parameter must be an array of strings.'
+      assert (config.flags instanceof Map) : 'The flags parameter must be a Map.'
 
-      config.flags.each() { flag ->
-        cmd += " -e ${flag}"
+      config.flags.each() { flag, value ->
+        cmd += " -e ${flag}=${value}"
       }
     }
 

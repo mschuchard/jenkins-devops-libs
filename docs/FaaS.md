@@ -59,7 +59,7 @@ faas.invoke(
   function: 'echo', // name of the deployed function
   header:   'X-Callback-Url=http://gateway:8080/function/send2slack', // optional HTTP request header
   method:   'POST', // optional HTTP request method
-  query:    ['repo=faas-cli', 'org=openfaas'], // optional queries for request
+  query:    ['repo':'faas-cli', 'org':'openfaas'], // optional queries for request
   stdin:    'image.png', // optional stdin for function to receive
   tls:      true // optional TLS validation (enabled by default)
 )

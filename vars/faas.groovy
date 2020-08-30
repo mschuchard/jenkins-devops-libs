@@ -149,10 +149,10 @@ void invoke(body) {
       cmd += " -m ${config.method}"
     }
     if (config.query) {
-      assert (config.query instanceof List) : 'The query parameter must be an array of strings.'
+      assert (config.query instanceof Map) : 'The query parameter must be a Map.'
 
-      config.query.each() { query ->
-        cmd += " --query ${query}"
+      config.query.each() { query, value ->
+        cmd += " --query ${query}=${value}"
       }
     }
     if (config.tls == false) {

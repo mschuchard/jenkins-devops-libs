@@ -1,9 +1,15 @@
 ### 1.5.0 (Next)
+**GoSS**
+- Convert `flags` parameter in `validate_docker` from `list(string)` to `map` type.
+
 **Helm**
 - Add `uninstall` method alias.
 - Add `repo` method.
 - Prevent initialization for versions >= 3.
 - Require `name` parameter for `install` method.
+
+**OpenFaaS**
+- Convert `query` parameter in `invoke` from `list(string)` to `map` type.
 
 **Packer**
 - Convert `var` parameters from `list(string)` to `map` type.

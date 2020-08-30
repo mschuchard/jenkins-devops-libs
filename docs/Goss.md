@@ -53,7 +53,7 @@ Note that dgoss [environment variables](https://github.com/aelsabbahy/goss/tree/
 ```groovy
 goss.validate_docker(
   bin:   '/usr/bin/dgoss', // optional executable path for dgoss
-  flags: ['JENKINS_OPTS="--httpPort=8080 --httpsPort=-1"', 'JAVA_OPTS="-Xmx1048m"'], // optional flags for container run
+  flags: ['JENKINS_OPTS':'--httpPort=8080 --httpsPort=-1', 'JAVA_OPTS':'-Xmx1048m'], // optional flags for container run
   image: 'alpine:latest' // docker image to run container from
 )
 ```
