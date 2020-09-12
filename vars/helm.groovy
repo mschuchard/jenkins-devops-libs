@@ -65,10 +65,10 @@ void install(body) {
       }
     }
     if (config.set) {
-      assert (config.set instanceof List) : 'The set parameter must be an array of strings.'
+      assert (config.set instanceof Map) : 'The set parameter must be a Map.'
 
-      config.set.each() { kv ->
-        cmd += " --set ${kv}"
+      config.set.each() { var, value ->
+        cmd += " --set ${var}=${value}"
       }
     }
     if (config.context) {
@@ -143,10 +143,10 @@ void lint(body) {
       }
     }
     if (config.set) {
-      assert (config.set instanceof List) : 'The set parameter must be an array of strings.'
+      assert (config.set instanceof Map) : 'The set parameter must be a Map.'
 
-      config.set.each() { kv ->
-        cmd += " --set ${kv}"
+      config.set.each() { var, value ->
+        cmd += " --set ${var}=${value}"
       }
     }
     if (config.context) {
@@ -435,10 +435,10 @@ void upgrade(body) {
       }
     }
     if (config.set) {
-      assert (config.set instanceof List) : 'The set parameter must be an array of strings.'
+      assert (config.set instanceof Map) : 'The set parameter must be a Map.'
 
-      config.set.each() { kv ->
-        cmd += " --set ${kv}"
+      config.set.each() { var, value ->
+        cmd += " --set ${var}=${value}"
       }
     }
     if (config.verify == true) {

@@ -7,6 +7,7 @@
 - Add `repo` method.
 - Prevent initialization for versions >= 3.
 - Require `name` parameter for `install` method.
+- Convert `set` parameter in `install`, `lint`, and `upgrade` methods from `list(string)` to `map` type.
 
 **OpenFaaS**
 - Convert `query` parameter in `invoke` from `list(string)` to `map` type.

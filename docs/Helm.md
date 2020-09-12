@@ -19,7 +19,7 @@ helm.install(
   namespace: 'default', // optional namespace for the installed release object
   values:    ['config.yaml'], // optional value overrides yaml file or url
   verify:    true, // optional verify the provenance of the chart
-  set:       ['foo=bar', 'bar=baz'] // optional value override
+  set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )
 ```
 
@@ -40,7 +40,7 @@ helm.lint(
   context:   'default', // optional kube-context from kube config
   namespace: 'default', // optional namespace for the installed release object
   values:    ['config.yaml'], // optional value overrides yaml file or url
-  set:       ['foo=bar', 'bar=baz'], // optional value override
+  set:       ['foo':'bar', 'bar':'baz'], // optional value override
   strict:    false // optional fail on warnings
 )
 ```
@@ -138,6 +138,6 @@ helm.upgrade(
   namespace: 'default', // optional namespace for the upgraded release object
   values:    ['config.yaml'], // optional value overrides yaml file or url
   verify:    true, // verify the provenance of the chart
-  set:       ['foo=bar', 'bar=baz'] // optional value override
+  set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )
 ```
