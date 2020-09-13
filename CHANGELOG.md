@@ -10,7 +10,7 @@
 - Convert `set` parameter in `install`, `lint`, and `upgrade` methods from `list(string)` to `map` type.
 
 **OpenFaaS**
-- Convert `query` parameter in `invoke` from `list(string)` to `map` type.
+- Convert `query` and `header` parameters in `invoke`, and `label` in `deploy` from `list(string)` to `map` type.
 
 **Packer**
 - Convert `var` parameters from `list(string)` to `map` type.

@@ -65,7 +65,11 @@ void deploy(body) {
       cmd += " --filter '${config.filter}'"
     }
     if (config.label) {
-      cmd += " --label ${config.label}"
+      assert (config.label instanceof Map) : 'The label parameter must be a Map.'
+
+      config.label.each() { label, value ->
+        cmd += " --label ${label}=${value}"
+      }
     }
     if (config.regex) {
       cmd += " --regex '${config.regex}'"
@@ -143,7 +147,11 @@ void invoke(body) {
       cmd += " --content-type ${config.content_type}"
     }
     if (config.header) {
-      cmd += " -H ${config.header}"
+      assert (config.header instanceof Map) : 'The header parameter must be a Map.'
+
+      config.header.each() { header, value ->
+        cmd += " -H ${header}=${value}"
+      }
     }
     if (config.method) {
       cmd += " -m ${config.method}"

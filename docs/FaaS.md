@@ -28,7 +28,7 @@ Deploys OpenFaaS function containers.
 faas.deploy(
   bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
   filter:   'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
-  label:    'canary=true', // optional label to set
+  label:    ['canary':'true', 'dev':'false'], // optional labels to set
   regex:    'regexp_string', // optional regex to match with function names in yaml file (default is unused)
   replace: true, // optional replace any existing function
   secret:   'dockerhuborg', // optional secure secret to give function access to
@@ -57,7 +57,7 @@ faas.invoke(
   bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
   content_type: 'text/plain', // optional content-type HTTP header
   function: 'echo', // name of the deployed function
-  header:   'X-Callback-Url=http://gateway:8080/function/send2slack', // optional HTTP request header
+  header:   ['X-Callback-Url':'http://gateway:8080/function/send2slack', 'X-Ping-Url':'http://request.bin/etc'], // optional HTTP request headers
   method:   'POST', // optional HTTP request method
   query:    ['repo':'faas-cli', 'org':'openfaas'], // optional queries for request
   stdin:    'image.png', // optional stdin for function to receive
