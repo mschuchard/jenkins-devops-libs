@@ -54,7 +54,7 @@ void install(body) {
     String lister = "${config.bin} list"
 
     if (config.values) {
-      assert (config.values instanceof List) : 'The values parameter must be an array of strings.'
+      assert (config.values instanceof List) : 'The values parameter must be an list of strings.'
 
       config.values.each() { value ->
         if (!(value ==~ /:\/\//)) {
@@ -132,7 +132,7 @@ void lint(body) {
     String cmd = "${config.bin} lint"
 
     if (config.values) {
-      assert (config.values instanceof List) : 'The values parameter must be an array of strings.'
+      assert (config.values instanceof List) : 'The values parameter must be an list of strings.'
 
       config.values.each() { value ->
         if (!(value ==~ /:\/\//)) {
@@ -424,7 +424,7 @@ void upgrade(body) {
     String lister = "${config.bin} list"
 
     if (config.values) {
-      assert (config.values instanceof List) : 'The values parameter must be an array of strings.'
+      assert (config.values instanceof List) : 'The values parameter must be an list of strings.'
 
       config.values.each() { value ->
         if (!(value ==~ /:\/\//)) {

@@ -35,7 +35,7 @@ void apply(body) {
     }
     // check for optional targets input
     if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be an array of strings.'
+      assert (config.target instanceof List) : 'The target parameter must be an list of strings.'
 
       config.target.each() { target ->
         cmd += " -target=${target}"
@@ -93,7 +93,7 @@ void destroy(body) {
       }
     }
     if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be an array of strings.'
+      assert (config.target instanceof List) : 'The target parameter must be an list of strings.'
 
       config.target.each() { target ->
         cmd += " -target=${target}"
@@ -206,7 +206,7 @@ void imports(body) {
 
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
-  assert (config.resources instanceof List) : 'Parameter resources must be an array of strings.'
+  assert (config.resources instanceof List) : 'Parameter resources must be an list of strings.'
   config.bin = config.bin ? config.bin : 'terraform'
 
   // import the resources
@@ -309,7 +309,7 @@ def plan(body) {
       }
     }
     if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be an array of strings.'
+      assert (config.target instanceof List) : 'The target parameter must be an list of strings.'
 
       config.target.each() { target ->
         cmd += " -target=${target}"
@@ -319,7 +319,7 @@ def plan(body) {
       cmd += ' -destroy'
     }
     if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be an array of strings.'
+      assert (config.target instanceof List) : 'The target parameter must be an list of strings.'
 
       config.target.each() { target ->
         cmd += " -target=${target}"
@@ -413,14 +413,14 @@ void state(body) {
     // perform different commands based upon type of state action
     switch (config.cmd) {
       case 'move':
-        assert (config.resources[0] instanceof List) : 'Parameter resources must be a nested array of strings for move command.';
+        assert (config.resources[0] instanceof List) : 'Parameter resources must be a nested list of strings for move command.';
 
         config.resources.each() { resource_pair ->
           sh(label: 'Terraform State Move', script: "${cmd} mv ${resource_pair}[0] ${resource_pair}[1]")
         };
         break;
       case 'remove':
-        assert (config.resources instanceof List) : 'Parameter resources must be an array of strings for remove command.';
+        assert (config.resources instanceof List) : 'Parameter resources must be an list of strings for remove command.';
 
         config.resources.each() { resource ->
           sh(label: 'Terraform State Remove', script: "${cmd} rm ${resource}")
@@ -451,7 +451,7 @@ void taint(body) {
 
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
-  assert (config.resources instanceof List) : 'Parameter resources must be an array of strings.'
+  assert (config.resources instanceof List) : 'Parameter resources must be an list of strings.'
   config.bin = config.bin ? config.bin : 'terraform'
 
   // taint the resources

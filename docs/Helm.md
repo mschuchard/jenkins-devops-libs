@@ -118,7 +118,7 @@ helm.test(
 Delete the release object from Kubernetes with helm.
 
 ```groovy
-helm.delete(
+helm.uninstall(
   bin:     '/usr/bin/helm', // optional executable path for helm
   name:    'happy-panda', // name for the release object to be deleted
   context: 'default' // optional kube-context from kube config
