@@ -19,6 +19,7 @@
 - Add `backend` parameter to `init` method.
 - Convert `var` parameters from `list<string>` to `map` type.
 - Convert `resources` parameter for `move` value for `command` parameter in `state` method from `list<list<string>>` to `map` type.
+- Fix `state` method incorrect `sh` step method prefix.
 
 ### 1.4.1
 **General**

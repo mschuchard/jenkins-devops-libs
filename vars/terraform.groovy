@@ -399,7 +399,7 @@ void state(body) {
 
   // input checking
   config.bin = config.bin ? config.bin : 'terraform'
-  String cmd = config.bin
+  String cmd = "${config.bin} state"
 
   // perform state manipulation
   try {
