@@ -28,7 +28,7 @@ void build(body) {
       }
     }
     if (config.only) {
-      assert (config.only instanceof List) : 'The only parameter must be an list of strings.'
+      assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
 
       cmd += " -only=${config.only.join(',')}"
     }
@@ -139,7 +139,7 @@ void validate(body) {
       }
     }
     if (config.only) {
-      assert (config.only instanceof List) : 'The only parameter must be an list of strings.'
+      assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
 
       cmd += " -only=${config.only.join(',')}"
     }

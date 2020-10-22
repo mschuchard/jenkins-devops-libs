@@ -1,23 +1,24 @@
 ### 1.5.0 (Next)
 **GoSS**
-- Convert `flags` parameter in `validate_docker` from `list(string)` to `map` type.
+- Convert `flags` parameter in `validate_docker` from `list<string>` to `map` type.
 
 **Helm**
 - Add `uninstall` method alias.
 - Add `repo` method.
 - Prevent initialization for versions >= 3.
 - Require `name` parameter for `install` method.
-- Convert `set` parameter in `install`, `lint`, and `upgrade` methods from `list(string)` to `map` type.
+- Convert `set` parameter in `install`, `lint`, and `upgrade` methods from `list<string>` to `map` type.
 
 **OpenFaaS**
-- Convert `query` and `header` parameters in `invoke`, and `label` in `deploy` from `list(string)` to `map` type.
+- Convert `query` and `header` parameters in `invoke`, and `label` in `deploy` from `list<string>` to `map` type.
 
 **Packer**
-- Convert `var` parameters from `list(string)` to `map` type.
+- Convert `var` parameters from `list<string>` to `map` type.
 
 **Terraform**
 - Add `backend` parameter to `init` method.
-- Convert `var` parameters from `list(string)` to `map` type.
+- Convert `var` parameters from `list<string>` to `map` type.
+- Convert `resources` parameter for `move` value for `command` parameter in `state` method from `list<list<string>>` to `map` type.
 
 ### 1.4.1
 **General**
