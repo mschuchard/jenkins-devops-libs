@@ -1,5 +1,11 @@
-provider "digitalocean" {
-  version = "~> 0.1"
+resource "local_file" "file" {
+  content = "hello world"
 
-  token = "12345"
+  # prefix inventory with name of first instance for now
+  filename        = "${path.root}/foo"
+  file_permission = "0644"
+}
+
+provider "local" {
+  version = "~> 1.0"
 }

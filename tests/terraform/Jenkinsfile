@@ -15,7 +15,7 @@ pipeline {
       steps {
         script {
           terraform.install(
-            version:      '0.12.18',
+            version:      '0.12.29',
             install_path: '/tmp',
             platform:     'linux_amd64'
           )
@@ -84,6 +84,17 @@ pipeline {
           terraform.apply(
             bin:         '/tmp/terraform',
             config_path: '/tmp/plan.tfplan'
+          )
+        }
+      }
+    }
+    stage('State') {
+      steps {
+        script {
+          terraform.apply(
+            bin:       '/tmp/terraform',
+            command:   'move',
+            resources: ['local_file.file':'local_file.not_file']
           )
         }
       }
