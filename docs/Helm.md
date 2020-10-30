@@ -137,7 +137,7 @@ helm.upgrade(
   name:      'happy-panda', // name of the upgraded release object
   namespace: 'default', // optional namespace for the upgraded release object
   values:    ['config.yaml'], // optional value overrides yaml file or url
-  verify:    true, // verify the provenance of the chart
+  verify:    true, // optional verify the provenance of the chart
   set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )
 ```

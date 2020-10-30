@@ -16,8 +16,8 @@ pipeline {
     stage('Setup') {
       steps {
         script {
-          helm.setup('2.16.1', '/usr/bin')
-          helm.kubectl('1.16.6', '/usr/bin')
+          helm.setup('3.1.3', '/usr/bin')
+          helm.kubectl('1.19.5', '/usr/bin')
         }
       }
     }
@@ -48,6 +48,29 @@ pipeline {
             bin:   '/usr/bin/helm', // optional executable path for helm
             chart: 'stable/mariadb', // chart repository, local archive, directory, or url to install
             name:  'happy-panda' // optional name for the installed release object
+          )
+        }
+      }
+    }
+    stage('Upgrade') {
+      steps {
+        script {
+          helm.upgrade(
+            bin:       '/usr/bin/helm', // optional executable path for helm
+            chart:     'stable/mariadb', // chart repository, local archive, directory, or url to upgrade
+            install:   false, // optional install if release not already present
+            name:      'happy-panda', // name of the upgraded release object
+          )
+        }
+      }
+    }
+    stage('Rollback') {
+      steps {
+        script {
+          helm.rollback(
+            bin:     '/usr/bin/helm', // optional executable path for helm
+            name:    'happy-panda', // release object name to rollback
+            version: '1' // version of release-object to rollback to
           )
         }
       }
