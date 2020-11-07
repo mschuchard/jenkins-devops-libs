@@ -326,7 +326,7 @@ def plan(body) {
       }
     }
 
-    plan_output = sh(label: 'Terraform Plan', script: "${cmd} ${config.dir}", returnStdout: true)
+    String plan_output = sh(label: 'Terraform Plan', script: "${cmd} ${config.dir}", returnStdout: true)
 
     // display plan output if specified
     if (config.display == true) {
@@ -385,7 +385,7 @@ void plugin_install(body) {
     new utils().removeFile(install_loc)
   }
   else {
-    sh(label: 'Terraform CLI Executable Permissions', script: "chmod ug+rx ${install_loc}")
+    sh(label: 'Terraform Plugin Executable Permissions', script: "chmod ug+rx ${install_loc}")
   }
   print "Terraform plugin successfully installed at ${install_loc}."
 }

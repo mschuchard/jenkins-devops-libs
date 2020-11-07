@@ -43,7 +43,7 @@ void install(body) {
   assert config.chart : "The required parameter 'chart' was not set."
 
   // version check and required param check
-  helm_help = sh(label: 'Check Helm Version', script: "${config.bin} --help", returnStdout: true)
+  String helm_help = sh(label: 'Check Helm Version', script: "${config.bin} --help", returnStdout: true)
   if (!(helm_help =~ /init/)) {
     assert config.name : "The required parameter 'name' was not set."
   }
@@ -387,7 +387,7 @@ void test(body) {
 
       // iterate through test pods, display the logs for each, and then delete the test pod
       test_pods.each() { test_pod ->
-        logs = sh(label: 'List Pod Logs', returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${test_pod}")
+        String logs = sh(label: 'List Pod Logs', returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${test_pod}")
         print "Logs for ${test_pod} for release ${config.name} are:"
         print logs
         print "Removing test pod ${test_pod}."

@@ -107,7 +107,7 @@ void plugin_install(String url, String install_loc) {
     new utils().removeFile(install_loc)
   }
   else {
-    sh(label: 'Packer CLI Executable Permissions', script: "chmod ug+rx ${install_loc}")
+    sh(label: 'Packer Plugin Executable Permissions', script: "chmod ug+rx ${install_loc}")
   }
   print "Packer plugin successfully installed at ${install_loc}."
 }
