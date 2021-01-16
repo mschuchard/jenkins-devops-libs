@@ -42,6 +42,46 @@ void build(body) {
   print 'Packer build artifact created successfully.'
 }
 
+void fmt(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().paramsConverter(body)
+
+  // input checking
+  assert config.template : 'The required template parameter was not set.'
+  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+
+  if (config.write && config.check) {
+    throw new Exception("The 'write' and 'check' options for packer.fmt are mutually exclusive - only one can be enabled.")
+  }
+  config.bin = config.bin ? config.bin : 'packer'
+
+  try {
+    String cmd = "${config.bin} fmt"
+
+    if (config.diff == true) {
+      cmd += " -diff"
+    }
+    if (config.check == true) {
+      cmd += " -check"
+    }
+    if (config.write == true) {
+      cmd += " -write"
+    }
+
+    fmt_status = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
+
+    // report if formatting check detected issues
+    if ((config.check == true) && (fmt_status != 0)) {
+      print 'Packer fmt has detected formatting errors.'
+    }
+  }
+  catch(Exception error) {
+    print 'Failure using packer fmt.'
+    throw error
+  }
+  print 'Packer fmt was successful.'
+}
+
 void inspect(String template, String bin = '/usr/bin/packer') {
   // input checking
   assert fileExists(template) : "A file does not exist at ${template}."
