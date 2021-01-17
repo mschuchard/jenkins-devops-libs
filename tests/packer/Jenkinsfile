@@ -51,6 +51,18 @@ pipeline {
         }
       }
     }
+    stage('Format') {
+      steps {
+        script {
+          packer.fmt(
+            bin:       '/tmp/packer',
+            check:     true,
+            diff:      true,
+            template: '/tmp/docker.pkr.hcl'
+          )
+        }
+      }
+    }
     stage('Inspect') {
       steps {
         script {

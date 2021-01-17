@@ -1,3 +1,7 @@
+### 1.6.0
+**Packer**
+- Add `fmt` method.
+
 ### 1.5.0
 **GoSS**
 - Convert `flags` parameter in `validate_docker` from `list<string>` to `map` type.
