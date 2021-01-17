@@ -15,12 +15,12 @@ pipeline {
       steps {
         script {
           packer.install {
-            version      = '1.5.6'
+            version      = '1.6.6'
             install_path = '/tmp'
             platform     = 'linux_amd64'
           }
           packer.install(
-            version:      '1.5.6',
+            version:      '1.6.6',
             install_path: '/tmp',
             platform:     'linux_amd64'
           )
@@ -36,16 +36,17 @@ pipeline {
     }
     stage('Validate') {
       steps {
-        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.json -o /tmp/docker.json'
+        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.pkr.json -o /tmp/docker.pkr.json'
+        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.pkr.hcl -o /tmp/docker.pkr.hcl'
 
         script {
           packer.validate {
             bin      = '/tmp/packer'
-            template = '/tmp/docker.json'
+            template = '/tmp/docker.pkr.json'
           }
           packer.validate(
             bin:      '/tmp/packer',
-            template: '/tmp/docker.json'
+            template: '/tmp/docker.pkr.json'
           )
         }
       }
@@ -53,7 +54,8 @@ pipeline {
     stage('Inspect') {
       steps {
         script {
-          packer.inspect('/tmp/docker.json', '/tmp/packer')
+          packer.inspect('/tmp/docker.pkr.json', '/tmp/packer')
+          packer.inspect('/tmp/docker.pkr.hcl', '/tmp/packer')
         }
       }
     }
@@ -62,7 +64,11 @@ pipeline {
         script {
           packer.build(
             bin:      '/tmp/packer',
-            template: '/tmp/docker.json'
+            template: '/tmp/docker.pkr.json'
+          )
+          packer.build(
+            bin:      '/tmp/packer',
+            template: '/tmp/docker.pkr.hcl'
           )
         }
       }
