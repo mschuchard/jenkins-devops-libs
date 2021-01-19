@@ -1,6 +1,6 @@
 # Terraform
 
-Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each method.
+Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each method. Minimum required version of Terraform is 0.12 as of version 1.6.0 of these libraries.
 
 ### Dependencies
 
@@ -34,10 +34,7 @@ terraform.destroy(
 ```
 
 ### terraform.fmt()
-Uses Terraform to check for properly formatted code. Note that in Terraform
-0.12.x the `recursive` option was added (Terraform < 0.12 automatically
-recursed through subdirectories). The `check` and `write` parameters are
-mutually exclusive, so only one of them may be enabled at a time.
+Uses Terraform to check for properly formatted code. Note that in Terraform 0.12.x the `recursive` option was added (Terraform < 0.12 automatically recursed through subdirectories). The `check` and `write` parameters are mutually exclusive, so only one of them may be enabled at a time.
 
 ```groovy
 terraform.fmt(
@@ -45,7 +42,7 @@ terraform.fmt(
   check:     false, // optional check files within config dir and return an error if any files are not formatted correctly (cannot be used with `write`)
   diff:      false, // optional present a diff if any files within config dir are not formatted correctly
   dir:       '/path/to/working_config_dir', // path to working config dir
-  recursive: false, // optional check subdirectories of config dir recursively (only available in Terraform 0.12 and greater)
+  recursive: false, // optional check subdirectories of config dir recursively
   write:     false // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
 )
 ```
@@ -130,12 +127,11 @@ terraform.state(
 ```
 
 ### terraform.taint()
-Manually marks a resource as tainted. This forces a destroy and recreate on the next plan or apply. Note that Terrform >= 0.12 has different usage, and consequently the module parameter will be ignored and the module should be provided as part of the resource parameter.
+Manually marks a resource as tainted. This forces a destroy and recreate on the next plan or apply.
 
 ```groovy
 terraform.taint(
   bin:       '/usr/bin/terraform', // optional path to terraform executable
-  module:    'my-module', // optional module path where the resource lives
   resources: ['resource.name', 'other.name'], // names of the resources to taint
   state:     'terraform.tfstate' // optional path to read and save state
 )

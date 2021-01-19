@@ -127,11 +127,8 @@ void fmt(body) {
   try {
     String cmd = "${config.bin} fmt -no-color"
 
-    // check for terraform >= 0.12 (those versions have flag for recursive processing)
-    String new_fmt = sh(label: 'Check Terraform Usage', returnStdout: true, script: "${config.bin} fmt --help") ==~ /-recursive/
-
     // check for optional inputs
-    if ((new_fmt) && (config.recursive == true)) {
+    if (config.recursive == true) {
       cmd += " -recursive"
     }
     if (config.diff == true) {
@@ -458,13 +455,6 @@ void taint(body) {
   try {
     String cmd = "${config.bin} taint -no-color"
 
-    // check for terraform >= 0.12 (taint usage changed)
-    String new_taint = sh(label: 'Check Terraform Usage', returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
-
-    // check for optional inputs
-    if (config.module && !(new_taint)) {
-      cmd += " -module=${config.module}"
-    }
     if (config.state) {
       assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
