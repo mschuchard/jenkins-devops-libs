@@ -486,28 +486,13 @@ void validate(body) {
 
   // validate the config directory
   try {
-    String cmd = "${config.bin} validate -no-color"
+    String cmd = "${config.bin} validate"
 
-    // check for terraform >= 0.12 (those versions have flag for json output)
-    String new_validate = sh(label: 'Check Terraform Usage', returnStdout: true, script: "${config.bin} validate --help") ==~ /-json/
-
-    if (!(new_validate)) {
-      // check for optional inputs
-      if (config.var_file) {
-        assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
-
-        cmd += " -var_file=${config.var_file}"
-      }
-      if (config.var) {
-        assert (config.var instanceof Map) : 'The var parameter must be a Map.'
-
-        config.var.each() { var, value ->
-          cmd += " -var ${var}=${value}"
-        }
-      }
-      if (config.check_vars == false) {
-        cmd += ' -check-variables=false'
-      }
+    if (config.check_vars == true) {
+      cmd += ' -json'
+    }
+    else {
+      cmd += ' -no-color'
     }
 
     sh(label: 'Terraform Validate', script: "${cmd} ${config.dir}")

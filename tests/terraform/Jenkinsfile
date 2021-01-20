@@ -49,9 +49,9 @@ pipeline {
       steps {
         script {
           terraform.validate(
-            bin:        '/tmp/terraform',
-            check_vars: false,
-            dir:        '/tmp'
+            bin:  '/tmp/terraform',
+            dir:  '/tmp',
+            json: true
           )
         }
       }

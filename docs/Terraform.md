@@ -138,15 +138,13 @@ terraform.taint(
 ```
 
 ### terraform.validate()
-Uses Terraform to validate a config directory. Note that Terraform >= 0.12 does not allow variables to be input or checked in this method, and those parameters will be ignored for that version range.
+Uses Terraform to validate a config directory.
 
 ```groovy
 terraform.validate(
-  bin:        '/usr/bin/terraform', // optional path to terraform executable
-  check_vars: true, // optional check whether all required variables have been specified
-  dir:        '/path/to/config_dir', // path to config dir
-  var:        ['foo':'bar', 'bar':'baz'], // optional variable setting
-  var_file:   '/path/to/variables.tf' // optional location of variables file
+  bin:  '/usr/bin/terraform', // optional path to terraform executable
+  dir:  '/path/to/config_dir', // path to config dir
+  json: false, // produce output in a machine-readable JSON format
 )
 ```
 
