@@ -1,6 +1,6 @@
 # Helm
 
-Interacts with Helm. Note that you should set the environment variable `KUBECONFIG` in your pipeline with `environment { KUBECONFIG = '/path/to/.kube/config' }` as the `jenkins` user probably does not have one in its home directory, and helm requires a valid kube config for all commands. Alternatively, you can use the `kubeconfigFile` or `kubeconfigContent` bindings for the Credentials Binding plugin, and then wrap code within a `withCredentials` block as per normal.
+Interacts with Helm. Minimum required version of Helm is 3.0 as of version 1.6.0 of these libraries. Note that you should set the environment variable `KUBECONFIG` in your pipeline with `environment { KUBECONFIG = '/path/to/.kube/config' }` as the `jenkins` user probably does not have one in its home directory, and helm requires a valid kube config for all commands. Alternatively, you can use the `kubeconfigFile` or `kubeconfigContent` bindings for the Credentials Binding plugin, and then wrap code within a `withCredentials` block as per normal.
 
 ### Dependencies
 
@@ -99,7 +99,7 @@ helm.setup('2.16.1', '/usr/local/bin')
 ```
 
 ### helm.test()
-Runs the tests for a release. If Helm is at least version 2.15.0, then `--logs` will be enabled for diagnostics by default. Otherwise, if the tests fail and `cleanup` is false, then the logs for the test pods will be displayed through an alternative solution (this is still undergoing functionality verification/testing), and then the pods will be deleted (both by `kubectl`).
+Executes the tests for a release.
 
 ```groovy
 helm.test(
@@ -112,10 +112,8 @@ helm.test(
 )
 ```
 
-### helm.uninstall() / helm.delete()
-**Notice: `uninstall` is compatible with version >= 3.0, and `delete` is compatible with version 2.x. Please invoke each method appropriately.**
-
-Delete the release object from Kubernetes with helm.
+### helm.uninstall()
+Uninstall the release object from Kubernetes with helm.
 
 ```groovy
 helm.uninstall(

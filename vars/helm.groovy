@@ -1,39 +1,6 @@
 //vars/helm.groovy
 import devops.common.utils
 
-void delete(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
-  // input checking
-  config.bin = config.bin ? config.bin : 'helm'
-  assert config.name : "The required parameter 'name' was not set."
-
-  // determine subcommand
-  subcmd = config.new_cmd ? 'uninstall' : 'delete'
-
-  // attempt to delete a release object
-  try {
-    String cmd = "${config.bin} ${subcmd}"
-    String lister = "${config.bin} list"
-
-    if (config.context) {
-      cmd += " --kube-context ${config.context}"
-      lister += " --kube-context ${config.context}"
-    }
-
-    // check release object
-    String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-    assert (release_obj_list ==~ config.name) : "Release object ${config.name} does not exist!"
-
-    sh(label: 'Helm Delete', script: "${cmd} ${config.name}")
-  }
-  catch(Exception error) {
-    print 'Failure using helm delete.'
-    throw error
-  }
-}
-
 void install(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().paramsConverter(body)
@@ -361,6 +328,7 @@ void test(body) {
     sh(label: 'Helm Test', script: "${cmd} ${config.name}")
   }
   catch(Exception error) {
+    // no longer relevant as of version 1.6.0, but still interesting code
     if (!(logs)) {
       print 'Release failed helm test. kubectl will now access the logs of the test pods and display them for debugging (unless using cleanup param).'
 
@@ -404,9 +372,30 @@ void uninstall(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().paramsConverter(body)
 
-  // redirect to delete method with key value indicating helm 3
-  config['new_cmd'] = true
-  delete(config)
+  // input checking
+  config.bin = config.bin ? config.bin : 'helm'
+  assert config.name : "The required parameter 'name' was not set."
+
+  // attempt to uninstall a release object
+  try {
+    String cmd = "${config.bin} uninstall"
+    String lister = "${config.bin} list"
+
+    if (config.context) {
+      cmd += " --kube-context ${config.context}"
+      lister += " --kube-context ${config.context}"
+    }
+
+    // check release object
+    String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+    assert (release_obj_list ==~ config.name) : "Release object ${config.name} does not exist!"
+
+    sh(label: 'Helm Uninstall', script: "${cmd} ${config.name}")
+  }
+  catch(Exception error) {
+    print 'Failure using helm uninstall.'
+    throw error
+  }
 }
 
 void upgrade(body) {
