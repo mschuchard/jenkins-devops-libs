@@ -30,7 +30,7 @@ pipeline {
     stage('Plugin Install') {
       steps {
         script {
-          packer.plugin_install('https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v0.3.0/packer-provisioner-goss-v0.3.0-linux-amd64', '/usr/bin/packer-provisioner-goss')
+          packer.plugin_install('https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v1.4.0/packer-provisioner-goss-v1.4.0-linux-amd64', '/usr/bin/packer-provisioner-goss')
         }
       }
     }

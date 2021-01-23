@@ -87,7 +87,7 @@ pipeline {
         }
       }
     }
-    stage('Delete') {
+    stage('Uninstall') {
       steps {
         script {
           helm.uninstall(name: 'happy-panda')
