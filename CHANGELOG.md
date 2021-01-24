@@ -4,6 +4,8 @@
 
 **Packer**
 - Add `fmt` method.
+- Add `force` and `on_error` parameters to `build` method.
+- Drop support for versions < 1.5.
 
 **Terraform**
 - Drop support for versions < 0.12.

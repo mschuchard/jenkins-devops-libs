@@ -32,6 +32,14 @@ void build(body) {
 
       cmd += " -only=${config.only.join(',')}"
     }
+    if (config.force == true) {
+      cmd += " -force"
+    }
+    if (config.on_error) {
+      assert (["default", "abort", "ask", "run-cleanup-provisioner"].contains(config.on_error)) : "The argument must be one of: default, abort, ask, or run-cleanup-provisioner."
+
+      cmd += " -on-error=${config.on_error}"
+    }
 
     sh(label: 'Packer Build', script: "${cmd} ${config.template}")
   }

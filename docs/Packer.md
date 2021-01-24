@@ -1,6 +1,6 @@
 # Packer
 
-Interacts with Packer. Minimum required version of Packer is 1.5 as of version 1.6.0 of these libraries. The `template` argument must generally be a `pkr.json` template, `pkr.hcl` template, or a directory containing them. 
+Interacts with Packer. Minimum required version of Packer is 1.5 as of version 1.6.0 of these libraries. The `template` argument must generally be a `pkr.json` template, `pkr.hcl` template, or a directory containing them.
 
 ### Dependencies
 
@@ -13,7 +13,9 @@ Uses Packer to build an artifact from a template.
 ```groovy
 packer.build(
   bin:      '/usr/bin/packer', // optional location of packer install
-  only:     ['foo', 'bar', 'baz'], // optional builder names to build
+  force:    false, // optional force a build to continue if artifacts exist and deletes existing artifacts
+  only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build
+  on_error: "default", // optional "default" cleanup, "abort", "ask", or "run-cleanup-provisioner"
   template: '/path/to/template.pkr.json', // location of packer template(s)
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file: '/path/to/variables.json' // optional location of variables file
@@ -64,7 +66,7 @@ Uses Packer to validate a build template.
 ```groovy
 packer.validate(
   bin:      '/usr/bin/packer', // optional location of packer install
-  only:     ['foo', 'bar', 'baz'], // optional builder names to build
+  only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to validate
   template: '/path/to/template.pkr.hcl', // location of packer template(s)
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file: '/path/to/variables.json' // optional location of variables file
