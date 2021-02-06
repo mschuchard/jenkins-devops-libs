@@ -276,6 +276,43 @@ void install(body) {
   print "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
+def output(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().paramsConverter(body)
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  config.bin = config.bin ? config.bin : 'terraform'
+
+  // display outputs from the state
+  try {
+    String cmd = "${config.bin} output -no-color"
+
+    // check for optional inputs
+    if (config.state) {
+      assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+      cmd += " -state=${config.state}"
+    }
+    if (config.json == true) {
+      cmd += " -json"
+    }
+    if (config.name) {
+      cmd += " ${config.name}"
+    }
+
+    // display output(s)
+    sh(label: 'Terraform Output', script: cmd)
+  }
+  catch(Exception error) {
+    print 'Failure using terraform output.'
+    throw error
+  }
+  print 'Terraform outputs are displayed above.'
+}
+
 def plan(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
@@ -323,6 +360,7 @@ def plan(body) {
       }
     }
 
+    // execute plan
     String plan_output = sh(label: 'Terraform Plan', script: "${cmd} ${config.dir}", returnStdout: true)
 
     // display plan output if specified
