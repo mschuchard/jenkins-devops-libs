@@ -88,6 +88,16 @@ pipeline {
         }
       }
     }
+    stage('Output') {
+      steps {
+        script {
+          terraform.output(
+            bin:  '/tmp/terraform',
+            json: false
+          )
+        }
+      }
+    }
     stage('State') {
       steps {
         script {

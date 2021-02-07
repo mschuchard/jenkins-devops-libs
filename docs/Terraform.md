@@ -86,6 +86,18 @@ terraform.install(
 )
 ```
 
+### terraform.output()
+Reads an output variable from a Terraform state and prints the value.
+
+```groovy
+terraform.plan(
+  bin:   '/usr/bin/terraform', // optional path to terraform executable
+  json:  false, // optional json format output
+  name:  'module.foo.server_ip_address', // optional output name
+  state: 'terraform.tfstate', // optional path to the source state file
+)
+```
+
 ### terraform.plan()
 Uses Terraform to generate an execution plan. The plan file `plan.tfplan` will be written to the same directory as the input config directory. This is mostly useful in a Pipeline for validating the config set and then speeding up a subsequent `apply` or `destroy` by providing an input plan file.
 

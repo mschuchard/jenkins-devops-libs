@@ -10,6 +10,7 @@
 **Terraform**
 - Drop support for versions < 0.12.
 - Update validate method for >= 0.12 only.
+- Add `output` method.
 
 ### 1.5.0
 **GoSS**
