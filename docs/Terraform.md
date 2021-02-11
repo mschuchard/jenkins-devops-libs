@@ -43,7 +43,7 @@ terraform.fmt(
   diff:      false, // optional present a diff if any files within config dir are not formatted correctly
   dir:       '/path/to/working_config_dir', // path to working config dir
   recursive: false, // optional check subdirectories of config dir recursively
-  write:     false // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
+  write:     true // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
 )
 ```
 

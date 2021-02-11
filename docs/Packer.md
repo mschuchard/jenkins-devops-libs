@@ -31,7 +31,7 @@ packer.fmt(
   check:     false, // optional check template and return an error if file is not formatted correctly (cannot be used with `write`)
   diff:      false, // optional present a diff if the template is not formatted correctly
   template: '/path/to/template_dir', // location of packer template(s)
-  write:     false // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
+  write:     true // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
 )
 ```
 

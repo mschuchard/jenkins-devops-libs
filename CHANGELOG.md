@@ -11,6 +11,7 @@
 - Drop support for versions < 0.12.
 - Update validate method for >= 0.12 only.
 - Add `output` method.
+- Prevent `fmt` parameter incompatibility with `check` and `write`.
 
 ### 1.5.0
 **GoSS**

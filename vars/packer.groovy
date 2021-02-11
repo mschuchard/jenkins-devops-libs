@@ -72,7 +72,8 @@ void fmt(body) {
     if (config.check == true) {
       cmd += " -check"
     }
-    if (config.write == true) {
+    // incompatible with above
+    else if (config.write == true) {
       cmd += " -write"
     }
 
