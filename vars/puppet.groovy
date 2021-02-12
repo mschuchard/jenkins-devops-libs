@@ -34,23 +34,39 @@ void code_deploy(body) {
   // convert map to json string
   payload = new utils().mapToJSON(payload)
 
-  // iterate through servers
+  // initialize errored var
   boolean errored = false
+  // initialize json_response object
+  def json_response = [:]
+  // initialize token with readFile relative pathing requirement stupidness
+  String token = readFile("../../../../../../../../../../../${config.token}")
+
+  // iterate through servers
   config.servers.each() { server ->
     // trigger code manager deployment
     try {
-      String json = sh(label: 'Puppet Code Deploy Request', returnStdout: true, script: "${config.bin} -k -X POST -H 'Content-Type: application/json' -H \"X-Authentication: `cat ${config.token}`\" \"https://${server}:8170/code-manager/v1/deploys\" -d '${payload}'")
+      json_response = httpRequest(
+        acceptType:             'APPLICATION_JSON',
+        consoleLogResponseBody: true,
+        contentType:            'APPLICATION_JSON',
+        customHeaders:          [[name: 'X-Authentication', value: token]],
+        httpMode:               'POST',
+        ignoreSslErrors:        true,
+        quiet:                  true,
+        requestBody:            payload,
+        url:                    "https://${server}:8170/code-manager/v1/deploys",
+      )
     }
     catch(Exception error) {
-      print "Failure executing curl against ${server} with token at ${config.token}!"
+      print "Failure executing REST API request against ${server} with token at ${config.token}! Returned status: ${json_response.status}."
       throw error
     }
     // parse response
     try {
-      Map response = readJSON(text: json)
+      Map response = readJSON(text: json_response.content)
     }
     catch(Exception error) {
-      print "Response from ${server} is not valid JSON!"
+      print "Response from ${server} is not valid JSON! Response content: ${json_response.content}."
       throw error
     }
     // check for errors if waited
