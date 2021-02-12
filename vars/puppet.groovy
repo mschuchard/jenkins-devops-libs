@@ -232,23 +232,34 @@ void token (body) {
   // convert map to json file
   payload = new utils().mapToJSON(payload)
 
-  // check for secure ssl connection option
-  String secure = config.secure == false ? '-k' : ''
+  // initialize vars
+  def json_response = [:]
+  Map response = [:]
 
   // trigger token generation
   try {
-    String json = sh(label: 'Puppet Token Request', returnStdout: true, script: "${config.bin} ${secure} -X POST -H 'Content-Type: application/json' \"https://${server}:4433/rbac-api/v1/auth/token\" -d '${payload}'")
+    json_response = httpRequest(
+      acceptType:             'APPLICATION_JSON',
+      consoleLogResponseBody: true,
+      contentType:            'APPLICATION_JSON',
+      customHeaders:          [[name: 'X-Authentication', value: token]],
+      httpMode:               'POST',
+      ignoreSslErrors:        !config.secure,
+      quiet:                  true,
+      requestBody:            payload,
+      url:                    "https://${server}:4433/rbac-api/v1/auth/token",
+    )
   }
   catch(Exception error) {
-    print "Failure executing curl against ${server} with username ${config.username}."
+    print "Failure executing REST API request against ${server} with username ${config.username}. Returned status: ${json_response.status}."
     throw error
   }
   // receive and parse response
   try {
-    Map response = readJSON(text: json)
+    Map response = readJSON(text: json_response.content)
   }
   catch(Exception error) {
-    print "Response from ${server} is not valid JSON!"
+    print "Response from ${server} is not valid JSON! Response content: ${json_response.content}."
     throw error
   }
 
