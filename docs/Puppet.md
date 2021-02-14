@@ -5,13 +5,13 @@ Interacts with Puppet Enterprise endpoints. This library is considered experimen
 ### Dependencies
 
 - pipeline-utility-steps plugin
+- http-request plugin
 
 ### puppet.code_deploy()
 Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to `true`, errors returned by Code Manager will be returned and cause the pipeline to fatally error.
 
 ```groovy
 puppet.code_deploy(
-  bin:          '/usr/bin/curl', // optional executable path for curl
   environments: ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
   servers:      ['puppet'], // optional server hosting code manager
   token:        '/var/lib/jenkins/.puppetlabs/token', // rbac token for deploying with code manager
@@ -24,7 +24,6 @@ Triggers the execution of a Puppet Enterprise task via the Puppet Enterprise Orc
 
 ```groovy
 puppet.task(
-  bin:         '/usr/bin/curl', // optional executable path for curl
   description: 'my task', // optional description of the job
   environment: 'production', // optional environment to execute the task on (default is production)
   noop:        true, // optional execute task in noop (default is false)
@@ -41,7 +40,6 @@ Generates a RBAC token for use with Puppet Enterprise endpoints, and saves it as
 
 ```groovy
 puppet.token(
-  bin:      '/usr/bin/curl', // optional executable path for curl
   password: 'password', // password for the rbac token
   path:     '$HOME/.puppetlabs', // optional path to save rbac token to
   secure:   true, // optional verify ssl connection

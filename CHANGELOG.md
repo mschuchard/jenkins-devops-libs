@@ -13,6 +13,9 @@
 - Add `output` method.
 - Prevent `fmt` parameter incompatibility with `check` and `write`.
 
+**Puppet**
+- Convert REST API requests to utilize `httpRequest` plugin.
+
 ### 1.5.0
 **GoSS**
 - Convert `flags` parameter in `validate_docker` from `list<string>` to `map` type.
