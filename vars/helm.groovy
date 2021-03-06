@@ -6,7 +6,7 @@ void install(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.bin = config.bin ? config.bin : 'helm'
+  config.bin = config.bin ?: 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
 
   // version check and required param check
@@ -91,7 +91,7 @@ void lint(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.bin = config.bin ? config.bin : 'helm'
+  config.bin = config.bin ?: 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
 
   // lint with helm
@@ -155,7 +155,7 @@ void packages(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.bin = config.bin ? config.bin : 'helm'
+  config.bin = config.bin ?: 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
   assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not contain a Chart.yaml!"
 
@@ -199,7 +199,7 @@ void repo(body) {
   // input checking
   assert config.repo : "The required parameter 'repo' was not set."
   assert config.url : "The required parameter 'url' was not set."
-  config.bin = config.bin ? config.bin : 'helm'
+  config.bin = config.bin ?: 'helm'
 
   // add a repo with helm
   try {
@@ -232,7 +232,7 @@ void rollback(body) {
   // input checking
   assert config.version : "The required parameter 'version' was not set."
   assert config.name : "The required parameter 'name' was not set."
-  config.bin = config.bin ? config.bin : 'helm'
+  config.bin = config.bin ?: 'helm'
 
   // rollback with helm
   try {
@@ -301,7 +301,7 @@ void test(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.bin = config.bin ? config.bin : 'helm'
+  config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
 
   // test with helm
@@ -373,7 +373,7 @@ void uninstall(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.bin = config.bin ? config.bin : 'helm'
+  config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
 
   // attempt to uninstall a release object
@@ -405,7 +405,7 @@ void upgrade(body) {
   // input checking
   assert config.chart : "The required parameter 'chart' was not set."
   assert config.name : "The required parameter 'name' was not set."
-  config.bin = config.bin ? config.bin : 'helm'
+  config.bin = config.bin ?: 'helm'
 
   // upgrade with helm
   try {

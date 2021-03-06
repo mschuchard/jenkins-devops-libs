@@ -45,10 +45,10 @@ void server(body) {
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
   }
-  config.endpoint = config.endpoint ? config.endpoint : '/healthz'
-  config.format = config.format ? config.format : 'rspecish'
-  config.port = config.port ? config.port : '8080'
-  config.bin = config.bin ? config.bin : 'goss'
+  config.endpoint = config.endpoint ?: '/healthz'
+  config.format = config.format ?: 'rspecish'
+  config.port = config.port ?: '8080'
+  config.bin = config.bin ?: 'goss'
 
   // create goss rest api endpoint
   try {
@@ -81,8 +81,8 @@ void validate(body) {
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
   }
-  config.format = config.format ? config.format : 'rspecish'
-  config.bin = config.bin ? config.bin : 'goss'
+  config.format = config.format ?: 'rspecish'
+  config.bin = config.bin ?: 'goss'
 
   // validate with goss
   try {
@@ -114,7 +114,7 @@ void validate_docker(body) {
   // input checking
   assert config.image : 'The required image parameter was not set.'
 
-  config.bin = config.bin ? config.bin : 'dgoss'
+  config.bin = config.bin ?: 'dgoss'
 
   // run with dgoss
   try {

@@ -8,7 +8,7 @@ void build(body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
 
-  config.bin = config.bin ? config.bin : 'faas-cli'
+  config.bin = config.bin ?: 'faas-cli'
 
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
@@ -52,7 +52,7 @@ void deploy(body) {
   if (config.replace && config.update) {
     throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
   }
-  config.bin = config.bin ? config.bin : 'faas-cli'
+  config.bin = config.bin ?: 'faas-cli'
 
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
 
@@ -132,7 +132,7 @@ void invoke(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.bin = config.bin ? config.bin : 'faas-cli'
+  config.bin = config.bin ?: 'faas-cli'
   assert config.function : 'The required parameter function was not set.'
 
   // invoke faas function
@@ -187,7 +187,7 @@ void login(body) {
   assert config.gateway : 'The required gateway parameter was not set.'
   assert config.password : 'The required password parameter was not set.'
   assert config.user : 'The required user parameter was not set.'
-  config.bin = config.bin ? config.bin : 'faas-cli'
+  config.bin = config.bin ?: 'faas-cli'
 
   // login to faas gateway
   try {
@@ -214,7 +214,7 @@ void push(body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
-  config.bin = config.bin ? config.bin : 'faas-cli'
+  config.bin = config.bin ?: 'faas-cli'
 
   // push function with faas
   try {
@@ -250,7 +250,7 @@ void remove(body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
-  config.bin = config.bin ? config.bin : 'faas-cli'
+  config.bin = config.bin ?: 'faas-cli'
 
   // remove function with faas
   try {
