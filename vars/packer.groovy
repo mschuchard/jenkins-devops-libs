@@ -8,7 +8,7 @@ void build(body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
-  config.bin = config.bin ? config.bin : 'packer'
+  config.bin = config.bin ?: 'packer'
 
   // create artifact with packer
   try {
@@ -61,7 +61,7 @@ void fmt(body) {
   if (config.write && config.check) {
     throw new Exception("The 'write' and 'check' options for packer.fmt are mutually exclusive - only one can be enabled.")
   }
-  config.bin = config.bin ? config.bin : 'packer'
+  config.bin = config.bin ?: 'packer'
 
   try {
     String cmd = "${config.bin} fmt"
@@ -168,7 +168,7 @@ void validate(body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
-  config.bin = config.bin ? config.bin : 'packer'
+  config.bin = config.bin ?: 'packer'
 
   // validate template with packer
   try {
