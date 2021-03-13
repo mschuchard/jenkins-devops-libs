@@ -60,6 +60,17 @@ helm.packages(
 )
 ```
 
+### helm.plugin()
+Package a chart directory into a chart archive.
+
+```groovy
+helm.packages(
+  bin:     '/usr/bin/helm', // optional executable path for helm
+  command: 'install', // plugin command; one of 'install', 'list', 'uninstall', or 'update'
+  plugin:  'https://github.com/adamreese/helm-env' // targeted plugin (unless 'list' command)
+)
+```
+
 ### helm.repo()
 Add a Helm chart repository. The repository will update if it has already been added.
 
@@ -73,7 +84,7 @@ helm.repo(
   password: 'mypassword', // optional chart repository password
   repo:     'stable', // name of the chart repository
   url:      'https://kubernetes-charts.storage.googleapis.com', // url of the chart repository
-  user:     'myuser', // optional chart repository username
+  user:     'myuser' // optional chart repository username
 )
 ```
 

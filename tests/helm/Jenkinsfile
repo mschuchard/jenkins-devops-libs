@@ -21,6 +21,17 @@ pipeline {
         }
       }
     }
+    stage('Plugin') {
+      steps {
+        script {
+          helm.plugin(
+            bin:     '/usr/bin/helm', // optional executable path for helm
+            command: 'install', // plugin command; one of 'install', 'list', 'uninstall', or 'update'
+            plugin:  'https://github.com/adamreese/helm-env' // targeted plugin (unless 'list' command)
+          )
+        }
+      }
+    }
     stage('Lint') {
       steps {
         script {
