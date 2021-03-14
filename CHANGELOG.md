@@ -1,6 +1,7 @@
 ### 1.6.0
 **Helm**
 - Drop support for versions < 3.0.
+- Add `plugin` method.
 
 **Packer**
 - Add `fmt` method.

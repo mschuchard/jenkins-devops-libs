@@ -36,7 +36,7 @@ void build(body) {
       cmd += " -force"
     }
     if (config.on_error) {
-      assert (["default", "abort", "ask", "run-cleanup-provisioner"].contains(config.on_error)) : "The argument must be one of: default, abort, ask, or run-cleanup-provisioner."
+      assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.on_error)) : "The argument must be one of: default, abort, ask, or run-cleanup-provisioner."
 
       cmd += " -on-error=${config.on_error}"
     }

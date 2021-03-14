@@ -192,6 +192,33 @@ void packages(body) {
   print 'Helm package command was successful.'
 }
 
+void plugin(body) {
+  // evaluate the body block, and collect configuration into the object
+  Map config = new utils().paramsConverter(body)
+
+  // input checking
+  assert (['install', 'list', 'uninstall', 'update'].contains(config.command)) : "The argument must be one of: install, list, uninstall, or update."
+  assert (config.plugin) && (config.command != 'list') : "The required parameter 'plugin' was not set for a non-list command."
+  config.bin = config.bin ?: 'helm'
+
+  // manage a helm plugin
+  try {
+    String cmd = "${config.bin} plugin ${config.command}"
+
+    // append plugin to cmd if not list command
+    if (config.command != 'list') {
+      cmd += " ${config.plugin}"
+    }
+
+    sh(label: 'Helm Plugin', script: cmd)
+  }
+  catch(Exception error) {
+    print "Failure using helm plugin ${config.command}."
+    throw error
+  }
+  print "Helm plugin ${config.command} executed successfully."
+}
+
 void repo(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().paramsConverter(body)
