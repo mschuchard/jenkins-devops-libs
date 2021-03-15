@@ -2,6 +2,7 @@
 **Helm**
 - Drop support for versions < 3.0.
 - Add `plugin` method.
+- Add `namespace` parameter to `uninstall` and `rollback` methods.
 
 **Packer**
 - Add `fmt` method.

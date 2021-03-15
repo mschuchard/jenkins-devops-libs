@@ -93,10 +93,11 @@ Roll back the release object to a previous release with helm.
 
 ```groovy
 helm.rollback(
-  bin:     '/usr/local/bin/helm', // optional executable path for helm
-  context: 'default', // optional kube-context from kube config
-  name:    'happy-panda', // release object name to rollback
-  version: '1' // version of release-object to rollback to
+  bin:       '/usr/local/bin/helm', // optional executable path for helm
+  context:   'default', // optional kube-context from kube config
+  name:      'happy-panda', // release object name to rollback
+  namespace: 'default', // optional namespace for the rolled back release object
+  version:   '1' // version of release-object to rollback to
 )
 ```
 
@@ -128,9 +129,10 @@ Uninstall the release object from Kubernetes with helm.
 
 ```groovy
 helm.uninstall(
-  bin:     '/usr/bin/helm', // optional executable path for helm
-  name:    'happy-panda', // name for the release object to be deleted
-  context: 'default' // optional kube-context from kube config
+  bin:       '/usr/bin/helm', // optional executable path for helm
+  name:      'happy-panda', // name for the release object to be deleted
+  context:   'default' // optional kube-context from kube config
+  namespace: 'default' // optional namespace for the uninstalled release object
 )
 ```
 

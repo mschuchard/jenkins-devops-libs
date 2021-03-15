@@ -262,6 +262,10 @@ void rollback(body) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
     }
+    if (config.namespace) {
+      cmd += " --namespace ${config.namespace}"
+      lister += " --namespace ${config.namespace}"
+    }
 
     // check release object
     String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
@@ -402,6 +406,10 @@ void uninstall(body) {
     if (config.context) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
+    }
+    if (config.namespace) {
+      cmd += " --namespace ${config.namespace}"
+      lister += " --namespace ${config.namespace}"
     }
 
     // check release object
