@@ -6,18 +6,13 @@ void install(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.bin = config.bin ?: 'helm'
+  assert config.name : "The required parameter 'name' was not set."
   assert config.chart : "The required parameter 'chart' was not set."
-
-  // version check and required param check
-  String helm_help = sh(label: 'Check Helm Version', script: "${config.bin} --help", returnStdout: true)
-  if (!(helm_help =~ /init/)) {
-    assert config.name : "The required parameter 'name' was not set."
-  }
+  config.bin = config.bin ?: 'helm'
 
   // install with helm
   try {
-    String cmd = helm_help =~ /init/ ? "${config.bin} install" : "${config.bin} install ${config.name}"
+    String cmd = "${config.bin} install"
     String lister = "${config.bin} list"
 
     if (config.values) {
@@ -42,10 +37,6 @@ void install(body) {
       cmd += " --kube-context ${config.context}"
       lister += " --kube-context ${config.context}"
     }
-    // TODO: when dropping 2 support, use else for generate-name flag
-    if ((config.name) && (helm_help =~ /init/)) {
-      cmd += " --name ${config.name}"
-    }
     if (config.namespace) {
       cmd += " --namespace ${config.namespace}"
       lister += " --namespace ${config.namespace}"
@@ -56,11 +47,11 @@ void install(body) {
 
     // check release object
     String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-    if ((config.name) && (release_obj_list ==~ config.name)) {
+    if (release_obj_list ==~ config.name) {
       throw new Exception("Release object ${config.name} already exists!")
     }
 
-    sh(label: 'Helm Install', script: "${cmd} ${config.chart}")
+    sh(label: 'Helm Install', script: "${cmd} ${config.name} ${config.chart}")
   }
   catch(Exception error) {
     print 'Failure using helm install.'
