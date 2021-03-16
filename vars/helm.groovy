@@ -299,6 +299,41 @@ void setup(String version, String install_path = '/usr/bin/') {
   }
 }
 
+void status(body) {
+  // evaluate the body block, and collect configuration into the object
+  Map config = new utils().paramsConverter(body)
+
+  // input checking
+  config.bin = config.bin ?: 'helm'
+  assert config.name : "The required parameter 'name' was not set."
+
+  // attempt to query a release object's status
+  try {
+    String cmd = "${config.bin} status"
+    String lister = "${config.bin} list"
+
+    if (config.context) {
+      cmd += " --kube-context ${config.context}"
+      lister += " --kube-context ${config.context}"
+    }
+    if (config.namespace) {
+      cmd += " --namespace ${config.namespace}"
+      lister += " --namespace ${config.namespace}"
+    }
+
+    // check release object
+    String release_obj_list = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+    assert (release_obj_list ==~ config.name) : "Release object ${config.name} does not exist!"
+
+    sh(label: 'Helm Status', script: "${cmd} ${config.name}")
+  }
+  catch(Exception error) {
+    print 'Failure using helm status.'
+    throw error
+  }
+  print 'Helm status executed successfully.'
+}
+
 void test(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().paramsConverter(body)
@@ -403,6 +438,7 @@ void uninstall(body) {
     print 'Failure using helm uninstall.'
     throw error
   }
+  print 'Helm uninstall executed successfully.'
 }
 
 void upgrade(body) {
