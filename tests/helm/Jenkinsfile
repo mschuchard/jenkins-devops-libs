@@ -58,7 +58,7 @@ pipeline {
           helm.install(
             bin:   '/usr/bin/helm', // optional executable path for helm
             chart: 'stable/mariadb', // chart repository, local archive, directory, or url to install
-            name:  'happy-panda' // optional name for the installed release object
+            name:  'happy-panda' // name for the installed release object
           )
         }
       }

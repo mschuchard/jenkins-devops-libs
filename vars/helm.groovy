@@ -297,25 +297,6 @@ void setup(String version, String install_path = '/usr/bin/') {
     new utils().removeFile('/tmp/helm.tar.gz')
     print "Helm successfully installed at ${install_path}/helm."
   }
-  // initialize helm if version < 3
-  if (version ==~ /^2\./) {
-    // if tiller already installed, then only initialize the helm client
-    if (!(fileExists("${env.HOME}/.helm"))) {
-      sh(label: 'Helm Init Client', script: "${install_path}/helm init --client-only ")
-      print "Helm successfully initialized."
-    }
-    // otherwise fully initialize helm
-    else {
-      try {
-        sh(label: 'Helm Init', script: "${install_path}/helm init")
-      }
-      catch(Exception error) {
-        print 'Failure initializing helm.'
-        throw error
-      }
-      print "Helm and Tiller successfully initialized."
-    }
-  }
 }
 
 void test(body) {
@@ -330,7 +311,7 @@ void test(body) {
   try {
     String cmd = "${config.bin} test"
 
-    // check if helm test has logging functionality
+    // check if helm test has logging functionality (deprecated in 3, but interesting code to retain)
     String logs = sh(label: 'Check Helm Usage', returnStdout: true, script: "${config.bin} test --help") ==~ /--logs/
     if (logs) {
       cmd += " --logs"
@@ -373,7 +354,7 @@ void test(body) {
       }
 
       // input check default value for kubectl path
-      config.kubectl = config.kubectl ? config.kubectl : 'kubectl'
+      config.kubectl = config.kubectl ?: 'kubectl'
 
       // iterate through test pods, display the logs for each, and then delete the test pod
       test_pods.each() { test_pod ->
