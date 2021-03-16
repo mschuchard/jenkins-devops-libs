@@ -61,7 +61,7 @@ helm.packages(
 ```
 
 ### helm.plugin()
-Package a chart directory into a chart archive.
+Manage client-side Helm plugins.
 
 ```groovy
 helm.packages(
@@ -106,6 +106,18 @@ Locally installs a specific version of helm and then initializes helm and instal
 
 ```groovy
 helm.setup('3.1.3', '/usr/local/bin')
+```
+
+### helm.status()
+Shows the status of a named release.
+
+```groovy
+helm.status(
+  bin:       '/usr/bin/helm', // optional executable path for helm
+  name:      'happy-panda', // name for the release object to be queried
+  context:   'default' // optional kube-context from kube config
+  namespace: 'default' // optional namespace for the queried release object
+)
 ```
 
 ### helm.test()

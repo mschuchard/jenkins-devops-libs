@@ -75,6 +75,13 @@ pipeline {
         }
       }
     }
+    stage('Status') {
+      steps {
+        script {
+          helm.status(name: 'happy-panda')
+        }
+      }
+    }
     stage('Rollback') {
       steps {
         script {
