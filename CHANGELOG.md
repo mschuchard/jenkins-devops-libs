@@ -5,15 +5,16 @@
 - Add `namespace` parameter to `uninstall` and `rollback` methods.
 
 **Packer**
+- Drop support for versions < 1.5.
 - Add `fmt` method.
 - Add `force` and `on_error` parameters to `build` method.
-- Drop support for versions < 1.5.
 
 **Terraform**
 - Drop support for versions < 0.12.
 - Update validate method for >= 0.12 only.
 - Add `output` method.
 - Prevent `fmt` parameter incompatibility with `check` and `write`.
+- Rename `state` method `cmd` parameter to `command`.
 
 **Puppet**
 - Convert REST API requests to utilize `httpRequest` plugin.

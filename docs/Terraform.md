@@ -131,7 +131,7 @@ Manipulate the Terraform state. The resources parameter should be `null` for a `
 ```groovy
 terraform.state(
   bin:       '/usr/bin/terraform', // optional path to terraform executable
-  cmd:       'move', // state command; one of 'move', 'remove', or 'push'
+  command:       'move', // state command; one of 'move', 'remove', or 'push'
   resources: ['resource.from':'resource.to', 'resource.other_from':'resource.other_to'], // resources to move
   resources: ['resource.one', 'resource.two'], // resources to remove
   state:     'terraform.tfstate' // optional path to read and save state

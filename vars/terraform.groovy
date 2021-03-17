@@ -434,20 +434,21 @@ void state(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
+  assert (['move', 'remove', 'push'].contains(config.command)) : "The argument must be one of: move, remove, or push."
   config.bin = config.bin ?: 'terraform'
   String cmd = "${config.bin} state"
 
   // perform state manipulation
   try {
     if (config.state) {
-      assert config.cmd != 'push' : 'The state parameter is incompatible with state pushing.'
+      assert config.command != 'push' : 'The state parameter is incompatible with state pushing.'
       assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
       cmd += " -state=${config.state}"
     }
 
     // perform different commands based upon type of state action
-    switch (config.cmd) {
+    switch (config.command) {
       case 'move':
         assert (config.resources instanceof Map) : 'Parameter resources must be a Map of strings for move command.';
 
@@ -468,7 +469,8 @@ void state(body) {
         sh(label: 'Terraform State Push', script: "${cmd} push");
         break;
       default:
-        throw new Exception("Unknown Terraform state command ${config.cmd} specified.");
+        // should never reach this because of above assert
+        throw new Exception("Unknown Terraform state command ${config.command} specified.");
     }
   }
   catch(Exception error) {
