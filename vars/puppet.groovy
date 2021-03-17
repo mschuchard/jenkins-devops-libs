@@ -158,20 +158,17 @@ void task(body) {
 
   // trigger task orchestration
   try {
-    // trigger code manager deployment
-    try {
-      json_response = httpRequest(
-        acceptType:             'APPLICATION_JSON',
-        consoleLogResponseBody: true,
-        contentType:            'APPLICATION_JSON',
-        customHeaders:          [[name: 'X-Authentication', value: token]],
-        httpMode:               'POST',
-        ignoreSslErrors:        true,
-        quiet:                  true,
-        requestBody:            payload,
-        url:                    "https://${server}:8143/orchestrator/v1/command/task",
-      )
-    }
+    json_response = httpRequest(
+      acceptType:             'APPLICATION_JSON',
+      consoleLogResponseBody: true,
+      contentType:            'APPLICATION_JSON',
+      customHeaders:          [[name: 'X-Authentication', value: token]],
+      httpMode:               'POST',
+      ignoreSslErrors:        true,
+      quiet:                  true,
+      requestBody:            payload,
+      url:                    "https://${server}:8143/orchestrator/v1/command/task",
+    )
   }
   catch(Exception error) {
     print "Failure executing REST API request against ${server} with token at ${config.token}! Returned status: ${json_response.status}."

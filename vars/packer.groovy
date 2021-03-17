@@ -97,7 +97,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
 
   // inspect the packer template
   try {
-    sh(label: 'Packer Inspect', script: "${bin} inspect ${template}"
+    sh(label: 'Packer Inspect', script: "${bin} inspect ${template}")
   }
   catch(Exception error) {
     print 'Failure inspecting the template.'
