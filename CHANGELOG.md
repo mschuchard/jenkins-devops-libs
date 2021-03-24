@@ -17,7 +17,7 @@
 - Rename `state` method `cmd` parameter to `command`.
 
 **Puppet**
-- Convert REST API requests to utilize `httpRequest` plugin.
+- Convert REST API requests to utilize `http_request` plugin.
 
 ### 1.5.0
 **GoSS**

@@ -5,7 +5,7 @@ Interacts with Puppet Enterprise endpoints. This library is considered experimen
 ### Dependencies
 
 - pipeline-utility-steps plugin
-- http-request plugin
+- http_request plugin
 
 ### puppet.code_deploy()
 Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to `true`, errors returned by Code Manager will be returned and cause the pipeline to fatally error.
