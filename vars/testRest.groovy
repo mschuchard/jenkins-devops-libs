@@ -1,6 +1,6 @@
 // vars/httpTest.groovy
 import devops.common.utils
-import devops.common.http
+import devops.common.rest
 
 void get(body) {
   // pass in params body and ensure proper config of type map

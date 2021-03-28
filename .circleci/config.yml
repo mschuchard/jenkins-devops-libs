@@ -1,0 +1,20 @@
+---
+version: 2.1
+
+jobs:
+  test:
+    working_directory: /tmp/project
+    docker:
+    - image: groovy:3.0-jre11
+    steps:
+    - checkout
+    - run:
+        name: execute syntax check
+        command: groovysh -cp src vars/*.groovy
+
+workflows:
+  execute_tests:
+    jobs:
+    - test
+
+#TODO: load without entering groovy console or immediately exit
