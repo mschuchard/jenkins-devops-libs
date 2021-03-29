@@ -5,16 +5,15 @@ jobs:
   test:
     working_directory: /tmp/project
     docker:
-    - image: groovy:3.0-jre11
+    - image: jenkins:lts-slim # groovy:3.0-jre11
     steps:
     - checkout
     - run:
         name: execute syntax check
-        command: groovysh -cp src vars/*.groovy
+        command: groovysh -cp src -q vars/*.groovy
+        no_output_timeout: 45s
 
 workflows:
   execute_tests:
     jobs:
     - test
-
-#TODO: load without entering groovy console or immediately exit

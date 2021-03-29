@@ -14,8 +14,8 @@ pipeline {
     stage('Install') {
       steps {
         script {
-          goss.install('0.3.7', '/tmp')
-          goss.install_dgoss('0.3.7', '/tmp')
+          goss.install('0.3.16', '/tmp')
+          goss.install_dgoss('0.3.16', '/tmp')
         }
       }
     }

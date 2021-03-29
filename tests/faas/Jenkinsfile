@@ -17,12 +17,12 @@ pipeline {
           faas.install {
             install_path = '/tmp'
             platform     = 'linux'
-            version      = '0.5.1'
+            version      = '0.13.10'
           }
           faas.install(
             install_path: '/tmp',
             platform:     'linux',
-            version:      '0.5.1'
+            version:      '0.13.10'
           )
         }
       }
