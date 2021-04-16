@@ -7,6 +7,9 @@ Interacts with Goss.
 - pipeline-utility-steps plugin (`validate_gossfile`)
 
 ### goss.install(String version, String install_path = '/usr/bin')
+**Deprecated**:
+Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
+
 Locally installs a specific version of goss.
 
 ```groovy
@@ -14,6 +17,9 @@ goss.install('0.3.13', '/usr/local/bin/')
 ```
 
 ### goss.install_dgoss(String version, String install_path = '/usr/bin')
+**Deprecated**:
+Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
+
 Locally installs a specific version of dgoss.
 
 ```groovy

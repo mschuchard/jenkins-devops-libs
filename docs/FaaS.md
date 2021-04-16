@@ -38,6 +38,9 @@ faas.deploy(
 ```
 
 ### faas.install()
+**Deprecated**:
+Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
+
 Locally installs a specific version of the OpenFaaS CLI.
 
 ```groovy

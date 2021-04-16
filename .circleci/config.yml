@@ -5,7 +5,7 @@ jobs:
   test:
     working_directory: /tmp/project
     docker:
-    - image: jenkins:lts-slim # groovy:3.0-jre11
+    - image: jenkins/jenkins:lts-slim # groovy:3.0-jre11
     steps:
     - checkout
     - run:

@@ -76,6 +76,9 @@ terraform.imports(
 ```
 
 ### terraform.install()
+**Deprecated**:
+Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
+
 Locally installs a specific version of Terraform.
 
 ```groovy
@@ -115,6 +118,9 @@ terraform.plan(
 ```
 
 ### terraform.plugin_install()
+**Deprecated**:
+Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
+
 Locally installs a Terraform plugin. Note that these plugins need to be named appropriately in the nomenclature of `terraform-provider-NAME_vX.Y.Z`. The remotely stored plugin should also be zipped or an executable.
 
 ```groovy

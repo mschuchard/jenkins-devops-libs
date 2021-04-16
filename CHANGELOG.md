@@ -1,3 +1,7 @@
+### 1.7.0 (Roadmap)
+**General**
+- Deprecate `install` methods.
+
 ### 1.6.0
 **Helm**
 - Drop support for versions < 3.0.

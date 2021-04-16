@@ -43,6 +43,9 @@ packer.inspect('/path/to/template.pkr.json', '/usr/local/bin/packer')
 ```
 
 ### packer.install()
+**Deprecated**:
+Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
+
 Locally installs a specific version of Packer.
 
 ```groovy
@@ -54,6 +57,9 @@ packer.install(
 ```
 
 ### packer.plugin_install(String url, String install_loc)
+**Deprecated**:
+Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
+
 Locally installs a Packer plugin. Note that these plugins need to either be installed in an executable path, or in the same directory as `packer`, and need to be named appropriately. The remotely stored plugin should also be zipped or an executable.
 
 ```groovy
