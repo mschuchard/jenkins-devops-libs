@@ -136,6 +136,7 @@ helm.test(
   context:  'default', // optional kube-context from kube config
   kubectl:  '/usr/bin/kubectl', // optional executable path for kubectl
   name:     'happy-panda', // name of a deployed release
+  namespace: 'default' // optional namespace for the queried release object
   parallel: false // optional run test pods in parallel
 )
 ```

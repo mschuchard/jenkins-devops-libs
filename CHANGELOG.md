@@ -1,6 +1,9 @@
-### 1.7.0 (Roadmap)
+### 1.6.1 (Roadmap)
 **General**
-- Deprecate `install` methods.
+- Deprecate software `install` methods.
+
+**Helm**
+- Add `namespace` parameter to `test` method.
 
 ### 1.6.0
 **Helm**

@@ -362,6 +362,9 @@ void test(body) {
     if (config.context) {
       cmd += " --kube-context ${config.context}"
     }
+    if (config.namespace) {
+      cmd += " --namespace ${config.namespace}"
+    }
 
     sh(label: 'Helm Test', script: "${cmd} ${config.name}")
   }
