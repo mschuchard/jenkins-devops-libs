@@ -12,10 +12,11 @@ Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to
 
 ```groovy
 puppet.code_deploy(
-  environments: ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
-  servers:      ['puppet'], // optional server hosting code manager
-  token:        '/var/lib/jenkins/.puppetlabs/token', // rbac token for deploying with code manager
-  wait:         false // optional wait for code manager to finish deployment
+  credentials_id: 'pe_token', // token bindings credentials id for rbac token; mutually exclusive with token
+  environments:   ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
+  servers:        ['puppet'], // optional server hosting code manager
+  token:          '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code manager; mutually exclusive with credential_id
+  wait:           false // optional wait for code manager to finish deployment
 )
 ```
 
@@ -36,7 +37,7 @@ puppet.task(
 ```
 
 ### puppet.token()
-Generates a RBAC token for use with Puppet Enterprise endpoints, and saves it as a file in the default location (`~/.puppetlabs/token`). Recommended to use `withCredentials` in conjunction with this.
+Generates a RBAC token for use with Puppet Enterprise endpoints, and saves it as a file in the default location (`~/.puppetlabs/token`). Recommended to use `withCredentials` bindings for `usernamePassword` in conjunction with this.
 
 ```groovy
 puppet.token(

@@ -10,7 +10,7 @@ jobs:
     - checkout
     - run:
         name: install groovy # instead could try harder to find jenkins jvm system groovy
-        command: apt-get update && apt-get install -y groovy
+        command: sudo apt-get update && sudo apt-get install -y groovy
     - run:
         name: install jenkins pipeline and pipeline utility steps plugins
         command: java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pipeline-utility-steps

@@ -6,7 +6,7 @@ void code_deploy(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.token : 'The required token parameter was not set.'
+  assert config.token || config.credentials_id : 'The required token or credentials_id parameter was not set.'
   assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
 
   config.servers = config.servers ?: ['puppet']
@@ -37,8 +37,17 @@ void code_deploy(body) {
   boolean errored = false
   def json_response = [:]
   Map response = [:]
-  // initialize token with readFile relative pathing requirement stupidness
-  String token = readFile("../../../../../../../../../../../${config.token}")
+  String token = ''
+  // set token with logic from appropriate parameter
+  if (config.credentials_id) {
+    withCredentials([token(credentialsId: config.token, variable: 'the_token')]) {
+      token = the_token
+    }
+  }
+  else if (config.token) {
+    // initialize token with readFile relative pathing requirement stupidness
+    token = readFile("../../../../../../../../../../../${config.token}")
+  }
 
   // iterate through servers
   config.servers.each() { server ->
