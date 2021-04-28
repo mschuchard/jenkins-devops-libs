@@ -5,18 +5,15 @@ jobs:
   test:
     working_directory: /tmp/project
     docker:
-    - image: jenkins/jenkins:lts-slim # groovy:3.0-jre11
+    - image: groovy:3.0-jre11 # jenkins/jenkins:lts-slim
     steps:
     - checkout
-    - run:
-        name: install groovy # instead could try harder to find jenkins jvm system groovy
-        command: sudo apt-get update && sudo apt-get install -y groovy
     - run:
         name: install jenkins pipeline and pipeline utility steps plugins
         command: java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pipeline-utility-steps
     - run:
         name: execute syntax check
-        command: groovysh -cp src:/var/cache/jenkins/war/WEB-INF:/var/lib/jenkins/plugins -q vars/*.groovy
+        command: java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 groovysh -cp src:/var/cache/jenkins/war/WEB-INF:/var/lib/jenkins/plugins -q vars/*.groovy
         no_output_timeout: 45s
 
 workflows:

@@ -103,7 +103,7 @@ void task(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.token : 'The required token parameter was not set.'
+  assert config.token || config.credentials_id : 'The required token or credentials_id parameter was not set.'
   assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
   assert config.task : 'The required task parameter was not set.'
   assert config.scope : 'The required scope parameter was not set.'
@@ -122,12 +122,7 @@ void task(body) {
   if (config.noop) {
     payload['noop'] = config.noop
   }
-  if (!config.params) {
-    payload['params'] = [:]
-  }
-  else {
-    payload['params'] = config.params
-  }
+  payload['params'] ?= config.params : [:]
 
   payload['task'] = config.task
   payload['scope'] = [:]
@@ -162,8 +157,17 @@ void task(body) {
   // initialize vars
   def json_response = [:]
   Map response = [:]
-  // initialize token with readFile relative pathing requirement stupidness
-  String token = readFile("../../../../../../../../../../../${config.token}")
+  String token = ''
+  // set token with logic from appropriate parameter
+  if (config.credentials_id) {
+    withCredentials([token(credentialsId: config.token, variable: 'the_token')]) {
+      token = the_token
+    }
+  }
+  else if (config.token) {
+    // initialize token with readFile relative pathing requirement stupidness
+    token = readFile("../../../../../../../../../../../${config.token}")
+  }
 
   // trigger task orchestration
   try {

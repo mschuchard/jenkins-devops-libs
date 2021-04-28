@@ -5,6 +5,9 @@
 **Helm**
 - Add `namespace` parameter to `test` method.
 
+**Puppet**
+- Enable `withCredentials` bindings for PE token for methods.
+
 ### 1.6.0
 **Helm**
 - Drop support for versions < 3.0.
