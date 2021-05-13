@@ -386,7 +386,7 @@ void test(body) {
       // assign the namespace to a local var for kubectl logs
       String namespace = status['namespace']
       // iterate through results and store names of test pods
-      List test_pods = []
+      List<String> test_pods = []
       status['info']['status']['last_test_suite_run']['results'].each() { result ->
         test_pods.push(result['name'])
       }

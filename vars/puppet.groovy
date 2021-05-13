@@ -111,7 +111,7 @@ void task(body) {
   config.server = config.server ?: 'puppet'
 
   // construct payload
-  Map payload = [:]
+  Map<String,String> payload = [:]
 
   if (config.environment) {
     payload['environment'] = config.environment
@@ -232,7 +232,7 @@ void token (body) {
   config.path = config.path ?: "${env.JENKINS_HOME}/.puppetlabs"
 
   //construct payload
-  Map payload = [:]
+  Map<String,String> payload = [:]
   payload['username'] = config.username
   payload['password'] = config.password
 
