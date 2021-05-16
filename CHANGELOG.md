@@ -1,6 +1,10 @@
 ### 1.6.1 (Roadmap)
 **General**
 - Deprecate software `install` methods.
+- Fine tune nested type specifications.
+
+**AWX**
+- Initialize as alpha.
 
 **Helm**
 - Add `namespace` parameter to `test` method.
