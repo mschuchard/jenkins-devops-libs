@@ -10,10 +10,10 @@ jobs:
     - checkout
     - run:
         name: install jenkins pipeline and pipeline utility steps plugins
-        command: java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 install-plugin pipeline-utility-steps
+        command: /opt/java/openjdk/bin/java -jar /usr/lib/jenkins-plugin-manager.jar -p pipeline-utility-steps
     - run:
         name: execute syntax check
-        command: java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 groovysh -cp src:/var/cache/jenkins/war/WEB-INF:/var/lib/jenkins/plugins -q vars/*.groovy
+        command: /opt/java/openjdk/bin/java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 groovysh -cp src:/var/cache/jenkins/war/WEB-INF:/var/lib/jenkins/plugins -q vars/*.groovy
         no_output_timeout: 45s
 
 workflows:

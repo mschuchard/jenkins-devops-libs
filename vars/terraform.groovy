@@ -129,17 +129,17 @@ void fmt(body) {
 
     // check for optional inputs
     if (config.recursive == true) {
-      cmd += " -recursive"
+      cmd += ' -recursive'
     }
     if (config.diff == true) {
-      cmd += " -diff"
+      cmd += ' -diff'
     }
     if (config.check == true) {
-      cmd += " -check"
+      cmd += ' -check'
     }
     // incompatible with above
     else if (config.write == true) {
-      cmd += " -write"
+      cmd += ' -write'
     }
 
     fmt_status = sh(label: 'Terraform Format', returnStatus: true, script: "${cmd} ${config.dir}")
