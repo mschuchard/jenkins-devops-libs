@@ -24,5 +24,12 @@ pipeline {
         }
       }
     }
+    stage('Host Delete') {
+      steps {
+        script {
+          awx.host_delete('foo.bar.com')
+        }
+      }
+    }
   }
 }

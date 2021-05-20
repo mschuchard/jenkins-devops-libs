@@ -103,6 +103,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
     print 'Failure inspecting the template.'
     throw error
   }
+  print 'Packer inspect was successful'
 }
 
 void install(body) {

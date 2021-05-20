@@ -19,3 +19,11 @@ awx.host_create(
   variables:   ['foo': 'bar', 'baz': 1], // optional host variables
 )
 ```
+
+### awx.host_delete()
+
+Uses AWX to delete a host in an inventory.
+
+```groovy
+awx.host_delete('foo.bar.com', '/usr/local/bin/awx') // the ID (or unique name) of the host for first argument
+```

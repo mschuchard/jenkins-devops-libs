@@ -40,3 +40,15 @@ void host_create(body) {
   }
   print 'awx host create was successful.'
 }
+
+void host_delete(String id, String bin = 'awx') {
+  // delete a host in the inventory
+  try {
+    sh(label: 'AWX Host Delete', script: "${config.bin} hosts delete ${id}")
+  }
+  catch(Exception error) {
+    print 'Failure using awx host delete.'
+    throw error
+  }
+  print 'awx host delete was successful.'
+}
