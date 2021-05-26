@@ -53,6 +53,18 @@ void host_delete(String id, String bin = 'awx') {
   print 'awx host delete was successful.'
 }
 
+void inventory_delete(String id, String bin = 'awx') {
+  // delete an inventory
+  try {
+    sh(label: 'AWX Inventory Delete', script: "${config.bin} inventory delete ${id}")
+  }
+  catch(Exception error) {
+    print 'Failure using awx inventory delete.'
+    throw error
+  }
+  print 'awx inventory delete was successful.'
+}
+
 void job_template_launch(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)

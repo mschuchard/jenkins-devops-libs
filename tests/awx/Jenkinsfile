@@ -36,6 +36,13 @@ pipeline {
         }
       }
     }
+    stage('Inventory Delete') {
+      steps {
+        script {
+          awx.inventory_delete('my_inventory')
+        }
+      }
+    }
     stage('Job Template Launch') {
       steps {
         script {

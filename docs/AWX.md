@@ -29,6 +29,14 @@ Uses AWX to delete a host in an inventory.
 awx.host_delete('foo.bar.com', '/usr/local/bin/awx') // the ID (or unique name) of the host for first argument
 ```
 
+### awx.inventory_delete()
+
+Uses AWX to delete an inventory.
+
+```groovy
+awx.inventory_delete('my_inventory', '/usr/local/bin/awx') // the ID (or unique name) of the inventory for first argument
+```
+
 ### awx.job_template_launch()
 
 Uses AWX to launch a job from a job template.
