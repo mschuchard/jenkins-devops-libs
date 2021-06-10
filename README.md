@@ -39,11 +39,12 @@ library('jenkins-devops-libs')
 ```
 
 ## Supported
+- [AWX/Ansible Tower](docs/AWX.md) (alpha)
 - [Goss](docs/Goss.md)
 - [Helm](docs/Helm.md)
 - [OpenFaaS](docs/FaaS.md)
 - [Packer](docs/Packer.md)
-- [Puppet Enterprise](docs/Puppet.md)
+- [Puppet Enterprise](docs/Puppet.md) (beta)
 - [Terraform](docs/Terraform.md)
 
 ## DSL Change

@@ -13,10 +13,10 @@ Uses Terraform to apply a config. Note that if `terraform.plan(path: config_dir)
 ```groovy
 terraform.apply(
   bin:         '/usr/bin/terraform', // optional path to terraform executable
-  config_path: '/path/to/config_dir_or_plan_file', // path to config dir or plan file
-  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
-  var_file:    '/path/to/variables.tf' // optional location of variables file
+  config_path: '/path/to/config_dir_or_plan_file', // path to config dir (< 0.15) or plan file
+  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets (< 0.15)
+  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting (< 0.15)
+  var_file:    '/path/to/variables.tf' // optional location of variables file (< 0.15)
 )
 ```
 
@@ -52,11 +52,11 @@ Uses Terraform to initialize a working directory.
 
 ```groovy
 terraform.init(
+  backend:    true  // optional false to omit backend initialization
   bin:        '/usr/bin/terraform', // optional path to terraform executable
   dir:        '/path/to/working_config_dir', // path to working config dir
   plugin_dir: '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
   upgrade:    false, // optional upgrade modules and plugins
-  backend:    true  // optional false to omit backend initialization
 )
 ```
 
