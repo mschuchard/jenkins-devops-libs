@@ -561,10 +561,14 @@ void workspace(body) {
   dir(config.dir) {
     // select workspace in terraform config directory
     try {
-      sh(label: 'Terraform Workspace', script: "${config.bin} workspace select -no-color ${config.workspace}")
+      sh(label: 'Terraform Workspace Select', script: "${config.bin} workspace select -no-color ${config.workspace}")
     }
     catch(Exception error) {
-      print 'Failure using terraform workspace select.'
+      print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
+
+      String workspaces = sh(label: 'Terraform Workspace List', script: "${config.bin} workspace list -no-color", returnStdout: true)
+      print workspaces
+
       throw error
     }
     print "Terraform workspace ${config.workspace} selected successfully."

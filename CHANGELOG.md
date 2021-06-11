@@ -12,6 +12,9 @@
 **Puppet**
 - Enable `withCredentials` bindings for PE token for methods.
 
+**Terraform**
+- List workspace information when selection fails.
+
 ### 1.6.0
 **Helm**
 - Drop support for versions < 3.0.
