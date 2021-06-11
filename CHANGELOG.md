@@ -14,6 +14,7 @@
 
 **Terraform**
 - List workspace information when selection fails.
+- Add `list` option to `command` parameter for `state` method.
 
 ### 1.6.0
 **Helm**

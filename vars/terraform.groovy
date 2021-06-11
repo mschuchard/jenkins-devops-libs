@@ -434,7 +434,7 @@ void state(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (['move', 'remove', 'push'].contains(config.command)) : "The argument must be one of: move, remove, or push."
+  assert (['move', 'remove', 'push', 'list'].contains(config.command)) : "The argument must be one of: move, remove, list, or push."
   config.bin = config.bin ?: 'terraform'
   String cmd = "${config.bin} state"
 
@@ -467,6 +467,14 @@ void state(body) {
         assert !config.resources : 'Resources parameter is not allowed for push command.';
 
         sh(label: 'Terraform State Push', script: "${cmd} push");
+        break;
+      case 'list':
+        assert !config.resources : 'Resources parameter is not allowed for push command.';
+
+        String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
+        print 'Terraform state output is as follows:'
+        print stateList
+        
         break;
       default:
         // should never reach this because of above assert
@@ -561,12 +569,12 @@ void workspace(body) {
   dir(config.dir) {
     // select workspace in terraform config directory
     try {
-      sh(label: 'Terraform Workspace Select', script: "${config.bin} workspace select -no-color ${config.workspace}")
+      sh(label: 'Terraform Workspace Select', script: "${config.bin} workspace select ${config.workspace}")
     }
     catch(Exception error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
 
-      String workspaces = sh(label: 'Terraform Workspace List', script: "${config.bin} workspace list -no-color", returnStdout: true)
+      String workspaces = sh(label: 'Terraform Workspace List', script: "${config.bin} workspace list", returnStdout: true)
       print workspaces
 
       throw error

@@ -132,12 +132,12 @@ terraform.plugin_install(
 ```
 
 ### terraform.state()
-Manipulate the Terraform state. The resources parameter should be `null` for a `push`, a list of strings for a `remove`, and a map of strings for a `move`.
+Manipulate or display the Terraform state. The resources parameter should be `null` for a `push` or `list`, a list of strings for a `remove`, and a map of strings for a `move`.
 
 ```groovy
 terraform.state(
   bin:       '/usr/bin/terraform', // optional path to terraform executable
-  command:   'move', // state command; one of 'move', 'remove', or 'push'
+  command:   'move', // state command; one of 'move', 'remove', 'list', or 'push'
   resources: ['resource.from':'resource.to', 'resource.other_from':'resource.other_to'], // resources to move
   resources: ['resource.one', 'resource.two'], // resources to remove
   state:     'terraform.tfstate' // optional path to read and save state
