@@ -277,7 +277,7 @@ void install(body) {
   print "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
-def output(body) {
+void output(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
@@ -353,12 +353,8 @@ def plan(body) {
     if (config.destroy == true) {
       cmd += ' -destroy'
     }
-    if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
-
-      config.target.each() { target ->
-        cmd += " -target=${target}"
-      }
+    if (config.refreshOnly == true) {
+      cmd += ' -refresh-only'
     }
 
     // execute plan
@@ -474,7 +470,7 @@ void state(body) {
         String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
         print 'Terraform state output is as follows:'
         print stateList
-        
+
         break;
       default:
         // should never reach this because of above assert

@@ -51,6 +51,7 @@ library('jenkins-devops-libs')
 Starting with version 1.4.0 of the libraries, the new DSL will be supported. The new DSL appears like the following syntax:
 
 ```groovy
+// Map type argument
 library.method(
   param_one: value,
   param_two: value
@@ -60,6 +61,7 @@ library.method(
 The documentation has also been updated to reflect the new DSL. The old DSL will be supported until version 2.0.0. The old DSL appears like the following syntax:
 
 ```groovy
+// Closure type argument
 library.method {
   param_one = value
   param_two = value

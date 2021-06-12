@@ -15,6 +15,7 @@
 **Terraform**
 - List workspace information when selection fails.
 - Add `list` option to `command` parameter for `state` method.
+- Add `refreshOnly` parameter to `plan` method.
 
 ### 1.6.0
 **Helm**
