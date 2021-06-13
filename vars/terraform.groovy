@@ -277,7 +277,7 @@ void install(body) {
   print "Terraform successfully installed at ${config.install_path}/terraform."
 }
 
-void output(body) {
+def output(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
@@ -304,14 +304,23 @@ void output(body) {
       cmd += " ${config.name}"
     }
 
-    // display output(s)
-    sh(label: 'Terraform Output', script: cmd)
+    // capture output(s)
+    outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
   }
   catch(Exception error) {
     print 'Failure using terraform output.'
     throw error
   }
-  print 'Terraform outputs are displayed above.'
+  // display output
+  if (config.display == true) {
+    print 'Terraform outputs are displayed below:'
+    print outputs
+  }
+  // return output
+  else {
+    print 'Terraform output was successful.'
+    return outputs
+  }
 }
 
 def plan(body) {

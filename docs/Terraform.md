@@ -94,10 +94,11 @@ Reads an output variable from a Terraform state and prints the value.
 
 ```groovy
 terraform.plan(
-  bin:   '/usr/bin/terraform', // optional path to terraform executable
-  json:  false, // optional json format output
-  name:  'module.foo.server_ip_address', // optional output name
-  state: 'terraform.tfstate', // optional path to the source state file
+  bin:     '/usr/bin/terraform', // optional path to terraform executable
+  display: true, // optional display outputs; else they will be returned as String from method
+  json:    false, // optional json format output
+  name:    'module.foo.server_ip_address', // optional output name
+  state:   'terraform.tfstate', // optional path to the source state file
 )
 ```
 
