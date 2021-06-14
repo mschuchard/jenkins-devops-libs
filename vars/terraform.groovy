@@ -185,6 +185,15 @@ void init(body) {
     if (config.backend == false) {
       cmd += ' -backend=false'
     }
+    if (config.backendConfig) {
+      assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
+
+      config.backendConfig.each() { backconf ->
+        assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
+
+        cmd += " -backend-config=${backconf}"
+      }
+    }
 
     sh(label: 'Terraform Init', script: "${cmd} ${config.dir}")
   }

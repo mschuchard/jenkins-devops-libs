@@ -17,6 +17,7 @@
 - Add `list` option to `command` parameter for `state` method.
 - Add `refreshOnly` parameter to `plan` method.
 - Add `display` parameter to `output` method.
+- Add `backendConfig` parameter to `init` method.
 
 ### 1.6.0
 **Helm**
