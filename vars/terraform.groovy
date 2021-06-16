@@ -61,23 +61,12 @@ void destroy(body) {
   // input checking
   config.bin = config.bin ?: 'terraform'
 
-  // -force changed to -auto-approve in 0.11.4
-  String no_input_check = sh(label: 'Check Terraform Usage', returnStdout: true, script: "${config.bin} destroy --help")
-  // apply correct flag based on installed version
-  String no_input_flag = ''
-  if (no_input_check ==~ /-auto-approve/) {
-    no_input_flag = '-auto-approve'
-  }
-  else {
-    no_input_flag = '-force'
-  }
-
   assert config.config_path : '"config_path" is a required parameter for terraform.destroy.'
   assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
 
   // destroy the state
   try {
-    String cmd = "${config.bin} destroy -input=false -no-color ${no_input_flag}"
+    String cmd = "${config.bin} destroy -input=false -no-color -auto-approve"
 
     // check for optional inputs
     if (config.var_file) {
