@@ -32,13 +32,12 @@ void apply(body) {
           cmd += " -var ${var}=${value}"
         }
       }
-    }
-    // check for optional targets input
-    if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
+      if (config.target) {
+        assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
-      config.target.each() { target ->
-        cmd += " -target=${target}"
+        config.target.each() { target ->
+          cmd += " -target=${target}"
+        }
       }
     }
 
