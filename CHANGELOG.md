@@ -19,6 +19,7 @@
 - Add `display` parameter to `output` method.
 - Add `backendConfig` parameter to `init` method.
 - Fix `var_file` parameter in all relevant methods.
+- Ignore useless parameters for `apply` and `destroy` methods when `config_path` value is a plan file.
 
 ### 1.6.0
 **Helm**

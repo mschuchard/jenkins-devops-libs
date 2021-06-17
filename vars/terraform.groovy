@@ -67,24 +67,27 @@ void destroy(body) {
   try {
     String cmd = "${config.bin} destroy -input=false -no-color -auto-approve"
 
-    // check for optional inputs
-    if (config.var_file) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+    // check if a directory was passed for the config path
+    if (!(config.config_path ==~ /plan\.tfplan/)) {
+      // check for optional var inputs
+      if (config.var_file) {
+        assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
-      cmd += " -var-file=${config.var_file}"
-    }
-    if (config.var) {
-      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
-
-      config.var.each() { var, value ->
-        cmd += " -var ${var}=${value}"
+        cmd += " -var-file=${config.var_file}"
       }
-    }
-    if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
+      if (config.var) {
+        assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-      config.target.each() { target ->
-        cmd += " -target=${target}"
+        config.var.each() { var, value ->
+          cmd += " -var ${var}=${value}"
+        }
+      }
+      if (config.target) {
+        assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
+
+        config.target.each() { target ->
+          cmd += " -target=${target}"
+        }
       }
     }
 

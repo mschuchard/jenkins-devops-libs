@@ -8,7 +8,7 @@ Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each metho
 - pipeline-utility-steps plugin (`install`)
 
 ### terraform.apply()
-Uses Terraform to apply a config. Note that if `terraform.plan(path: config_dir)` was invoked before this, the resultant plan file is in `${config_dir}/plan.tfplan`. If a plan file is specified as the `config_path`, then vars and targets parameters will be ignored.
+Uses Terraform to apply a config. Note that if `terraform.plan(path: config_dir)` was invoked before this, the resultant plan file is in `${config_dir}/plan.tfplan`. If a plan file is specified as the `config_path`, then vars and target parameters will be ignored.
 
 ```groovy
 terraform.apply(
@@ -21,7 +21,7 @@ terraform.apply(
 ```
 
 ### terraform.destroy()
-Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: config_dir)` with `destroy: true` was invoked before this, the resultant plan file is in `${config_dir}/plan.tfplan`.
+Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: config_dir)` with `destroy: true` was invoked before this, the resultant plan file is in `${config_dir}/plan.tfplan`. If a plan file is specified as the `config_path`, then vars and target parameters will be ignored.
 
 ```groovy
 terraform.destroy(
