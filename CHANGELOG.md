@@ -1,4 +1,4 @@
-### 1.6.1 (Roadmap)
+### 1.6.1
 **General**
 - Deprecate software `install` methods.
 - Fine tune nested type specifications.
