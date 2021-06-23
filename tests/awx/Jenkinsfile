@@ -28,6 +28,18 @@ pipeline {
         }
       }
     }
+    stage('Inventory Modify') {
+      steps {
+        script {
+          awx.inventory_modify(
+            description:  'an inventory', // optional description of this inventory
+            hostFilter:   'myotherhosts*', // optional filter that will be applied to the hosts of this inventory
+            name:         'my_inventory', // name of this inventory
+            organization: 'my_org', // organization containing this inventory
+          )
+        }
+      }
+    }
     stage('Host Create') {
       steps {
         script {

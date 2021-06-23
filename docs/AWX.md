@@ -53,6 +53,22 @@ Uses AWX to delete an inventory.
 awx.inventory_delete('my_inventory', '/usr/local/bin/awx') // the ID (or unique name) of the inventory for first argument
 ```
 
+### awx.inventory_modify()
+
+Uses AWX to modify an inventory.
+
+```groovy
+awx.inventory_modify(
+  bin:          '/usr/bin/awx', // optional path to awx executable
+  description:  'an inventory', // optional description of this inventory
+  hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
+  name:         'my_inventory', // name of this inventory
+  organization: 'my_org', // organization containing this inventory
+  smart:        false, // optional smart inventory
+  variables:    ['foo': 'bar', 'baz': 1] // optional inventory variables
+)
+```
+
 ### awx.job_template_launch()
 
 Uses AWX to launch a job from a job template.

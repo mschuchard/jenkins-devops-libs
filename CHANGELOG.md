@@ -1,3 +1,7 @@
+### 1.7.0 (ROADMAP)
+**AWX**
+- Finish initial implementation and promote to beta.
+
 ### 1.6.1
 **General**
 - Deprecate software `install` methods.

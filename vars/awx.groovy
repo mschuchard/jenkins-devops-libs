@@ -53,20 +53,17 @@ void host_delete(String id, String bin = 'awx') {
   print 'awx host delete was successful.'
 }
 
-void inventory_create(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
+void inventory(config) {
   // input checking
-  assert config.name : '"name" is a required parameter for awx.inventory_create.'
-  assert config.organization : '"organization" is a required parameter for awx.inventory_create.'
+  assert config.name : "'name' is a required parameter for awx.inventory_${config.action}."
+  assert config.organization : "'organization' is a required parameter for awx.inventory_${config.action}."
 
   config.bin = config.bin ?: 'awx'
 
-  // create a new inventory
+  // "something" a inventory
   try {
     // initialize the base command
-    String cmd = "${config.bin} inventory create --name ${config.name} --organization ${config.organization}"
+    String cmd = "${config.bin} inventory ${config.action} --name ${config.name} --organization ${config.organization}"
 
     // check for optional inputs
     if (config.description) {
@@ -86,13 +83,22 @@ void inventory_create(body) {
 
       cmd += " --variables ${variables}"
     }
-    sh(label: 'AWX Inventory Create', script: cmd)
+    sh(label: "AWX Inventory ${config.action}", script: cmd)
   }
   catch(Exception error) {
-    print 'Failure using awx inventory create.'
+    print "Failure using awx inventory ${config.action}."
     throw error
   }
-  print 'awx inventory create was successful.'
+  print "awx inventory ${config.action} was successful."
+}
+
+void inventory_create(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().paramsConverter(body)
+
+  // invoke helper method with create
+  config.action = 'create'
+  inventory(config)
 }
 
 void inventory_delete(String id, String bin = 'awx') {
@@ -105,6 +111,15 @@ void inventory_delete(String id, String bin = 'awx') {
     throw error
   }
   print 'awx inventory delete was successful.'
+}
+
+void inventory_modify(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().paramsConverter(body)
+
+  // invoke helper method with modify
+  config.action = 'modify'
+  inventory(config)
 }
 
 void job_template_launch(body) {
