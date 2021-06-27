@@ -34,7 +34,7 @@ pipeline {
               puppet.code_deploy(
                 environments: ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
                 servers:      ['puppet'], // optional server hosting code manager
-                token:        '/var/lib/jenkins/.puppetlabs/token', // rbac token for deploying with code manager
+                tokenFile:    '/var/lib/jenkins/.puppetlabs/token', // rbac token for deploying with code manager
                 wait:         true // optional wait for code manager to finish deployment
               )
             }
@@ -44,10 +44,10 @@ pipeline {
           steps {
             script {
               puppet.task(
-                params: "['action':'install', 'name':'httpd']", // optional input
-                scope:  ['localhost'], // scope for deployment
-                task:   'package', // name of the task to execute
-                token:  '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
+                params:    "['action':'install', 'name':'httpd']", // optional input
+                scope:     ['localhost'], // scope for deployment
+                task:      'package', // name of the task to execute
+                tokenFile: '/var/lib/jenkins/.puppetlabs/token' // rbac token for executing tasks
               )
             }
           }

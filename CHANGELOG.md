@@ -2,6 +2,10 @@
 **AWX**
 - Finish initial implementation and promote to beta.
 
+**Puppet**
+- Fix `credentials_id` usage.
+- Update `token` param to `tokenFile`.
+
 ### 1.6.1
 **General**
 - Deprecate software `install` methods.

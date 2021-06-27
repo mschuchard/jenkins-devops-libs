@@ -15,7 +15,7 @@ puppet.code_deploy(
   credentials_id: 'pe_token', // token bindings credentials id for rbac token; mutually exclusive with token
   environments:   ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
   servers:        ['puppet'], // optional server hosting code manager
-  token:          '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code manager; mutually exclusive with credential_id
+  tokenFile:      '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code manager; mutually exclusive with credential_id
   wait:           false // optional wait for code manager to finish deployment
 )
 ```
@@ -33,7 +33,7 @@ puppet.task(
   scope:          ['node1.example.com', 'node2.example.com'], // scope for deployment (if string, will be passed as `node_group` or `application`; if array of strings, will be passed as `nodes` or `query`; internal logic attempts to correctly determine which)
   server:         'puppet', // optional server hosting puppet orchestrator
   task:           'package', // name of the task to execute
-  token:          '/var/lib/jenkins/.puppetlabs/token' // rbac token file location for deploying with code manager; mutually exclusive with credential_id
+  tokenFile:      '/var/lib/jenkins/.puppetlabs/token' // rbac token file location for deploying with code manager; mutually exclusive with credential_id
 )
 ```
 

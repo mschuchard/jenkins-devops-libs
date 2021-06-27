@@ -6,8 +6,10 @@ void code_deploy(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.token || config.credentials_id : 'The required token or credentials_id parameter was not set.'
-  assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
+  assert config.tokenFile || config.credentials_id : 'The required token or credentials_id parameter was not set.'
+  if (config.tokenFile) {
+    assert fileExists(config.tokenFile) : "The RBAC token ${config.tokenFile} does not exist!"
+  }
 
   config.servers = config.servers ?: ['puppet']
   assert (config.servers instanceof List) : 'The servers parameter must be a list of strings.'
@@ -40,13 +42,13 @@ void code_deploy(body) {
   String token = ''
   // set token with logic from appropriate parameter
   if (config.credentials_id) {
-    withCredentials([token(credentialsId: config.token, variable: 'the_token')]) {
+    withCredentials([token(credentialsId: config.credentials_id, variable: 'the_token')]) {
       token = the_token
     }
   }
-  else if (config.token) {
+  else if (config.tokenFile) {
     // initialize token with readFile relative pathing requirement stupidness
-    token = readFile("../../../../../../../../../../../${config.token}")
+    token = readFile("../../../../../../../../../../../${config.tokenFile}")
   }
 
   // iterate through servers
@@ -66,7 +68,7 @@ void code_deploy(body) {
       )
     }
     catch(Exception error) {
-      print "Failure executing REST API request against ${server} with token at ${config.token}! Returned status: ${json_response.status}."
+      print "Failure executing REST API request against ${server} with token! Returned status: ${json_response.status}."
       throw error
     }
     // parse response
@@ -103,8 +105,10 @@ void task(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.token || config.credentials_id : 'The required token or credentials_id parameter was not set.'
-  assert fileExists(config.token) : "The RBAC token ${config.token} does not exist!"
+  assert config.tokenFile || config.credentials_id : 'The required token or credentials_id parameter was not set.'
+  if (config.tokenFile) {
+    assert fileExists(config.tokenFile) : "The RBAC token ${config.tokenFile} does not exist!"
+  }
   assert config.task : 'The required task parameter was not set.'
   assert config.scope : 'The required scope parameter was not set.'
 
@@ -160,13 +164,13 @@ void task(body) {
   String token = ''
   // set token with logic from appropriate parameter
   if (config.credentials_id) {
-    withCredentials([token(credentialsId: config.token, variable: 'the_token')]) {
+    withCredentials([token(credentialsId: config.credentials_id, variable: 'the_token')]) {
       token = the_token
     }
   }
-  else if (config.token) {
+  else if (config.tokenFile) {
     // initialize token with readFile relative pathing requirement stupidness
-    token = readFile("../../../../../../../../../../../${config.token}")
+    token = readFile("../../../../../../../../../../../${config.tokenFile}")
   }
 
   // trigger task orchestration
@@ -184,7 +188,7 @@ void task(body) {
     )
   }
   catch(Exception error) {
-    print "Failure executing REST API request against ${server} with token at ${config.token}! Returned status: ${json_response.status}."
+    print "Failure executing REST API request against ${server} with token! Returned status: ${json_response.status}."
     throw error
   }
   // receive and parse response
