@@ -85,3 +85,17 @@ awx.job_template_launch(
   skip_tags:  ['skipper', 'to_skip'] // optional tags to skip
 )
 ```
+
+### awx.workflow_job_template_launch()
+
+Uses AWX to launch a workflow job from a workflow job template.
+
+```groovy
+awx.job_template_launch(
+  bin:        '/usr/bin/awx', // optional path to awx executable
+  extra_vars: ['foo': 'bar', 'baz': 1], // optional extra variables
+  id:         5, // workflow job template id
+  inventory:  2, // optional ID of the associated inventory
+  monitor:    false, // optional wait until launched job finishes
+)
+```

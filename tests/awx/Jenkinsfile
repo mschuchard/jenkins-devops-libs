@@ -79,5 +79,15 @@ pipeline {
         }
       }
     }
+    stage('Workflow Job Template Launch') {
+      steps {
+        script {
+          awx.workflow_job_template_launch(
+            extra_vars: ['foo': 'bar', 'baz': 1], // optional extra variables
+            id:         2, // job template id
+          )
+        }
+      }
+    }
   }
 }
