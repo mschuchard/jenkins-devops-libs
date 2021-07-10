@@ -53,6 +53,7 @@ void host_delete(String id, String bin = 'awx') {
   print 'awx host delete was successful.'
 }
 
+// helper method for create and modify
 void inventory(config) {
   // input checking
   assert config.name : "'name' is a required parameter for awx.inventory_${config.action}."
@@ -92,6 +93,7 @@ void inventory(config) {
   print "awx inventory ${config.action} was successful."
 }
 
+// invokes inventory helper method
 void inventory_create(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
@@ -113,6 +115,7 @@ void inventory_delete(String id, String bin = 'awx') {
   print 'awx inventory delete was successful.'
 }
 
+// invokes inventory helper method
 void inventory_modify(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
@@ -131,7 +134,7 @@ void job_template_launch(body) {
 
   config.bin = config.bin ?: 'awx'
 
-  // create a host in the inventory
+  // launch a job template job
   try {
     // initialize the base command
     String cmd = "${config.bin} job_templates launch"
@@ -172,4 +175,43 @@ void job_template_launch(body) {
     throw error
   }
   print 'awx job template launch was successful.'
+}
+
+void workflow_job_template_launch(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().paramsConverter(body)
+
+  // input checking
+  assert config.id : '"id" is a required parameter for awx.workflow_job_template_launch.'
+
+  config.bin = config.bin ?: 'awx'
+
+  // launch a workflow job template job
+  try {
+    // initialize the base command
+    String cmd = "${config.bin} workflow_job_templates launch"
+
+    // check for optional inputs
+    if (config.monitor == true) {
+      cmd += ' --monitor'
+    }
+    if (config.inventory) {
+      cmd += " --inventory ${config.inventory}"
+    }
+    if (config.extra_vars) {
+      assert (config.extra_vars instanceof Map) : 'The variables parameter must be a Map.'
+
+      // convert variables map to json for input
+      extra_vars = new utils().mapToJSON(config.variables)
+
+      cmd += " --extra_vars ${extra_vars}"
+    }
+
+    sh(label: 'AWX Workflow Job Template Launch', script: "${cmd} ${config.id}")
+  }
+  catch(Exception error) {
+    print 'Failure using awx workflow job template launch.'
+    throw error
+  }
+  print 'awx workflow job template launch was successful.'
 }
