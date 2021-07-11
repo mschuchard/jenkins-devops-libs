@@ -177,6 +177,34 @@ void job_template_launch(body) {
   print 'awx job template launch was successful.'
 }
 
+void projects_update(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().paramsConverter(body)
+
+  // input checking
+  assert config.id : '"id" is a required parameter for awx.projects_update.'
+
+  config.bin = config.bin ?: 'awx'
+
+  // launch a project update job
+  try {
+    // initialize the base command
+    String cmd = "${config.bin} projects update"
+
+    // check for optional inputs
+    if (config.monitor == true) {
+      cmd += ' --monitor'
+    }
+
+    sh(label: 'AWX Project Update', script: "${cmd} ${config.id}")
+  }
+  catch(Exception error) {
+    print 'Failure using awx projects update.'
+    throw error
+  }
+  print 'awx projects update was successful.'
+}
+
 void workflow_job_template_launch(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
