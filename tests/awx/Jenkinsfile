@@ -67,6 +67,13 @@ pipeline {
         }
       }
     }
+    stage('Project Update') {
+      steps {
+        script {
+          awx.projects_update(id: 3)
+        }
+      }
+    }
     stage('Job Template Launch') {
       steps {
         script {

@@ -86,6 +86,18 @@ awx.job_template_launch(
 )
 ```
 
+### awx.projects_update()
+
+Uses AWX to launch a project update job.
+
+```groovy
+awx.projects_update(
+  bin:     '/usr/bin/awx', // optional path to awx executable
+  id:      3, // project id
+  monitor: false // optional wait until project update job finishes
+)
+```
+
 ### awx.workflow_job_template_launch()
 
 Uses AWX to launch a workflow job from a workflow job template.
