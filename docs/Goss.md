@@ -5,6 +5,8 @@ Interacts with Goss.
 ### Dependencies
 
 - pipeline-utility-steps plugin (`validate_gossfile`)
+- GoSS CLI binary executable
+- DGoSS CLI binary exeuctable (`validate_docker`)
 
 ### goss.install(String version, String install_path = '/usr/bin')
 **Deprecated**:

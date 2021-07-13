@@ -1,11 +1,10 @@
 # Helm
 
-Interacts with Helm. Minimum required version of Helm is 3.0 as of version 1.6.0 of these libraries. Note that you should set the environment variable `KUBECONFIG` in your pipeline with `environment { KUBECONFIG = '/path/to/.kube/config' }` as the `jenkins` user probably does not have one in its home directory, and Helm requires a valid kube config for all commands. Alternatively, you can use the `kubeconfigFile` or `kubeconfigContent` bindings for the Credentials Binding plugin, and then wrap code within a `withCredentials` block as per normal. Also alternatively, you can combine the two like `environment { KUBECONFIG = credentials('my-kubeconfig') }`
+Interacts with Helm. Note that you should set the environment variable `KUBECONFIG` in your pipeline with `environment { KUBECONFIG = '/path/to/.kube/config' }` as the `jenkins` user probably does not have one in its home directory, and Helm requires a valid kube config for all commands. Alternatively, you can use the `kubeconfigFile` or `kubeconfigContent` bindings for the Credentials Binding plugin, and then wrap code within a `withCredentials` block as per normal. Also alternatively, you can combine the two like `environment { KUBECONFIG = credentials('my-kubeconfig') }`
 
 ### Dependencies
 
-- tar package (`setup`)
-- pipeline-utility-steps plugin (`setup`)
+- Helm CLI binary executable >= 3.0
 
 ### helm.install()
 Performs an installation with helm onto the Kubernetes cluster.

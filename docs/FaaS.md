@@ -5,6 +5,7 @@ Interacts with OpenFaaS CLI.
 ### Dependencies
 
 - pipeline-utility-steps plugin (`validate_template`)
+- OpenFaaS CLI binary executable
 
 ### faas.build()
 Builds OpenFaaS function containers.

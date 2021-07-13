@@ -1,11 +1,10 @@
 # Packer
 
-Interacts with Packer. Minimum required version of Packer is 1.5 as of version 1.6.0 of these libraries. The `template` argument must generally be a `pkr.json` template, `pkr.hcl` template, or a directory containing them.
+Interacts with Packer.The `template` argument must generally be a `pkr.json` template, `pkr.hcl` template, or a directory containing them.
 
 ### Dependencies
 
-- unzip package (`install`)
-- pipeline-utility-steps plugin (`install`)
+- Packer CLI binary executable >= 1.5
 
 ### packer.build()
 Uses Packer to build an artifact from a template.

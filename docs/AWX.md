@@ -4,7 +4,8 @@ Interacts with AWX/Ansible Tower endpoints via the AWX CLI. Note that you should
 
 ### Dependencies
 
-None
+- AWX CLI binary executable
+- AWX or Tower installation
 
 ### awx.host_create()
 

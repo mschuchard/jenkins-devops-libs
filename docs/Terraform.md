@@ -1,11 +1,10 @@
 # Terraform
 
-Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each method. Minimum required version of Terraform is 0.12 as of version 1.6.0 of these libraries.
+Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each method.
 
 ### Dependencies
 
-- unzip package (`install`)
-- pipeline-utility-steps plugin (`install`)
+- Terraform CLI binary executable >= 0.12
 
 ### terraform.apply()
 Uses Terraform to apply a config. Note that if `terraform.plan(path: config_dir)` was invoked before this, the resultant plan file is in `${config_dir}/plan.tfplan`. If a plan file is specified as the `config_path`, then vars and target parameters will be ignored.
