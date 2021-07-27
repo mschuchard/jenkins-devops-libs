@@ -41,7 +41,14 @@ void apply(body) {
       }
     }
 
-    sh(label: 'Terraform Apply', script: "${cmd} ${config.config_path}")
+    if (config.config_path ==~ /plan\.tfplan/) {
+      sh(label: 'Terraform Apply', script: "${cmd} ${config.config_path}")
+    }
+    else {
+      dir(config.config_path) {
+        sh(label: 'Terraform Apply', script: cmd)
+      }
+    }
   }
   catch(Exception error) {
     print 'Failure using terraform apply.'
@@ -91,7 +98,14 @@ void destroy(body) {
       }
     }
 
-    sh(label: 'Terraform Destroy', script: "${cmd} ${config.config_path}")
+    if (config.config_path ==~ /plan\.tfplan/) {
+      sh(label: 'Terraform Destroy', script: "${cmd} ${config.config_path}")
+    }
+    else {
+      dir(config.config_path) {
+        sh(label: 'Terraform Destroy', script: cmd)
+      }
+    }
   }
   catch(Exception error) {
     print 'Failure using terraform destroy.'
@@ -133,7 +147,9 @@ void fmt(body) {
       cmd += ' -write'
     }
 
-    fmt_status = sh(label: 'Terraform Format', returnStatus: true, script: "${cmd} ${config.dir}")
+    dir(config.config_dir) {
+      fmt_status = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
+    }
 
     // report if formatting check detected issues
     if ((config.check == true) && (fmt_status != 0)) {
@@ -186,7 +202,9 @@ void init(body) {
       }
     }
 
-    sh(label: 'Terraform Init', script: "${cmd} ${config.dir}")
+    dir(config.config_dir) {
+      sh(label: 'Terraform Init', script: cmd)
+    }
   }
   catch(Exception error) {
     print 'Failure using terraform init.'
@@ -367,7 +385,9 @@ def plan(body) {
     }
 
     // execute plan
-    String plan_output = sh(label: 'Terraform Plan', script: "${cmd} ${config.dir}", returnStdout: true)
+    dir(config.dir) {
+      String plan_output = sh(label: 'Terraform Plan', script: cmd, returnStdout: true)
+    }
 
     // display plan output if specified
     if (config.display == true) {
@@ -549,7 +569,9 @@ void validate(body) {
       cmd += ' -no-color'
     }
 
-    sh(label: 'Terraform Validate', script: "${cmd} ${config.dir}")
+    dir(config.dir) {
+      sh(label: 'Terraform Validate', script: cmd)
+    }
   }
   catch(Exception error) {
     print 'Failure using terraform validate.'

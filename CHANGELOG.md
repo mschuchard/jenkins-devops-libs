@@ -6,6 +6,9 @@
 - Fix `credentials_id` usage.
 - Update `token` param to `tokenFile`.
 
+**Terraform**
+- Change working directory to config directory before command execution.
+
 ### 1.6.1
 **General**
 - Deprecate software `install` methods.
