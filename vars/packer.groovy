@@ -138,7 +138,9 @@ void plugin_install(String url, String install_loc) {
 
   // check if plugin dir exists and create if not
   if (!(fileExists(install_dir))) {
-    new File(install_dir).mkdir()
+    dir(install_dir) {
+      print "${install_dir} does not exist; attempting to create it."
+    }
   }
 
   // check if plugin already installed

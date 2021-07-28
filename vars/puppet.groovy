@@ -276,7 +276,9 @@ void token (body) {
 
   // check if desired token save path exists and create if not
   if (!(fileExists(config.path))) {
-    new File(config.path).mkdir()
+    dir(config.path) {
+      print "${config.path} does not exist; attempting to create it."
+    }
   }
 
   // acess token value and save it to file

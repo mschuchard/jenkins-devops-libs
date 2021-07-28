@@ -181,7 +181,9 @@ void init(body) {
     // check for optional inputs
     if (config.plugin_dir) {
       if (!fileExists(config.plugin_dir)) {
-        new File(config.plugin_dir).mkdir()
+        dir(config.plugin_dir) {
+          print "${config.plugin_dir} does not exist; attempting to create it."
+        }
       }
 
       cmd += " -plugin-dir=${config.plugin_dir}"
@@ -425,7 +427,9 @@ void plugin_install(body) {
 
   // check if plugin dir exists and create if not
   if (!(fileExists(config.install_path))) {
-    new File(config.install_path).mkdir()
+    dir(config.install_path) {
+      print "${config.install_path} does not exist; attempting to create it."
+    }
   }
 
   // check if plugin already installed
