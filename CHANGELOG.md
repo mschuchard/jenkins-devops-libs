@@ -1,6 +1,7 @@
 ### 1.7.0 (ROADMAP)
 **General**
 - Replace `File.mkdir()` class method with `dir` step method (valid also on agents).
+- Add `makeDirParents` method to attempt to fix missing user directories.
 
 **AWX**
 - Finish initial implementation and promote to beta.

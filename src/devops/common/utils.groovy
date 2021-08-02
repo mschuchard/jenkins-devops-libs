@@ -42,6 +42,26 @@ void downloadFile(String url, String dest) {
   file.close();
 }
 
+// functionally equivalent to unix mkdir -p
+@NonCPS
+void makeDirParents(String dir) {
+  // short circuit if directory exists
+  if File(dir).exists() {
+    return
+  }
+  else {
+    print "Attempting to recursively create missing directory ${dir}"
+  }
+  // create a directory on the master
+  if (env['NODE_NAME'].equals('master')) {
+    new File(dir).mkdirs();
+  }
+  // create a directory on the build agent
+  else {
+    new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dir).mkdirs();
+  }
+}
+
 // converts content map to json string
 String mapToJSON(Map content) {
   return JsonOutput.toJson(content);
