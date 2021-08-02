@@ -100,7 +100,7 @@ void install(body) {
   // input checking
   config.install_path = config.install_path ? config.install_path : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
-  assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
+  new utils().makeDirParents(config.install_path)
 
   // check if current version already installed
   if (fileExists("${config.install_path}/faas-cli")) {

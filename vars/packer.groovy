@@ -113,7 +113,8 @@ void install(body) {
   // input checking
   config.install_path = config.install_path ? config.install_path : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
-  assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
+
+  new utils().makeDirParents(config.install_path)
 
   // check if current version already installed
   if (fileExists("${config.install_path}/packer")) {
@@ -137,11 +138,7 @@ void plugin_install(String url, String install_loc) {
   String install_dir = new File(install_loc).name.take(elem_count)
 
   // check if plugin dir exists and create if not
-  if (!(fileExists(install_dir))) {
-    dir(install_dir) {
-      print "${install_dir} does not exist; attempting to create it."
-    }
-  }
+  new utils().makeDirParents(install_dir)
 
   // check if plugin already installed
   if (fileExists(install_loc)) {

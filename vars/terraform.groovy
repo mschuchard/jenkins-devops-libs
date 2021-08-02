@@ -180,11 +180,7 @@ void init(body) {
 
     // check for optional inputs
     if (config.plugin_dir) {
-      if (!fileExists(config.plugin_dir)) {
-        dir(config.plugin_dir) {
-          print "${config.plugin_dir} does not exist; attempting to create it."
-        }
-      }
+      new utils().makeDirParents(config.plugin_dir)
 
       cmd += " -plugin-dir=${config.plugin_dir}"
     }
@@ -280,7 +276,8 @@ void install(body) {
   // input checking
   config.install_path = config.install_path ? config.install_path : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
-  assert fileExists(config.install_path) : "The desired installation path at ${config.install_path} does not exist."
+
+  new utils().makeDirParents(config.install_path)
 
   // check if current version already installed
   if (fileExists("${config.install_path}/terraform")) {
@@ -426,11 +423,7 @@ void plugin_install(body) {
   String install_loc = "${config.install_path}/${config.install_name}"
 
   // check if plugin dir exists and create if not
-  if (!(fileExists(config.install_path))) {
-    dir(config.install_path) {
-      print "${config.install_path} does not exist; attempting to create it."
-    }
-  }
+  new utils().makeDirParents(config.install_path)
 
   // check if plugin already installed
   if (fileExists(install_loc)) {

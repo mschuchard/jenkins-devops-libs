@@ -2,7 +2,7 @@
 import devops.common.utils
 
 void install(String version, String install_path = '/usr/bin/') {
-  assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
+  new utils().makeDirParents(install_path)
 
   // check if current version already installed
   if (fileExists("${install_path}/goss")) {
@@ -19,7 +19,7 @@ void install(String version, String install_path = '/usr/bin/') {
 }
 
 void install_dgoss(String version, String install_path = '/usr/bin/') {
-  assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
+  new utils().makeDirParents(install_path)
 
   // check if current version already installed
   if (fileExists("${install_path}/dgoss") && fileExists("${install_path}/goss")) {

@@ -61,7 +61,7 @@ void install(body) {
 }
 
 void kubectl(String version, String install_path = '/usr/bin/') {
-  assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
+  new utils().makeDirParents(install_path)
 
   // check if current version already installed
   if (fileExists("${install_path}/kubectl")) {
@@ -155,7 +155,7 @@ void packages(body) {
     String cmd = "${config.bin} package"
 
     if (config.dest) {
-      assert fileExists(config.dest) : "The destination directory ${config.dest} for the chart archive does not exist!"
+      new utils().makeDirParents(config.dest)
 
       cmd += " -d ${config.dest}"
     }
@@ -281,7 +281,7 @@ void rollback(body) {
 }
 
 void setup(String version, String install_path = '/usr/bin/') {
-  assert fileExists(install_path) : "The desired installation path at ${install_path} does not exist."
+  new utils().makeDirParents(install_path)
 
   // check if current version already installed
   if (fileExists("${install_path}/helm")) {
