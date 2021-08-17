@@ -5,6 +5,7 @@ Interacts with Helm. Note that you should set the environment variable `KUBECONF
 ### Dependencies
 
 - Helm CLI binary executable >= 3.0
+- Kubernetes cluster
 
 ### helm.install()
 Performs an installation with helm onto the Kubernetes cluster.

@@ -77,10 +77,10 @@ void fmt(body) {
       cmd += " -write"
     }
 
-    fmt_status = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
+    fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
 
     // report if formatting check detected issues
-    if ((config.check == true) && (fmt_status != 0)) {
+    if ((config.check == true) && (fmtStatus != 0)) {
       print 'Packer fmt has detected formatting errors.'
     }
   }
@@ -133,12 +133,12 @@ void install(body) {
 
 void plugin_install(String url, String install_loc) {
   // determine number of elements in loc up to final slash
-  String elem_count = new File(install_loc).name.lastIndexOf('/')
+  String elemCount = new File(install_loc).name.lastIndexOf('/')
   // return file path up to final slash element
-  String install_dir = new File(install_loc).name.take(elem_count)
+  String installDir = new File(install_loc).name.take(elemCount)
 
   // check if plugin dir exists and create if not
-  new utils().makeDirParents(install_dir)
+  new utils().makeDirParents(installDir)
 
   // check if plugin already installed
   if (fileExists(install_loc)) {

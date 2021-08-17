@@ -37,13 +37,13 @@ void code_deploy(body) {
 
   // initialize vars
   boolean errored = false
-  def json_response = [:]
+  def jsonResponse = [:]
   Map response = [:]
   String token = ''
   // set token with logic from appropriate parameter
   if (config.credentials_id) {
-    withCredentials([token(credentialsId: config.credentials_id, variable: 'the_token')]) {
-      token = the_token
+    withCredentials([token(credentialsId: config.credentials_id, variable: 'theToken')]) {
+      token = theToken
     }
   }
   else if (config.tokenFile) {
@@ -55,7 +55,7 @@ void code_deploy(body) {
   config.servers.each() { server ->
     // trigger code manager deployment
     try {
-      json_response = httpRequest(
+      jsonResponse = httpRequest(
         acceptType:             'APPLICATION_JSON',
         consoleLogResponseBody: true,
         contentType:            'APPLICATION_JSON',
@@ -68,15 +68,15 @@ void code_deploy(body) {
       )
     }
     catch(Exception error) {
-      print "Failure executing REST API request against ${server} with token! Returned status: ${json_response.status}."
+      print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse.status}."
       throw error
     }
     // parse response
     try {
-      response = readJSON(text: json_response.content)
+      response = readJSON(text: jsonResponse.content)
     }
     catch(Exception error) {
-      print "Response from ${server} is not valid JSON! Response content: ${json_response.content}."
+      print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
       throw error
     }
     // check for errors if waited
@@ -159,13 +159,13 @@ void task(body) {
   payload = new utils().mapToJSON(payload)
 
   // initialize vars
-  def json_response = [:]
+  def jsonResponse = [:]
   Map response = [:]
   String token = ''
   // set token with logic from appropriate parameter
   if (config.credentials_id) {
-    withCredentials([token(credentialsId: config.credentials_id, variable: 'the_token')]) {
-      token = the_token
+    withCredentials([token(credentialsId: config.credentials_id, variable: 'theToken')]) {
+      token = theToken
     }
   }
   else if (config.tokenFile) {
@@ -175,7 +175,7 @@ void task(body) {
 
   // trigger task orchestration
   try {
-    json_response = httpRequest(
+    jsonResponse = httpRequest(
       acceptType:             'APPLICATION_JSON',
       consoleLogResponseBody: true,
       contentType:            'APPLICATION_JSON',
@@ -188,7 +188,7 @@ void task(body) {
     )
   }
   catch(Exception error) {
-    print "Failure executing REST API request against ${server} with token! Returned status: ${json_response.status}."
+    print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse.status}."
     throw error
   }
   // receive and parse response
@@ -196,7 +196,7 @@ void task(body) {
     Map response = readJSON(text: json.content)
   }
   catch(Exception error) {
-    print "Response from ${server} is not valid JSON! Response content: ${json_response.content}."
+    print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
     throw error
   }
   // handle errors in response
@@ -244,12 +244,12 @@ void token (body) {
   payload = new utils().mapToJSON(payload)
 
   // initialize vars
-  def json_response = [:]
+  def jsonResponse = [:]
   Map response = [:]
 
   // trigger token generation
   try {
-    json_response = httpRequest(
+    jsonResponse = httpRequest(
       acceptType:             'APPLICATION_JSON',
       consoleLogResponseBody: true,
       contentType:            'APPLICATION_JSON',
@@ -262,15 +262,15 @@ void token (body) {
     )
   }
   catch(Exception error) {
-    print "Failure executing REST API request against ${server} with username ${config.username}. Returned status: ${json_response.status}."
+    print "Failure executing REST API request against ${server} with username ${config.username}. Returned status: ${jsonResponse.status}."
     throw error
   }
   // receive and parse response
   try {
-    Map response = readJSON(text: json_response.content)
+    Map response = readJSON(text: jsonResponse.content)
   }
   catch(Exception error) {
-    print "Response from ${server} is not valid JSON! Response content: ${json_response.content}."
+    print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
     throw error
   }
 

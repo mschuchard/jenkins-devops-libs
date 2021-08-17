@@ -148,11 +148,11 @@ void fmt(body) {
     }
 
     dir(config.config_dir) {
-      fmt_status = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
+      fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
     }
 
     // report if formatting check detected issues
-    if ((config.check == true) && (fmt_status != 0)) {
+    if ((config.check == true) && (fmtStatus != 0)) {
       print 'Terraform fmt has detected formatting errors.'
     }
   }
@@ -315,7 +315,7 @@ def output(body) {
       cmd += " -state=${config.state}"
     }
     if (config.json == true) {
-      cmd += " -json"
+      cmd += ' -json'
     }
     if (config.name) {
       cmd += " ${config.name}"
@@ -385,13 +385,13 @@ def plan(body) {
 
     // execute plan
     dir(config.dir) {
-      String plan_output = sh(label: 'Terraform Plan', script: cmd, returnStdout: true)
+      String planOutput = sh(label: 'Terraform Plan', script: cmd, returnStdout: true)
     }
 
     // display plan output if specified
     if (config.display == true) {
       print 'Terraform plan output is:'
-      print plan_output
+      print planOutput
     }
   }
   catch(Exception error) {
@@ -402,7 +402,7 @@ def plan(body) {
 
   // return plan output if requested
   if (config.return == true) {
-    return plan_output
+    return planOutput
   }
 }
 
@@ -420,32 +420,32 @@ void plugin_install(body) {
   config.install_path = config.install_path ? config.install_path : '~/.terraform.d/plugins'
 
   // set and assign plugin install location
-  String install_loc = "${config.install_path}/${config.install_name}"
+  String installLoc = "${config.install_path}/${config.install_name}"
 
   // check if plugin dir exists and create if not
   new utils().makeDirParents(config.install_path)
 
   // check if plugin already installed
-  if (fileExists(install_loc)) {
-    print "Terraform plugin already installed at ${install_loc}."
+  if (fileExists(installLoc)) {
+    print "Terraform plugin already installed at ${installLoc}."
     return
   }
   // otherwise download and install plugin
   else if (config.url ==~ /\.zip$/) {
     // append zip extension to avoid filename clashes
-    install_loc = "${install_loc}.zip"
+    installLoc = "${installLoc}.zip"
   }
 
-  new utils().downloadFile(config.url, install_loc)
+  new utils().downloadFile(config.url, installLoc)
 
   if (config.url ==~ /\.zip$/) {
-    unzip(zipFile: install_loc)
-    new utils().removeFile(install_loc)
+    unzip(zipFile: installLoc)
+    new utils().removeFile(installLoc)
   }
   else {
-    sh(label: 'Terraform Plugin Executable Permissions', script: "chmod ug+rx ${install_loc}")
+    sh(label: 'Terraform Plugin Executable Permissions', script: "chmod ug+rx ${installLoc}")
   }
-  print "Terraform plugin successfully installed at ${install_loc}."
+  print "Terraform plugin successfully installed at ${installLoc}."
 }
 
 void state(body) {
