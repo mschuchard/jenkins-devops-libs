@@ -8,46 +8,17 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent any
+  agent { docker { image 'hashicorp/packer:1.6.6' } }
 
   stages {
-    stage('Install') {
-      steps {
-        script {
-          packer.install {
-            version      = '1.6.6'
-            install_path = '/tmp'
-            platform     = 'linux_amd64'
-          }
-          packer.install(
-            version:      '1.6.6',
-            install_path: '/tmp',
-            platform:     'linux_amd64'
-          )
-        }
-      }
-    }
-    stage('Plugin Install') {
-      steps {
-        script {
-          packer.plugin_install('https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v1.4.0/packer-provisioner-goss-v1.4.0-linux-amd64', '/usr/bin/packer-provisioner-goss')
-        }
-      }
-    }
     stage('Validate') {
       steps {
-        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.pkr.json -o /tmp/docker.pkr.json'
-        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.pkr.hcl -o /tmp/docker.pkr.hcl'
+        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.pkr.json -o docker.pkr.json'
+        sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.pkr.hcl -o docker.pkr.hcl'
 
         script {
-          packer.validate {
-            bin      = '/tmp/packer'
-            template = '/tmp/docker.pkr.json'
-          }
-          packer.validate(
-            bin:      '/tmp/packer',
-            template: '/tmp/docker.pkr.json'
-          )
+          packer.validate { template = 'docker.pkr.json' }
+          packer.validate(template: 'docker.pkr.json')
         }
       }
     }
@@ -55,10 +26,9 @@ pipeline {
       steps {
         script {
           packer.fmt(
-            bin:       '/tmp/packer',
             check:     true,
             diff:      true,
-            template: '/tmp/docker.pkr.hcl'
+            template: 'docker.pkr.hcl'
           )
         }
       }
@@ -66,22 +36,16 @@ pipeline {
     stage('Inspect') {
       steps {
         script {
-          packer.inspect('/tmp/docker.pkr.json', '/tmp/packer')
-          packer.inspect('/tmp/docker.pkr.hcl', '/tmp/packer')
+          packer.inspect('docker.pkr.json')
+          packer.inspect('docker.pkr.hcl')
         }
       }
     }
     stage('Build') {
       steps {
         script {
-          packer.build(
-            bin:      '/tmp/packer',
-            template: '/tmp/docker.pkr.json'
-          )
-          packer.build(
-            bin:      '/tmp/packer',
-            template: '/tmp/docker.pkr.hcl'
-          )
+          packer.build(template: 'docker.pkr.json')
+          packer.build(template: 'docker.pkr.hcl')
         }
       }
     }

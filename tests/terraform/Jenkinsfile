@@ -8,29 +8,15 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent any
+  agent { docker { image 'hashicorp/terraform:0.15.5' } }
 
   stages {
-    stage('Install') {
-      steps {
-        script {
-          terraform.install(
-            version:      '0.14.11',
-            install_path: '/tmp',
-            platform:     'linux_amd64'
-          )
-        }
-      }
-    }
     stage('Initialize') {
       steps {
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/terraform/main.tf -o /tmp/main.tf'
 
         script {
-          terraform.init(
-            bin: '/tmp/terraform',
-            dir: '/tmp'
-          )
+          terraform.init(dir: '/tmp')
         }
       }
     }
@@ -38,7 +24,6 @@ pipeline {
       steps {
         script {
           terraform.workspace(
-            bin:       '/tmp/terraform',
             dir:       '/tmp',
             workspace: 'default'
           )
@@ -49,7 +34,6 @@ pipeline {
       steps {
         script {
           terraform.validate(
-            bin:  '/tmp/terraform',
             dir:  '/tmp',
             json: true
           )
@@ -61,7 +45,6 @@ pipeline {
         script {
           terraform.fmt(
             dir:   '/tmp',
-            bin:   '/tmp/terraform',
             check: true,
             diff:  true
           )
@@ -71,38 +54,28 @@ pipeline {
     stage('Plan') {
       steps {
         script {
-          terraform.plan(
-            bin: '/tmp/terraform',
-            dir: '/tmp'
-          )
+          terraform.plan(dir: '/tmp')
         }
       }
     }
     stage('Apply') {
       steps {
         script {
-          terraform.apply(
-            bin:         '/tmp/terraform',
-            config_path: '/tmp/plan.tfplan'
-          )
+          terraform.apply(config_path: '/tmp/plan.tfplan')
         }
       }
     }
     stage('Output') {
       steps {
         script {
-          terraform.output(
-            bin:  '/tmp/terraform',
-            json: false
-          )
+          terraform.output(json: false)
         }
       }
     }
     stage('State') {
       steps {
         script {
-          terraform.apply(
-            bin:       '/tmp/terraform',
+          terraform.state(
             command:   'move',
             resources: ['local_file.file':'local_file.not_file']
           )
@@ -112,10 +85,7 @@ pipeline {
     stage('Destroy') {
       steps {
         script {
-          terraform.destroy(
-            bin:         '/tmp/terraform',
-            config_path: '/tmp'
-          )
+          terraform.destroy(config_path: '/tmp')
         }
       }
     }

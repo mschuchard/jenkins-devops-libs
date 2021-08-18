@@ -8,7 +8,7 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent any
+  agent { docker { image 'ansible/awx:17.1.0' } }
 
   environment {
     TOWER_OAUTH_TOKEN = '6E5SXhld7AMOhpRveZsLJQsfs9VS8U'
