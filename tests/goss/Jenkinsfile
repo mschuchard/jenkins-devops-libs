@@ -8,17 +8,9 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent any
+  agent { docker { image 'aelsabbahy/goss:v0.3.16' } }
 
   stages {
-    stage('Install') {
-      steps {
-        script {
-          goss.install('0.3.16', '/tmp')
-          goss.install_dgoss('0.3.16', '/tmp')
-        }
-      }
-    }
     stage('Validate Gossfile') {
       steps {
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/goss/goss.yaml -o /tmp/goss.yaml'
@@ -31,13 +23,9 @@ pipeline {
     stage('Validate Server') {
       steps {
         script {
-          goss.validate {
-            gossfile = '/tmp/goss.yaml' // optional location of gossfile
-            bin      = '/tmp/goss' // optional executable path for goss
+          goss.validate { gossfile = '/tmp/goss.yaml' // optional location of gossfile
           }
-          goss.validate(
-            gossfile: '/tmp/goss.yaml', // optional location of gossfile
-            bin:      '/tmp/goss' // optional executable path for goss
+          goss.validate(gossfile: '/tmp/goss.yaml', // optional location of gossfile
           )
         }
       }
@@ -48,17 +36,16 @@ pipeline {
           goss.server {
             gossfile = '/tmp/goss.yaml' // optional location of gossfile
             format   = 'documentation' // optional formatter to use for output
-            bin      = '/tmp/goss' // optional executable path for goss
           }
           goss.server(
             gossfile: '/tmp/goss.yaml', // optional location of gossfile
             format:   'documentation', // optional formatter to use for output
-            bin:      '/tmp/goss' // optional executable path for goss
           )
         }
       }
     }
     stage('Validate Docker Image') {
+      // switch to dgoss agent here
       environment {
         GOSS_FILES_PATH     = '/tmp/'
         GOSS_FILES_STRATEGY = 'mount'
@@ -66,7 +53,6 @@ pipeline {
       steps {
         script {
           goss.validate_docker(
-            bin:   '/tmp/dgoss', // optional executable path for dgoss
             flags: ['JAVA_OPTS="-Xmx1048m"'], // optional flags for container run
             image: 'alpine:latest' // docker image to run container from
           )

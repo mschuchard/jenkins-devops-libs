@@ -8,25 +8,9 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent any
+  agent { docker { image 'openfaas/faas-cli:0.12.14' } }
 
   stages {
-    stage('Install') {
-      steps {
-        script {
-          faas.install {
-            install_path = '/tmp'
-            platform     = 'linux'
-            version      = '0.13.10'
-          }
-          faas.install(
-            install_path: '/tmp',
-            platform:     'linux',
-            version:      '0.13.10'
-          )
-        }
-      }
-    }
     stage('Validate Template') {
       steps {
         sh 'curl -L https://raw.githubusercontent.com/openfaas/faas-cli/master/samples.yml -o /tmp/faas.yaml'

@@ -8,24 +8,15 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent any
+  agent { docker { image 'alpine/helm:3.5.4' } }
 
   environment { KUBECONFIG = '/home/vagrant/.kube/config' }
 
   stages {
-    stage('Setup') {
-      steps {
-        script {
-          helm.setup('3.5.3', '/usr/bin')
-          helm.kubectl('1.19.9', '/usr/bin')
-        }
-      }
-    }
     stage('Plugin') {
       steps {
         script {
           helm.plugin(
-            bin:     '/usr/bin/helm', // optional executable path for helm
             command: 'install', // plugin command; one of 'install', 'list', 'uninstall', or 'update'
             plugin:  'https://github.com/adamreese/helm-env' // targeted plugin (unless 'list' command)
           )
@@ -35,9 +26,7 @@ pipeline {
     stage('Lint') {
       steps {
         script {
-          helm.lint(
-            bin:   '/usr/bin/helm', // optional executable path for helm
-            chart: 'stable/mariadb' // chart repository, local archive, directory, or url to install
+          helm.lint(chart: 'stable/mariadb' // chart repository, local archive, directory, or url to install
           )
         }
       }
@@ -56,7 +45,6 @@ pipeline {
       steps {
         script {
           helm.install(
-            bin:   '/usr/bin/helm', // optional executable path for helm
             chart: 'stable/mariadb', // chart repository, local archive, directory, or url to install
             name:  'happy-panda' // name for the installed release object
           )
@@ -67,7 +55,6 @@ pipeline {
       steps {
         script {
           helm.upgrade(
-            bin:       '/usr/bin/helm', // optional executable path for helm
             chart:     'stable/mariadb', // chart repository, local archive, directory, or url to upgrade
             install:   false, // optional install if release not already present
             name:      'happy-panda', // name of the upgraded release object
@@ -86,7 +73,6 @@ pipeline {
       steps {
         script {
           helm.rollback(
-            bin:     '/usr/bin/helm', // optional executable path for helm
             name:    'happy-panda', // release object name to rollback
             version: '1' // version of release-object to rollback to
           )
@@ -97,7 +83,6 @@ pipeline {
       steps {
         script {
           helm.test(
-            bin:     '/usr/bin/helm', // optional executable path for helm
             chart:   'stable/mariadb', // chart repository, local archive, directory, or url to install
             kubectl: '/usr/bin/kubectl', // optional executable path for kubectl
             name:    'happy-panda' // name of a deployed release
