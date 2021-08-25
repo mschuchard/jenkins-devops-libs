@@ -155,7 +155,7 @@ void job_template_launch(body) {
       cmd += " --job_type ${config.job_type}"
     }
     if (config.skip_tags) {
-      assert config.skip_tags instanceof List) : 'The skip_tags parameter must be a List.'
+      assert (config.skip_tags instanceof List) : 'The skip_tags parameter must be a List.'
 
       cmd += " --skip_tags ${config.skip_tags.join(',')}"
     }

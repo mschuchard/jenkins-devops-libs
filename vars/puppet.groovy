@@ -126,7 +126,7 @@ void task(body) {
   if (config.noop) {
     payload['noop'] = config.noop
   }
-  payload['params'] ?= config.params : [:]
+  payload['params'] = config.params ?: [:]
 
   payload['task'] = config.task
   payload['scope'] = [:]
@@ -193,7 +193,7 @@ void task(body) {
   }
   // receive and parse response
   try {
-    Map response = readJSON(text: json.content)
+    response = readJSON(text: json.content)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
@@ -267,7 +267,7 @@ void token (body) {
   }
   // receive and parse response
   try {
-    Map response = readJSON(text: jsonResponse.content)
+    response = readJSON(text: jsonResponse.content)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
