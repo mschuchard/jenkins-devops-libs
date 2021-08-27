@@ -2,6 +2,8 @@
 
 Interacts with Helm. Note that you should set the environment variable `KUBECONFIG` in your pipeline with `environment { KUBECONFIG = '/path/to/.kube/config' }` as the `jenkins` user probably does not have one in its home directory, and Helm requires a valid kube config for all commands. Alternatively, you can use the `kubeconfigFile` or `kubeconfigContent` bindings for the Credentials Binding plugin, and then wrap code within a `withCredentials` block as per normal. Also alternatively, you can combine the two like `environment { KUBECONFIG = credentials('my-kubeconfig') }`
 
+Also please note direct Kubernetes support will never exist in this library. The reason for this is that the Kubernetes Java client requires exactly specifying the API version and object type altered during modifications. This limitation not encountered in the Golang client and its associated tools (e.g. Kubectl), and the reason is [well explained here](https://github.com/kubernetes-client/java/issues/611#issuecomment-509106822). This makes the implementation much more cumbersome. The workaround for this has already been excellently implemented by Fabric8 in their library, so no compelling reason exists to attempt to implement something similar in this library and global variable.
+
 ### Dependencies
 
 - Helm CLI binary executable >= 3.0

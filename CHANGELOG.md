@@ -9,6 +9,7 @@
 **Puppet**
 - Fix `credentials_id` usage.
 - Update `token` param to `tokenFile`.
+- Fix syntax errors.
 
 **Terraform**
 - Change working directory to config directory before command execution.
