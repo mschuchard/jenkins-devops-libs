@@ -163,54 +163,6 @@ void fmt(body) {
   print 'Terraform fmt was successful.'
 }
 
-void init(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
-  // input checking
-  assert fileExists(config.dir) : "Working config directory ${config.dir} does not exist!"
-  config.bin = config.bin ?: 'terraform'
-
-  // initialize the working config directory
-  try {
-    String cmd = "${config.bin} init -input=false -no-color"
-
-    // check for optional inputs
-    if (config.plugin_dir) {
-      new utils().makeDirParents(config.plugin_dir)
-
-      cmd += " -plugin-dir=${config.plugin_dir}"
-    }
-    if (config.upgrade == true) {
-      cmd += ' -upgrade'
-    }
-    if (config.backend == false) {
-      cmd += ' -backend=false'
-    }
-    if (config.backendConfig) {
-      assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
-
-      config.backendConfig.each() { backconf ->
-        assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
-
-        cmd += " -backend-config=${backconf}"
-      }
-    }
-
-    dir(config.config_dir) {
-      sh(label: 'Terraform Init', script: cmd)
-    }
-  }
-  catch(Exception error) {
-    print 'Failure using terraform init.'
-    throw error
-  }
-  print 'Terraform init was successful.'
-}
-
 void imports(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
@@ -264,6 +216,54 @@ void imports(body) {
     throw error
   }
   print 'Terraform imports were successful.'
+}
+
+void init(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().paramsConverter(body)
+
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  assert fileExists(config.dir) : "Working config directory ${config.dir} does not exist!"
+  config.bin = config.bin ?: 'terraform'
+
+  // initialize the working config directory
+  try {
+    String cmd = "${config.bin} init -input=false -no-color"
+
+    // check for optional inputs
+    if (config.plugin_dir) {
+      new utils().makeDirParents(config.plugin_dir)
+
+      cmd += " -plugin-dir=${config.plugin_dir}"
+    }
+    if (config.upgrade == true) {
+      cmd += ' -upgrade'
+    }
+    if (config.backend == false) {
+      cmd += ' -backend=false'
+    }
+    if (config.backendConfig) {
+      assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
+
+      config.backendConfig.each() { backconf ->
+        assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
+
+        cmd += " -backend-config=${backconf}"
+      }
+    }
+
+    dir(config.config_dir) {
+      sh(label: 'Terraform Init', script: cmd)
+    }
+  }
+  catch(Exception error) {
+    print 'Failure using terraform init.'
+    throw error
+  }
+  print 'Terraform init was successful.'
 }
 
 void install(body) {

@@ -91,6 +91,34 @@ void fmt(body) {
   print 'Packer fmt was successful.'
 }
 
+void init(body) {
+  // pass in params body and ensure proper config of type map
+  Map config = new utils().paramsConverter(body)
+
+  // input checking
+  assert fileExists(config.dir) : "Working template directory ${config.dir} does not exist."
+  config.bin = config.bin ?: 'packer'
+
+  // initialize the working template directory
+  try {
+    String cmd = "${config.bin} init"
+
+    // check for optional inputs
+    if (config.upgrade == true) {
+      cmd += ' -upgrade'
+    }
+
+    dir(config.dir) {
+      sh(label: 'Packer Init', script: "${cmd} ${config.dir}")
+    }
+  }
+  catch(Exception error) {
+    print 'Failure using packer init.'
+    throw error
+  }
+  print 'Packer init was successful.'
+}
+
 void inspect(String template, String bin = '/usr/bin/packer') {
   // input checking
   assert fileExists(template) : "A file does not exist at ${template}."
