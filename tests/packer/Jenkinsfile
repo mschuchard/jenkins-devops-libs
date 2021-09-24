@@ -8,17 +8,24 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent { docker { image 'hashicorp/packer:1.6.6' } }
+  agent { docker { image 'hashicorp/packer:1.7.5' } }
 
   stages {
-    stage('Validate') {
+    stage('Init') {
       steps {
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.pkr.json -o docker.pkr.json'
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/packer/docker.pkr.hcl -o docker.pkr.hcl'
 
         script {
+          packer.init(dir: '.')
+        }
+      }
+    }
+    stage('Validate') {
+      steps {
+        script {
           packer.validate { template = 'docker.pkr.json' }
-          packer.validate(template: 'docker.pkr.json')
+          packer.validate(template: 'docker.pkr.hcl')
         }
       }
     }

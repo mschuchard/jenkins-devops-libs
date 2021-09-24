@@ -34,6 +34,17 @@ packer.fmt(
 )
 ```
 
+### packer.init()
+Uses Packer to install all the missing plugins required in a Packer template directory.
+
+```groovy
+packer.init(
+  bin:     '/usr/bin/packer', // optional location of packer install
+  dir:     '/path/to/template_dir', // location of packer template directory
+  upgrade: false // optional update installed plugins to the latest available version within the specified constraints
+)
+```
+
 ### packer.inspect(String template, String bin = '/usr/bin/packer')
 Inspects a template and parses and outputs the components a template defines.
 

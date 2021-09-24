@@ -6,6 +6,9 @@
 **AWX**
 - Finish initial implementation and promote to beta.
 
+**Packer**
+- Add `init` method.
+
 **Puppet**
 - Fix `credentials_id` usage.
 - Update `token` param to `tokenFile`.
