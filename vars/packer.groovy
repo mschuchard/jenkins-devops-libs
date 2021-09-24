@@ -18,7 +18,7 @@ void build(body) {
     if (config.var_file) {
       assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
-      cmd += " -var_file=${config.var_file}"
+      cmd += " -var-file=${config.var_file}"
     }
     if (config.var) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'
@@ -206,7 +206,7 @@ void validate(body) {
     if (config.var_file) {
       assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
-      cmd += " -var_file=${config.var_file}"
+      cmd += " -var-file=${config.var_file}"
     }
     if (config.var) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'

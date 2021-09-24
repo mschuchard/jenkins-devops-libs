@@ -8,6 +8,7 @@
 
 **Packer**
 - Add `init` method.
+- Fix `var_file` parameter in applicable methods.
 
 **Puppet**
 - Fix `credentials_id` usage.
