@@ -35,6 +35,8 @@ packer.fmt(
 ```
 
 ### packer.init()
+**Requires Packer version >= 1.7**
+
 Uses Packer to install all the missing plugins required in a Packer template directory.
 
 ```groovy
