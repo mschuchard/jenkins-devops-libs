@@ -6,11 +6,12 @@ jobs:
     working_directory: /tmp/project
     docker:
     - image: jenkins/jenkins:lts-slim # groovy:3.0-jre11
+    resource_class: small
     steps:
     - checkout
     - run:
         name: install jenkins pipeline and pipeline utility steps plugins
-        command: /opt/java/openjdk/bin/java -jar /usr/lib/jenkins-plugin-manager.jar -p pipeline-utility-steps
+        command: jenkins-plugin-cli -p pipeline-utility-steps
     - run:
         name: execute syntax check
         command: /opt/java/openjdk/bin/java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 groovysh -cp src:/var/cache/jenkins/war/WEB-INF:/var/lib/jenkins/plugins -q vars/*.groovy

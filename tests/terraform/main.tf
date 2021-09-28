@@ -5,7 +5,3 @@ resource "local_file" "file" {
   filename        = "${path.root}/foo"
   file_permission = "0644"
 }
-
-provider "local" {
-  version = "~> 1.0"
-}
