@@ -9,12 +9,19 @@ jobs:
     resource_class: small
     steps:
     - checkout
+    - restore_cache:
+        keys:
+        - jenkins-devops-libs
     - run:
         name: install jenkins pipeline and pipeline utility steps plugins
-        command: jenkins-plugin-cli -p pipeline-utility-steps
-    - run:
+        command: jenkins-plugin-cli -p pipeline-utility-steps http_request docker-workflow
+    - save_cache:
+      paths:
+      - /usr/share/jenkins/ref/plugins
+      key: jenkins-devops-libs
+    - run: # image missing jenkins cli, and cannot install groovysh from apt
         name: execute syntax check
-        command: /opt/java/openjdk/bin/java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 groovysh -cp src:/var/cache/jenkins/war/WEB-INF:/var/lib/jenkins/plugins -q vars/*.groovy
+        command: /opt/java/openjdk/bin/java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 groovysh -cp src:/usr/share/jenkins:/usr/share/jenkins/ref/plugins -q vars/*.groovy
         no_output_timeout: 45s
 
 workflows:
