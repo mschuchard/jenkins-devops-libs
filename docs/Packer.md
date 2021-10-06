@@ -1,6 +1,6 @@
 # Packer
 
-Interacts with Packer.The `template` argument must generally be a `pkr.json` template, `pkr.hcl` template, or a directory containing them.
+Interacts with Packer. The `template` argument must generally be a `pkr.json` template, `pkr.hcl` template, or a directory containing Packer templates and configs.
 
 ### Dependencies
 
@@ -15,7 +15,7 @@ packer.build(
   force:    false, // optional force a build to continue if artifacts exist and deletes existing artifacts
   only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build
   on_error: "default", // optional "default" cleanup, "abort", "ask", or "run-cleanup-provisioner"
-  template: '/path/to/template.pkr.json', // location of packer template(s)
+  template: '/path/to/template.pkr.json', // location of packer template file or templates directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file: '/path/to/variables.json' // optional location of variables file
 )
@@ -29,7 +29,7 @@ packer.fmt(
   bin:      '/usr/bin/packer', // optional location of packer install
   check:     false, // optional check template and return an error if file is not formatted correctly (cannot be used with `write`)
   diff:      false, // optional present a diff if the template is not formatted correctly
-  template: '/path/to/template_dir', // location of packer template(s)
+  template: '/path/to/template_dir', // location of packer templates directory
   write:     true // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
 )
 ```
@@ -42,7 +42,7 @@ Uses Packer to install all the missing plugins required in a Packer template dir
 ```groovy
 packer.init(
   bin:     '/usr/bin/packer', // optional location of packer install
-  dir:     '/path/to/template_dir', // location of packer template directory
+  dir:     '/path/to/template_dir', // location of packer templates directory
   upgrade: false // optional update installed plugins to the latest available version within the specified constraints
 )
 ```
@@ -85,7 +85,7 @@ Uses Packer to validate a build template.
 packer.validate(
   bin:      '/usr/bin/packer', // optional location of packer install
   only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to validate
-  template: '/path/to/template.pkr.hcl', // location of packer template(s)
+  template: '/path/to/template.pkr.hcl', // // location of packer template file or templates directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   var_file: '/path/to/variables.json' // optional location of variables file
 )
