@@ -7,32 +7,30 @@ void build(body) {
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
-
   config.bin = config.bin ?: 'faas-cli'
-
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+
+  String cmd = "${config.bin} build"
+
+  // check for optional inputs
+  if (config.filter) {
+    cmd += " --filter '${config.filter}'"
+  }
+  if (config.no_cache == true) {
+    cmd += ' --no-cache'
+  }
+  if (config.parallel) {
+    cmd += " --parallel ${config.parallel}"
+  }
+  if (config.regex) {
+    cmd += " --regex '${config.regex}'"
+  }
+  if (config.squash == true) {
+    cmd += ' --squash'
+  }
 
   // create image with faas
   try {
-    String cmd = "${config.bin} build"
-
-    // check for optional inputs
-    if (config.filter) {
-      cmd += " --filter '${config.filter}'"
-    }
-    if (config.no_cache == true) {
-      cmd += ' --no-cache'
-    }
-    if (config.parallel) {
-      cmd += " --parallel ${config.parallel}"
-    }
-    if (config.regex) {
-      cmd += " --regex '${config.regex}'"
-    }
-    if (config.squash == true) {
-      cmd += ' --squash'
-    }
-
     sh(label: 'OpenFaaS Build', script: "${cmd} -f ${config.template}")
   }
   catch(Exception error) {
@@ -48,42 +46,40 @@ void deploy(body) {
 
   // input checking
   assert config.template : 'The required template parameter was not set.'
-
   if (config.replace && config.update) {
     throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
   }
   config.bin = config.bin ?: 'faas-cli'
-
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+
+  String cmd = "${config.bin} deploy"
+
+  // check for optional inputs
+  if (config.filter) {
+    cmd += " --filter '${config.filter}'"
+  }
+  if (config.label) {
+    assert (config.label instanceof Map) : 'The label parameter must be a Map.'
+
+    config.label.each() { label, value ->
+      cmd += " --label ${label}=${value}"
+    }
+  }
+  if (config.regex) {
+    cmd += " --regex '${config.regex}'"
+  }
+  if (config.replace == false) {
+    cmd += ' --replace=false'
+  }
+  if (config.secret) {
+    cmd += " --secret ${config.secret}"
+  }
+  if (config.update == true) {
+    cmd += ' --update=true'
+  }
 
   // deploy function with faas
   try {
-    String cmd = "${config.bin} deploy"
-
-    // check for optional inputs
-    if (config.filter) {
-      cmd += " --filter '${config.filter}'"
-    }
-    if (config.label) {
-      assert (config.label instanceof Map) : 'The label parameter must be a Map.'
-
-      config.label.each() { label, value ->
-        cmd += " --label ${label}=${value}"
-      }
-    }
-    if (config.regex) {
-      cmd += " --regex '${config.regex}'"
-    }
-    if (config.replace == false) {
-      cmd += ' --replace=false'
-    }
-    if (config.secret) {
-      cmd += " --secret ${config.secret}"
-    }
-    if (config.update == true) {
-      cmd += ' --update=true'
-    }
-
     sh(label: 'OpenFaaS Deploy', script: "${cmd} -f ${config.template}")
   }
   catch(Exception error) {
@@ -135,41 +131,41 @@ void invoke(body) {
   config.bin = config.bin ?: 'faas-cli'
   assert config.function : 'The required parameter function was not set.'
 
+  String cmd = "${config.bin} invoke"
+
+  // check for optional inputs
+  if (config.async == true) {
+    cmd += ' -a'
+  }
+  if (config.content_type) {
+    cmd += " --content-type ${config.content_type}"
+  }
+  if (config.header) {
+    assert (config.header instanceof Map) : 'The header parameter must be a Map.'
+
+    config.header.each() { header, value ->
+      cmd += " -H ${header}=${value}"
+    }
+  }
+  if (config.method) {
+    cmd += " -m ${config.method}"
+  }
+  if (config.query) {
+    assert (config.query instanceof Map) : 'The query parameter must be a Map.'
+
+    config.query.each() { query, value ->
+      cmd += " --query ${query}=${value}"
+    }
+  }
+  if (config.tls == false) {
+    cmd += ' --tls-no-verify'
+  }
+  if (config.stdin) {
+    cmd += " < ${config.stdin}"
+  }
+
   // invoke faas function
   try {
-    String cmd = "${config.bin} invoke"
-
-    // check for optional inputs
-    if (config.async == true) {
-      cmd += ' -a'
-    }
-    if (config.content_type) {
-      cmd += " --content-type ${config.content_type}"
-    }
-    if (config.header) {
-      assert (config.header instanceof Map) : 'The header parameter must be a Map.'
-
-      config.header.each() { header, value ->
-        cmd += " -H ${header}=${value}"
-      }
-    }
-    if (config.method) {
-      cmd += " -m ${config.method}"
-    }
-    if (config.query) {
-      assert (config.query instanceof Map) : 'The query parameter must be a Map.'
-
-      config.query.each() { query, value ->
-        cmd += " --query ${query}=${value}"
-      }
-    }
-    if (config.tls == false) {
-      cmd += ' --tls-no-verify'
-    }
-    if (config.stdin) {
-      cmd += " < ${config.stdin}"
-    }
-
     sh(label: 'OpenFaaS Invoke', script: "${cmd} ${config.function}")
   }
   catch(Exception error) {
@@ -189,15 +185,15 @@ void login(body) {
   assert config.user : 'The required user parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
 
+  String cmd = "${config.bin} login"
+
+  // check for optional inputs
+  if (config.tls == false) {
+    cmd += ' --tls-no-verify'
+  }
+
   // login to faas gateway
   try {
-    String cmd = "${config.bin} login"
-
-    // check for optional inputs
-    if (config.tls == false) {
-      cmd += ' --tls-no-verify'
-    }
-
     sh(label: 'OpenFaaS Login', script: "${cmd} -u ${config.user} -p ${config.password} -g ${config.gateway}")
   }
   catch(Exception error) {
@@ -216,24 +212,24 @@ void push(body) {
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
   config.bin = config.bin ?: 'faas-cli'
 
+  String cmd = "${config.bin} push"
+
+  // check for optional inputs
+  if (config.filter) {
+    cmd += " --filter '${config.filter}'"
+  }
+  if (config.regex) {
+    cmd += " --regex '${config.regex}'"
+  }
+  if (config.parallel) {
+    cmd += " --parallel ${config.parallel}"
+  }
+  if (config.tag) {
+    cmd += " --tag ${config.tag}"
+  }
+
   // push function with faas
   try {
-    String cmd = "${config.bin} push"
-
-    // check for optional inputs
-    if (config.filter) {
-      cmd += " --filter '${config.filter}'"
-    }
-    if (config.regex) {
-      cmd += " --regex '${config.regex}'"
-    }
-    if (config.parallel) {
-      cmd += " --parallel ${config.parallel}"
-    }
-    if (config.tag) {
-      cmd += " --tag ${config.tag}"
-    }
-
     sh(label: 'OpenFaaS Push', script: "${cmd} -f ${config.template}")
   }
   catch(Exception error) {
@@ -252,18 +248,18 @@ void remove(body) {
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
   config.bin = config.bin ?: 'faas-cli'
 
+  String cmd = "${config.bin} rm"
+
+  // check for optional inputs
+  if (config.filter) {
+    cmd += " --filter '${config.filter}'"
+  }
+  if (config.regex) {
+    cmd += " --regex '${config.regex}'"
+  }
+
   // remove function with faas
   try {
-    String cmd = "${config.bin} rm"
-
-    // check for optional inputs
-    if (config.filter) {
-      cmd += " --filter '${config.filter}'"
-    }
-    if (config.regex) {
-      cmd += " --regex '${config.regex}'"
-    }
-
     sh(label: 'OpenFaaS Remove', script: "${cmd} -f ${config.template}")
   }
   catch(Exception error) {

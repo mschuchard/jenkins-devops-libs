@@ -10,47 +10,48 @@ void install(body) {
   assert config.chart : "The required parameter 'chart' was not set."
   config.bin = config.bin ?: 'helm'
 
+  String cmd = "${config.bin} install"
+  String lister = "${config.bin} list"
+
+  // check for optional inputs
+  if (config.values) {
+    assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
+
+    config.values.each() { value ->
+      if (!(value ==~ /:\/\//)) {
+        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+      }
+
+      cmd += " -f ${value}"
+    }
+  }
+  if (config.set) {
+    assert (config.set instanceof Map) : 'The set parameter must be a Map.'
+
+    config.set.each() { var, value ->
+      cmd += " --set ${var}=${value}"
+    }
+  }
+  if (config.context) {
+    cmd += " --kube-context ${config.context}"
+    lister += " --kube-context ${config.context}"
+  }
+  if (config.namespace) {
+    cmd += " --namespace ${config.namespace}"
+    lister += " --namespace ${config.namespace}"
+  }
+  if (config.verify == true) {
+    cmd += " --verify"
+  }
+
+  // check release object
+  String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+  if (releaseObjList ==~ config.name) {
+    throw new Exception("Release object ${config.name} already exists!")
+  }
+
   // install with helm
   try {
-    String cmd = "${config.bin} install"
-    String lister = "${config.bin} list"
-
-    if (config.values) {
-      assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
-
-      config.values.each() { value ->
-        if (!(value ==~ /:\/\//)) {
-          assert fileExists(value) : "Value overrides file ${value} does not exist!"
-        }
-
-        cmd += " -f ${value}"
-      }
-    }
-    if (config.set) {
-      assert (config.set instanceof Map) : 'The set parameter must be a Map.'
-
-      config.set.each() { var, value ->
-        cmd += " --set ${var}=${value}"
-      }
-    }
-    if (config.context) {
-      cmd += " --kube-context ${config.context}"
-      lister += " --kube-context ${config.context}"
-    }
-    if (config.namespace) {
-      cmd += " --namespace ${config.namespace}"
-      lister += " --namespace ${config.namespace}"
-    }
-    if (config.verify == true) {
-      cmd += " --verify"
-    }
-
-    // check release object
-    String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-    if (releaseObjList ==~ config.name) {
-      throw new Exception("Release object ${config.name} already exists!")
-    }
-
     sh(label: 'Helm Install', script: "${cmd} ${config.name} ${config.chart}")
   }
   catch(Exception error) {
@@ -85,38 +86,39 @@ void lint(body) {
   config.bin = config.bin ?: 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
 
+  String cmd = "${config.bin} lint"
+
+  // check for optional inputs
+  if (config.values) {
+    assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
+
+    config.values.each() { value ->
+      if (!(value ==~ /:\/\//)) {
+        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+      }
+
+      cmd += " -f ${value}"
+    }
+  }
+  if (config.set) {
+    assert (config.set instanceof Map) : 'The set parameter must be a Map.'
+
+    config.set.each() { var, value ->
+      cmd += " --set ${var}=${value}"
+    }
+  }
+  if (config.context) {
+    cmd += " --kube-context ${config.context}"
+  }
+  if (config.namespace) {
+    cmd += " --namespace ${config.namespace}"
+  }
+  if (config.strict == true) {
+    cmd += " --strict"
+  }
+
   // lint with helm
   try {
-    String cmd = "${config.bin} lint"
-
-    if (config.values) {
-      assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
-
-      config.values.each() { value ->
-        if (!(value ==~ /:\/\//)) {
-          assert fileExists(value) : "Value overrides file ${value} does not exist!"
-        }
-
-        cmd += " -f ${value}"
-      }
-    }
-    if (config.set) {
-      assert (config.set instanceof Map) : 'The set parameter must be a Map.'
-
-      config.set.each() { var, value ->
-        cmd += " --set ${var}=${value}"
-      }
-    }
-    if (config.context) {
-      cmd += " --kube-context ${config.context}"
-    }
-    if (config.namespace) {
-      cmd += " --namespace ${config.namespace}"
-    }
-    if (config.strict == true) {
-      cmd += " --strict"
-    }
-
     String lintOutput = sh(label: 'Helm Lint', returnStdout: true, script: "${cmd} ${config.chart}")
 
     if (!(lintOutput)) {
@@ -150,30 +152,31 @@ void packages(body) {
   assert config.chart : "The required parameter 'chart' was not set."
   assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not contain a Chart.yaml!"
 
+  String cmd = "${config.bin} package"
+
+  // check for optional inputs
+  if (config.dest) {
+    new utils().makeDirParents(config.dest)
+
+    cmd += " -d ${config.dest}"
+  }
+  if (config.key) {
+    cmd += " --sign --key ${config.key}"
+  }
+  else if (config.keyring) {
+    assert fileExists(config.keyring) : "The keyring ${config.keyring} does not exist."
+
+    cmd += " --sign --keyring ${config.keyring}"
+  }
+  if (config.update_deps == true) {
+    cmd += ' -u'
+  }
+  if (config.version) {
+    cmd += " --version ${config.version}"
+  }
+
   // package with helm
   try {
-    String cmd = "${config.bin} package"
-
-    if (config.dest) {
-      new utils().makeDirParents(config.dest)
-
-      cmd += " -d ${config.dest}"
-    }
-    if (config.key) {
-      cmd += " --sign --key ${config.key}"
-    }
-    else if (config.keyring) {
-      assert fileExists(config.keyring) : "The keyring ${config.keyring} does not exist."
-
-      cmd += " --sign --keyring ${config.keyring}"
-    }
-    if (config.update_deps == true) {
-      cmd += " -u"
-    }
-    if (config.version) {
-      cmd += " --version ${config.version}"
-    }
-
     sh(label: 'Helm Package', script: "${cmd} ${config.chart}")
   }
   catch(Exception error) {
@@ -192,15 +195,15 @@ void plugin(body) {
   assert (config.plugin) && (config.command != 'list') : "The required parameter 'plugin' was not set for a non-list command."
   config.bin = config.bin ?: 'helm'
 
+  String cmd = "${config.bin} plugin ${config.command}"
+
+  // append plugin to cmd if not list command
+  if (config.command != 'list') {
+    cmd += " ${config.plugin}"
+  }
+
   // manage a helm plugin
   try {
-    String cmd = "${config.bin} plugin ${config.command}"
-
-    // append plugin to cmd if not list command
-    if (config.command != 'list') {
-      cmd += " ${config.plugin}"
-    }
-
     sh(label: 'Helm Plugin', script: cmd)
   }
   catch(Exception error) {
@@ -219,21 +222,21 @@ void repo(body) {
   assert config.url : "The required parameter 'url' was not set."
   config.bin = config.bin ?: 'helm'
 
+  String cmd = "${config.bin} repo add"
+
+  // optional inputs
+  if (config.insecure) {
+    cmd += ' --insecure-skip-tls-verify'
+  }
+  else if ((config.ca) && (config.cert) && (config.key)) {
+    cmd += " --ca-file ${config.ca} --cert-file ${config.cert} --key-file ${config.key}"
+  }
+  if ((config.user) && (config.password)) {
+    cmd += " --username ${config.user} --password ${config.password}"
+  }
+
   // add a repo with helm
   try {
-    String cmd = "${config.bin} repo add"
-
-    // optional inputs
-    if (config.insecure) {
-      cmd += ' --insecure-skip-tls-verify'
-    }
-    else if ((config.ca) && (config.cert) && (config.key)) {
-      cmd += " --ca-file ${config.ca} --cert-file ${config.cert} --key-file ${config.key}"
-    }
-    if ((config.user) && (config.password)) {
-      cmd += " --username ${config.user} --password ${config.password}"
-    }
-
     sh(label: 'Helm Repo Add', script: "${cmd} ${config.repo} ${config.url}")
   }
   catch(Exception error) {
@@ -252,25 +255,25 @@ void rollback(body) {
   assert config.name : "The required parameter 'name' was not set."
   config.bin = config.bin ?: 'helm'
 
+  String cmd = "${config.bin} rollback"
+  String lister = "${config.bin} list"
+
+  // optional inputs
+  if (config.context) {
+    cmd += " --kube-context ${config.context}"
+    lister += " --kube-context ${config.context}"
+  }
+  if (config.namespace) {
+    cmd += " --namespace ${config.namespace}"
+    lister += " --namespace ${config.namespace}"
+  }
+
+  // check release object
+  String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+  assert releaseObjList ==~ config.name : "Release object ${config.name} does not exist!"
+
   // rollback with helm
   try {
-    String cmd = "${config.bin} rollback"
-    String lister = "${config.bin} list"
-
-    // optional inputs
-    if (config.context) {
-      cmd += " --kube-context ${config.context}"
-      lister += " --kube-context ${config.context}"
-    }
-    if (config.namespace) {
-      cmd += " --namespace ${config.namespace}"
-      lister += " --namespace ${config.namespace}"
-    }
-
-    // check release object
-    String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-    assert releaseObjList ==~ config.name : "Release object ${config.name} does not exist!"
-
     sh(label: 'Helm rollback', script: "${cmd} ${config.name} ${config.version}")
   }
   catch(Exception error) {
@@ -307,24 +310,25 @@ void status(body) {
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
 
+  String cmd = "${config.bin} status"
+  String lister = "${config.bin} list"
+
+  // check for optional inputs
+  if (config.context) {
+    cmd += " --kube-context ${config.context}"
+    lister += " --kube-context ${config.context}"
+  }
+  if (config.namespace) {
+    cmd += " --namespace ${config.namespace}"
+    lister += " --namespace ${config.namespace}"
+  }
+
+  // check release object
+  String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+  assert (releaseObjList ==~ config.name) : "Release object ${config.name} does not exist!"
+
   // attempt to query a release object's status
   try {
-    String cmd = "${config.bin} status"
-    String lister = "${config.bin} list"
-
-    if (config.context) {
-      cmd += " --kube-context ${config.context}"
-      lister += " --kube-context ${config.context}"
-    }
-    if (config.namespace) {
-      cmd += " --namespace ${config.namespace}"
-      lister += " --namespace ${config.namespace}"
-    }
-
-    // check release object
-    String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-    assert (releaseObjList ==~ config.name) : "Release object ${config.name} does not exist!"
-
     sh(label: 'Helm Status', script: "${cmd} ${config.name}")
   }
   catch(Exception error) {
@@ -342,30 +346,30 @@ void test(body) {
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
 
+  String cmd = "${config.bin} test"
+
+  // check if helm test has logging functionality (deprecated in 3, but interesting code to retain)
+  String logs = sh(label: 'Check Helm Usage', returnStdout: true, script: "${config.bin} test --help") ==~ /--logs/
+  if (logs) {
+    cmd += ' --logs'
+  }
+
+  // optional inputs
+  if (config.cleanup == true) {
+    cmd += ' --cleanup'
+  }
+  if (config.parallel == true) {
+    cmd += ' --parallel'
+  }
+  if (config.context) {
+    cmd += " --kube-context ${config.context}"
+  }
+  if (config.namespace) {
+    cmd += " --namespace ${config.namespace}"
+  }
+
   // test with helm
   try {
-    String cmd = "${config.bin} test"
-
-    // check if helm test has logging functionality (deprecated in 3, but interesting code to retain)
-    String logs = sh(label: 'Check Helm Usage', returnStdout: true, script: "${config.bin} test --help") ==~ /--logs/
-    if (logs) {
-      cmd += " --logs"
-    }
-
-    // optional inputs
-    if (config.cleanup == true) {
-      cmd += " --cleanup"
-    }
-    if (config.parallel == true) {
-      cmd += " --parallel"
-    }
-    if (config.context) {
-      cmd += " --kube-context ${config.context}"
-    }
-    if (config.namespace) {
-      cmd += " --namespace ${config.namespace}"
-    }
-
     sh(label: 'Helm Test', script: "${cmd} ${config.name}")
   }
   catch(Exception error) {
@@ -417,24 +421,25 @@ void uninstall(body) {
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
 
+  String cmd = "${config.bin} uninstall"
+  String lister = "${config.bin} list"
+
+  // check for optional inputs
+  if (config.context) {
+    cmd += " --kube-context ${config.context}"
+    lister += " --kube-context ${config.context}"
+  }
+  if (config.namespace) {
+    cmd += " --namespace ${config.namespace}"
+    lister += " --namespace ${config.namespace}"
+  }
+
+  // check release object
+  String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+  assert (releaseObjList ==~ config.name) : "Release object ${config.name} does not exist!"
+
   // attempt to uninstall a release object
   try {
-    String cmd = "${config.bin} uninstall"
-    String lister = "${config.bin} list"
-
-    if (config.context) {
-      cmd += " --kube-context ${config.context}"
-      lister += " --kube-context ${config.context}"
-    }
-    if (config.namespace) {
-      cmd += " --namespace ${config.namespace}"
-      lister += " --namespace ${config.namespace}"
-    }
-
-    // check release object
-    String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-    assert (releaseObjList ==~ config.name) : "Release object ${config.name} does not exist!"
-
     sh(label: 'Helm Uninstall', script: "${cmd} ${config.name}")
   }
   catch(Exception error) {
@@ -453,50 +458,51 @@ void upgrade(body) {
   assert config.name : "The required parameter 'name' was not set."
   config.bin = config.bin ?: 'helm'
 
+  String cmd = "${config.bin} upgrade"
+  String lister = "${config.bin} list"
+
+  // check for optional inputs
+  if (config.values) {
+    assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
+
+    config.values.each() { value ->
+      if (!(value ==~ /:\/\//)) {
+        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+      }
+
+      cmd += " -f ${value}"
+    }
+  }
+  if (config.set) {
+    assert (config.set instanceof Map) : 'The set parameter must be a Map.'
+
+    config.set.each() { var, value ->
+      cmd += " --set ${var}=${value}"
+    }
+  }
+  if (config.verify == true) {
+    cmd += ' --verify'
+  }
+  if (config.install == true) {
+    cmd += ' --install'
+  }
+  if (config.context) {
+    cmd += " --kube-context ${config.context}"
+    lister += " --kube-context ${config.context}"
+  }
+  if (config.namespace) {
+    cmd += " --namespace ${config.namespace}"
+    lister += " --namespace ${config.namespace}"
+  }
+
+  // check release object presence if install param is not true (i.e. false or null)
+  if (!(config.install == true)) {
+    String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+    assert releaseObjList ==~ config.name : "Release object ${config.name} does not exist!"
+  }
+
   // upgrade with helm
   try {
-    String cmd = "${config.bin} upgrade"
-    String lister = "${config.bin} list"
-
-    if (config.values) {
-      assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
-
-      config.values.each() { value ->
-        if (!(value ==~ /:\/\//)) {
-          assert fileExists(value) : "Value overrides file ${value} does not exist!"
-        }
-
-        cmd += " -f ${value}"
-      }
-    }
-    if (config.set) {
-      assert (config.set instanceof Map) : 'The set parameter must be a Map.'
-
-      config.set.each() { var, value ->
-        cmd += " --set ${var}=${value}"
-      }
-    }
-    if (config.verify == true) {
-      cmd += ' --verify'
-    }
-    if (config.install == true) {
-      cmd += ' --install'
-    }
-    if (config.context) {
-      cmd += " --kube-context ${config.context}"
-      lister += " --kube-context ${config.context}"
-    }
-    if (config.namespace) {
-      cmd += " --namespace ${config.namespace}"
-      lister += " --namespace ${config.namespace}"
-    }
-
-    // check release object presence if install param is not true (i.e. false or null)
-    if (!(config.install == true)) {
-      String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-      assert releaseObjList ==~ config.name : "Release object ${config.name} does not exist!"
-    }
-
     sh(label: 'Helm Upgrade', script: "${cmd} ${config.name} ${config.chart}")
   }
   catch(Exception error) {

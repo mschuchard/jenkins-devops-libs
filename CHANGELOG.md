@@ -2,6 +2,7 @@
 **General**
 - Replace `File.mkdir()` class method with `dir` step method (valid also on agents).
 - Add `makeDirParents` method to attempt to fix missing user directories.
+- Reorganize try/catch blocks to be more precise.
 
 **AWX**
 - Finish initial implementation and promote to beta.

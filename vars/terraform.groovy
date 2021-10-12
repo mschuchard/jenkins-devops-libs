@@ -13,34 +13,34 @@ void apply(body) {
   assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
-  // apply the config
-  try {
-    String cmd = "${config.bin} apply -input=false -no-color -auto-approve"
+  String cmd = "${config.bin} apply -input=false -no-color -auto-approve"
 
-    // check if a directory was passed for the config path
-    if (!(config.config_path ==~ /plan\.tfplan/)) {
-      // check for optional var inputs
-      if (config.var_file) {
-        assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+  // check if a directory was passed for the config path
+  if (!(config.config_path ==~ /plan\.tfplan/)) {
+    // check for optional var inputs
+    if (config.var_file) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
-        cmd += " -var-file=${config.var_file}"
-      }
-      if (config.var) {
-        assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+      cmd += " -var-file=${config.var_file}"
+    }
+    if (config.var) {
+      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-        config.var.each() { var, value ->
-          cmd += " -var ${var}=${value}"
-        }
-      }
-      if (config.target) {
-        assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
-
-        config.target.each() { target ->
-          cmd += " -target=${target}"
-        }
+      config.var.each() { var, value ->
+        cmd += " -var ${var}=${value}"
       }
     }
+    if (config.target) {
+      assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
+      config.target.each() { target ->
+        cmd += " -target=${target}"
+      }
+    }
+  }
+
+  // apply the config
+  try {
     if (config.config_path ==~ /plan\.tfplan/) {
       sh(label: 'Terraform Apply', script: "${cmd} ${config.config_path}")
     }
@@ -66,38 +66,37 @@ void destroy(body) {
 
   // input checking
   config.bin = config.bin ?: 'terraform'
-
   assert config.config_path : '"config_path" is a required parameter for terraform.destroy.'
   assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
 
-  // destroy the state
-  try {
-    String cmd = "${config.bin} destroy -input=false -no-color -auto-approve"
+  String cmd = "${config.bin} destroy -input=false -no-color -auto-approve"
 
-    // check if a directory was passed for the config path
-    if (!(config.config_path ==~ /plan\.tfplan/)) {
-      // check for optional var inputs
-      if (config.var_file) {
-        assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+  // check if a directory was passed for the config path
+  if (!(config.config_path ==~ /plan\.tfplan/)) {
+    // check for optional var inputs
+    if (config.var_file) {
+      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
 
-        cmd += " -var-file=${config.var_file}"
-      }
-      if (config.var) {
-        assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+      cmd += " -var-file=${config.var_file}"
+    }
+    if (config.var) {
+      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-        config.var.each() { var, value ->
-          cmd += " -var ${var}=${value}"
-        }
-      }
-      if (config.target) {
-        assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
-
-        config.target.each() { target ->
-          cmd += " -target=${target}"
-        }
+      config.var.each() { var, value ->
+        cmd += " -var ${var}=${value}"
       }
     }
+    if (config.target) {
+      assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
+      config.target.each() { target ->
+        cmd += " -target=${target}"
+      }
+    }
+  }
+
+  // destroy the state
+  try {
     if (config.config_path ==~ /plan\.tfplan/) {
       sh(label: 'Terraform Destroy', script: "${cmd} ${config.config_path}")
     }
@@ -123,32 +122,31 @@ void fmt(body) {
 
   // input checking
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
-
   if (config.write && config.check) {
     throw new Exception("The 'write' and 'check' options for terraform.fmt are mutually exclusive - only one can be enabled.")
   }
   config.bin = config.bin ?: 'terraform'
 
+  String cmd = "${config.bin} fmt -no-color"
+
+  // check for optional inputs
+  if (config.recursive == true) {
+    cmd += ' -recursive'
+  }
+  if (config.diff == true) {
+    cmd += ' -diff'
+  }
+  if (config.check == true) {
+    cmd += ' -check'
+  }
+  // incompatible with above
+  else if (config.write == true) {
+    cmd += ' -write'
+  }
+
   try {
-    String cmd = "${config.bin} fmt -no-color"
-
-    // check for optional inputs
-    if (config.recursive == true) {
-      cmd += ' -recursive'
-    }
-    if (config.diff == true) {
-      cmd += ' -diff'
-    }
-    if (config.check == true) {
-      cmd += ' -check'
-    }
-    // incompatible with above
-    else if (config.write == true) {
-      cmd += ' -write'
-    }
-
     dir(config.config_dir) {
-      fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
+      int fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
     }
 
     // report if formatting check detected issues
@@ -175,37 +173,37 @@ void imports(body) {
   assert (config.resources instanceof List) : 'Parameter resources must be a list of strings.'
   config.bin = config.bin ?: 'terraform'
 
+  String cmd = "${config.bin} import -no-color -input=false"
+
+  // check for optional inputs
+  if (config.var_file) {
+    assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+    cmd += " -var-file=${config.var_file}"
+  }
+  if (config.var) {
+    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+
+    config.var.each() { var, value ->
+      cmd += " -var ${var}=${value}"
+    }
+  }
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+
+    cmd += " -config=${config.dir}"
+  }
+  if (config.provider) {
+    cmd += " -provider=${config.provider}"
+  }
+  if (config.state) {
+    assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+    cmd += " -state=${config.state}"
+  }
+
   // import the resources
   try {
-    String cmd = "${config.bin} import -no-color -input=false"
-
-    // check for optional inputs
-    if (config.var_file) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
-
-      cmd += " -var-file=${config.var_file}"
-    }
-    if (config.var) {
-      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
-
-      config.var.each() { var, value ->
-        cmd += " -var ${var}=${value}"
-      }
-    }
-    if (config.dir) {
-      assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
-
-      cmd += " -config=${config.dir}"
-    }
-    if (config.provider) {
-      cmd += " -provider=${config.provider}"
-    }
-    if (config.state) {
-      assert fileExists(config.state) : "The state file at ${config.state} does not exist."
-
-      cmd += " -state=${config.state}"
-    }
-
     // import each resource
     config.resources.each() { resource ->
       sh(label: 'Terraform Import', script: "${cmd} ${resource}")
@@ -229,32 +227,32 @@ void init(body) {
   assert fileExists(config.dir) : "Working config directory ${config.dir} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
+  String cmd = "${config.bin} init -input=false -no-color"
+
+  // check for optional inputs
+  if (config.plugin_dir) {
+    new utils().makeDirParents(config.plugin_dir)
+
+    cmd += " -plugin-dir=${config.plugin_dir}"
+  }
+  if (config.upgrade == true) {
+    cmd += ' -upgrade'
+  }
+  if (config.backend == false) {
+    cmd += ' -backend=false'
+  }
+  if (config.backendConfig) {
+    assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
+
+    config.backendConfig.each() { backconf ->
+      assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
+
+      cmd += " -backend-config=${backconf}"
+    }
+  }
+
   // initialize the working config directory
   try {
-    String cmd = "${config.bin} init -input=false -no-color"
-
-    // check for optional inputs
-    if (config.plugin_dir) {
-      new utils().makeDirParents(config.plugin_dir)
-
-      cmd += " -plugin-dir=${config.plugin_dir}"
-    }
-    if (config.upgrade == true) {
-      cmd += ' -upgrade'
-    }
-    if (config.backend == false) {
-      cmd += ' -backend=false'
-    }
-    if (config.backendConfig) {
-      assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
-
-      config.backendConfig.each() { backconf ->
-        assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
-
-        cmd += " -backend-config=${backconf}"
-      }
-    }
-
     dir(config.config_dir) {
       sh(label: 'Terraform Init', script: cmd)
     }
@@ -304,25 +302,25 @@ def output(body) {
   // input checking
   config.bin = config.bin ?: 'terraform'
 
+  String cmd = "${config.bin} output -no-color"
+
+  // check for optional inputs
+  if (config.state) {
+    assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+    cmd += " -state=${config.state}"
+  }
+  if (config.json == true) {
+    cmd += ' -json'
+  }
+  if (config.name) {
+    cmd += " ${config.name}"
+  }
+
   // display outputs from the state
   try {
-    String cmd = "${config.bin} output -no-color"
-
-    // check for optional inputs
-    if (config.state) {
-      assert fileExists(config.state) : "The state file at ${config.state} does not exist."
-
-      cmd += " -state=${config.state}"
-    }
-    if (config.json == true) {
-      cmd += ' -json'
-    }
-    if (config.name) {
-      cmd += " ${config.name}"
-    }
-
     // capture output(s)
-    outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
+    String outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
   }
   catch(Exception error) {
     print 'Failure using terraform output.'
@@ -352,37 +350,37 @@ def plan(body) {
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
+  String cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
+
+  // check for optional inputs
+  if (config.var_file) {
+    assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+    cmd += " -var-file=${config.var_file}"
+  }
+  if (config.var) {
+    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+
+    config.var.each() { var, value ->
+      cmd += " -var ${var}=${value}"
+    }
+  }
+  if (config.target) {
+    assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
+
+    config.target.each() { target ->
+      cmd += " -target=${target}"
+    }
+  }
+  if (config.destroy == true) {
+    cmd += ' -destroy'
+  }
+  if (config.refreshOnly == true) {
+    cmd += ' -refresh-only'
+  }
+
   // generate a plan from the config directory
   try {
-    String cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
-
-    // check for optional inputs
-    if (config.var_file) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
-
-      cmd += " -var-file=${config.var_file}"
-    }
-    if (config.var) {
-      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
-
-      config.var.each() { var, value ->
-        cmd += " -var ${var}=${value}"
-      }
-    }
-    if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
-
-      config.target.each() { target ->
-        cmd += " -target=${target}"
-      }
-    }
-    if (config.destroy == true) {
-      cmd += ' -destroy'
-    }
-    if (config.refreshOnly == true) {
-      cmd += ' -refresh-only'
-    }
-
     // execute plan
     dir(config.dir) {
       String planOutput = sh(label: 'Terraform Plan', script: cmd, returnStdout: true)
@@ -460,15 +458,16 @@ void state(body) {
   config.bin = config.bin ?: 'terraform'
   String cmd = "${config.bin} state"
 
+  // optional inputs
+  if (config.state) {
+    assert config.command != 'push' : 'The state parameter is incompatible with state pushing.'
+    assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+    cmd += " -state=${config.state}"
+  }
+
   // perform state manipulation
   try {
-    if (config.state) {
-      assert config.command != 'push' : 'The state parameter is incompatible with state pushing.'
-      assert fileExists(config.state) : "The state file at ${config.state} does not exist."
-
-      cmd += " -state=${config.state}"
-    }
-
     // perform different commands based upon type of state action
     switch (config.command) {
       case 'move':
@@ -522,16 +521,17 @@ void taint(body) {
   assert (config.resources instanceof List) : 'Parameter resources must be a list of strings.'
   config.bin = config.bin ?: 'terraform'
 
+  String cmd = "${config.bin} taint -no-color"
+
+  // optional inputs
+  if (config.state) {
+    assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+    cmd += " -state=${config.state}"
+  }
+
   // taint the resources
   try {
-    String cmd = "${config.bin} taint -no-color"
-
-    if (config.state) {
-      assert fileExists(config.state) : "The state file at ${config.state} does not exist."
-
-      cmd += " -state=${config.state}"
-    }
-
     // taint each resource
     config.resources.each() { resource ->
       sh(label: 'Terraform Taint', script: "${cmd} ${resource}")
@@ -555,17 +555,18 @@ void validate(body) {
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
+  String cmd = "${config.bin} validate"
+
+  // optional inputs
+  if (config.check_vars == true) {
+    cmd += ' -json'
+  }
+  else {
+    cmd += ' -no-color'
+  }
+
   // validate the config directory
   try {
-    String cmd = "${config.bin} validate"
-
-    if (config.check_vars == true) {
-      cmd += ' -json'
-    }
-    else {
-      cmd += ' -no-color'
-    }
-
     dir(config.dir) {
       sh(label: 'Terraform Validate', script: cmd)
     }
@@ -587,7 +588,6 @@ void workspace(body) {
   // input checking
   assert (config.dir && config.workspace) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
   config.bin = config.bin ?: 'terraform'
-
   assert fileExists(config.dir) : "The config directory ${config.dir} does not exist!"
 
   dir(config.dir) {
