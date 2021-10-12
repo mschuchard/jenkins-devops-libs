@@ -10,37 +10,37 @@ void build(body) {
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
 
+  String cmd = "${config.bin} build -color=false"
+
+  // check for optional inputs
+  if (config.var_file) {
+    assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+    cmd += " -var-file=${config.var_file}"
+  }
+  if (config.var) {
+    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+
+    config.var.each() { var, value ->
+      cmd += " -var ${var}=${value}"
+    }
+  }
+  if (config.only) {
+    assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
+
+    cmd += " -only=${config.only.join(',')}"
+  }
+  if (config.force == true) {
+    cmd += " -force"
+  }
+  if (config.on_error) {
+    assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.on_error)) : "The argument must be one of: default, abort, ask, or run-cleanup-provisioner."
+
+    cmd += " -on-error=${config.on_error}"
+  }
+
   // create artifact with packer
   try {
-    String cmd = "${config.bin} build -color=false"
-
-    // check for optional inputs
-    if (config.var_file) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
-
-      cmd += " -var-file=${config.var_file}"
-    }
-    if (config.var) {
-      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
-
-      config.var.each() { var, value ->
-        cmd += " -var ${var}=${value}"
-      }
-    }
-    if (config.only) {
-      assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
-
-      cmd += " -only=${config.only.join(',')}"
-    }
-    if (config.force == true) {
-      cmd += " -force"
-    }
-    if (config.on_error) {
-      assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.on_error)) : "The argument must be one of: default, abort, ask, or run-cleanup-provisioner."
-
-      cmd += " -on-error=${config.on_error}"
-    }
-
     sh(label: 'Packer Build', script: "${cmd} ${config.template}")
   }
   catch(Exception error) {
@@ -57,26 +57,25 @@ void fmt(body) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
-
   if (config.write && config.check) {
     throw new Exception("The 'write' and 'check' options for packer.fmt are mutually exclusive - only one can be enabled.")
   }
   config.bin = config.bin ?: 'packer'
 
+  String cmd = "${config.bin} fmt"
+
+  if (config.diff == true) {
+    cmd += " -diff"
+  }
+  if (config.check == true) {
+    cmd += " -check"
+  }
+  // incompatible with above
+  else if (config.write == true) {
+    cmd += " -write"
+  }
+
   try {
-    String cmd = "${config.bin} fmt"
-
-    if (config.diff == true) {
-      cmd += " -diff"
-    }
-    if (config.check == true) {
-      cmd += " -check"
-    }
-    // incompatible with above
-    else if (config.write == true) {
-      cmd += " -write"
-    }
-
     fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
 
     // report if formatting check detected issues
@@ -99,15 +98,15 @@ void init(body) {
   assert fileExists(config.dir) : "Working template directory ${config.dir} does not exist."
   config.bin = config.bin ?: 'packer'
 
+  String cmd = "${config.bin} init"
+
+  // check for optional inputs
+  if (config.upgrade == true) {
+    cmd += ' -upgrade'
+  }
+
   // initialize the working template directory
   try {
-    String cmd = "${config.bin} init"
-
-    // check for optional inputs
-    if (config.upgrade == true) {
-      cmd += ' -upgrade'
-    }
-
     dir(config.dir) {
       sh(label: 'Packer Init', script: "${cmd} ${config.dir}")
     }
@@ -198,29 +197,29 @@ void validate(body) {
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
 
+  String cmd = "${config.bin} validate"
+
+  // check for optional inputs
+  if (config.var_file) {
+    assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+
+    cmd += " -var-file=${config.var_file}"
+  }
+  if (config.var) {
+    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+
+    config.var.each() { var, value ->
+      cmd += " -var ${var}=${value}"
+    }
+  }
+  if (config.only) {
+    assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
+
+    cmd += " -only=${config.only.join(',')}"
+  }
+
   // validate template with packer
   try {
-    String cmd = "${config.bin} validate"
-
-    // check for optional inputs
-    if (config.var_file) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
-
-      cmd += " -var-file=${config.var_file}"
-    }
-    if (config.var) {
-      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
-
-      config.var.each() { var, value ->
-        cmd += " -var ${var}=${value}"
-      }
-    }
-    if (config.only) {
-      assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
-
-      cmd += " -only=${config.only.join(',')}"
-    }
-
     sh(label: 'Packer Validate', script: "${cmd} ${config.template}")
   }
   catch(Exception error) {
