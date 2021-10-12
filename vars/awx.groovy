@@ -8,30 +8,29 @@ void host_create(body) {
   // input checking
   assert config.name : '"name" is a required parameter for awx.host_create.'
   assert config.inventory : '"inventory" is a required parameter for awx.host_create.'
-
   config.bin = config.bin ?: 'awx'
+
+  // initialize the base command
+  String cmd = "${config.bin} hosts create --name ${config.name} --inventory ${config.inventory}"
+
+  // check for optional inputs
+  if (config.description) {
+    cmd += " --description ${config.description}"
+  }
+  if (config.enabled == true) {
+    cmd += ' --enabled'
+  }
+  if (config.variables) {
+    assert (config.variables instanceof Map) : 'The variables parameter must be a Map.'
+
+    // convert variables map to json for input
+    String variables = new utils().mapToJSON(config.variables)
+
+    cmd += " --variables ${variables}"
+  }
 
   // create a host in the inventory
   try {
-    // initialize the base command
-    String cmd = "${config.bin} hosts create --name ${config.name} --inventory ${config.inventory}"
-
-    // check for optional inputs
-    if (config.description) {
-      cmd += " --description ${config.description}"
-    }
-    if (config.enabled == true) {
-      cmd += ' --enabled'
-    }
-    if (config.variables) {
-      assert (config.variables instanceof Map) : 'The variables parameter must be a Map.'
-
-      // convert variables map to json for input
-      variables = new utils().mapToJSON(config.variables)
-
-      cmd += " --variables ${variables}"
-    }
-
     sh(label: 'AWX Host Create', script: cmd)
   }
   catch(Exception error) {
@@ -58,32 +57,32 @@ void inventory(config) {
   // input checking
   assert config.name : "'name' is a required parameter for awx.inventory_${config.action}."
   assert config.organization : "'organization' is a required parameter for awx.inventory_${config.action}."
-
   config.bin = config.bin ?: 'awx'
+
+  // initialize the base command
+  String cmd = "${config.bin} inventory ${config.action} --name ${config.name} --organization ${config.organization}"
+
+  // check for optional inputs
+  if (config.description) {
+    cmd += " --description ${config.description}"
+  }
+  if (config.smart == true) {
+    cmd += " --kind smart"
+  }
+  if (config.hostFilter) {
+    cmd += " --host_filter ${config.hostFilter}"
+  }
+  if (config.variables) {
+    assert (config.variables instanceof Map) : 'The variables parameter must be a Map.'
+
+    // convert variables map to json for input
+    String variables = new utils().mapToJSON(config.variables)
+
+    cmd += " --variables ${variables}"
+  }
 
   // "something" a inventory
   try {
-    // initialize the base command
-    String cmd = "${config.bin} inventory ${config.action} --name ${config.name} --organization ${config.organization}"
-
-    // check for optional inputs
-    if (config.description) {
-      cmd += " --description ${config.description}"
-    }
-    if (config.smart == true) {
-      cmd += " --kind smart"
-    }
-    if (config.hostFilter) {
-      cmd += " --host_filter ${config.hostFilter}"
-    }
-    if (config.variables) {
-      assert (config.variables instanceof Map) : 'The variables parameter must be a Map.'
-
-      // convert variables map to json for input
-      variables = new utils().mapToJSON(config.variables)
-
-      cmd += " --variables ${variables}"
-    }
     sh(label: "AWX Inventory ${config.action}", script: cmd)
   }
   catch(Exception error) {
@@ -131,43 +130,42 @@ void job_template_launch(body) {
 
   // input checking
   assert config.id : '"id" is a required parameter for awx.job_template_launch.'
-
   config.bin = config.bin ?: 'awx'
+
+  // initialize the base command
+  String cmd = "${config.bin} job_templates launch"
+
+  // check for optional inputs
+  if (config.monitor == true) {
+    cmd += ' --monitor'
+  }
+  if (config.limit) {
+    cmd += " --limit ${config.limit}"
+  }
+  if (config.inventory) {
+    cmd += " --inventory ${config.inventory}"
+  }
+  if (config.job_type) {
+    assert config.job_type in ['run', 'check'] : 'job_type parameter must be one of "run" or "check"'
+
+    cmd += " --job_type ${config.job_type}"
+  }
+  if (config.skip_tags) {
+    assert (config.skip_tags instanceof List) : 'The skip_tags parameter must be a List.'
+
+    cmd += " --skip_tags ${config.skip_tags.join(',')}"
+  }
+  if (config.extra_vars) {
+    assert (config.extra_vars instanceof Map) : 'The variables parameter must be a Map.'
+
+    // convert variables map to json for input
+    String extra_vars = new utils().mapToJSON(config.variables)
+
+    cmd += " --extra_vars ${extra_vars}"
+  }
 
   // launch a job template job
   try {
-    // initialize the base command
-    String cmd = "${config.bin} job_templates launch"
-
-    // check for optional inputs
-    if (config.monitor == true) {
-      cmd += ' --monitor'
-    }
-    if (config.limit) {
-      cmd += " --limit ${config.limit}"
-    }
-    if (config.inventory) {
-      cmd += " --inventory ${config.inventory}"
-    }
-    if (config.job_type) {
-      assert config.job_type in ['run', 'check'] : 'job_type parameter must be one of "run" or "check"'
-
-      cmd += " --job_type ${config.job_type}"
-    }
-    if (config.skip_tags) {
-      assert (config.skip_tags instanceof List) : 'The skip_tags parameter must be a List.'
-
-      cmd += " --skip_tags ${config.skip_tags.join(',')}"
-    }
-    if (config.extra_vars) {
-      assert (config.extra_vars instanceof Map) : 'The variables parameter must be a Map.'
-
-      // convert variables map to json for input
-      extra_vars = new utils().mapToJSON(config.variables)
-
-      cmd += " --extra_vars ${extra_vars}"
-    }
-
     sh(label: 'AWX Job Template Launch', script: "${cmd} ${config.id}")
   }
   catch(Exception error) {
@@ -183,19 +181,18 @@ void projects_update(body) {
 
   // input checking
   assert config.id : '"id" is a required parameter for awx.projects_update.'
-
   config.bin = config.bin ?: 'awx'
+
+  // initialize the base command
+  String cmd = "${config.bin} projects update"
+
+  // check for optional inputs
+  if (config.monitor == true) {
+    cmd += ' --monitor'
+  }
 
   // launch a project update job
   try {
-    // initialize the base command
-    String cmd = "${config.bin} projects update"
-
-    // check for optional inputs
-    if (config.monitor == true) {
-      cmd += ' --monitor'
-    }
-
     sh(label: 'AWX Project Update', script: "${cmd} ${config.id}")
   }
   catch(Exception error) {
@@ -211,30 +208,29 @@ void workflow_job_template_launch(body) {
 
   // input checking
   assert config.id : '"id" is a required parameter for awx.workflow_job_template_launch.'
-
   config.bin = config.bin ?: 'awx'
+
+  // initialize the base command
+  String cmd = "${config.bin} workflow_job_templates launch"
+
+  // check for optional inputs
+  if (config.monitor == true) {
+    cmd += ' --monitor'
+  }
+  if (config.inventory) {
+    cmd += " --inventory ${config.inventory}"
+  }
+  if (config.extra_vars) {
+    assert (config.extra_vars instanceof Map) : 'The variables parameter must be a Map.'
+
+    // convert variables map to json for input
+    String extra_vars = new utils().mapToJSON(config.variables)
+
+    cmd += " --extra_vars ${extra_vars}"
+  }
 
   // launch a workflow job template job
   try {
-    // initialize the base command
-    String cmd = "${config.bin} workflow_job_templates launch"
-
-    // check for optional inputs
-    if (config.monitor == true) {
-      cmd += ' --monitor'
-    }
-    if (config.inventory) {
-      cmd += " --inventory ${config.inventory}"
-    }
-    if (config.extra_vars) {
-      assert (config.extra_vars instanceof Map) : 'The variables parameter must be a Map.'
-
-      // convert variables map to json for input
-      extra_vars = new utils().mapToJSON(config.variables)
-
-      cmd += " --extra_vars ${extra_vars}"
-    }
-
     sh(label: 'AWX Workflow Job Template Launch', script: "${cmd} ${config.id}")
   }
   catch(Exception error) {
