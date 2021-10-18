@@ -76,7 +76,7 @@ void fmt(body) {
   }
 
   try {
-    fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
+    int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
 
     // report if formatting check detected issues
     if ((config.check == true) && (fmtStatus != 0)) {
@@ -108,7 +108,7 @@ void init(body) {
   // initialize the working template directory
   try {
     dir(config.dir) {
-      sh(label: 'Packer Init', script: "${cmd} ${config.dir}")
+      sh(label: 'Packer Init', script: cmd)
     }
   }
   catch(Exception error) {
