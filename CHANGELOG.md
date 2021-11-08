@@ -1,4 +1,4 @@
-### 1.6.2 (Next)
+### 1.6.2
 **General**
 - Replace `File.mkdir()` class method with `dir` step method (valid also on agents).
 - Add `makeDirParents` method to attempt to fix missing user directories.
