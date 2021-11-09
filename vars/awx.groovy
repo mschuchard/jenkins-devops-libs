@@ -1,13 +1,13 @@
 // vars/awx.groovy
 import devops.common.utils
 
-void host_create(body) {
+void hostCreate(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.name : '"name" is a required parameter for awx.host_create.'
-  assert config.inventory : '"inventory" is a required parameter for awx.host_create.'
+  assert config.name : '"name" is a required parameter for awx.hostCreate.'
+  assert config.inventory : '"inventory" is a required parameter for awx.hostCreate.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -40,7 +40,7 @@ void host_create(body) {
   print 'awx host create was successful.'
 }
 
-void host_delete(String id, String bin = 'awx') {
+void hostDelete(String id, String bin = 'awx') {
   // delete a host in the inventory
   try {
     sh(label: 'AWX Host Delete', script: "${config.bin} hosts delete ${id}")
@@ -93,7 +93,7 @@ void inventory(config) {
 }
 
 // invokes inventory helper method
-void inventory_create(body) {
+void inventoryCreate(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
@@ -102,7 +102,7 @@ void inventory_create(body) {
   inventory(config)
 }
 
-void inventory_delete(String id, String bin = 'awx') {
+void inventoryDelete(String id, String bin = 'awx') {
   // delete an inventory
   try {
     sh(label: 'AWX Inventory Delete', script: "${config.bin} inventory delete ${id}")
@@ -115,7 +115,7 @@ void inventory_delete(String id, String bin = 'awx') {
 }
 
 // invokes inventory helper method
-void inventory_modify(body) {
+void inventoryModify(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
@@ -124,12 +124,12 @@ void inventory_modify(body) {
   inventory(config)
 }
 
-void job_template_launch(body) {
+void jobTemplateLaunch(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.id : '"id" is a required parameter for awx.job_template_launch.'
+  assert config.id : '"id" is a required parameter for awx.jobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -145,23 +145,23 @@ void job_template_launch(body) {
   if (config.inventory) {
     cmd += " --inventory ${config.inventory}"
   }
-  if (config.job_type) {
-    assert config.job_type in ['run', 'check'] : 'job_type parameter must be one of "run" or "check"'
+  if (config.jobType) {
+    assert config.jobType in ['run', 'check'] : 'jobType parameter must be one of "run" or "check"'
 
-    cmd += " --job_type ${config.job_type}"
+    cmd += " --job_type ${config.jobType}"
   }
-  if (config.skip_tags) {
-    assert (config.skip_tags instanceof List) : 'The skip_tags parameter must be a List.'
+  if (config.skipTags) {
+    assert (config.skipTags instanceof List) : 'The skipTags parameter must be a List.'
 
-    cmd += " --skip_tags ${config.skip_tags.join(',')}"
+    cmd += " --skip_tags ${config.skipTags.join(',')}"
   }
-  if (config.extra_vars) {
-    assert (config.extra_vars instanceof Map) : 'The variables parameter must be a Map.'
+  if (config.extraVars) {
+    assert (config.extraVars instanceof Map) : 'The variables parameter must be a Map.'
 
     // convert variables map to json for input
-    String extra_vars = new utils().mapToJSON(config.variables)
+    String extraVars = new utils().mapToJSON(config.variables)
 
-    cmd += " --extra_vars ${extra_vars}"
+    cmd += " --extra_vars ${extraVars}"
   }
 
   // launch a job template job
@@ -175,12 +175,12 @@ void job_template_launch(body) {
   print 'awx job template launch was successful.'
 }
 
-void projects_update(body) {
+void projectsUpdate(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.id : '"id" is a required parameter for awx.projects_update.'
+  assert config.id : '"id" is a required parameter for awx.projectsUpdate.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -202,12 +202,12 @@ void projects_update(body) {
   print 'awx projects update was successful.'
 }
 
-void workflow_job_template_launch(body) {
+void workflowJobTemplateLaunch(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.id : '"id" is a required parameter for awx.workflow_job_template_launch.'
+  assert config.id : '"id" is a required parameter for awx.workflowJobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -220,13 +220,13 @@ void workflow_job_template_launch(body) {
   if (config.inventory) {
     cmd += " --inventory ${config.inventory}"
   }
-  if (config.extra_vars) {
-    assert (config.extra_vars instanceof Map) : 'The variables parameter must be a Map.'
+  if (config.extraVars) {
+    assert (config.extraVars instanceof Map) : 'The variables parameter must be a Map.'
 
     // convert variables map to json for input
-    String extra_vars = new utils().mapToJSON(config.variables)
+    String extraVars = new utils().mapToJSON(config.variables)
 
-    cmd += " --extra_vars ${extra_vars}"
+    cmd += " --extra_vars ${extraVars}"
   }
 
   // launch a workflow job template job

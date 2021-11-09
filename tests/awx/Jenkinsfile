@@ -19,7 +19,7 @@ pipeline {
     stage('Inventory Create') {
       steps {
         script {
-          awx.inventory_create(
+          awx.inventoryCreate(
             description:  'an inventory', // optional description of this inventory
             hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
             name:         'my_inventory', // name of this inventory
@@ -31,7 +31,7 @@ pipeline {
     stage('Inventory Modify') {
       steps {
         script {
-          awx.inventory_modify(
+          awx.inventoryModify(
             description:  'an inventory', // optional description of this inventory
             hostFilter:   'myotherhosts*', // optional filter that will be applied to the hosts of this inventory
             name:         'my_inventory', // name of this inventory
@@ -43,7 +43,7 @@ pipeline {
     stage('Host Create') {
       steps {
         script {
-          awx.host_create(
+          awx.hostCreate(
             description: 'my host', // optional description of the host
             enabled:     true, // optional is host available and online for running jobs
             inventory:   'my_inventory', // ID of the associated inventory
@@ -56,32 +56,32 @@ pipeline {
     stage('Host Delete') {
       steps {
         script {
-          awx.host_delete('foo.bar.com')
+          awx.hostDelete('foo.bar.com')
         }
       }
     }
     stage('Inventory Delete') {
       steps {
         script {
-          awx.inventory_delete('my_inventory')
+          awx.inventoryDelete('my_inventory')
         }
       }
     }
     stage('Project Update') {
       steps {
         script {
-          awx.projects_update(id: 3)
+          awx.projectsUpdate(id: 3)
         }
       }
     }
     stage('Job Template Launch') {
       steps {
         script {
-          awx.job_template_launch(
-            extra_vars: ['foo': 'bar', 'baz': 1], // optional extra variables
+          awx.jobTemplateLaunch(
+            extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
             id:         5, // job template id
-            job_type:   'run', // optional job type (run or check)
-            skip_tags:  ['skipper', 'to_skip'] // optional tags to skip
+            jobType:   'run', // optional job type (run or check)
+            skipTags:  ['skipper', 'to_skip'] // optional tags to skip
           )
         }
       }
@@ -89,8 +89,8 @@ pipeline {
     stage('Workflow Job Template Launch') {
       steps {
         script {
-          awx.workflow_job_template_launch(
-            extra_vars: ['foo': 'bar', 'baz': 1], // optional extra variables
+          awx.workflowJobTemplateLaunch(
+            extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
             id:         2, // job template id
           )
         }

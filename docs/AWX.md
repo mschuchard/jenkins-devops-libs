@@ -7,12 +7,12 @@ Interacts with AWX/Ansible Tower endpoints via the AWX CLI. Note that you should
 - AWX CLI binary executable
 - AWX or Tower installation
 
-### awx.host_create()
+### awx.hostCreate()
 
 Uses AWX to create a host in an inventory.
 
 ```groovy
-awx.host_create(
+awx.hostCreate(
   bin:         '/usr/bin/awx', // optional path to awx executable
   description: 'my host', // optional description of the host
   enabled:     true, // optional is host available and online for running jobs
@@ -22,20 +22,20 @@ awx.host_create(
 )
 ```
 
-### awx.host_delete()
+### awx.hostDelete()
 
 Uses AWX to delete a host in an inventory.
 
 ```groovy
-awx.host_delete('foo.bar.com', '/usr/local/bin/awx') // the ID (or unique name) of the host for first argument
+awx.hostDelete('foo.bar.com', '/usr/local/bin/awx') // the ID (or unique name) of the host for first argument
 ```
 
-### awx.inventory_create()
+### awx.inventoryCreate()
 
 Uses AWX to create an inventory.
 
 ```groovy
-awx.inventory_create(
+awx.inventoryCreate(
   bin:          '/usr/bin/awx', // optional path to awx executable
   description:  'an inventory', // optional description of this inventory
   hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
@@ -46,20 +46,20 @@ awx.inventory_create(
 )
 ```
 
-### awx.inventory_delete()
+### awx.inventoryDelete()
 
 Uses AWX to delete an inventory.
 
 ```groovy
-awx.inventory_delete('my_inventory', '/usr/local/bin/awx') // the ID (or unique name) of the inventory for first argument
+awx.inventoryDelete('my_inventory', '/usr/local/bin/awx') // the ID (or unique name) of the inventory for first argument
 ```
 
-### awx.inventory_modify()
+### awx.inventoryModify()
 
 Uses AWX to modify an inventory.
 
 ```groovy
-awx.inventory_modify(
+awx.inventoryModify(
   bin:          '/usr/bin/awx', // optional path to awx executable
   description:  'an inventory', // optional description of this inventory
   hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
@@ -70,43 +70,43 @@ awx.inventory_modify(
 )
 ```
 
-### awx.job_template_launch()
+### awx.jobTemplateLaunch()
 
 Uses AWX to launch a job from a job template.
 
 ```groovy
-awx.job_template_launch(
+awx.jobTemplateLaunch(
   bin:        '/usr/bin/awx', // optional path to awx executable
-  extra_vars: ['foo': 'bar', 'baz': 1], // optional extra variables
+  extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
   id:         5, // job template id
   inventory:  2, // optional ID of the associated inventory
-  job_type:   'run', // optional job type (run or check)
+  jobType:   'run', // optional job type (run or check)
   limit:      'hosts*.com', // optional host limit
   monitor:    false, // optional wait until launched job finishes
-  skip_tags:  ['skipper', 'to_skip'] // optional tags to skip
+  skipTags:  ['skipper', 'to_skip'] // optional tags to skip
 )
 ```
 
-### awx.projects_update()
+### awx.projectsUpdate()
 
 Uses AWX to launch a project update job.
 
 ```groovy
-awx.projects_update(
+awx.projectsUpdate(
   bin:     '/usr/bin/awx', // optional path to awx executable
   id:      3, // project id
   monitor: false // optional wait until project update job finishes
 )
 ```
 
-### awx.workflow_job_template_launch()
+### awx.workflowJobTemplateLaunch()
 
 Uses AWX to launch a workflow job from a workflow job template.
 
 ```groovy
-awx.job_template_launch(
+awx.jobTemplateLaunch(
   bin:        '/usr/bin/awx', // optional path to awx executable
-  extra_vars: ['foo': 'bar', 'baz': 1], // optional extra variables
+  extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
   id:         5, // workflow job template id
   inventory:  2, // optional ID of the associated inventory
   monitor:    false, // optional wait until launched job finishes
