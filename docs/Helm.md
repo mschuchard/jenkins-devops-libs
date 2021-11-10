@@ -25,7 +25,7 @@ helm.install(
 )
 ```
 
-### helm.kubectl(String version, String install_path = '/usr/bin')
+### helm.kubectl(String version, String installPath = '/usr/bin')
 **Deprecated**:
 Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
 
@@ -60,7 +60,7 @@ helm.packages(
   dest:        '.', // optional location to write the chart
   key:         'foo', // optional sign the package with this key name (mutually exclusive with keyring)
   keyring:     '/home/dir/.gnupg/pubring.gpg', // optional sign the package with the public keyring at this location (mutually exclusive with key)
-  update_deps: false, // optional update dependencies from requirements prior to packaging
+  updateDeps: false, // optional update dependencies from requirements prior to packaging
   version:     '1.0.0' // optional version set for the chart
 )
 ```
@@ -106,7 +106,7 @@ helm.rollback(
 )
 ```
 
-### helm.setup(String version, String install_path = '/usr/bin')
+### helm.setup(String version, String installPath = '/usr/bin')
 **Deprecated**:
 Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
 

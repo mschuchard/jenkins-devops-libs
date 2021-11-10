@@ -61,21 +61,21 @@ void install(body) {
   print 'Helm install executed successfully.'
 }
 
-void kubectl(String version, String install_path = '/usr/bin/') {
-  new utils().makeDirParents(install_path)
+void kubectl(String version, String installPath = '/usr/bin/') {
+  new utils().makeDirParents(installPath)
 
   // check if current version already installed
-  if (fileExists("${install_path}/kubectl")) {
-    String installed_version = sh(label: 'Check Kubectl Version', returnStdout: true, script: "${install_path}/kubectl version").trim()
-    if (installed_version ==~ version) {
-      print "Kubectl version ${version} already installed at ${install_path}."
+  if (fileExists("${installPath}/kubectl")) {
+    String installedVersion = sh(label: 'Check Kubectl Version', returnStdout: true, script: "${installPath}/kubectl version").trim()
+    if (installedVersion ==~ version) {
+      print "Kubectl version ${version} already installed at ${installPath}."
       return
     }
   }
   // otherwise download specified version
-  new utils().downloadFile("https://storage.googleapis.com/kubernetes-release/release/v${version}/bin/linux/amd64/kubectl", "${install_path}/kubectl")
-  sh(label: 'Kubectl Executable Permissions', script: "chmod ug+rx ${install_path}/kubectl")
-  print "Kubectl successfully installed at ${install_path}/kubectl."
+  new utils().downloadFile("https://storage.googleapis.com/kubernetes-release/release/v${version}/bin/linux/amd64/kubectl", "${installPath}/kubectl")
+  sh(label: 'Kubectl Executable Permissions', script: "chmod ug+rx ${installPath}/kubectl")
+  print "Kubectl successfully installed at ${installPath}/kubectl."
 }
 
 void lint(body) {
@@ -168,7 +168,7 @@ void packages(body) {
 
     cmd += " --sign --keyring ${config.keyring}"
   }
-  if (config.update_deps == true) {
+  if (config.updateDeps == true) {
     cmd += ' -u'
   }
   if (config.version) {
@@ -283,22 +283,22 @@ void rollback(body) {
   print 'Helm rollback command was successful.'
 }
 
-void setup(String version, String install_path = '/usr/bin/') {
-  new utils().makeDirParents(install_path)
+void setup(String version, String installPath = '/usr/bin/') {
+  new utils().makeDirParents(installPath)
 
   // check if current version already installed
-  if (fileExists("${install_path}/helm")) {
-    String installed_version = sh(label: 'Check Helm Version', returnStdout: true, script: "${install_path}/helm version").trim()
-    if (installed_version ==~ version) {
-      print "Helm version ${version} already installed at ${install_path}."
+  if (fileExists("${installPath}/helm")) {
+    String installedVersion = sh(label: 'Check Helm Version', returnStdout: true, script: "${installPath}/helm version").trim()
+    if (installedVersion ==~ version) {
+      print "Helm version ${version} already installed at ${installPath}."
     }
   }
   // otherwise download and untar specified version
   else {
     new utils().downloadFile("https://storage.googleapis.com/kubernetes-helm/helm-v${version}-linux-amd64.tar.gz", '/tmp/helm.tar.gz')
-    sh(label: 'Untar Helm CLI', script: "tar -xzf /tmp/helm.tar.gz -C ${install_path} --strip-components 1 linux-amd64/helm")
+    sh(label: 'Untar Helm CLI', script: "tar -xzf /tmp/helm.tar.gz -C ${installPath} --strip-components 1 linux-amd64/helm")
     new utils().removeFile('/tmp/helm.tar.gz')
-    print "Helm successfully installed at ${install_path}/helm."
+    print "Helm successfully installed at ${installPath}/helm."
   }
 }
 
