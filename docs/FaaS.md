@@ -4,7 +4,7 @@ Interacts with OpenFaaS CLI.
 
 ### Dependencies
 
-- pipeline-utility-steps plugin (`validate_template`)
+- pipeline-utility-steps plugin (`validateTemplate`)
 - OpenFaaS CLI binary executable
 
 ### faas.build()
@@ -14,7 +14,7 @@ Builds OpenFaaS function containers.
 faas.build(
   bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
   filter:   'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
-  no_cache: false, // optional do not use docker's build cache
+  noCache: false, // optional do not use docker's build cache
   parallel: '1', // optional build in parallel to depth specified
   regex:    'regexp_string', // optional regex to match with function names in yaml file (default is unused)
   squash:   false, // optional use docker's squash flag for smaller images
@@ -46,7 +46,7 @@ Locally installs a specific version of the OpenFaaS CLI.
 
 ```groovy
 faas.install(
-  install_path: '/usr/bin', // optional location to install faas cli
+  installPath: '/usr/bin', // optional location to install faas cli
   platform:     'linux', // platform where faas cli will be installed ['linux', 'linux-arm64', 'linux-armhf', 'darwin', 'windows']
   version:      '0.5.1' // version of faas cli to install
 )
@@ -59,7 +59,7 @@ Invokes an OpenFaaS function.
 faas.invoke(
   async:    false, // optional invoke the function asynchronously
   bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
-  content_type: 'text/plain', // optional content-type HTTP header
+  contentType: 'text/plain', // optional content-type HTTP header
   function: 'echo', // name of the deployed function
   header:   ['X-Callback-Url':'http://gateway:8080/function/send2slack', 'X-Ping-Url':'http://request.bin/etc'], // optional HTTP request headers
   method:   'POST', // optional HTTP request method
@@ -108,9 +108,9 @@ faas.remove(
 )
 ```
 
-### faas.validate_template(String template)
+### faas.validateTemplate(String template)
 Validates template syntax.
 
 ```groovy
-faas.validate_template('template.yaml')
+faas.validateTemplate('template.yaml')
 ```

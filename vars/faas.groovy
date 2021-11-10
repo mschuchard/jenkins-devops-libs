@@ -16,7 +16,7 @@ void build(body) {
   if (config.filter) {
     cmd += " --filter '${config.filter}'"
   }
-  if (config.no_cache == true) {
+  if (config.noCache == true) {
     cmd += ' --no-cache'
   }
   if (config.parallel) {
@@ -94,15 +94,15 @@ void install(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.install_path = config.install_path ? config.install_path : '/usr/bin'
+  config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
-  new utils().makeDirParents(config.install_path)
+  new utils().makeDirParents(config.installPath)
 
   // check if current version already installed
-  if (fileExists("${config.install_path}/faas-cli")) {
-    String installed_version = sh(label: 'Check OpenFaaS CLI Version', returnStdout: true, script: "${config.install_path}/faas-cli version").trim()
-    if (installed_version ==~ config.version) {
-      print "FaaS CLI version ${config.version} already installed at ${config.install_path}."
+  if (fileExists("${config.installPath}/faas-cli")) {
+    String installedVersion = sh(label: 'Check OpenFaaS CLI Version', returnStdout: true, script: "${config.installPath}/faas-cli version").trim()
+    if (installedVersion ==~ config.version) {
+      print "FaaS CLI version ${config.version} already installed at ${config.installPath}."
       return
     }
   }
@@ -117,10 +117,10 @@ void install(body) {
     default: throw new Exception("Unsupported platform ${config.platform} specified!");
   }
   // download and install specified version
-  new utils().downloadFile("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.install_path}/faas-cli")
+  new utils().downloadFile("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.installPath}/faas-cli")
   extension = null
-  sh(label: 'OpenFaaS CLI Executable Permissions', script: "chmod ug+rx ${config.install_path}/faas-cli")
-  print "FaaS CLI successfully installed at ${config.install_path}/faas-cli."
+  sh(label: 'OpenFaaS CLI Executable Permissions', script: "chmod ug+rx ${config.installPath}/faas-cli")
+  print "FaaS CLI successfully installed at ${config.installPath}/faas-cli."
 }
 
 void invoke(body) {
@@ -137,8 +137,8 @@ void invoke(body) {
   if (config.async == true) {
     cmd += ' -a'
   }
-  if (config.content_type) {
-    cmd += " --content-type ${config.content_type}"
+  if (config.contentType) {
+    cmd += " --content-type ${config.contentType}"
   }
   if (config.header) {
     assert (config.header instanceof Map) : 'The header parameter must be a Map.'
@@ -269,7 +269,7 @@ void remove(body) {
   print 'FaaS function removed successfully.'
 }
 
-void validate_template(String template) {
+void validateTemplate(String template) {
   // ensure template exists and then check yaml syntax
   assert fileExists(template) : "Template ${template} does not exist!"
 

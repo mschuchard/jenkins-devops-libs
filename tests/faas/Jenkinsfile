@@ -16,7 +16,7 @@ pipeline {
         sh 'curl -L https://raw.githubusercontent.com/openfaas/faas-cli/master/samples.yml -o /tmp/faas.yaml'
 
         script {
-          faas.validate_template('/tmp/faas.yaml')
+          faas.validateTemplate('/tmp/faas.yaml')
         }
       }
     }
