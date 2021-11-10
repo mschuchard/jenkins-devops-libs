@@ -1,40 +1,40 @@
 // vars/goss.groovy
 import devops.common.utils
 
-void install(String version, String install_path = '/usr/bin/') {
-  new utils().makeDirParents(install_path)
+void install(String version, String installPath = '/usr/bin/') {
+  new utils().makeDirParents(installPath)
 
   // check if current version already installed
-  if (fileExists("${install_path}/goss")) {
-    String installed_version = sh(label: 'Check GoSS Version', returnStdout: true, script: "${install_path}/goss --version").trim()
-    if (installed_version ==~ version) {
-      print "GoSS version ${version} already installed at ${install_path}."
+  if (fileExists("${installPath}/goss")) {
+    String installedVersion = sh(label: 'Check GoSS Version', returnStdout: true, script: "${installPath}/goss --version").trim()
+    if (installedVersion ==~ version) {
+      print "GoSS version ${version} already installed at ${installPath}."
       return
     }
   }
   // otherwise download and install specified version
-  new utils().downloadFile("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${install_path}/goss")
-  sh(label: 'GoSS CLI Executable Permissions', script: "chmod ug+rx ${install_path}/goss")
-  print "GoSS successfully installed at ${install_path}/goss."
+  new utils().downloadFile("https://github.com/aelsabbahy/goss/releases/download/v${version}/goss-linux-amd64", "${installPath}/goss")
+  sh(label: 'GoSS CLI Executable Permissions', script: "chmod ug+rx ${installPath}/goss")
+  print "GoSS successfully installed at ${installPath}/goss."
 }
 
-void install_dgoss(String version, String install_path = '/usr/bin/') {
-  new utils().makeDirParents(install_path)
+void installDgoss(String version, String installPath = '/usr/bin/') {
+  new utils().makeDirParents(installPath)
 
   // check if current version already installed
-  if (fileExists("${install_path}/dgoss") && fileExists("${install_path}/goss")) {
-    String installed_version = sh(label: 'Check DGoSS Version', returnStdout: true, script: "${install_path}/goss --version").trim()
-    if (installed_version ==~ version) {
-      print "DGoSS version ${version} already installed at ${install_path}."
+  if (fileExists("${installPath}/dgoss") && fileExists("${installPath}/goss")) {
+    String installedVersion = sh(label: 'Check DGoSS Version', returnStdout: true, script: "${installPath}/goss --version").trim()
+    if (installedVersion ==~ version) {
+      print "DGoSS version ${version} already installed at ${installPath}."
       return
     }
   }
-  assert (!(fileExists("${install_path}/dgoss"))) : 'Dgoss is installed but goss is not. Dgoss execution requires goss.'
+  assert (!(fileExists("${installPath}/dgoss"))) : 'Dgoss is installed but goss is not. Dgoss execution requires goss.'
 
   // otherwise download and install specified version
-  new utils().downloadFile("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${install_path}/dgoss")
-  sh(label: 'DGoSS CLI Executable Permissions', script: "chmod ug+rx ${install_path}/dgoss")
-  print "DGoSS successfully installed at ${install_path}/dgoss."
+  new utils().downloadFile("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${installPath}/dgoss")
+  sh(label: 'DGoSS CLI Executable Permissions', script: "chmod ug+rx ${installPath}/dgoss")
+  print "DGoSS successfully installed at ${installPath}/dgoss."
 }
 
 void server(body) {
@@ -107,7 +107,7 @@ void validate(body) {
   print 'GoSS validate command was successful.'
 }
 
-void validate_docker(body) {
+void validateDocker(body) {
   // evaluate the body block, and collect configuration into the object
   Map config = new utils().paramsConverter(body)
 
@@ -138,7 +138,7 @@ void validate_docker(body) {
   print 'DGoSS run command was successful.'
 }
 
-void validate_gossfile(String gossfile) {
+void validateGossfile(String gossfile) {
   // ensure gossfile exists and then check yaml syntax
   assert fileExists(gossfile) : "Gossfile ${gossfile} does not exist!"
 

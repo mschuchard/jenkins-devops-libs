@@ -16,7 +16,7 @@ pipeline {
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/goss/goss.yaml -o /tmp/goss.yaml'
 
         script {
-          goss.validate_gossfile('/tmp/goss.yaml')
+          goss.validateGossfile('/tmp/goss.yaml')
         }
       }
     }
@@ -52,7 +52,7 @@ pipeline {
       }
       steps {
         script {
-          goss.validate_docker(
+          goss.validateDocker(
             flags: ['JAVA_OPTS="-Xmx1048m"'], // optional flags for container run
             image: 'alpine:latest' // docker image to run container from
           )
