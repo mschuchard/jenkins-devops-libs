@@ -13,10 +13,10 @@ void build(body) {
   String cmd = "${config.bin} build -color=false"
 
   // check for optional inputs
-  if (config.var_file) {
-    assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+  if (config.varFile) {
+    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
-    cmd += " -var-file=${config.var_file}"
+    cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
@@ -33,10 +33,10 @@ void build(body) {
   if (config.force == true) {
     cmd += " -force"
   }
-  if (config.on_error) {
-    assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.on_error)) : "The argument must be one of: default, abort, ask, or run-cleanup-provisioner."
+  if (config.onError) {
+    assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.onError)) : "The argument must be one of: default, abort, ask, or run-cleanup-provisioner."
 
-    cmd += " -on-error=${config.on_error}"
+    cmd += " -on-error=${config.onError}"
   }
 
   // create artifact with packer
@@ -138,54 +138,54 @@ void install(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  config.install_path = config.install_path ? config.install_path : '/usr/bin'
+  config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
 
-  new utils().makeDirParents(config.install_path)
+  new utils().makeDirParents(config.installPath)
 
   // check if current version already installed
-  if (fileExists("${config.install_path}/packer")) {
-    String installed_version = sh(label: 'Check Packer Version', returnStdout: true, script: "${config.install_path}/packer version").trim()
-    if (installed_version ==~ config.version) {
-      print "Packer version ${config.version} already installed at ${config.install_path}."
+  if (fileExists("${config.installPath}/packer")) {
+    String installedVersion = sh(label: 'Check Packer Version', returnStdout: true, script: "${config.installPath}/packer version").trim()
+    if (installedVersion ==~ config.version) {
+      print "Packer version ${config.version} already installed at ${config.installPath}."
       return
     }
   }
   // otherwise download and install specified version
   new utils().downloadFile("https://releases.hashicorp.com/packer/${config.version}/packer_${config.version}_${config.platform}.zip", 'packer.zip')
-  unzip(zipFile: 'packer.zip', dir: config.install_path)
+  unzip(zipFile: 'packer.zip', dir: config.installPath)
   new utils().removeFile('packer.zip')
-  print "Packer successfully installed at ${config.install_path}/packer."
+  print "Packer successfully installed at ${config.installPath}/packer."
 }
 
-void plugin_install(String url, String install_loc) {
+void pluginInstall(String url, String installLoc) {
   // determine number of elements in loc up to final slash
-  String elemCount = new File(install_loc).name.lastIndexOf('/')
+  String elemCount = new File(installLoc).name.lastIndexOf('/')
   // return file path up to final slash element
-  String installDir = new File(install_loc).name.take(elemCount)
+  String installDir = new File(installLoc).name.take(elemCount)
 
   // check if plugin dir exists and create if not
   new utils().makeDirParents(installDir)
 
   // check if plugin already installed
-  if (fileExists(install_loc)) {
-    print "Packer plugin already installed at ${install_loc}."
+  if (fileExists(installLoc)) {
+    print "Packer plugin already installed at ${installLoc}."
     return
   }
   // otherwise download and install plugin
   if (url ==~ /\.zip$/) {
     // append zip extension to avoid filename clashes
-    install_loc = "${install_loc}.zip"
+    installLoc = "${installLoc}.zip"
   }
-  new utils().downloadFile(url, install_loc)
+  new utils().downloadFile(url, installLoc)
   if (url ==~ /\.zip$/) {
-    unzip(zipFile: install_loc)
-    new utils().removeFile(install_loc)
+    unzip(zipFile: installLoc)
+    new utils().removeFile(installLoc)
   }
   else {
-    sh(label: 'Packer Plugin Executable Permissions', script: "chmod ug+rx ${install_loc}")
+    sh(label: 'Packer Plugin Executable Permissions', script: "chmod ug+rx ${installLoc}")
   }
-  print "Packer plugin successfully installed at ${install_loc}."
+  print "Packer plugin successfully installed at ${installLoc}."
 }
 
 void validate(body) {
@@ -200,10 +200,10 @@ void validate(body) {
   String cmd = "${config.bin} validate"
 
   // check for optional inputs
-  if (config.var_file) {
-    assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+  if (config.varFile) {
+    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
-    cmd += " -var-file=${config.var_file}"
+    cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'

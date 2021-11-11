@@ -14,10 +14,10 @@ packer.build(
   bin:      '/usr/bin/packer', // optional location of packer install
   force:    false, // optional force a build to continue if artifacts exist and deletes existing artifacts
   only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build
-  on_error: "default", // optional "default" cleanup, "abort", "ask", or "run-cleanup-provisioner"
+  onError: "default", // optional "default" cleanup, "abort", "ask", or "run-cleanup-provisioner"
   template: '/path/to/template.pkr.json', // location of packer template file or templates directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
-  var_file: '/path/to/variables.json' // optional location of variables file
+  varFile: '/path/to/variables.json' // optional location of variables file
 )
 ```
 
@@ -62,20 +62,20 @@ Locally installs a specific version of Packer.
 
 ```groovy
 packer.install(
-  install_path: '/usr/bin', // optional location to install packer
+  installPath: '/usr/bin', // optional location to install packer
   platform:     'linux_amd64', // platform where packer will be installed
   version:      '1.6.6.' // version of packer to install
 )
 ```
 
-### packer.plugin_install(String url, String install_loc)
+### packer.pluginInstall(String url, String installLoc)
 **Deprecated**:
 Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
 
 Locally installs a Packer plugin. Note that these plugins need to either be installed in an executable path, or in the same directory as `packer`, and need to be named appropriately. The remotely stored plugin should also be zipped or an executable.
 
 ```groovy
-packer.plugin_install('https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v1.4.0/packer-provisioner-goss-v1.4.0-linux-amd64', '/usr/bin/packer-provisioner-goss')
+packer.pluginInstall('https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v1.4.0/packer-provisioner-goss-v1.4.0-linux-amd64', '/usr/bin/packer-provisioner-goss')
 ```
 
 ### packer.validate()
@@ -87,6 +87,6 @@ packer.validate(
   only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to validate
   template: '/path/to/template.pkr.hcl', // // location of packer template file or templates directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
-  var_file: '/path/to/variables.json' // optional location of variables file
+  varFile: '/path/to/variables.json' // optional location of variables file
 )
 ```

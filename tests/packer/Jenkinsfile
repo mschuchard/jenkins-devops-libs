@@ -8,7 +8,7 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent { docker { image 'hashicorp/packer:1.7.5' } }
+  agent { docker { image 'hashicorp/packer:1.7.6' } }
 
   stages {
     stage('Init') {
