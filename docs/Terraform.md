@@ -7,28 +7,28 @@ Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each metho
 - Terraform CLI binary executable >= 0.12
 
 ### terraform.apply()
-Uses Terraform to apply a config. Note that if `terraform.plan(path: config_dir)` was invoked before this, the resultant plan file is in `${config_dir}/plan.tfplan`. If a plan file is specified as the `config_path`, then vars and target parameters will be ignored.
+Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this, the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath`, then vars and target parameters will be ignored.
 
 ```groovy
 terraform.apply(
   bin:         '/usr/bin/terraform', // optional path to terraform executable
-  config_path: '/path/to/config_dir_or_plan_file', // path to config dir or plan file
+  configPath: '/path/to/config_dir_or_plan_file', // path to config dir or plan file
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
   var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
-  var_file:    '/path/to/variables.tf' // optional location of variables file
+  varFile:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
 ### terraform.destroy()
-Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: config_dir)` with `destroy: true` was invoked before this, the resultant plan file is in `${config_dir}/plan.tfplan`. If a plan file is specified as the `config_path`, then vars and target parameters will be ignored.
+Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: configDir)` with `destroy: true` was invoked before this, the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath`, then vars and target parameters will be ignored.
 
 ```groovy
 terraform.destroy(
   bin:         '/usr/bin/terraform', // optional path to terraform executable
-  config_path: '/path/to/config_dir', // path to config dir or plan file
+  configPath: '/path/to/config_dir', // path to config dir or plan file
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
   var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
-  var_file:    '/path/to/variables.tf' // optional location of variables file
+  varFile:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
@@ -55,7 +55,7 @@ terraform.init(
   backendConfig: ['/path/to/backend.hcl'] // optional paths to hcl files with backend configs
   bin:        '/usr/bin/terraform', // optional path to terraform executable
   dir:        '/path/to/working_config_dir', // path to working config dir
-  plugin_dir: '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
+  pluginDir: '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
   upgrade:    false, // optional upgrade modules and plugins
 )
 ```
@@ -71,7 +71,7 @@ terraform.imports(
   provider:  'template', // optional specific provider for import
   state:     'terraform.tfstate', // optional path to the source state file
   var:       ['foo':'bar', 'bar':'baz'], // optional variable setting
-  var_file:  '/path/to/variables.tf' // optional location of variables file
+  varFile:  '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
@@ -83,7 +83,7 @@ Locally installs a specific version of Terraform.
 
 ```groovy
 terraform.install(
-  install_path: '/usr/bin', // optional location to install terraform
+  installPath: '/usr/bin', // optional location to install terraform
   platform:     'linux_amd64', // platform where terraform will be installed
   version:      '0.12.18' // version of terraform to install
 )
@@ -115,20 +115,20 @@ terraform.plan(
   return:      false, // optional return plan output from method
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
   var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
-  var_file:    '/path/to/variables.tf' // optional location of variables file
+  varFile:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
-### terraform.plugin_install()
+### terraform.pluginInstall()
 **Deprecated**:
 Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
 
 Locally installs a Terraform plugin. Note that these plugins need to be named appropriately in the nomenclature of `terraform-provider-NAME_vX.Y.Z`. The remotely stored plugin should also be zipped or an executable.
 
 ```groovy
-terraform.plugin_install(
-  install_loc:  '~/.terraform.d/plugins', // optional path to install plugin into
-  install_name: 'terraform-provisioner-foo_v1.0.0', // post-install name of plugin
+terraform.pluginInstall(
+  installLoc:  '~/.terraform.d/plugins', // optional path to install plugin into
+  installName: 'terraform-provisioner-foo_v1.0.0', // post-install name of plugin
   url:          'https://github.com/org/terraform-provisioner-foo/releases/download/v1.0.0/terraform-provisioner-foo-v1.0.0-linux-amd64' // url to retrieve plugin from
 )
 ```

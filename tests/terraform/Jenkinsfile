@@ -61,7 +61,7 @@ pipeline {
     stage('Apply') {
       steps {
         script {
-          terraform.apply(config_path: '/tmp/plan.tfplan')
+          terraform.apply(configPath: '/tmp/plan.tfplan')
         }
       }
     }
@@ -85,7 +85,7 @@ pipeline {
     stage('Destroy') {
       steps {
         script {
-          terraform.destroy(config_path: '/tmp')
+          terraform.destroy(configPath: '/tmp')
         }
       }
     }

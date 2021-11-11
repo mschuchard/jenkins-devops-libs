@@ -9,19 +9,19 @@ void apply(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.config_path : '"config_path" is a required parameter for terraform.apply.'
-  assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
+  assert config.configPath : '"configPath" is a required parameter for terraform.apply.'
+  assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} apply -input=false -no-color -auto-approve"
 
   // check if a directory was passed for the config path
-  if (!(config.config_path ==~ /plan\.tfplan/)) {
+  if (!(config.configPath ==~ /plan\.tfplan/)) {
     // check for optional var inputs
-    if (config.var_file) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+    if (config.varFile) {
+      assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
-      cmd += " -var-file=${config.var_file}"
+      cmd += " -var-file=${config.varFile}"
     }
     if (config.var) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'
@@ -41,11 +41,11 @@ void apply(body) {
 
   // apply the config
   try {
-    if (config.config_path ==~ /plan\.tfplan/) {
-      sh(label: 'Terraform Apply', script: "${cmd} ${config.config_path}")
+    if (config.configPath ==~ /plan\.tfplan/) {
+      sh(label: 'Terraform Apply', script: "${cmd} ${config.configPath}")
     }
     else {
-      dir(config.config_path) {
+      dir(config.configPath) {
         sh(label: 'Terraform Apply', script: cmd)
       }
     }
@@ -66,18 +66,18 @@ void destroy(body) {
 
   // input checking
   config.bin = config.bin ?: 'terraform'
-  assert config.config_path : '"config_path" is a required parameter for terraform.destroy.'
-  assert fileExists(config.config_path) : "Terraform config/plan ${config.config_path} does not exist!"
+  assert config.configPath : '"configPath" is a required parameter for terraform.destroy.'
+  assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
 
   String cmd = "${config.bin} destroy -input=false -no-color -auto-approve"
 
   // check if a directory was passed for the config path
-  if (!(config.config_path ==~ /plan\.tfplan/)) {
+  if (!(config.configPath ==~ /plan\.tfplan/)) {
     // check for optional var inputs
-    if (config.var_file) {
-      assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+    if (config.varFile) {
+      assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
-      cmd += " -var-file=${config.var_file}"
+      cmd += " -var-file=${config.varFile}"
     }
     if (config.var) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'
@@ -97,11 +97,11 @@ void destroy(body) {
 
   // destroy the state
   try {
-    if (config.config_path ==~ /plan\.tfplan/) {
-      sh(label: 'Terraform Destroy', script: "${cmd} ${config.config_path}")
+    if (config.configPath ==~ /plan\.tfplan/) {
+      sh(label: 'Terraform Destroy', script: "${cmd} ${config.configPath}")
     }
     else {
-      dir(config.config_path) {
+      dir(config.configPath) {
         sh(label: 'Terraform Destroy', script: cmd)
       }
     }
@@ -145,7 +145,7 @@ void fmt(body) {
   }
 
   try {
-    dir(config.config_dir) {
+    dir(config.configDir) {
       int fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
     }
 
@@ -176,10 +176,10 @@ void imports(body) {
   String cmd = "${config.bin} import -no-color -input=false"
 
   // check for optional inputs
-  if (config.var_file) {
-    assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+  if (config.varFile) {
+    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
-    cmd += " -var-file=${config.var_file}"
+    cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
@@ -230,10 +230,10 @@ void init(body) {
   String cmd = "${config.bin} init -input=false -no-color"
 
   // check for optional inputs
-  if (config.plugin_dir) {
-    new utils().makeDirParents(config.plugin_dir)
+  if (config.pluginDir) {
+    new utils().makeDirParents(config.pluginDir)
 
-    cmd += " -plugin-dir=${config.plugin_dir}"
+    cmd += " -plugin-dir=${config.pluginDir}"
   }
   if (config.upgrade == true) {
     cmd += ' -upgrade'
@@ -253,7 +253,7 @@ void init(body) {
 
   // initialize the working config directory
   try {
-    dir(config.config_dir) {
+    dir(config.configDir) {
       sh(label: 'Terraform Init', script: cmd)
     }
   }
@@ -272,24 +272,24 @@ void install(body) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  config.install_path = config.install_path ? config.install_path : '/usr/bin'
+  config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
 
-  new utils().makeDirParents(config.install_path)
+  new utils().makeDirParents(config.installPath)
 
   // check if current version already installed
-  if (fileExists("${config.install_path}/terraform")) {
-    String installed_version = sh(label: 'Check Terraform Version', returnStdout: true, script: "${config.install_path}/terraform version").trim()
-    if (installed_version ==~ config.version) {
-      print "Terraform version ${config.version} already installed at ${config.install_path}."
+  if (fileExists("${config.installPath}/terraform")) {
+    String installedVersion = sh(label: 'Check Terraform Version', returnStdout: true, script: "${config.installPath}/terraform version").trim()
+    if (installedVersion ==~ config.version) {
+      print "Terraform version ${config.version} already installed at ${config.installPath}."
       return
     }
   }
   // otherwise download and install specified version
   new utils().downloadFile("https://releases.hashicorp.com/terraform/${config.version}/terraform_${config.version}_${config.platform}.zip", 'terraform.zip')
-  unzip(zipFile: 'terraform.zip', dir: config.install_path)
+  unzip(zipFile: 'terraform.zip', dir: config.installPath)
   new utils().removeFile('terraform.zip')
-  print "Terraform successfully installed at ${config.install_path}/terraform."
+  print "Terraform successfully installed at ${config.installPath}/terraform."
 }
 
 def output(body) {
@@ -353,10 +353,10 @@ def plan(body) {
   String cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
 
   // check for optional inputs
-  if (config.var_file) {
-    assert fileExists(config.var_file) : "The var file ${config.var_file} does not exist!"
+  if (config.varFile) {
+    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
-    cmd += " -var-file=${config.var_file}"
+    cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
@@ -404,7 +404,7 @@ def plan(body) {
   }
 }
 
-void plugin_install(body) {
+void pluginInstall(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
@@ -413,15 +413,15 @@ void plugin_install(body) {
 
   // input checking
   assert config.url : "The required parameter 'url' was not set."
-  assert config.install_name : "The required parameter 'install_name' was not set."
+  assert config.installName : "The required parameter 'installName' was not set."
 
-  config.install_path = config.install_path ? config.install_path : '~/.terraform.d/plugins'
+  config.installPath = config.installPath ? config.installPath : '~/.terraform.d/plugins'
 
   // set and assign plugin install location
-  String installLoc = "${config.install_path}/${config.install_name}"
+  String installLoc = "${config.installPath}/${config.installName}"
 
   // check if plugin dir exists and create if not
-  new utils().makeDirParents(config.install_path)
+  new utils().makeDirParents(config.installPath)
 
   // check if plugin already installed
   if (fileExists(installLoc)) {
@@ -558,7 +558,7 @@ void validate(body) {
   String cmd = "${config.bin} validate"
 
   // optional inputs
-  if (config.check_vars == true) {
+  if (config.checkVars == true) {
     cmd += ' -json'
   }
   else {
