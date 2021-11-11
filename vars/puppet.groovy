@@ -1,12 +1,12 @@
 // vars/puppet.groovy
 import devops.common.utils
 
-void code_deploy(body) {
+void codeDeploy(body) {
   // pass in params body and ensure proper config of type map
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.tokenFile || config.credentials_id : 'The required token or credentials_id parameter was not set.'
+  assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
     assert fileExists(config.tokenFile) : "The RBAC token ${config.tokenFile} does not exist!"
   }
@@ -41,8 +41,8 @@ void code_deploy(body) {
   Map response = [:]
   String token = ''
   // set token with logic from appropriate parameter
-  if (config.credentials_id) {
-    withCredentials([token(credentialsId: config.credentials_id, variable: 'theToken')]) {
+  if (config.credentialsId) {
+    withCredentials([token(credentialsId: config.credentialsId, variable: 'theToken')]) {
       token = theToken
     }
   }
@@ -105,7 +105,7 @@ void task(body) {
   Map config = new utils().paramsConverter(body)
 
   // input checking
-  assert config.tokenFile || config.credentials_id : 'The required token or credentials_id parameter was not set.'
+  assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
     assert fileExists(config.tokenFile) : "The RBAC token ${config.tokenFile} does not exist!"
   }
@@ -163,8 +163,8 @@ void task(body) {
   Map response = [:]
   String token = ''
   // set token with logic from appropriate parameter
-  if (config.credentials_id) {
-    withCredentials([token(credentialsId: config.credentials_id, variable: 'theToken')]) {
+  if (config.credentialsId) {
+    withCredentials([token(credentialsId: config.credentialsId, variable: 'theToken')]) {
       token = theToken
     }
   }

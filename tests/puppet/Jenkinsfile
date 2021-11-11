@@ -31,7 +31,7 @@ pipeline {
         stage('Code Deploy') {
           steps {
             script {
-              puppet.code_deploy(
+              puppet.codeDeploy(
                 environments: ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
                 servers:      ['puppet'], // optional server hosting code manager
                 tokenFile:    '/var/lib/jenkins/.puppetlabs/token', // rbac token for deploying with code manager
