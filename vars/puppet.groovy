@@ -2,9 +2,6 @@
 import devops.common.utils
 
 void codeDeploy(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
@@ -101,9 +98,6 @@ void codeDeploy(body) {
 }
 
 void task(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
@@ -225,9 +219,6 @@ void task(body) {
 }
 
 void token (body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.username : 'The username parameter is required.'
   assert config.password : 'The password parameter is required.'

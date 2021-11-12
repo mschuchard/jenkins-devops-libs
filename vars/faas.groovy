@@ -2,9 +2,6 @@
 import devops.common.utils
 
 void build(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.template : 'The required template parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
@@ -41,9 +38,6 @@ void build(body) {
 }
 
 void deploy(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.template : 'The required template parameter was not set.'
   if (config.replace && config.update) {
@@ -90,9 +84,6 @@ void deploy(body) {
 }
 
 void install(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
@@ -124,9 +115,6 @@ void install(body) {
 }
 
 void invoke(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   config.bin = config.bin ?: 'faas-cli'
   assert config.function : 'The required parameter function was not set.'
@@ -176,9 +164,6 @@ void invoke(body) {
 }
 
 void login(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.gateway : 'The required gateway parameter was not set.'
   assert config.password : 'The required password parameter was not set.'
@@ -204,9 +189,6 @@ void login(body) {
 }
 
 void push(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
@@ -240,9 +222,6 @@ void push(body) {
 }
 
 void remove(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"

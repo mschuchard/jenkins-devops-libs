@@ -2,9 +2,6 @@
 import devops.common.utils
 
 void apply(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -58,9 +55,6 @@ void apply(body) {
 }
 
 void destroy(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -114,9 +108,6 @@ void destroy(body) {
 }
 
 void fmt(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -162,9 +153,6 @@ void fmt(body) {
 }
 
 void imports(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -217,9 +205,6 @@ void imports(body) {
 }
 
 void init(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -265,9 +250,6 @@ void init(body) {
 }
 
 void install(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -293,9 +275,6 @@ void install(body) {
 }
 
 def output(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -339,9 +318,6 @@ def output(body) {
 }
 
 def plan(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -405,9 +381,6 @@ def plan(body) {
 }
 
 void pluginInstall(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -447,9 +420,6 @@ void pluginInstall(body) {
 }
 
 void state(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -510,9 +480,6 @@ void state(body) {
 }
 
 void taint(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -545,9 +512,6 @@ void taint(body) {
 }
 
 void validate(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -579,9 +543,6 @@ void validate(body) {
 }
 
 void workspace(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 

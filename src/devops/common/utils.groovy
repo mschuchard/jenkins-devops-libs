@@ -91,3 +91,6 @@ Map paramsConverter(body) {
 
   return config
 }
+// example usage: void globalVarMethod(body)
+// where body is closure or map
+// Map config = new utils().paramsConverter(body)

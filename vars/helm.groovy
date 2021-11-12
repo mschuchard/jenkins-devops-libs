@@ -2,9 +2,6 @@
 import devops.common.utils
 
 void install(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.name : "The required parameter 'name' was not set."
   assert config.chart : "The required parameter 'chart' was not set."
@@ -79,9 +76,6 @@ void kubectl(String version, String installPath = '/usr/bin/') {
 }
 
 void lint(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
@@ -144,9 +138,6 @@ void lint(body) {
 }
 
 void packages(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
@@ -187,9 +178,6 @@ void packages(body) {
 }
 
 void plugin(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert (['install', 'list', 'uninstall', 'update'].contains(config.command)) : "The argument must be one of: install, list, uninstall, or update."
   assert (config.plugin) && (config.command != 'list') : "The required parameter 'plugin' was not set for a non-list command."
@@ -214,9 +202,6 @@ void plugin(body) {
 }
 
 void repo(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.repo : "The required parameter 'repo' was not set."
   assert config.url : "The required parameter 'url' was not set."
@@ -247,9 +232,6 @@ void repo(body) {
 }
 
 void rollback(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.version : "The required parameter 'version' was not set."
   assert config.name : "The required parameter 'name' was not set."
@@ -303,9 +285,6 @@ void setup(String version, String installPath = '/usr/bin/') {
 }
 
 void status(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
@@ -339,9 +318,6 @@ void status(body) {
 }
 
 void test(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
@@ -414,9 +390,6 @@ void test(body) {
 }
 
 void uninstall(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
@@ -450,9 +423,6 @@ void uninstall(body) {
 }
 
 void upgrade(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.chart : "The required parameter 'chart' was not set."
   assert config.name : "The required parameter 'name' was not set."

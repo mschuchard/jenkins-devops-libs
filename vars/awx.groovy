@@ -2,9 +2,6 @@
 import devops.common.utils
 
 void hostCreate(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.name : '"name" is a required parameter for awx.hostCreate.'
   assert config.inventory : '"inventory" is a required parameter for awx.hostCreate.'
@@ -94,9 +91,6 @@ void inventory(config) {
 
 // invokes inventory helper method
 void inventoryCreate(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // invoke helper method with create
   config.action = 'create'
   inventory(config)
@@ -116,18 +110,12 @@ void inventoryDelete(String id, String bin = 'awx') {
 
 // invokes inventory helper method
 void inventoryModify(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // invoke helper method with modify
   config.action = 'modify'
   inventory(config)
 }
 
 void jobTemplateLaunch(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.id : '"id" is a required parameter for awx.jobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
@@ -176,9 +164,6 @@ void jobTemplateLaunch(body) {
 }
 
 void projectsUpdate(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.id : '"id" is a required parameter for awx.projectsUpdate.'
   config.bin = config.bin ?: 'awx'
@@ -203,9 +188,6 @@ void projectsUpdate(body) {
 }
 
 void workflowJobTemplateLaunch(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.id : '"id" is a required parameter for awx.workflowJobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'

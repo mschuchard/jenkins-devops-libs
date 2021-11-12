@@ -2,9 +2,6 @@
 import devops.common.utils
 
 void build(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
@@ -51,9 +48,6 @@ void build(body) {
 }
 
 void fmt(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
@@ -91,9 +85,6 @@ void fmt(body) {
 }
 
 void init(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert fileExists(config.dir) : "Working template directory ${config.dir} does not exist."
   config.bin = config.bin ?: 'packer'
@@ -134,9 +125,6 @@ void inspect(String template, String bin = '/usr/bin/packer') {
 }
 
 void install(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
@@ -189,9 +177,6 @@ void pluginInstall(String url, String installLoc) {
 }
 
 void validate(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"

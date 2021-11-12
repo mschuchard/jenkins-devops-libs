@@ -38,9 +38,6 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
 }
 
 void server(body) {
-  // pass in params body and ensure proper config of type map
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
@@ -74,9 +71,6 @@ void server(body) {
 }
 
 void validate(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
@@ -108,9 +102,6 @@ void validate(body) {
 }
 
 void validateDocker(body) {
-  // evaluate the body block, and collect configuration into the object
-  Map config = new utils().paramsConverter(body)
-
   // input checking
   assert config.image : 'The required image parameter was not set.'
 

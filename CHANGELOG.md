@@ -1,3 +1,8 @@
+### 2.0.0 (Next)
+**General**
+- Global variable methods and associated parameters converted to camelCase.
+- Remove support for old DSL/closure type inputs to global variable methods.
+
 ### 1.6.2
 **General**
 - Replace `File.mkdir()` class method with `dir` step method (valid also on agents).
