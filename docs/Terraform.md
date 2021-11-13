@@ -75,20 +75,6 @@ terraform.imports(
 )
 ```
 
-### terraform.install()
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Locally installs a specific version of Terraform.
-
-```groovy
-terraform.install(
-  installPath: '/usr/bin', // optional location to install terraform
-  platform:     'linux_amd64', // platform where terraform will be installed
-  version:      '0.12.18' // version of terraform to install
-)
-```
-
 ### terraform.output()
 Reads an output variable from a Terraform state and prints the value.
 
@@ -116,20 +102,6 @@ terraform.plan(
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
   var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile:    '/path/to/variables.tf' // optional location of variables file
-)
-```
-
-### terraform.pluginInstall()
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Locally installs a Terraform plugin. Note that these plugins need to be named appropriately in the nomenclature of `terraform-provider-NAME_vX.Y.Z`. The remotely stored plugin should also be zipped or an executable.
-
-```groovy
-terraform.pluginInstall(
-  installLoc:  '~/.terraform.d/plugins', // optional path to install plugin into
-  installName: 'terraform-provisioner-foo_v1.0.0', // post-install name of plugin
-  url:          'https://github.com/org/terraform-provisioner-foo/releases/download/v1.0.0/terraform-provisioner-foo-v1.0.0-linux-amd64' // url to retrieve plugin from
 )
 ```
 

@@ -8,26 +8,6 @@ Interacts with Goss.
 - GoSS CLI binary executable
 - DGoSS CLI binary exeuctable (`validateDocker`)
 
-### goss.install(String version, String installPath = '/usr/bin')
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Locally installs a specific version of goss.
-
-```groovy
-goss.install('0.3.13', '/usr/local/bin/')
-```
-
-### goss.installDgoss(String version, String installPath = '/usr/bin')
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Locally installs a specific version of dgoss.
-
-```groovy
-goss.installDgoss('0.3.13', '/usr/local/bin/')
-```
-
 ### goss.server()
 Creates a persistent REST API endpoint with goss.
 

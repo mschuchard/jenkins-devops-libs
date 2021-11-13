@@ -54,30 +54,6 @@ Inspects a template and parses and outputs the components a template defines.
 packer.inspect('/path/to/template.pkr.json', '/usr/local/bin/packer')
 ```
 
-### packer.install()
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Locally installs a specific version of Packer.
-
-```groovy
-packer.install(
-  installPath: '/usr/bin', // optional location to install packer
-  platform:     'linux_amd64', // platform where packer will be installed
-  version:      '1.6.6.' // version of packer to install
-)
-```
-
-### packer.pluginInstall(String url, String installLoc)
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Locally installs a Packer plugin. Note that these plugins need to either be installed in an executable path, or in the same directory as `packer`, and need to be named appropriately. The remotely stored plugin should also be zipped or an executable.
-
-```groovy
-packer.pluginInstall('https://github.com/YaleUniversity/packer-provisioner-goss/releases/download/v1.4.0/packer-provisioner-goss-v1.4.0-linux-amd64', '/usr/bin/packer-provisioner-goss')
-```
-
 ### packer.validate()
 Uses Packer to validate a build template.
 

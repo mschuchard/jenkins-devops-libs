@@ -25,16 +25,6 @@ helm.install(
 )
 ```
 
-### helm.kubectl(String version, String installPath = '/usr/bin')
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Performs a local installation of `kubectl` at a specified version and path.
-
-```groovy
-helm.kubectl('1.16.6', '/usr/local/bin')
-```
-
 ### helm.lint()
 Runs a series of tests to verify that the chart is well-formed.
 
@@ -104,16 +94,6 @@ helm.rollback(
   namespace: 'default', // optional namespace for the rolled back release object
   version:   '1' // version of release-object to rollback to
 )
-```
-
-### helm.setup(String version, String installPath = '/usr/bin')
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Locally installs a specific version of helm and then initializes helm and installs tiller. If helm is already installed at the specified version, then helm is initialized for the jenkins user if it has not been already. It is strongly recommended to manage this with a software provisioner instead, but this can be helpful for quick one-offs. Also, it is sometimes necessary to initialize helm for the jenkins user, and this will rectify that situation.
-
-```groovy
-helm.setup('3.1.3', '/usr/local/bin')
 ```
 
 ### helm.status()

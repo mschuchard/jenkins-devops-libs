@@ -38,20 +38,6 @@ faas.deploy(
 )
 ```
 
-### faas.install()
-**Deprecated**:
-Please use software provisioning, configuration management, or containerized build agents instead. This method will be removed completely in 2.0.0.
-
-Locally installs a specific version of the OpenFaaS CLI.
-
-```groovy
-faas.install(
-  installPath: '/usr/bin', // optional location to install faas cli
-  platform:     'linux', // platform where faas cli will be installed ['linux', 'linux-arm64', 'linux-armhf', 'darwin', 'windows']
-  version:      '0.5.1' // version of faas cli to install
-)
-```
-
 ### faas.invoke()
 Invokes an OpenFaaS function.
 

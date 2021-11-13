@@ -2,6 +2,7 @@
 **General**
 - Global variable methods and associated parameters converted to camelCase.
 - Remove support for old DSL/closure type inputs to global variable methods.
+- Remove global variable methods for software installation and configuration.
 
 ### 1.6.2
 **General**
