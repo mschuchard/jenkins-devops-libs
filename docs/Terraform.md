@@ -7,7 +7,7 @@ Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each metho
 - Terraform CLI binary executable >= 0.12
 
 ### terraform.apply()
-Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this, the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath`, then vars and target parameters will be ignored.
+Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this and the `out` parameter was not specified, the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath`, then the `vars` and `target` parameters will be ignored.
 
 ```groovy
 terraform.apply(
@@ -89,7 +89,7 @@ terraform.plan(
 ```
 
 ### terraform.plan()
-Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` will be written to the same directory as the input config directory. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons.
+Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` will be written to the same directory as the input config directory if the `out` parameter is not specified. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons.
 
 ```groovy
 terraform.plan(
@@ -97,6 +97,7 @@ terraform.plan(
   destroy:     false, // optional generate a plan to destroy resources
   dir:         '/path/to/config_dir_or_plan_file', // path to config dir
   display:     false, // optional display plan output
+  out:         'plan.tfplan', // optional plan output file path
   refreshOnly: false, // optional check if remote objects match outcome of most recent apply (>= 0.15)
   return:      false, // optional return plan output from method
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets

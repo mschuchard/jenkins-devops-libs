@@ -4,6 +4,9 @@
 - Remove support for old DSL/closure type inputs to global variable methods.
 - Remove global variable methods for software installation and configuration.
 
+**Terraform**
+- Add `out` parameter to `plan` method.
+
 ### 1.6.2
 **General**
 - Replace `File.mkdir()` class method with `dir` step method (valid also on agents).

@@ -326,7 +326,7 @@ def plan(body) {
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} plan -no-color -input=false -out=${config.dir}/plan.tfplan"
+  String cmd = "${config.bin} plan -no-color -input=false"
 
   // check for optional inputs
   if (config.varFile) {
@@ -354,12 +354,13 @@ def plan(body) {
   if (config.refreshOnly == true) {
     cmd += ' -refresh-only'
   }
+  String out = config.out ?: "-out=${config.dir}/plan.tfplan"
 
   // generate a plan from the config directory
   try {
     // execute plan
     dir(config.dir) {
-      String planOutput = sh(label: 'Terraform Plan', script: cmd, returnStdout: true)
+      String planOutput = sh(label: 'Terraform Plan', script: "${cmd} ${out}", returnStdout: true)
     }
 
     // display plan output if specified
