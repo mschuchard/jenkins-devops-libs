@@ -23,20 +23,13 @@ pipeline {
     stage('Validate Server') {
       steps {
         script {
-          goss.validate { gossfile = '/tmp/goss.yaml' // optional location of gossfile
-          }
-          goss.validate(gossfile: '/tmp/goss.yaml', // optional location of gossfile
-          )
+          goss.validate(gossfile: '/tmp/goss.yaml') // optional location of gossfile
         }
       }
     }
     stage('Create Endpoint') {
       steps {
         script {
-          goss.server {
-            gossfile = '/tmp/goss.yaml' // optional location of gossfile
-            format   = 'documentation' // optional formatter to use for output
-          }
           goss.server(
             gossfile: '/tmp/goss.yaml', // optional location of gossfile
             format:   'documentation', // optional formatter to use for output

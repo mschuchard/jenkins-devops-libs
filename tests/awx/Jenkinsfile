@@ -79,7 +79,7 @@ pipeline {
         script {
           awx.jobTemplateLaunch(
             extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
-            id:         5, // job template id
+            id:        5, // job template id
             jobType:   'run', // optional job type (run or check)
             skipTags:  ['skipper', 'to_skip'] // optional tags to skip
           )
@@ -91,7 +91,7 @@ pipeline {
         script {
           awx.workflowJobTemplateLaunch(
             extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
-            id:         2, // job template id
+            id:        2, // job template id
           )
         }
       }
