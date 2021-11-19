@@ -14,7 +14,7 @@ Builds OpenFaaS function containers.
 faas.build(
   bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
   filter:   'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
-  noCache: false, // optional do not use docker's build cache
+  noCache:  false, // optional do not use docker's build cache
   parallel: '1', // optional build in parallel to depth specified
   regex:    'regexp_string', // optional regex to match with function names in yaml file (default is unused)
   squash:   false, // optional use docker's squash flag for smaller images
@@ -43,15 +43,15 @@ Invokes an OpenFaaS function.
 
 ```groovy
 faas.invoke(
-  async:    false, // optional invoke the function asynchronously
-  bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
+  async:       false, // optional invoke the function asynchronously
+  bin:         '/usr/bin/faas-cli', // optional executable path for faas-cli
   contentType: 'text/plain', // optional content-type HTTP header
-  function: 'echo', // name of the deployed function
-  header:   ['X-Callback-Url':'http://gateway:8080/function/send2slack', 'X-Ping-Url':'http://request.bin/etc'], // optional HTTP request headers
-  method:   'POST', // optional HTTP request method
-  query:    ['repo':'faas-cli', 'org':'openfaas'], // optional queries for request
-  stdin:    'image.png', // optional stdin for function to receive
-  tls:      true // optional TLS validation (enabled by default)
+  function:    'echo', // name of the deployed function
+  header:      ['X-Callback-Url':'http://gateway:8080/function/send2slack', 'X-Ping-Url':'http://request.bin/etc'], // optional HTTP request headers
+  method:      'POST', // optional HTTP request method
+  query:       ['repo':'faas-cli', 'org':'openfaas'], // optional queries for request
+  stdin:       'image.png', // optional stdin for function to receive
+  tls:         true // optional TLS validation (enabled by default)
 )
 ```
 

@@ -14,10 +14,10 @@ Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to
 ```groovy
 puppet.codeDeploy(
   credentialsId: 'pe_token', // token bindings credentials id for rbac token; mutually exclusive with token
-  environments:   ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
-  servers:        ['puppet'], // optional server hosting code manager
-  tokenFile:      '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code manager; mutually exclusive with credentialId
-  wait:           false // optional wait for code manager to finish deployment
+  environments:  ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
+  servers:       ['puppet'], // optional server hosting code manager
+  tokenFile:     '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code manager; mutually exclusive with credentialId
+  wait:          false // optional wait for code manager to finish deployment
 )
 ```
 
@@ -27,14 +27,14 @@ Triggers the execution of a Puppet Enterprise task via the Puppet Enterprise Orc
 ```groovy
 puppet.task(
   credentialsId: 'pe_token', // token bindings credentials id for rbac token; mutually exclusive with token
-  description:    'my task', // optional description of the job
-  environment:    'production', // optional environment to execute the task on (default is production)
-  noop:           true, // optional execute task in noop (default is false)
-  params:         ['action':'install', 'name':'httpd'], // optional input parameters (default is empty)
-  scope:          ['node1.example.com', 'node2.example.com'], // scope for deployment (if string, will be passed as `node_group` or `application`; if array of strings, will be passed as `nodes` or `query`; internal logic attempts to correctly determine which)
-  server:         'puppet', // optional server hosting puppet orchestrator
-  task:           'package', // name of the task to execute
-  tokenFile:      '/var/lib/jenkins/.puppetlabs/token' // rbac token file location for deploying with code manager; mutually exclusive with credentialId
+  description:   'my task', // optional description of the job
+  environment:   'production', // optional environment to execute the task on (default is production)
+  noop:          true, // optional execute task in noop (default is false)
+  params:        ['action':'install', 'name':'httpd'], // optional input parameters (default is empty)
+  scope:         ['node1.example.com', 'node2.example.com'], // scope for deployment (if string, will be passed as `node_group` or `application`; if array of strings, will be passed as `nodes` or `query`; internal logic attempts to correctly determine which)
+  server:        'puppet', // optional server hosting puppet orchestrator
+  task:          'package', // name of the task to execute
+  tokenFile:     '/var/lib/jenkins/.puppetlabs/token' // rbac token file location for deploying with code manager; mutually exclusive with credentialId
 )
 ```
 

@@ -11,10 +11,10 @@ Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)`
 
 ```groovy
 terraform.apply(
-  bin:         '/usr/bin/terraform', // optional path to terraform executable
+  bin:        '/usr/bin/terraform', // optional path to terraform executable
   configPath: '/path/to/config_dir_or_plan_file', // path to config dir or plan file
-  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
+  target:     ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:        ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
@@ -24,10 +24,10 @@ Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: 
 
 ```groovy
 terraform.destroy(
-  bin:         '/usr/bin/terraform', // optional path to terraform executable
+  bin:        '/usr/bin/terraform', // optional path to terraform executable
   configPath: '/path/to/config_dir', // path to config dir or plan file
-  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
+  target:     ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:        ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile:    '/path/to/variables.tf' // optional location of variables file
 )
 ```
@@ -51,12 +51,12 @@ Uses Terraform to initialize a working directory.
 
 ```groovy
 terraform.init(
-  backend:    true  // optional false to omit backend initialization
+  backend:       true  // optional false to omit backend initialization
   backendConfig: ['/path/to/backend.hcl'] // optional paths to hcl files with backend configs
-  bin:        '/usr/bin/terraform', // optional path to terraform executable
-  dir:        '/path/to/working_config_dir', // path to working config dir
-  pluginDir: '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
-  upgrade:    false, // optional upgrade modules and plugins
+  bin:           '/usr/bin/terraform', // optional path to terraform executable
+  dir:           '/path/to/working_config_dir', // path to working config dir
+  pluginDir:     '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
+  upgrade:       false, // optional upgrade modules and plugins
 )
 ```
 
@@ -71,7 +71,7 @@ terraform.imports(
   provider:  'template', // optional specific provider for import
   state:     'terraform.tfstate', // optional path to the source state file
   var:       ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile:  '/path/to/variables.tf' // optional location of variables file
+  varFile:   '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
@@ -102,7 +102,7 @@ terraform.plan(
   return:      false, // optional return plan output from method
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
   var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile:    '/path/to/variables.tf' // optional location of variables file
+  varFile:     '/path/to/variables.tf' // optional location of variables file
 )
 ```
 

@@ -45,13 +45,13 @@ Package a chart directory into a chart archive.
 
 ```groovy
 helm.packages(
-  bin:         '/usr/bin/helm', // optional executable path for helm
-  chart:       'path/to/chart', // absolute or relative path to chart
-  dest:        '.', // optional location to write the chart
-  key:         'foo', // optional sign the package with this key name (mutually exclusive with keyring)
-  keyring:     '/home/dir/.gnupg/pubring.gpg', // optional sign the package with the public keyring at this location (mutually exclusive with key)
+  bin:        '/usr/bin/helm', // optional executable path for helm
+  chart:      'path/to/chart', // absolute or relative path to chart
+  dest:       '.', // optional location to write the chart
+  key:        'foo', // optional sign the package with this key name (mutually exclusive with keyring)
+  keyring:    '/home/dir/.gnupg/pubring.gpg', // optional sign the package with the public keyring at this location (mutually exclusive with key)
   updateDeps: false, // optional update dependencies from requirements prior to packaging
-  version:     '1.0.0' // optional version set for the chart
+  version:    '1.0.0' // optional version set for the chart
 )
 ```
 
@@ -113,13 +113,13 @@ Executes the tests for a release.
 
 ```groovy
 helm.test(
-  bin:      '/usr/bin/helm', // optional executable path for helm
-  cleanup:  false, // optional delete test pods upon completion
-  context:  'default', // optional kube-context from kube config
-  kubectl:  '/usr/bin/kubectl', // optional executable path for kubectl
-  name:     'happy-panda', // name of a deployed release
+  bin:       '/usr/bin/helm', // optional executable path for helm
+  cleanup:   false, // optional delete test pods upon completion
+  context:   'default', // optional kube-context from kube config
+  kubectl:   '/usr/bin/kubectl', // optional executable path for kubectl
+  name:      'happy-panda', // name of a deployed release
   namespace: 'default' // optional namespace for the queried release object
-  parallel: false // optional run test pods in parallel
+  parallel:  false // optional run test pods in parallel
 )
 ```
 

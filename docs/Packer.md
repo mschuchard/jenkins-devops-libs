@@ -14,7 +14,7 @@ packer.build(
   bin:      '/usr/bin/packer', // optional location of packer install
   force:    false, // optional force a build to continue if artifacts exist and deletes existing artifacts
   only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build
-  onError: "default", // optional "default" cleanup, "abort", "ask", or "run-cleanup-provisioner"
+  onError:  "default", // optional "default" cleanup, "abort", "ask", or "run-cleanup-provisioner"
   template: '/path/to/template.pkr.json', // location of packer template file or templates directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile: '/path/to/variables.json' // optional location of variables file
@@ -27,10 +27,10 @@ Uses Packer to check for properly canonically formatted code.
 ```groovy
 packer.fmt(
   bin:      '/usr/bin/packer', // optional location of packer install
-  check:     false, // optional check template and return an error if file is not formatted correctly (cannot be used with `write`)
-  diff:      false, // optional present a diff if the template is not formatted correctly
+  check:    false, // optional check template and return an error if file is not formatted correctly (cannot be used with `write`)
+  diff:     false, // optional present a diff if the template is not formatted correctly
   template: '/path/to/template_dir', // location of packer templates directory
-  write:     true // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
+  write:    true // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
 )
 ```
 
