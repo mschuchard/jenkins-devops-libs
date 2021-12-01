@@ -4,6 +4,9 @@
 - Remove support for old DSL/closure type inputs to global variable methods.
 - Remove global variable methods for software installation and configuration.
 
+**Helm**
+- Add `dryRun` parameter to `install` and `upgrade` methods.
+
 **Terraform**
 - Add `out` parameter to `plan` method.
 

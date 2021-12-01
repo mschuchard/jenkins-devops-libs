@@ -29,6 +29,9 @@ void install(body) {
       cmd += " --set ${var}=${value}"
     }
   }
+  if (config.dryRun == true) {
+    cmd += ' --dry-run'
+  }
   if (config.context) {
     cmd += " --kube-context ${config.context}"
     lister += " --kube-context ${config.context}"
@@ -455,6 +458,9 @@ void upgrade(body) {
   }
   if (config.install == true) {
     cmd += ' --install'
+  }
+  if (config.dryRun == true) {
+    cmd += ' --dry-run'
   }
   if (config.context) {
     cmd += " --kube-context ${config.context}"
