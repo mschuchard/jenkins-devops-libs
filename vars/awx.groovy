@@ -1,7 +1,7 @@
 // vars/awx.groovy
 import devops.common.utils
 
-void hostCreate(body) {
+void hostCreate(config) {
   // input checking
   assert config.name : '"name" is a required parameter for awx.hostCreate.'
   assert config.inventory : '"inventory" is a required parameter for awx.hostCreate.'
@@ -90,7 +90,7 @@ void inventory(config) {
 }
 
 // invokes inventory helper method
-void inventoryCreate(body) {
+void inventoryCreate(config) {
   // invoke helper method with create
   config.action = 'create'
   inventory(config)
@@ -109,13 +109,13 @@ void inventoryDelete(String id, String bin = 'awx') {
 }
 
 // invokes inventory helper method
-void inventoryModify(body) {
+void inventoryModify(config) {
   // invoke helper method with modify
   config.action = 'modify'
   inventory(config)
 }
 
-void jobTemplateLaunch(body) {
+void jobTemplateLaunch(config) {
   // input checking
   assert config.id : '"id" is a required parameter for awx.jobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
@@ -163,7 +163,7 @@ void jobTemplateLaunch(body) {
   print 'awx job template launch was successful.'
 }
 
-void projectsUpdate(body) {
+void projectsUpdate(config) {
   // input checking
   assert config.id : '"id" is a required parameter for awx.projectsUpdate.'
   config.bin = config.bin ?: 'awx'
@@ -187,7 +187,7 @@ void projectsUpdate(body) {
   print 'awx projects update was successful.'
 }
 
-void workflowJobTemplateLaunch(body) {
+void workflowJobTemplateLaunch(config) {
   // input checking
   assert config.id : '"id" is a required parameter for awx.workflowJobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'

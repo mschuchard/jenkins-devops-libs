@@ -37,7 +37,7 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
   print "DGoSS successfully installed at ${installPath}/dgoss."
 }
 
-void server(body) {
+void server(config) {
   // input checking
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
@@ -70,7 +70,7 @@ void server(body) {
   print 'GoSS server endpoint created successfully.'
 }
 
-void validate(body) {
+void validate(config) {
   // input checking
   if ((config.gossfile) && (!fileExists(config.gossfile))) {
     throw new Exception("Gossfile ${config.gossfile} does not exist!")
@@ -101,7 +101,7 @@ void validate(body) {
   print 'GoSS validate command was successful.'
 }
 
-void validateDocker(body) {
+void validateDocker(config) {
   // input checking
   assert config.image : 'The required image parameter was not set.'
 

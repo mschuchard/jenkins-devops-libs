@@ -1,7 +1,7 @@
 // vars/packer.groovy
 import devops.common.utils
 
-void build(body) {
+void build(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
@@ -47,7 +47,7 @@ void build(body) {
   print 'Packer build artifact created successfully.'
 }
 
-void fmt(body) {
+void fmt(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
@@ -84,7 +84,7 @@ void fmt(body) {
   print 'Packer fmt was successful.'
 }
 
-void init(body) {
+void init(config) {
   // input checking
   assert fileExists(config.dir) : "Working template directory ${config.dir} does not exist."
   config.bin = config.bin ?: 'packer'
@@ -124,7 +124,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
   print 'Packer inspect was successful'
 }
 
-void install(body) {
+void install(config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
@@ -176,7 +176,7 @@ void pluginInstall(String url, String installLoc) {
   print "Packer plugin successfully installed at ${installLoc}."
 }
 
-void validate(body) {
+void validate(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"

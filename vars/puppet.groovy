@@ -1,7 +1,7 @@
 // vars/puppet.groovy
 import devops.common.utils
 
-void codeDeploy(body) {
+void codeDeploy(config) {
   // input checking
   assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
@@ -97,7 +97,7 @@ void codeDeploy(body) {
   print 'Code manager deployment(s) was successful.'
 }
 
-void task(body) {
+void task(config) {
   // input checking
   assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
@@ -218,7 +218,7 @@ void task(body) {
   print 'Puppet Orchestrator Task execution successfully requested.'
 }
 
-void token (body) {
+void token (config) {
   // input checking
   assert config.username : 'The username parameter is required.'
   assert config.password : 'The password parameter is required.'

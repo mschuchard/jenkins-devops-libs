@@ -1,7 +1,7 @@
 //vars/helm.groovy
 import devops.common.utils
 
-void install(body) {
+void install(config) {
   // input checking
   assert config.name : "The required parameter 'name' was not set."
   assert config.chart : "The required parameter 'chart' was not set."
@@ -78,7 +78,7 @@ void kubectl(String version, String installPath = '/usr/bin/') {
   print "Kubectl successfully installed at ${installPath}/kubectl."
 }
 
-void lint(body) {
+void lint(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
@@ -140,7 +140,7 @@ void lint(body) {
   print 'Helm lint executed successfully.'
 }
 
-void packages(body) {
+void packages(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart : "The required parameter 'chart' was not set."
@@ -180,7 +180,7 @@ void packages(body) {
   print 'Helm package command was successful.'
 }
 
-void plugin(body) {
+void plugin(config) {
   // input checking
   assert (['install', 'list', 'uninstall', 'update'].contains(config.command)) : "The argument must be one of: install, list, uninstall, or update."
   assert (config.plugin) && (config.command != 'list') : "The required parameter 'plugin' was not set for a non-list command."
@@ -204,7 +204,7 @@ void plugin(body) {
   print "Helm plugin ${config.command} executed successfully."
 }
 
-void repo(body) {
+void repo(config) {
   // input checking
   assert config.repo : "The required parameter 'repo' was not set."
   assert config.url : "The required parameter 'url' was not set."
@@ -234,7 +234,7 @@ void repo(body) {
   print 'Helm repo add executed successfully.'
 }
 
-void rollback(body) {
+void rollback(config) {
   // input checking
   assert config.version : "The required parameter 'version' was not set."
   assert config.name : "The required parameter 'name' was not set."
@@ -287,7 +287,7 @@ void setup(String version, String installPath = '/usr/bin/') {
   }
 }
 
-void status(body) {
+void status(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
@@ -320,7 +320,7 @@ void status(body) {
   print 'Helm status executed successfully.'
 }
 
-void test(body) {
+void test(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
@@ -392,7 +392,7 @@ void test(body) {
   print 'Helm test executed successfully.'
 }
 
-void uninstall(body) {
+void uninstall(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name : "The required parameter 'name' was not set."
@@ -425,7 +425,7 @@ void uninstall(body) {
   print 'Helm uninstall executed successfully.'
 }
 
-void upgrade(body) {
+void upgrade(config) {
   // input checking
   assert config.chart : "The required parameter 'chart' was not set."
   assert config.name : "The required parameter 'name' was not set."

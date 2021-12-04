@@ -1,7 +1,7 @@
 // vars/terraform.groovy
 import devops.common.utils
 
-void apply(body) {
+void apply(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -54,7 +54,7 @@ void apply(body) {
   print 'Terraform apply was successful.'
 }
 
-void destroy(body) {
+void destroy(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -107,7 +107,7 @@ void destroy(body) {
   print 'Terraform destroy was successful.'
 }
 
-void fmt(body) {
+void fmt(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -152,7 +152,7 @@ void fmt(body) {
   print 'Terraform fmt was successful.'
 }
 
-void imports(body) {
+void imports(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -204,7 +204,7 @@ void imports(body) {
   print 'Terraform imports were successful.'
 }
 
-void init(body) {
+void init(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -249,7 +249,7 @@ void init(body) {
   print 'Terraform init was successful.'
 }
 
-void install(body) {
+void install(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -274,7 +274,7 @@ void install(body) {
   print "Terraform successfully installed at ${config.installPath}/terraform."
 }
 
-def output(body) {
+def output(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -317,7 +317,7 @@ def output(body) {
   }
 }
 
-def plan(body) {
+def plan(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -381,7 +381,7 @@ def plan(body) {
   }
 }
 
-void pluginInstall(body) {
+void pluginInstall(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -420,7 +420,7 @@ void pluginInstall(body) {
   print "Terraform plugin successfully installed at ${installLoc}."
 }
 
-void state(body) {
+void state(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -480,7 +480,7 @@ void state(body) {
   print 'Terraform state manipulation was successful.'
 }
 
-void taint(body) {
+void taint(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -512,7 +512,7 @@ void taint(body) {
   print 'Terraform taints were successful.'
 }
 
-void validate(body) {
+void validate(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -543,7 +543,7 @@ void validate(body) {
   print 'Terraform validate was successful.'
 }
 
-void workspace(body) {
+void workspace(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 

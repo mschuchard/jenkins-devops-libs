@@ -1,7 +1,7 @@
 // vars/faas.groovy
 import devops.common.utils
 
-void build(body) {
+void build(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
@@ -37,7 +37,7 @@ void build(body) {
   print 'FaaS build image created successfully.'
 }
 
-void deploy(body) {
+void deploy(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   if (config.replace && config.update) {
@@ -83,7 +83,7 @@ void deploy(body) {
   print 'FaaS function deployed successfully.'
 }
 
-void install(body) {
+void install(config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform && config.version) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
@@ -114,7 +114,7 @@ void install(body) {
   print "FaaS CLI successfully installed at ${config.installPath}/faas-cli."
 }
 
-void invoke(body) {
+void invoke(config) {
   // input checking
   config.bin = config.bin ?: 'faas-cli'
   assert config.function : 'The required parameter function was not set.'
@@ -163,7 +163,7 @@ void invoke(body) {
   print 'FaaS function container image pushed successfully.'
 }
 
-void login(body) {
+void login(config) {
   // input checking
   assert config.gateway : 'The required gateway parameter was not set.'
   assert config.password : 'The required password parameter was not set.'
@@ -188,7 +188,7 @@ void login(body) {
   print 'Successfully logged in to FaaS gateway.'
 }
 
-void push(body) {
+void push(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
@@ -221,7 +221,7 @@ void push(body) {
   print 'FaaS function container image pushed successfully.'
 }
 
-void remove(body) {
+void remove(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file ${config.template} does not exist!"
