@@ -425,7 +425,7 @@ void state(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (['move', 'remove', 'push', 'list'].contains(config.command)) : "The argument must be one of: move, remove, list, or push."
+  assert (['move', 'remove', 'push', 'list'].contains(config.command)) : "The command parameter must be one of: move, remove, list, or push."
   config.bin = config.bin ?: 'terraform'
   String cmd = "${config.bin} state"
 

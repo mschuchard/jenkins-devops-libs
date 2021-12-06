@@ -287,6 +287,24 @@ void setup(String version, String installPath = '/usr/bin/') {
   }
 }
 
+void show(config) {
+  // input checking
+  config.bin = config.bin ?: 'helm'
+  assert config.chart : "The required parameter 'chart' was not set."
+  assert config.info : "The required parameter 'info' was not set."
+  assert (['all', 'chart', 'readme', 'values']).contains(config.info) : "The info parameter must be one of all, chart, readme, or values."
+
+  // show chart info
+  try {
+    sh(label: 'Helm Show', script: "${config.bin} ${config.info} ${config.chart}")
+  }
+  catch(Exception error) {
+    print 'Failure using helm show.'
+    throw error
+  }
+  print 'Helm show executed successfully.'
+}
+
 void status(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
