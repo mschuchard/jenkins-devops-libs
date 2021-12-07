@@ -23,20 +23,30 @@ pipeline {
         }
       }
     }
-    stage('Lint') {
-      steps {
-        script {
-          helm.lint(chart: 'stable/mariadb' // chart repository, local archive, directory, or url to install
-          )
-        }
-      }
-    }
     stage('Repo') {
       steps {
         script {
           helm.repo(
             repo: 'stable',
             url:  'https://kubernetes-charts.storage.googleapis.com'
+          )
+        }
+      }
+    }
+    stage('Show') {
+      steps {
+        script {
+          helm.show(
+            chart: 'stable/mariadb', // chart repository, local archive, directory, or url to display
+            info:  'all', // info to display; one of 'all', 'chart', 'readme', or 'values'
+          )
+        }
+      }
+    }
+    stage('Lint') {
+      steps {
+        script {
+          helm.lint(chart: 'stable/mariadb' // chart repository, local archive, directory, or url to install
           )
         }
       }

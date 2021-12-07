@@ -97,6 +97,17 @@ helm.rollback(
 )
 ```
 
+### helm.show()
+Show information about a chart.
+
+```groovy
+helm.show(
+  bin:   '/usr/local/bin/helm', // optional executable path for helm
+  chart: 'chart', // chart repository, local archive, directory, or url to display
+  info:  'all', // info to display; one of 'all', 'chart', 'readme', or 'values'
+)
+```
+
 ### helm.status()
 Shows the status of a named release.
 

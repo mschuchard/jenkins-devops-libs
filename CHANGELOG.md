@@ -6,6 +6,7 @@
 
 **Helm**
 - Add `dryRun` parameter to `install` and `upgrade` methods.
+- Add `show` method.
 
 **Terraform**
 - Add `out` parameter to `plan` method.
