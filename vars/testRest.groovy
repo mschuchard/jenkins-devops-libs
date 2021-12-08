@@ -1,5 +1,4 @@
 // vars/httpTest.groovy
-import devops.common.utils
 import devops.common.rest
 
 void get(config) {

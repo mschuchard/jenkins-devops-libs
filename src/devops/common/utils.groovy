@@ -9,7 +9,7 @@ import jenkins.model.Jenkins
 
 // checks input value for default value use if not set
 def defaultInput(input, default_value) {
-  return input == null ? default_value : input
+  return input ?: default_value
 }
 
 // removes file
