@@ -89,7 +89,7 @@ terraform.plan(
 ```
 
 ### terraform.plan()
-Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` will be written to the same directory as the input config directory if the `out` parameter is not specified. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons.
+Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` will be written to the same directory as the input config directory if the `out` parameter is not specified. Otherwise, the output plan file will be written to the filesystem at the path specified in the `out` parameter. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons.
 
 ```groovy
 terraform.plan(
@@ -97,7 +97,7 @@ terraform.plan(
   destroy:     false, // optional generate a plan to destroy resources
   dir:         '/path/to/config_dir_or_plan_file', // path to config dir
   display:     false, // optional display plan output
-  out:         'plan.tfplan', // optional plan output file path
+  out:         'plan.tfplan', // optional plan output file path (extension must be .tfplan)
   refreshOnly: false, // optional check if remote objects match outcome of most recent apply (>= 0.15)
   return:      false, // optional return plan output from method
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets

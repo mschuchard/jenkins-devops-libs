@@ -13,7 +13,7 @@ void apply(config) {
   String cmd = "${config.bin} apply -input=false -no-color -auto-approve"
 
   // check if a directory was passed for the config path
-  if (!(config.configPath ==~ /plan\.tfplan/)) {
+  if (!(config.configPath ==~ /\.tfplan$/)) {
     // check for optional var inputs
     if (config.varFile) {
       assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
@@ -38,7 +38,7 @@ void apply(config) {
 
   // apply the config
   try {
-    if (config.configPath ==~ /plan\.tfplan/) {
+    if (config.configPath ==~ /\.tfplan$/) {
       sh(label: 'Terraform Apply', script: "${cmd} ${config.configPath}")
     }
     else {
@@ -66,7 +66,7 @@ void destroy(config) {
   String cmd = "${config.bin} destroy -input=false -no-color -auto-approve"
 
   // check if a directory was passed for the config path
-  if (!(config.configPath ==~ /plan\.tfplan/)) {
+  if (!(config.configPath ==~ /\.tfplan$/)) {
     // check for optional var inputs
     if (config.varFile) {
       assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
@@ -91,7 +91,7 @@ void destroy(config) {
 
   // destroy the state
   try {
-    if (config.configPath ==~ /plan\.tfplan/) {
+    if (config.configPath ==~ /\.tfplan$/) {
       sh(label: 'Terraform Destroy', script: "${cmd} ${config.configPath}")
     }
     else {
