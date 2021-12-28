@@ -354,13 +354,13 @@ def plan(config) {
   if (config.refreshOnly == true) {
     cmd += ' -refresh-only'
   }
-  String out = config.out ?: "-out=${config.dir}/plan.tfplan"
+  String out = config.out ?: "${config.dir}/plan.tfplan"
 
   // generate a plan from the config directory
   try {
     // execute plan
     dir(config.dir) {
-      String planOutput = sh(label: 'Terraform Plan', script: "${cmd} ${out}", returnStdout: true)
+      String planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: config.return)
     }
 
     // display plan output if specified
