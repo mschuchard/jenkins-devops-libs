@@ -520,14 +520,11 @@ void validate(config) {
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} validate"
+  String cmd = "${config.bin} validate -no-color"
 
   // optional inputs
-  if (config.checkVars == true) {
+  if (config.json == true) {
     cmd += ' -json'
-  }
-  else {
-    cmd += ' -no-color'
   }
 
   // validate the config directory

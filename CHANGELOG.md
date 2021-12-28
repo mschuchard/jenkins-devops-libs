@@ -10,6 +10,7 @@
 
 **Terraform**
 - Add `out` parameter to `plan` method.
+- Fix `json` parameter for `validate` method.
 
 ### 1.6.2
 **General**

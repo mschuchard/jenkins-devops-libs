@@ -47,28 +47,12 @@ library('jenkins-devops-libs')
 - [Puppet Enterprise](docs/Puppet.md) (beta)
 - [Terraform](docs/Terraform.md)
 
-## DSL Change
-Starting with version 1.4.0 of the libraries, the new DSL will be supported. The new DSL appears like the following syntax:
+## 2.0.0 Breaking Changes
+Note the following breaking changes for new major version 2.0.0:
 
-```groovy
-// Map type argument
-library.method(
-  param_one: value,
-  param_two: value
-)
-```
-
-The documentation has also been updated to reflect the new DSL. The old DSL will be supported until version 2.0.0. The old DSL appears like the following syntax:
-
-```groovy
-// Closure type argument
-library.method {
-  param_one = value
-  param_two = value
-}
-```
-
-It is recommended to update your usage at your earliest convenience, but both will be supported for versions >= 1.4.0 < 2.0.0.
+- All publicly accessible global variable methods and their associated parameters have been converted to camelCase to adhere to standard Groovy convention.
+- The old DSL for Jenkines Pipeline global variable methods which accepted Closure type inputs is no longer supported. Usage will need to be updated to the new DSL with Map type inputs.
+- Global variable methods for software installation and configuration are removed. Users should migrate to build agents managed with software provisioning, configuration management, and/or containerization.
 
 ## Contributing
 Code should pass all acceptance tests. New features should involve new acceptance tests.
