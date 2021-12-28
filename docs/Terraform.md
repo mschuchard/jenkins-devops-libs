@@ -135,9 +135,10 @@ Uses Terraform to validate a config directory.
 
 ```groovy
 terraform.validate(
-  bin:  '/usr/bin/terraform', // optional path to terraform executable
-  dir:  '/path/to/config_dir', // path to config dir
-  json: false, // produce output in a machine-readable JSON format
+  bin:    '/usr/bin/terraform', // optional path to terraform executable
+  dir:    '/path/to/config_dir', // path to config dir
+  json:   false, // optional produce output in a machine-readable JSON format
+  return: false, // optional return validate output from method (mostly useful with json: true)
 )
 ```
 

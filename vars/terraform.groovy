@@ -530,7 +530,7 @@ void validate(config) {
   // validate the config directory
   try {
     dir(config.dir) {
-      sh(label: 'Terraform Validate', script: cmd)
+      String validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: config.return)
     }
   }
   catch(Exception error) {
@@ -538,6 +538,11 @@ void validate(config) {
     throw error
   }
   print 'Terraform validate was successful.'
+
+  // return validate output if requested
+  if (config.return == true) {
+    return validateOutput
+  }
 }
 
 void workspace(config) {
