@@ -70,7 +70,7 @@ void fmt(config) {
   }
 
   try {
-    int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
+    final int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
 
     // report if formatting check detected issues
     if ((config.check == true) && (fmtStatus != 0)) {
@@ -133,7 +133,7 @@ void install(config) {
 
   // check if current version already installed
   if (fileExists("${config.installPath}/packer")) {
-    String installedVersion = sh(label: 'Check Packer Version', returnStdout: true, script: "${config.installPath}/packer version").trim()
+    final String installedVersion = sh(label: 'Check Packer Version', returnStdout: true, script: "${config.installPath}/packer version").trim()
     if (installedVersion ==~ config.version) {
       print "Packer version ${config.version} already installed at ${config.installPath}."
       return
@@ -148,9 +148,9 @@ void install(config) {
 
 void pluginInstall(String url, String installLoc) {
   // determine number of elements in loc up to final slash
-  String elemCount = new File(installLoc).name.lastIndexOf('/')
+  final String elemCount = new File(installLoc).name.lastIndexOf('/')
   // return file path up to final slash element
-  String installDir = new File(installLoc).name.take(elemCount)
+  final String installDir = new File(installLoc).name.take(elemCount)
 
   // check if plugin dir exists and create if not
   new utils().makeDirParents(installDir)

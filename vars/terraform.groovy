@@ -137,7 +137,7 @@ void fmt(config) {
 
   try {
     dir(config.configDir) {
-      int fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
+      final int fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
     }
 
     // report if formatting check detected issues
@@ -261,7 +261,7 @@ void install(config) {
 
   // check if current version already installed
   if (fileExists("${config.installPath}/terraform")) {
-    String installedVersion = sh(label: 'Check Terraform Version', returnStdout: true, script: "${config.installPath}/terraform version").trim()
+    final String installedVersion = sh(label: 'Check Terraform Version', returnStdout: true, script: "${config.installPath}/terraform version").trim()
     if (installedVersion ==~ config.version) {
       print "Terraform version ${config.version} already installed at ${config.installPath}."
       return
@@ -299,7 +299,7 @@ def output(config) {
   // display outputs from the state
   try {
     // capture output(s)
-    String outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
+    final String outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
   }
   catch(Exception error) {
     print 'Failure using terraform output.'
@@ -360,7 +360,7 @@ def plan(config) {
   try {
     // execute plan
     dir(config.dir) {
-      String planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: config.return)
+      final String planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: config.return)
     }
 
     // display plan output if specified
@@ -389,7 +389,7 @@ void pluginInstall(config) {
   assert config.url : "The required parameter 'url' was not set."
   assert config.installName : "The required parameter 'installName' was not set."
 
-  config.installPath = config.installPath ? config.installPath : '~/.terraform.d/plugins'
+  config.installPath = config.installPath ? config.installPath : '~/.terraform/plugins'
 
   // set and assign plugin install location
   String installLoc = "${config.installPath}/${config.installName}"
@@ -463,7 +463,7 @@ void state(config) {
       case 'list':
         assert !config.resources : 'Resources parameter is not allowed for push command.';
 
-        String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
+        final String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
         print 'Terraform state output is as follows:'
         print stateList
 
@@ -530,7 +530,7 @@ void validate(config) {
   // validate the config directory
   try {
     dir(config.dir) {
-      String validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: config.return)
+      final String validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: config.return)
     }
   }
   catch(Exception error) {
@@ -562,7 +562,7 @@ void workspace(config) {
     catch(Exception error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
 
-      String workspaces = sh(label: 'Terraform Workspace List', script: "${config.bin} workspace list", returnStdout: true)
+      final String workspaces = sh(label: 'Terraform Workspace List', script: "${config.bin} workspace list", returnStdout: true)
       print workspaces
 
       throw error

@@ -91,7 +91,7 @@ void install(config) {
 
   // check if current version already installed
   if (fileExists("${config.installPath}/faas-cli")) {
-    String installedVersion = sh(label: 'Check OpenFaaS CLI Version', returnStdout: true, script: "${config.installPath}/faas-cli version").trim()
+    final String installedVersion = sh(label: 'Check OpenFaaS CLI Version', returnStdout: true, script: "${config.installPath}/faas-cli version").trim()
     if (installedVersion ==~ config.version) {
       print "FaaS CLI version ${config.version} already installed at ${config.installPath}."
       return

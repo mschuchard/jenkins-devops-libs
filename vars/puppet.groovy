@@ -12,7 +12,7 @@ void codeDeploy(config) {
   assert (config.servers instanceof List) : 'The servers parameter must be a list of strings.'
 
   // init payload
-  Map payload = [:]
+  Map<String,String> payload = [:]
 
   // check for environments
   if (!config.environments) {
@@ -108,7 +108,7 @@ void task(config) {
 
   config.server = config.server ?: 'puppet'
 
-  // construct payload
+  // initialize payload
   Map<String,String> payload = [:]
 
   if (config.environment) {
