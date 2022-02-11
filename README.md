@@ -47,12 +47,22 @@ library('jenkins-devops-libs')
 - [Puppet Enterprise](docs/Puppet.md) (beta)
 - [Terraform](docs/Terraform.md)
 
-## 2.0.0 Breaking Changes
+## 2.0.0 (Upcoming) Breaking Changes
 Note the following breaking changes for new major version 2.0.0:
 
 - All publicly accessible global variable methods and their associated parameters have been converted to camelCase to adhere to standard Groovy convention.
 - The old DSL for Jenkines Pipeline global variable methods which accepted Closure type inputs is no longer supported. Usage will need to be updated to the new DSL with Map type inputs.
 - Global variable methods for software installation and configuration are removed. Users should migrate to build agents managed with software provisioning, configuration management, and/or containerization.
+
+## Ports
+
+These libraries will eventually be ported to other pipeline software so that they will also be enabled for the same tools supported here. These include (in order of priority):
+
+- CircleCI
+- Github Actions
+- Concourse
+
+Note that currently Travis and GitlabCI do not support pipeline libraries in the same sense as Jenkins and the pipeline software listed above.
 
 ## Contributing
 Code should pass all acceptance tests. New features should involve new acceptance tests.
