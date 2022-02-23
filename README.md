@@ -56,7 +56,7 @@ Note the following breaking changes for new major version 2.0.0:
 
 ## Ports
 
-These libraries will eventually be ported to other pipeline software so that they will also be enabled for the same tools supported here. These include (in order of priority):
+These libraries will eventually be ported to other pipeline software so that these pipeline platforms will also be enabled for the same tools supported here. These include (in order of priority):
 
 - CircleCI
 - Github Actions

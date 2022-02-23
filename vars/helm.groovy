@@ -397,9 +397,9 @@ void test(config) {
 
       // iterate through test pods, display the logs for each, and then delete the test pod
       testPods.each() { testPod ->
-        final String logs = sh(label: 'List Pod Logs', returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${testPod}")
+        final String podLogs = sh(label: 'List Pod Logs', returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${testPod}")
         print "Logs for ${testPod} for release ${config.name} are:"
-        print logs
+        print podLogs
         print "Removing test pod ${testPod}."
         sh(label: 'Test Pod Cleanup', script: "${config.kubectl} -n ${namespace} delete pod ${testPod}")
       }
