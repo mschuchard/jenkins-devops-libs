@@ -99,6 +99,7 @@ terraform.plan(
   display:     false, // optional display plan output
   out:         'plan.tfplan', // optional plan output file path (extension must be .tfplan)
   refreshOnly: false, // optional check if remote objects match outcome of most recent apply (>= 0.15)
+  replace:     ['aws_instance.example', 'aws_eip.ip'], // optional resources to unconditionally recreate in plan
   return:      false, // optional return plan output from method
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
   var:         ['foo':'bar', 'bar':'baz'], // optional variable setting

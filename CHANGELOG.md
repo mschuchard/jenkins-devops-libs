@@ -9,7 +9,7 @@
 - Add `show` method.
 
 **Terraform**
-- Add `out` parameter to `plan` method.
+- Add `out` and `replace` parameters to `plan` method.
 - Fix `json` parameter for `validate` method.
 - Add `return` parameter to `validate` method.
 

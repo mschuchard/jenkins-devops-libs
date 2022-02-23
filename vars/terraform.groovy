@@ -348,6 +348,13 @@ def plan(config) {
       cmd += " -target=${target}"
     }
   }
+  if (config.replace) {
+    assert (config.replace instanceof List) : 'The replace parameter must be a list of strings.'
+
+    config.replace.each() { resource ->
+      cmd += " -replace=${resource}"
+    }
+  }
   if (config.destroy == true) {
     cmd += ' -destroy'
   }
