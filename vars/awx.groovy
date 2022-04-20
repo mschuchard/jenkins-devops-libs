@@ -64,7 +64,7 @@ void inventory(config) {
     cmd += " --description ${config.description}"
   }
   if (config.smart == true) {
-    cmd += " --kind smart"
+    cmd += ' --kind smart'
   }
   if (config.hostFilter) {
     cmd += " --host_filter ${config.hostFilter}"

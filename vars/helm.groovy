@@ -3,8 +3,8 @@ import devops.common.utils
 
 void install(config) {
   // input checking
-  assert config.name : "The required parameter 'name' was not set."
-  assert config.chart : "The required parameter 'chart' was not set."
+  assert config.name : 'The required parameter "name" was not set.'
+  assert config.chart : 'The required parameter "chart" was not set.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} install"
@@ -41,7 +41,7 @@ void install(config) {
     lister += " --namespace ${config.namespace}"
   }
   if (config.verify == true) {
-    cmd += " --verify"
+    cmd += ' --verify'
   }
 
   // check release object
@@ -81,7 +81,7 @@ void kubectl(String version, String installPath = '/usr/bin/') {
 void lint(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart : "The required parameter 'chart' was not set."
+  assert config.chart : 'The required parameter "chart" was not set.'
 
   String cmd = "${config.bin} lint"
 
@@ -111,7 +111,7 @@ void lint(config) {
     cmd += " --namespace ${config.namespace}"
   }
   if (config.strict == true) {
-    cmd += " --strict"
+    cmd += ' --strict'
   }
 
   // lint with helm
@@ -143,7 +143,7 @@ void lint(config) {
 void packages(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart : "The required parameter 'chart' was not set."
+  assert config.chart : 'The required parameter "chart" was not set.'
   assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not contain a Chart.yaml!"
 
   String cmd = "${config.bin} package"
@@ -182,8 +182,8 @@ void packages(config) {
 
 void plugin(config) {
   // input checking
-  assert (['install', 'list', 'uninstall', 'update'].contains(config.command)) : "The argument must be one of: install, list, uninstall, or update."
-  assert (config.plugin) && (config.command != 'list') : "The required parameter 'plugin' was not set for a non-list command."
+  assert (['install', 'list', 'uninstall', 'update'].contains(config.command)) : 'The argument must be one of: install, list, uninstall, or update.'
+  assert (config.plugin) && (config.command != 'list') : 'The required parameter "plugin" was not set for a non-list command.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} plugin ${config.command}"
@@ -206,8 +206,8 @@ void plugin(config) {
 
 void repo(config) {
   // input checking
-  assert config.repo : "The required parameter 'repo' was not set."
-  assert config.url : "The required parameter 'url' was not set."
+  assert config.repo : 'The required parameter "repo" was not set.'
+  assert config.url : 'The required parameter "url" was not set.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} repo add"
@@ -290,8 +290,8 @@ void setup(String version, String installPath = '/usr/bin/') {
 void show(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart : "The required parameter 'chart' was not set."
-  assert config.info : "The required parameter 'info' was not set."
+  assert config.chart : 'The required parameter "chart" was not set.'
+  assert config.info : 'The required parameter "info" was not set.'
   assert (['all', 'chart', 'readme', 'values']).contains(config.info) : "The info parameter must be one of all, chart, readme, or values."
 
   // show chart info
@@ -308,7 +308,7 @@ void show(config) {
 void status(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.name : "The required parameter 'name' was not set."
+  assert config.name : 'The required parameter "name" was not set.'
 
   String cmd = "${config.bin} status"
   String lister = "${config.bin} list"
@@ -341,7 +341,7 @@ void status(config) {
 void test(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.name : "The required parameter 'name' was not set."
+  assert config.name : 'The required parameter "name" was not set.'
 
   String cmd = "${config.bin} test"
 
@@ -413,7 +413,7 @@ void test(config) {
 void uninstall(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.name : "The required parameter 'name' was not set."
+  assert config.name : 'The required parameter "name" was not set.'
 
   String cmd = "${config.bin} uninstall"
   String lister = "${config.bin} list"
@@ -445,8 +445,8 @@ void uninstall(config) {
 
 void upgrade(config) {
   // input checking
-  assert config.chart : "The required parameter 'chart' was not set."
-  assert config.name : "The required parameter 'name' was not set."
+  assert config.chart : 'The required parameter "chart" was not set.'
+  assert config.name : 'The required parameter "name" was not set.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} upgrade"

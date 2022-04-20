@@ -14,7 +14,7 @@ packer.build(
   bin:      '/usr/bin/packer', // optional location of packer install
   force:    false, // optional force a build to continue if artifacts exist and deletes existing artifacts
   only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build
-  onError:  "default", // optional "default" cleanup, "abort", "ask", or "run-cleanup-provisioner"
+  onError:  'default', // optional 'default' cleanup, 'abort', 'ask', or 'run-cleanup-provisioner'
   template: '/path/to/template.pkr.json', // location of packer template file or templates directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile: '/path/to/variables.json' // optional location of variables file

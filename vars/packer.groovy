@@ -59,14 +59,14 @@ void fmt(config) {
   String cmd = "${config.bin} fmt"
 
   if (config.diff == true) {
-    cmd += " -diff"
+    cmd += ' -diff'
   }
   if (config.check == true) {
-    cmd += " -check"
+    cmd += ' -check'
   }
   // incompatible with above
   else if (config.write == true) {
-    cmd += " -write"
+    cmd += ' -write'
   }
 
   try {

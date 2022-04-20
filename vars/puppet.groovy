@@ -85,7 +85,7 @@ void codeDeploy(config) {
           errored = true
         }
         else {
-          print "Successful response from Code Manager below:"
+          print 'Successful response from Code Manager below:'
           print hash.toMapString()
         }
       }
