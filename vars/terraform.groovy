@@ -193,8 +193,8 @@ void imports(config) {
   // import the resources
   try {
     // import each resource
-    config.resources.each() { resource ->
-      sh(label: 'Terraform Import', script: "${cmd} ${resource}")
+    config.resources.each() { name, id ->
+      sh(label: 'Terraform Import', script: "${cmd} ${name} ${id}")
     }
   }
   catch(Exception error) {
@@ -519,7 +519,7 @@ void taint(config) {
   print 'Terraform taints were successful.'
 }
 
-void validate(config) {
+def validate(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 

@@ -12,6 +12,8 @@
 - Add `out` and `replace` parameters to `plan` method.
 - Fix `json` parameter for `validate` method.
 - Add `return` parameter to `validate` method.
+- Fix `resources` parameter for `imports` method.
+- Fix return type for `validate` method.
 
 ### 1.6.2
 **General**

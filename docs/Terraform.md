@@ -67,7 +67,7 @@ Imports existing infrastructure into your Terraform state.
 terraform.imports(
   bin:       '/usr/bin/terraform', // optional path to terraform executable
   dir:       '/path/to/config', // optional path to terraform config for provider
-  resources: ['resource.name', 'other.name'], // names of the resources to import
+  resources: ['resource.name':'resource.id', 'aws_instance.this':'i-1234567890'], // resource name and id mappings to import
   provider:  'template', // optional specific provider for import
   state:     'terraform.tfstate', // optional path to the source state file
   var:       ['foo':'bar', 'bar':'baz'], // optional variable setting
