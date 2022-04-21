@@ -20,6 +20,6 @@ jobs:
     - name: install jenkins
       run: curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null && echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null && sudo apt-get update && sudo apt-get install -y jenkins
     - name: install jenkins pipeline and pipeline utility steps plugins
-      run: jenkins-plugin-cli -p pipeline-utility-steps http_request docker-workflow
+      run: java -jar /usr/lib/jenkins-plugin-manager.jar -p workflow-aggregator pipeline-utility-steps http_request
     - name: execute syntax check
       run: /opt/java/openjdk/bin/java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 groovysh -cp src:/usr/share/jenkins:/usr/share/jenkins/ref/plugins -q vars/*.groovy

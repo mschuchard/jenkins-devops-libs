@@ -14,7 +14,7 @@ jobs:
         - jenkins-devops-libs
     - run:
         name: install jenkins pipeline and pipeline utility steps plugins
-        command: jenkins-plugin-cli -p pipeline-utility-steps http_request docker-workflow
+        command: jenkins-plugin-cli -p workflow-aggregator pipeline-utility-steps http_request
     - save_cache:
         paths:
         - /usr/share/jenkins/ref/plugins

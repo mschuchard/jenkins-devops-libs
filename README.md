@@ -6,6 +6,8 @@ Unsure how to use these in your declarative syntax `Jenkinsfile`? Check the decl
 
 Additionally, you can pare down the libraries available from this repo and then load those in yourself from your own git repo or otherwise.
 
+Note also that a library will not be developed to compete against a good existing plugin (e.g. Ansible), or a good existing library (e.g. Fabric8). These and any future libraries will exist to fill a gap in the existence of a good Jenkins Pipeline plugin or library for a software tool.
+
 ## Retrieve and use with Disabled Sandbox
 
 Basically, if you have the GitHub Branch Source plugin installed, then you can [load a specific version](https://jenkins.io/doc/book/pipeline/shared-libraries/#library-versions) like:
@@ -58,8 +60,8 @@ Note the following breaking changes for new major version 2.0.0:
 
 These libraries will eventually be ported to other pipeline software so that these pipeline platforms will also be enabled for the same tools supported here. These include (in order of priority):
 
-- CircleCI
 - Github Actions
+- CircleCI
 - Concourse
 
 Note that currently Travis and GitlabCI do not support pipeline libraries in the same sense as Jenkins and the pipeline software listed above.
