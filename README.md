@@ -49,7 +49,7 @@ library('jenkins-devops-libs')
 - [Puppet Enterprise](docs/Puppet.md) (beta)
 - [Terraform](docs/Terraform.md)
 
-## 2.0.0 (Upcoming) Breaking Changes
+## 2.0.0 Breaking Changes
 Note the following breaking changes for new major version 2.0.0:
 
 - All publicly accessible global variable methods and their associated parameters have been converted to camelCase to adhere to standard Groovy convention.
