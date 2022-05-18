@@ -42,7 +42,7 @@ library('jenkins-devops-libs')
 
 ## Supported
 - [AWX/Ansible Tower](docs/AWX.md) (beta)
-- [Goss](docs/Goss.md)
+- [GoSS](docs/Goss.md)
 - [Helm](docs/Helm.md)
 - [OpenFaaS](docs/FaaS.md)
 - [Packer](docs/Packer.md)

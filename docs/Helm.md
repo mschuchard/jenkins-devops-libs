@@ -10,7 +10,7 @@ Also please note direct Kubernetes support will never exist in this library. The
 - Kubernetes cluster
 
 ### helm.install()
-Performs an installation with helm onto the Kubernetes cluster.
+Performs an installation with Helm onto the Kubernetes cluster.
 
 ```groovy
 helm.install(
@@ -85,7 +85,7 @@ helm.repo(
 ```
 
 ### helm.rollback()
-Roll back the release object to a previous release with helm.
+Roll back the release object to a previous release with Helm.
 
 ```groovy
 helm.rollback(
@@ -136,7 +136,7 @@ helm.test(
 ```
 
 ### helm.uninstall()
-Uninstall the release object from Kubernetes with helm.
+Uninstall the release object from Kubernetes with Helm.
 
 ```groovy
 helm.uninstall(
@@ -148,7 +148,7 @@ helm.uninstall(
 ```
 
 ### helm.upgrade()
-Updates and/or changes the configuration of a release with helm.
+Updates and/or changes the configuration of a release with Helm.
 
 ```groovy
 helm.upgrade(

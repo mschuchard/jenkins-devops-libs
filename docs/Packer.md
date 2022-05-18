@@ -7,7 +7,7 @@ Interacts with Packer. The `template` argument must generally be a `pkr.json` te
 - Packer CLI binary executable >= 1.5
 
 ### packer.build()
-Uses Packer to build an artifact from a template.
+Uses Packer to build an artifact from a template or template directory.
 
 ```groovy
 packer.build(
@@ -55,7 +55,7 @@ packer.inspect('/path/to/template.pkr.json', '/usr/local/bin/packer')
 ```
 
 ### packer.validate()
-Uses Packer to validate a build template.
+Uses Packer to validate a build template or template directory.
 
 ```groovy
 packer.validate(

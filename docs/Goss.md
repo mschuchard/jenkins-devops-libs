@@ -1,6 +1,6 @@
-# Goss
+# GoSS
 
-Interacts with Goss.
+Interacts with GoSS.
 
 ### Dependencies
 
@@ -9,7 +9,7 @@ Interacts with Goss.
 - DGoSS CLI binary exeuctable (`validateDocker`)
 
 ### goss.server()
-Creates a persistent REST API endpoint with goss.
+Creates a persistent REST API endpoint with GoSS.
 
 ```groovy
 goss.server(
@@ -23,7 +23,7 @@ goss.server(
 ```
 
 ### goss.validate()
-Locally executes a gossfile with goss.
+Locally executes a `gossfile` with GoSS.
 
 ```groovy
 goss.validate(
@@ -35,7 +35,7 @@ goss.validate(
 ```
 
 ### goss.validateDocker()
-Locally executes a gossfile in a Docker container with dgoss.
+Locally executes a gossfile in a Docker container with DGoSS.
 Note that dgoss [environment variables](https://github.com/aelsabbahy/goss/tree/master/extras/dgoss#environment-vars-and-defaults) should be set in the `environment` block of a `Jenkinsfile` and will not be provided as as part of the interface to this method. That is also the process for providing arguments to goss when running inside the dgoss wrapper, so goss arguments cannot be directly interfaced in this method. Also note that dgoss runs a container, but does not stop the running container, so you may want to wrap the code inside a `Image.withRun{}` block for safety.
 
 ```groovy
@@ -47,7 +47,7 @@ goss.validateDocker(
 ```
 
 ### goss.validateGossfile(String gossfile)
-Validates gossfile syntax.
+Validates `gossfile` syntax.
 
 ```groovy
 goss.validateGossfile('gossfile.yaml')

@@ -7,7 +7,7 @@ Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each metho
 - Terraform CLI binary executable >= 0.12
 
 ### terraform.apply()
-Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this and the `out` parameter was not specified, the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath`, then the `vars` and `target` parameters will be ignored.
+Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this and the `out` parameter was not specified, then the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath` parameter value, then the `vars` and `target` parameters will be ignored.
 
 ```groovy
 terraform.apply(
@@ -20,7 +20,7 @@ terraform.apply(
 ```
 
 ### terraform.destroy()
-Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: configDir)` with `destroy: true` was invoked before this, the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath`, then vars and target parameters will be ignored.
+Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: configDir)` with `destroy: true` was invoked before this, then the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath` parameter value, then the vars and target parameters will be ignored.
 
 ```groovy
 terraform.destroy(
@@ -33,7 +33,7 @@ terraform.destroy(
 ```
 
 ### terraform.fmt()
-Uses Terraform to check for properly formatted code. Note that in Terraform 0.12.x the `recursive` option was added (Terraform < 0.12 automatically recursed through subdirectories). The `check` and `write` parameters are mutually exclusive, so only one of them may be enabled at a time.
+Uses Terraform to check for properly formatted code. Note that in Terraform 0.12.x the `recursive` option was added (Terraform < 0.12 automatically recursed through subdirectories). The `check` and `write` parameters are mutually exclusive, and so only one of them may be enabled at a time.
 
 ```groovy
 terraform.fmt(
