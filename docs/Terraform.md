@@ -121,7 +121,7 @@ terraform.state(
 ```
 
 ### terraform.taint()
-Manually marks a resource as tainted. This forces a destroy and recreate on the next plan or apply.
+Manually marks a resource as tainted. This forces a destroy and recreate on the next plan or apply. Note this is generally deprecated in favor of the `replace` parameter in the `plan` method.
 
 ```groovy
 terraform.taint(

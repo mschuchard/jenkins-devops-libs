@@ -194,7 +194,7 @@ void imports(config) {
   try {
     // import each resource
     config.resources.each() { name, id ->
-      sh(label: 'Terraform Import', script: "${cmd} ${name} ${id}")
+      sh(label: "Terraform Import ${name}", script: "${cmd} ${name} ${id}")
     }
   }
   catch(Exception error) {
@@ -452,14 +452,14 @@ void state(config) {
         assert (config.resources instanceof Map) : 'Parameter resources must be a Map of strings for move command.';
 
         config.resources.each() { from, to ->
-          sh(label: 'Terraform State Move', script: "${cmd} mv ${from} ${to}")
+          sh(label: "Terraform State Move ${from} to ${to}", script: "${cmd} mv ${from} ${to}")
         };
         break;
       case 'remove':
         assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for remove command.';
 
         config.resources.each() { resource ->
-          sh(label: 'Terraform State Remove', script: "${cmd} rm ${resource}")
+          sh(label: "Terraform State Remove ${resource}", script: "${cmd} rm ${resource}")
         };
         break;
       case 'push':
@@ -509,7 +509,7 @@ void taint(config) {
   try {
     // taint each resource
     config.resources.each() { resource ->
-      sh(label: 'Terraform Taint', script: "${cmd} ${resource}")
+      sh(label: "Terraform Taint ${resource}", script: "${cmd} ${resource}")
     }
   }
   catch(Exception error) {

@@ -1,3 +1,7 @@
+### 2.0.1
+**General**
+- Improve `sh` step labels for iterative invocations.
+
 ### 2.0.0
 **General**
 - Global variable methods and associated parameters converted to camelCase.
