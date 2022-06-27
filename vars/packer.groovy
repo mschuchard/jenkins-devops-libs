@@ -38,7 +38,14 @@ void build(config) {
 
   // create artifact with packer
   try {
-    sh(label: 'Packer Build', script: "${cmd} ${config.template}")
+    if (config.template ==~ /\.pkr\./) {
+      sh(label: 'Packer Build', script: "${cmd} ${config.template}")
+    }
+    else {
+      dir(config.configPath) {
+        sh(label: 'Packer Build', script: cmd)
+      }
+    }
   }
   catch(Exception error) {
     print 'Failure using packer build.'
@@ -70,7 +77,14 @@ void fmt(config) {
   }
 
   try {
-    final int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
+    if (config.template ==~ /\.pkr\./) {
+      final int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
+    }
+    else {
+      dir(config.configPath) {
+        final int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: cmd)
+      }
+    }
 
     // report if formatting check detected issues
     if ((config.check == true) && (fmtStatus != 0)) {
@@ -205,7 +219,14 @@ void validate(config) {
 
   // validate template with packer
   try {
-    sh(label: 'Packer Validate', script: "${cmd} ${config.template}")
+    if (config.template ==~ /\.pkr\./) {
+      sh(label: 'Packer Validate', script: "${cmd} ${config.template}")
+    }
+    else {
+      dir(config.configPath) {
+        sh(label: 'Packer Validate', script: cmd)
+      }
+    }
   }
   catch(Exception error) {
     print 'Failure using packer validate.'

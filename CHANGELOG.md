@@ -1,6 +1,9 @@
-### 2.0.1
+### 2.0.1 (Next)
 **General**
 - Improve `sh` step labels for iterative invocations.
+
+**Packer**
+- Change into directory when `template` parameter is directory of templates/configs.
 
 ### 2.0.0
 **General**
