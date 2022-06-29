@@ -46,7 +46,7 @@ void downloadFile(String url, String dest) {
 @NonCPS
 void makeDirParents(String dir) {
   // short circuit if directory exists
-  if File(dir).exists() {
+  if (File(dir).exists()) {
     return
   }
   else {
