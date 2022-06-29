@@ -19,7 +19,7 @@ jobs:
         paths:
         - /usr/share/jenkins/ref/plugins
         key: jenkins-devops-libs
-    - run: # image missing jenkins cli, and cannot install groovysh from apt
+    - run: # may need SO
         name: execute syntax check
         command: /opt/java/openjdk/bin/java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080 groovysh -cp src:/usr/share/jenkins:/usr/share/jenkins/ref/plugins -q vars/*.groovy
         no_output_timeout: 45s

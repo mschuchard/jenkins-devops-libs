@@ -13,15 +13,19 @@ Note also that a library will not be developed to compete against a good existin
 Basically, if you have the GitHub Branch Source plugin installed, then you can [load a specific version](https://jenkins.io/doc/book/pipeline/shared-libraries/#library-versions) like:
 
 ```groovy
-@Library('github.com/mschuchard/jenkins-devops-libs@version')_
+@Library('github.com/mschuchard/jenkins-devops-libs@<branch or tag>')_
 ```
 
 If you do not have this plugin installed, or want more flexibility over the version used, then you can use or expand upon this class:
 
 ```groovy
-library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
-  [$class: 'GitSCMSource',
-   remote: 'https://github.com/mschuchard/jenkins-devops-libs.git'])
+library(
+  identifier: 'jenkins-devops-libs@<branch or tag>',
+  retriever:   modernSCM(
+    [$class:  'GitSCMSource',
+     remote:  'https://github.com/mschuchard/jenkins-devops-libs.git']
+  )
+)
 ```
 
 Note that this latter example is also useful for circumventing Github API rate limit issues.
@@ -31,7 +35,7 @@ Note that this latter example is also useful for circumventing Github API rate l
 Basically, you need to first [add the shared library](https://jenkins.io/doc/book/pipeline/shared-libraries/#global-shared-libraries) in the Jenkins global configuration. Then, you can either load the library's methods with:
 
 ```groovy
-@Library('jenkins-devops-libs@version')_
+@Library('jenkins-devops-libs@<branch or tag>')_
 ```
 
 or using the defaults with:
