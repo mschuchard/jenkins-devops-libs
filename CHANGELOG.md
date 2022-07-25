@@ -1,6 +1,8 @@
 ### 2.0.1 (Next)
 **General**
 - Improve `sh` step labels for iterative invocations.
+- Fix syntax error in `makeDirParents` library method.
+- Check if directory exists on build agent in `makeDirParents`.
 
 **Packer**
 - Change into directory when `template` parameter is directory of templates/configs.
