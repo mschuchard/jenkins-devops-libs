@@ -16,7 +16,7 @@ void install(config) {
 
     config.values.each() { value ->
       if (!(value ==~ /:\/\//)) {
-        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
 
       cmd += " -f ${value}"
@@ -91,7 +91,7 @@ void lint(config) {
 
     config.values.each() { value ->
       if (!(value ==~ /:\/\//)) {
-        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
 
       cmd += " -f ${value}"
@@ -144,7 +144,7 @@ void packages(config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart : 'The required parameter "chart" was not set.'
-  assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not contain a Chart.yaml!"
+  assert readYaml("${config.chart}/Chart.yaml") instanceof String : "The supplied path ${config.chart} to the chart does not contain a valid Chart.yaml!"
 
   String cmd = "${config.bin} package"
 
@@ -158,7 +158,7 @@ void packages(config) {
     cmd += " --sign --key ${config.key}"
   }
   else if (config.keyring) {
-    assert fileExists(config.keyring) : "The keyring ${config.keyring} does not exist."
+    assert readYaml(config.keyring) instanceof String : "The keyring ${config.keyring} does not exist or is not a valid YAML file."
 
     cmd += " --sign --keyring ${config.keyring}"
   }
@@ -458,7 +458,7 @@ void upgrade(config) {
 
     config.values.each() { value ->
       if (!(value ==~ /:\/\//)) {
-        assert fileExists(value) : "Value overrides file ${value} does not exist!"
+        assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
 
       cmd += " -f ${value}"
