@@ -39,8 +39,11 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
 
 void server(config) {
   // input checking
-  if ((config.gossfile) && (!fileExists(config.gossfile))) {
-    throw new Exception("Gossfile ${config.gossfile} does not exist!")
+  if (config.gossfile) {
+    assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
+  }
+  else {
+    assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
   config.endpoint = config.endpoint ?: '/healthz'
   config.format = config.format ?: 'rspecish'
@@ -53,7 +56,7 @@ void server(config) {
 
     // check for optional inputs
     if (config.vars) {
-      assert fileExists(config.vars) : "The vars file ${config.vars} does not exist!"
+      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
 
       cmd += " --vars ${config.vars}"
     }
@@ -72,8 +75,11 @@ void server(config) {
 
 void validate(config) {
   // input checking
-  if ((config.gossfile) && (!fileExists(config.gossfile))) {
-    throw new Exception("Gossfile ${config.gossfile} does not exist!")
+  if (config.gossfile) {
+    assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
+  }
+  else {
+    assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
   config.format = config.format ?: 'rspecish'
   config.bin = config.bin ?: 'goss'
@@ -84,7 +90,7 @@ void validate(config) {
 
     // check for optional inputs
     if (config.vars) {
-      assert fileExists(config.vars) : "The vars file ${config.vars} does not exist!"
+      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
 
       cmd += " --vars ${config.vars}"
     }

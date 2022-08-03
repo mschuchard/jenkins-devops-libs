@@ -4,6 +4,9 @@
 - Fix syntax error in `makeDirParents` library method.
 - Check if directory exists on build agent in `makeDirParents`.
 
+**GoSS**
+- Validate YAML file parameter values.
+
 **Helm**
 - Validate YAML file parameter values.
 
