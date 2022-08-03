@@ -5,7 +5,7 @@ void codeDeploy(config) {
   // input checking
   assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
-    assert fileExists(config.tokenFile) : "The RBAC token ${config.tokenFile} does not exist!"
+    assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
   }
 
   config.servers = config.servers ?: ['puppet']
@@ -101,7 +101,7 @@ void task(config) {
   // input checking
   assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
-    assert fileExists(config.tokenFile) : "The RBAC token ${config.tokenFile} does not exist!"
+    assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
   }
   assert config.task : 'The required task parameter was not set.'
   assert config.scope : 'The required scope parameter was not set.'

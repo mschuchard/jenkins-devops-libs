@@ -7,8 +7,14 @@
 **Helm**
 - Validate YAML file parameter values.
 
+**OpenFaaS**
+- Validate template file parameter values.
+
 **Packer**
 - Change into directory when `template` parameter is directory of templates/configs.
+
+**Puppet**
+- Further validate RBAC token file parameter values.
 
 ### 2.0.0
 **General**

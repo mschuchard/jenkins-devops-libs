@@ -5,7 +5,7 @@ void build(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
-  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+  assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
   String cmd = "${config.bin} build"
 
@@ -44,7 +44,7 @@ void deploy(config) {
     throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
   }
   config.bin = config.bin ?: 'faas-cli'
-  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+  assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
   String cmd = "${config.bin} deploy"
 
@@ -191,7 +191,7 @@ void login(config) {
 void push(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
-  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+  assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} push"
@@ -224,7 +224,7 @@ void push(config) {
 void remove(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
-  assert fileExists(config.template) : "The template file ${config.template} does not exist!"
+  assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} rm"
