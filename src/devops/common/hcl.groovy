@@ -5,16 +5,15 @@ package devops.common;
 @Grab('com.bertramlabs.plugins:hcl4j:0.4.4')
 import com.bertramlabs.plugins.hcl4j.HCLParser;
 
+// wrapper method for returning a map from a hcl file
 Map hclToMap(String filePath) {
-  def file = null;
-
   // load the file from the jenkins master
   if (env['NODE_NAME'].equals('master')) {
-    final file = new File(file);
+    final file = new File(filePath);
   }
   // load the file from the build agent/node
   else {
-    final file = new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), file)
+    final file = new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), filePath)
   }
 
   // return map from parsed hcl-formatted string

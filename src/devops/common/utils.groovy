@@ -29,6 +29,7 @@ void removeFile(String file) {
 @NonCPS
 void downloadFile(String url, String dest) {
   def file = null;
+
   // establish the file download for the master
   if (env['NODE_NAME'].equals('master')) {
     file = new File(dest).newOutputStream();
