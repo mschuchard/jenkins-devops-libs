@@ -8,7 +8,7 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent { docker { image 'hashicorp/packer:1.7.10' } }
+  agent { docker { image 'hashicorp/packer:1.8' } }
 
   stages {
     stage('Init') {
@@ -18,6 +18,17 @@ pipeline {
 
         script {
           packer.init(dir: '.')
+        }
+      }
+    }
+    stage('Plugins') {
+      steps {
+        script {
+          packer.plugins(command: 'installed')
+          packer.plugins(
+            command: 'required',
+            dir:     '.'
+          )
         }
       }
     }
@@ -33,8 +44,8 @@ pipeline {
       steps {
         script {
           packer.fmt(
-            check:     true,
-            diff:      true,
+            check:    true,
+            diff:     true,
             template: '.'
           )
         }

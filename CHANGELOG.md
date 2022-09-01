@@ -15,6 +15,7 @@
 
 **Packer**
 - Change into directory when `template` parameter is directory of templates/configs.
+- Add `plugins` method.
 
 **Puppet**
 - Further validate RBAC token file parameter values.

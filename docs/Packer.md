@@ -54,6 +54,17 @@ Inspects a template and parses and outputs the components a template defines.
 packer.inspect('/path/to/template.pkr.json', '/usr/local/bin/packer')
 ```
 
+### packer.plugins()
+Uses Packer to interact with plugins and display information about them.
+
+```groovy
+packer.plugins(
+  bin:     '/usr/bin/packer', // optional location of packer install
+  command: 'installed', // one of 'installed' or 'required'
+  dir:     '/path/to/template_dir', // location of directory with packer config (required for 'required' command)
+)
+```
+
 ### packer.validate()
 Uses Packer to validate a build template or template directory.
 
