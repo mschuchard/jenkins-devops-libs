@@ -190,6 +190,38 @@ void pluginInstall(String url, String installLoc) {
   print "Packer plugin successfully installed at ${installLoc}."
 }
 
+void plugins(config) {
+  // input checking
+  assert (['installed', 'required'].contains(config.command)) : 'The command parameter must be one of "installed" or "required".'
+  config.bin = config.bin ?: 'packer'
+
+  String cmd = "${config.bin} plugins ${config.command}"
+
+  // check for optional inputs
+  // conditional based on command to double verify configPath param input both exists and is valid
+  if (config.command === 'required') {
+    assert config.configPath : 'The required "configPath" parameter was not set.'
+    assert fileExists(config.configPath) : "The Packer config directory ${config.configPath} does not exist!"
+  }
+
+  // interact with packer plugins
+  try {
+    if (config.command === 'required') {
+      dir(config.configPath) {
+        sh(label: 'Packer Plugins', script: "${cmd} .")
+      }
+    }
+    else {
+      sh(label: 'Packer Plugins', script: cmd)
+    }
+  }
+  catch(Exception error) {
+    print 'Failure using packer plugins.'
+    throw error
+  }
+  print 'Packer plugins executed successfully.'
+}
+
 void validate(config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
