@@ -1,9 +1,7 @@
 source "docker" "example" {
-  image  = "centos:7"
-  commit = true
+  image = "centos:7"
 }
 
 build {
-  name    = "docker"
   sources = ["source.docker.example"]
 }

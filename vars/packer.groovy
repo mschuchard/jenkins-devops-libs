@@ -43,7 +43,7 @@ void build(config) {
     }
     else {
       dir(config.template) {
-        sh(label: 'Packer Build', script: cmd)
+        sh(label: 'Packer Build', script: "${cmd} .")
       }
     }
   }
@@ -65,6 +65,7 @@ void fmt(config) {
 
   String cmd = "${config.bin} fmt"
 
+  // check for optional inputs
   if (config.diff == true) {
     cmd += ' -diff'
   }
@@ -82,7 +83,7 @@ void fmt(config) {
     }
     else {
       dir(config.template) {
-        final int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: cmd)
+        final int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} .")
       }
     }
 
@@ -113,7 +114,7 @@ void init(config) {
   // initialize the working template directory
   try {
     dir(config.dir) {
-      sh(label: 'Packer Init', script: cmd)
+      sh(label: 'Packer Init', script: "${cmd} .")
     }
   }
   catch(Exception error) {
@@ -256,7 +257,7 @@ void validate(config) {
     }
     else {
       dir(config.template) {
-        sh(label: 'Packer Validate', script: cmd)
+        sh(label: 'Packer Validate', script: "${cmd} .")
       }
     }
   }
