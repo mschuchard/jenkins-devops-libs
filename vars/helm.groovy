@@ -505,3 +505,19 @@ void upgrade(config) {
   }
   print 'Helm upgrade executed successfully.'
 }
+
+Boolean verify(String chartPath, String helmPath = 'helm') {
+  // input checking
+  assert fileExists(chartPath) : "The chart at ${chartPath} does not exist."
+
+  // verify helm chart
+  try {
+    sh(label: 'Helm Verify', script: "${helmPath} verify ${chartPath}")
+    print "The chart at ${chartPath} successfully verified."
+    return true
+  }
+  catch(Exception error) {
+    print "The chart at ${chartPath} failed verification."
+    return false
+  }
+}
