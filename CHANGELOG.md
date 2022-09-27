@@ -9,6 +9,7 @@
 
 **Helm**
 - Validate YAML file parameter values.
+- Add `verify` method.
 
 **OpenFaaS**
 - Validate template file parameter values.

@@ -51,6 +51,13 @@ pipeline {
         }
       }
     }
+    stage('Verify') {
+      steps {
+        script {
+          Boolean success = helm.verify(chartPath: '/tmp')
+        }
+      }
+    }
     stage('Install') {
       steps {
         script {

@@ -164,3 +164,10 @@ helm.upgrade(
   set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )
 ```
+
+### helm.verify(String chartPath, String helmPath = 'helm')
+Verify that the given chart has a valid provenance file. This can be used to verify a local chart. This method will return a `Boolean` type indicating whether the verification was successful (`true`) or not (`false`).
+
+```groovy
+helm.verify('/path/to/chart.tar.gz', '/usr/bin/helm')
+```
