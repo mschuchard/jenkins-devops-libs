@@ -229,6 +229,9 @@ void init(config) {
   if (config.migrateState == true) {
     cmd += ' -migrate-state'
   }
+  if (config.forceCopy == true) {
+    cmd += ' -force-copy'
+  }
   if (config.backendConfig) {
     assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
 

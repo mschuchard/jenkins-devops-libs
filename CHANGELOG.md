@@ -22,7 +22,7 @@
 - Further validate RBAC token file parameter values.
 
 **Terraform**
-- Add `migrateState` param to `init` method.
+- Add `migrateState` and `forceCopy` params to `init` method.
 
 ### 2.0.0
 **General**
