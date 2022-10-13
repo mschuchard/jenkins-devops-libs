@@ -51,10 +51,11 @@ Uses Terraform to initialize a working directory.
 
 ```groovy
 terraform.init(
-  backend:       true  // optional false to omit backend initialization
+  backend:       true // optional false to omit backend initialization
   backendConfig: ['/path/to/backend.hcl'] // optional paths to hcl files with backend configs
   bin:           '/usr/bin/terraform', // optional path to terraform executable
   dir:           '/path/to/working_config_dir', // path to working config dir
+  migrateState:  false, // optional reconfigure a backend and attempt to migrate any existing state
   pluginDir:     '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
   upgrade:       false, // optional upgrade modules and plugins
 )

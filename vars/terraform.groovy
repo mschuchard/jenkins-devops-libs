@@ -226,6 +226,9 @@ void init(config) {
   if (config.backend == false) {
     cmd += ' -backend=false'
   }
+  if (config.migrateState == true) {
+    cmd += ' -migrate-state'
+  }
   if (config.backendConfig) {
     assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
 

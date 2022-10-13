@@ -21,6 +21,9 @@
 **Puppet**
 - Further validate RBAC token file parameter values.
 
+**Terraform**
+- Add `migrateState` param to `init` method.
+
 ### 2.0.0
 **General**
 - Global variable methods and associated parameters converted to camelCase.
