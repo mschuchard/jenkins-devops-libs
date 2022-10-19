@@ -433,6 +433,26 @@ void pluginInstall(config) {
   print "Terraform plugin successfully installed at ${installLoc}."
 }
 
+void providers(String rootDir, String bin = 'terraform') {
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  assert fileExists(dir) : "Config directory ${dir} does not exist!"
+
+  // output provider information
+  try {
+    dir(rootDir) {
+      sh(label: 'Terraform Providers Information', script: "${bin} providers")
+    }
+  }
+  catch(Exception error) {
+    print 'Failure using terraform providers.'
+    throw error
+  }
+  print 'Terraform providers was successful.'
+}
+
 void state(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
