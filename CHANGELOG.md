@@ -23,6 +23,7 @@
 
 **Terraform**
 - Add `migrateState` and `forceCopy` params to `init` method.
+- Add `providers` method.
 
 ### 2.0.0
 **General**

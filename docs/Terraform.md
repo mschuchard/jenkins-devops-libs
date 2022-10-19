@@ -109,6 +109,13 @@ terraform.plan(
 )
 ```
 
+### terraform.providers(String rootDir, String bin = 'terraform')
+Prints out a tree of modules in the referenced configuration annotated with their provider requirements.
+
+```groovy
+terraform.providers('/path/to/root_module_dir')
+```
+
 ### terraform.state()
 Manipulate or display the Terraform state. The resources parameter should be `null` for a `push` or `list`, a list of strings for a `remove`, and a map of strings for a `move`.
 
