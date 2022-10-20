@@ -10,6 +10,7 @@
 **Helm**
 - Validate YAML file parameter values.
 - Add `verify` method.
+- Add `wait` parameter to appropriate methods.
 
 **OpenFaaS**
 - Validate template file parameter values.

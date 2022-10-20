@@ -43,6 +43,9 @@ void install(config) {
   if (config.verify == true) {
     cmd += ' --verify'
   }
+  if (config.wait == true) {
+    cmd += ' --wait'
+  }
 
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
@@ -473,6 +476,9 @@ void upgrade(config) {
   }
   if (config.verify == true) {
     cmd += ' --verify'
+  }
+  if (config.wait == true) {
+    cmd += ' --wait'
   }
   if (config.install == true) {
     cmd += ' --install'
