@@ -37,6 +37,39 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
   print "DGoSS successfully installed at ${installPath}/dgoss."
 }
 
+String render(config) {
+  // input checking
+  if (config.gossfile) {
+    assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
+  }
+  else {
+    assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
+  }
+  config.bin = config.bin ?: 'goss'
+
+  // render gossfile
+  try {
+    String cmd = config.bin
+
+    // optional inputs
+    if (config.gossfile) {
+      cmd += " -g ${config.gossfile}"
+    }
+    if (config.debug == true) {
+      cmd += ' --debug'
+    }
+
+    final String rendered = sh(label: 'GoSS Render', script: "${cmd} render", returnStdout: true)
+  }
+  catch(Exception error) {
+    print 'Failure using goss render.'
+    throw error
+  }
+  print 'GoSSfile rendered successfully.'
+
+  return rendered
+}
+
 void server(config) {
   // input checking
   if (config.gossfile) {
