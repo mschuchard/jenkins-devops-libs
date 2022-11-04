@@ -8,6 +8,17 @@ Interacts with GoSS.
 - GoSS CLI binary executable
 - DGoSS CLI binary exeuctable (`validateDocker`)
 
+### goss.render()
+Renders a single valid GoSSfile from separated individual test files. This method will return the rendered GoSSfile as a string, and does not perform any further actions with the rendered content.
+
+```groovy
+goss.render(
+  bin:      '/usr/bin/goss', // optional executable path for goss
+  debug:    false, // optional print rendered golang template prior to gossfile
+  gossfile: 'goss.yaml', // optional location of gossfile with included directive
+)
+```
+
 ### goss.server()
 Creates a persistent REST API endpoint with GoSS.
 

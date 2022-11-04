@@ -20,6 +20,17 @@ pipeline {
         }
       }
     }
+    // this may fail due to missing directive
+    stage('Render GoSSfile') {
+      steps {
+        script {
+          goss.render(
+            debug:    true, // optional print rendered golang template prior to gossfile
+            gossfile: '/tmp/goss.yaml', // optional location of gossfile with included directive
+          )
+        }
+      }
+    }
     stage('Validate Server') {
       steps {
         script {

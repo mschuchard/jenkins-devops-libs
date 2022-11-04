@@ -6,6 +6,7 @@
 
 **GoSS**
 - Validate YAML file parameter values.
+- Add `render` method.
 
 **Helm**
 - Validate YAML file parameter values.
