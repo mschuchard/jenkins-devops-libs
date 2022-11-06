@@ -1,4 +1,4 @@
-### 2.0.1 (Next)
+### 2.0.1
 **General**
 - Improve `sh` step labels for iterative invocations.
 - Fix syntax error in `makeDirParents` library method.
