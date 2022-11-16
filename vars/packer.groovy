@@ -149,7 +149,7 @@ void install(config) {
   // check if current version already installed
   if (fileExists("${config.installPath}/packer")) {
     final String installedVersion = sh(label: 'Check Packer Version', returnStdout: true, script: "${config.installPath}/packer version").trim()
-    if (installedVersion ==~ config.version) {
+    if (installedVersion =~ config.version) {
       print "Packer version ${config.version} already installed at ${config.installPath}."
       return
     }

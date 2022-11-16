@@ -7,7 +7,7 @@ void install(String version, String installPath = '/usr/bin/') {
   // check if current version already installed
   if (fileExists("${installPath}/goss")) {
     final String installedVersion = sh(label: 'Check GoSS Version', returnStdout: true, script: "${installPath}/goss --version").trim()
-    if (installedVersion ==~ version) {
+    if (installedVersion =~ version) {
       print "GoSS version ${version} already installed at ${installPath}."
       return
     }
@@ -24,7 +24,7 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
   // check if current version already installed
   if (fileExists("${installPath}/dgoss") && fileExists("${installPath}/goss")) {
     final String installedVersion = sh(label: 'Check DGoSS Version', returnStdout: true, script: "${installPath}/goss --version").trim()
-    if (installedVersion ==~ version) {
+    if (installedVersion =~ version) {
       print "DGoSS version ${version} already installed at ${installPath}."
       return
     }

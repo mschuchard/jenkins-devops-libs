@@ -49,7 +49,7 @@ void install(config) {
 
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-  if (releaseObjList ==~ config.name) {
+  if (releaseObjList =~ config.name) {
     throw new Exception("Release object ${config.name} already exists!")
   }
 
@@ -70,7 +70,7 @@ void kubectl(String version, String installPath = '/usr/bin/') {
   // check if current version already installed
   if (fileExists("${installPath}/kubectl")) {
     final String installedVersion = sh(label: 'Check Kubectl Version', returnStdout: true, script: "${installPath}/kubectl version").trim()
-    if (installedVersion ==~ version) {
+    if (installedVersion =~ version) {
       print "Kubectl version ${version} already installed at ${installPath}."
       return
     }
@@ -258,7 +258,7 @@ void rollback(config) {
 
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-  assert releaseObjList ==~ config.name : "Release object ${config.name} does not exist!"
+  assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
 
   // rollback with helm
   try {
@@ -277,7 +277,7 @@ void setup(String version, String installPath = '/usr/bin/') {
   // check if current version already installed
   if (fileExists("${installPath}/helm")) {
     final String installedVersion = sh(label: 'Check Helm Version', returnStdout: true, script: "${installPath}/helm version").trim()
-    if (installedVersion ==~ version) {
+    if (installedVersion =~ version) {
       print "Helm version ${version} already installed at ${installPath}."
     }
   }
@@ -328,7 +328,7 @@ void status(config) {
 
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-  assert (releaseObjList ==~ config.name) : "Release object ${config.name} does not exist!"
+  assert (releaseObjList =~ config.name) : "Release object ${config.name} does not exist!"
 
   // attempt to query a release object's status
   try {
@@ -433,7 +433,7 @@ void uninstall(config) {
 
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-  assert (releaseObjList ==~ config.name) : "Release object ${config.name} does not exist!"
+  assert (releaseObjList =~ config.name) : "Release object ${config.name} does not exist!"
 
   // attempt to uninstall a release object
   try {
@@ -498,7 +498,7 @@ void upgrade(config) {
   // check release object presence if install param is not true (i.e. false or null)
   if (!(config.install == true)) {
     final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
-    assert releaseObjList ==~ config.name : "Release object ${config.name} does not exist!"
+    assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
   }
 
   // upgrade with helm

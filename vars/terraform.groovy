@@ -268,7 +268,7 @@ void install(config) {
   // check if current version already installed
   if (fileExists("${config.installPath}/terraform")) {
     final String installedVersion = sh(label: 'Check Terraform Version', returnStdout: true, script: "${config.installPath}/terraform version").trim()
-    if (installedVersion ==~ config.version) {
+    if (installedVersion =~ config.version) {
       print "Terraform version ${config.version} already installed at ${config.installPath}."
       return
     }
