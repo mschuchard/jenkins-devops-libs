@@ -1,7 +1,7 @@
 ---
 # setup environment
 os: linux
-dist: focal
+dist: jammy
 language: java
 jdk: openjdk11
 
