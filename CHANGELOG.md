@@ -1,6 +1,7 @@
 ### 2.0.2 (Next)
 **Helm**
 - Add `atomic` and `createNS` parameters to appropriate methods.
+- Add `registry_login` method.
 
 ### 2.0.1
 **General**

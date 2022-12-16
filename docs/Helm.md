@@ -70,6 +70,19 @@ helm.packages(
 )
 ```
 
+### helm.registry_login
+Authenticate to a remote registry.
+
+```groovy
+helm.registry_login(
+  bin:      '/usr/bin/helm', // optional executable path for helm
+  host:     'https://helm.registry.com', // registry host address
+  insecure: false, // optional allow connections to TLS registry without certs
+  password: 'pass', // registry password or identity token
+  username: 'user', // registry username
+)
+```
+
 ### helm.repo()
 Add a Helm chart repository. The repository will update if it has already been added.
 
