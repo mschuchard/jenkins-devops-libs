@@ -40,6 +40,9 @@ void install(config) {
     cmd += " --namespace ${config.namespace}"
     lister += " --namespace ${config.namespace}"
   }
+  if (config.createNS == true) {
+    cmd += ' --create-namespace'
+  }
   if (config.verify == true) {
     cmd += ' --verify'
   }
@@ -488,6 +491,10 @@ void upgrade(config) {
   }
   if (config.install == true) {
     cmd += ' --install'
+
+    if (config.createNS == true) {
+      cmd += ' --create-namespace'
+    }
   }
   if (config.dryRun == true) {
     cmd += ' --dry-run'

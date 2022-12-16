@@ -1,6 +1,6 @@
 ### 2.0.2 (Next)
 **Helm**
-- Add `atomic` parameter to appropriate methods.
+- Add `atomic` and `createNS` parameters to appropriate methods.
 
 ### 2.0.1
 **General**

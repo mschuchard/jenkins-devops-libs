@@ -18,6 +18,7 @@ helm.install(
   bin:       '/usr/bin/helm', // optional executable path for helm
   chart:     'chart', // chart repository, local archive, directory, or url to install
   context:   'default', // optional kube-context from kube config
+  createNS:  false, // optional create the release namespace if not present
   dryRun:    false, // optional simulate an install
   name:      'happy-panda', // required name for the installed release object
   namespace: 'default', // optional namespace for the installed release object
@@ -158,6 +159,7 @@ helm.upgrade(
   bin:       '/usr/bin/helm', // optional executable path for helm
   chart:     'chart', // chart repository, local archive, directory, or url to upgrade
   context:   'default', // optional kube-context from kube config
+  createNS:  false, // optional create the release namespace if not present and install occurs
   dryRun:    false, // optional simulate an upgrade
   install:   false, // optional install if release not already present
   name:      'happy-panda', // name of the upgraded release object
