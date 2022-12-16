@@ -14,6 +14,7 @@ Performs an installation with Helm onto the Kubernetes cluster.
 
 ```groovy
 helm.install(
+  atomic:    false, // optional deletes the installation on failure
   bin:       '/usr/bin/helm', // optional executable path for helm
   chart:     'chart', // chart repository, local archive, directory, or url to install
   context:   'default', // optional kube-context from kube config
@@ -153,6 +154,7 @@ Updates and/or changes the configuration of a release with Helm.
 
 ```groovy
 helm.upgrade(
+  atomic:    false, // optional rolls back changes made in case of failed upgrade
   bin:       '/usr/bin/helm', // optional executable path for helm
   chart:     'chart', // chart repository, local archive, directory, or url to upgrade
   context:   'default', // optional kube-context from kube config

@@ -5,11 +5,11 @@ on:
   push:
     branches: [master]
     paths:
-    - '**/*.groovy'
+    - '**.groovy'
   pull_request:
     branches: [master]
     paths:
-    - '**/*.groovy'
+    - '**.groovy'
 
 jobs:
   test:

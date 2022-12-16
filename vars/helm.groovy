@@ -43,7 +43,10 @@ void install(config) {
   if (config.verify == true) {
     cmd += ' --verify'
   }
-  if (config.wait == true) {
+  if (config.atomic == true) {
+    cmd += ' --atomic'
+  }
+  else if (config.wait == true) {
     cmd += ' --wait'
   }
 
@@ -477,7 +480,10 @@ void upgrade(config) {
   if (config.verify == true) {
     cmd += ' --verify'
   }
-  if (config.wait == true) {
+  if (config.atomic == true) {
+    cmd += ' --atomic'
+  }
+  else if (config.wait == true) {
     cmd += ' --wait'
   }
   if (config.install == true) {
