@@ -213,6 +213,31 @@ void plugin(config) {
   print "Helm plugin ${config.command} executed successfully."
 }
 
+void registry_login(config) {
+  // input checking
+  assert config.host : 'The required parameter "host" was not set.'
+  assert config.password : 'The required parameter "password" was not set.'
+  assert config.username : 'The required parameter "username" was not set.'
+  config.bin = config.bin ?: 'helm'
+
+  String cmd = "${config.bin} registry login --username ${config.username} --password ${config.password}"
+
+  // optional inputs
+  if (config.insecure == true) {
+    cmd += ' --insecure'
+  }
+
+  // login to a helm registry
+  try {
+    sh(label: 'Helm Registry Login', script: "${cmd} ${config.host}")
+  }
+  catch(Exception error) {
+    print 'Failure using helm registry login.'
+    throw error
+  }
+  print 'Helm registry login executed successfully.'
+}
+
 void repo(config) {
   // input checking
   assert config.repo : 'The required parameter "repo" was not set.'
@@ -222,7 +247,7 @@ void repo(config) {
   String cmd = "${config.bin} repo add"
 
   // optional inputs
-  if (config.insecure) {
+  if (config.insecure == true) {
     cmd += ' --insecure-skip-tls-verify'
   }
   else if ((config.ca) && (config.cert) && (config.key)) {
