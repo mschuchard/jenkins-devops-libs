@@ -142,8 +142,7 @@ void validate(config) {
 
 void validateDocker(config) {
   // input checking
-  assert config.image : 'The required image parameter was not set.'
-
+  assert config.image instanceof String : 'The required image parameter was not set.'
   config.bin = config.bin ?: 'dgoss'
 
   // run with dgoss
@@ -170,7 +169,7 @@ void validateDocker(config) {
 
 void validateGossfile(String gossfile) {
   // ensure gossfile exists and then check yaml syntax
-  assert fileExists(gossfile) : "Gossfile ${gossfile} does not exist!"
+  assert readFile(gossfile) instanceof String : "Gossfile ${gossfile} does not exist!"
 
   try {
     readYaml(file: gossfile)

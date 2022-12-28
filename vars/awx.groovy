@@ -3,8 +3,8 @@ import devops.common.utils
 
 void hostCreate(config) {
   // input checking
-  assert config.name : '"name" is a required parameter for awx.hostCreate.'
-  assert config.inventory : '"inventory" is a required parameter for awx.hostCreate.'
+  assert config.name instanceof String : '"name" is a required parameter for awx.hostCreate.'
+  assert config.inventory instanceof String : '"inventory" is a required parameter for awx.hostCreate.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -52,8 +52,8 @@ void hostDelete(String id, String bin = 'awx') {
 // helper method for create and modify
 void inventory(config) {
   // input checking
-  assert config.name : "'name' is a required parameter for awx.inventory_${config.action}."
-  assert config.organization : "'organization' is a required parameter for awx.inventory_${config.action}."
+  assert config.name instanceof String : "'name' is a required parameter for awx.inventory_${config.action}."
+  assert config.organization instanceof String : "'organization' is a required parameter for awx.inventory_${config.action}."
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -117,7 +117,7 @@ void inventoryModify(config) {
 
 void jobTemplateLaunch(config) {
   // input checking
-  assert config.id : '"id" is a required parameter for awx.jobTemplateLaunch.'
+  assert config.id instanceof int : '"id" is a required parameter for awx.jobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -165,7 +165,7 @@ void jobTemplateLaunch(config) {
 
 void projectsUpdate(config) {
   // input checking
-  assert config.id : '"id" is a required parameter for awx.projectsUpdate.'
+  assert config.id instanceof int : '"id" is a required parameter for awx.projectsUpdate.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -189,7 +189,7 @@ void projectsUpdate(config) {
 
 void workflowJobTemplateLaunch(config) {
   // input checking
-  assert config.id : '"id" is a required parameter for awx.workflowJobTemplateLaunch.'
+  assert config.id instanceof int : '"id" is a required parameter for awx.workflowJobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command

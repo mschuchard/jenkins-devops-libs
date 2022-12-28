@@ -3,7 +3,7 @@ import devops.common.utils
 
 void build(config) {
   // input checking
-  assert config.template : 'The required template parameter was not set.'
+  assert config.template instanceof String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
 
@@ -56,7 +56,7 @@ void build(config) {
 
 void fmt(config) {
   // input checking
-  assert config.template : 'The required template parameter was not set.'
+  assert config.template instanceof String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   if (config.write && config.check) {
     throw new Exception("The 'write' and 'check' options for packer.fmt are mutually exclusive - only one can be enabled.")
@@ -142,7 +142,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
 void install(config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
-  assert (config.platform && config.version) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
+  assert (config.platform instanceof String && config.version instanceof String) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
 
   new utils().makeDirParents(config.installPath)
 
@@ -201,7 +201,7 @@ void plugins(config) {
   // check for optional inputs
   // conditional based on command to double verify dir param input both exists and is valid
   if (config.command === 'required') {
-    assert config.dir : 'The required "dir" parameter was not set.'
+    assert config.dir instanceof String : 'The required "dir" parameter was not set.'
     assert fileExists(config.dir) : "The Packer config directory ${config.dir} does not exist!"
   }
 
@@ -225,7 +225,7 @@ void plugins(config) {
 
 void validate(config) {
   // input checking
-  assert config.template : 'The required template parameter was not set.'
+  assert config.template instanceof String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
 

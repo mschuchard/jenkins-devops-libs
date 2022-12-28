@@ -3,7 +3,7 @@ import devops.common.utils
 
 void codeDeploy(config) {
   // input checking
-  assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
+  assert config.tokenFile || (config.credentialsId instanceof String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
     assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
   }
@@ -99,11 +99,11 @@ void codeDeploy(config) {
 
 void task(config) {
   // input checking
-  assert config.tokenFile || config.credentialsId : 'The required token or credentialsId parameter was not set.'
+  assert config.tokenFile || (config.credentialsId instanceof String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
     assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
   }
-  assert config.task : 'The required task parameter was not set.'
+  assert config.task instanceof String : 'The required task parameter was not set.'
   assert config.scope : 'The required scope parameter was not set.'
 
   config.server = config.server ?: 'puppet'
@@ -220,8 +220,8 @@ void task(config) {
 
 void token (config) {
   // input checking
-  assert config.username : 'The username parameter is required.'
-  assert config.password : 'The password parameter is required.'
+  assert config.username instanceof String : 'The username parameter is required.'
+  assert config.password instanceof String : 'The password parameter is required.'
 
   config.server = config.server ?: 'puppet'
   config.path = config.path ?: "${env.JENKINS_HOME}/.puppetlabs"

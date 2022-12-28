@@ -86,7 +86,7 @@ void deploy(config) {
 void install(config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
-  assert (config.platform && config.version) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
+  assert (config.platform instanceof String && config.version instanceof String) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
   new utils().makeDirParents(config.installPath)
 
   // check if current version already installed
@@ -117,7 +117,7 @@ void install(config) {
 void invoke(config) {
   // input checking
   config.bin = config.bin ?: 'faas-cli'
-  assert config.function : 'The required parameter function was not set.'
+  assert config.function instanceof String : 'The required parameter function was not set.'
 
   String cmd = "${config.bin} invoke"
 
@@ -165,9 +165,9 @@ void invoke(config) {
 
 void login(config) {
   // input checking
-  assert config.gateway : 'The required gateway parameter was not set.'
-  assert config.password : 'The required password parameter was not set.'
-  assert config.user : 'The required user parameter was not set.'
+  assert config.gateway instanceof String : 'The required gateway parameter was not set.'
+  assert config.password instanceof String : 'The required password parameter was not set.'
+  assert config.user instanceof String : 'The required user parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} login"
@@ -250,7 +250,7 @@ void remove(config) {
 
 void validateTemplate(String template) {
   // ensure template exists and then check yaml syntax
-  assert fileExists(template) : "Template ${template} does not exist!"
+  assert readFile(template) instanceof String : "Template ${template} does not exist!"
 
   try {
     readYaml(file: template)
