@@ -1,4 +1,7 @@
 ### 2.0.2 (Next)
+**General**
+- More type checking for required parameters.
+
 **Helm**
 - Add `atomic` and `createNS` parameters to appropriate methods.
 - Add `registry_login` method.

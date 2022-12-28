@@ -6,7 +6,7 @@ void apply(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.configPath : '"configPath" is a required parameter for terraform.apply.'
+  assert config.configPath instanceof String : '"configPath" is a required parameter for terraform.apply.'
   assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
@@ -60,7 +60,7 @@ void destroy(config) {
 
   // input checking
   config.bin = config.bin ?: 'terraform'
-  assert config.configPath : '"configPath" is a required parameter for terraform.destroy.'
+  assert config.configPath instanceof String : '"configPath" is a required parameter for terraform.destroy.'
   assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
 
   String cmd = "${config.bin} destroy -input=false -no-color -auto-approve"
@@ -261,7 +261,7 @@ void install(config) {
 
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
-  assert (config.platform && config.version) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
+  assert (config.platform instanceof String && config.version instanceof String) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
 
   new utils().makeDirParents(config.installPath)
 
@@ -399,8 +399,8 @@ void pluginInstall(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.url : "The required parameter 'url' was not set."
-  assert config.installName : "The required parameter 'installName' was not set."
+  assert config.url instanceof String : "The required parameter 'url' was not set."
+  assert config.installName instanceof String : "The required parameter 'installName' was not set."
 
   config.installPath = config.installPath ? config.installPath : '~/.terraform/plugins'
 
@@ -583,7 +583,7 @@ void workspace(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (config.dir && config.workspace) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
+  assert (config.dir instanceof String && config.workspace instanceof String) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
   config.bin = config.bin ?: 'terraform'
   assert fileExists(config.dir) : "The config directory ${config.dir} does not exist!"
 
