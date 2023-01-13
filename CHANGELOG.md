@@ -6,6 +6,9 @@
 - Add `atomic` and `createNS` parameters to appropriate methods.
 - Add `registry_login` method.
 
+**Packer**
+- Revert code to Groovy 2.4 compatible.
+
 ### 2.0.1
 **General**
 - Improve `sh` step labels for iterative invocations.
