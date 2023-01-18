@@ -169,21 +169,28 @@ void graph(config) {
     cmd += " -plan=${config.plan}"
   }
   else {
-    // cannot cleanly use dir step for this
+    // cannot cleanly use dir step for this, and also because of later graph file write
     cmd += " -chdir=${config.dir}"
+  }
+  if (config.type) {
+    assert (['plan', 'plan-refresh-only', 'plan-destroy', 'apply'].contains(config.type)) : 'The type parameter must be one of: plan, plan-refresh-only, plan-destroy, or apply.'
+
+    cmd += " -type=${config.type}"
   }
   if (config.drawCycles == true) {
     cmd += ' -draw-cycles'
   }
 
   try {
-    sh(label: 'Terraform Graph', script: cmd)
+    final String dotGraph = sh(label: 'Terraform Graph', script: cmd)
   }
   catch(Exception error) {
     print 'Failure using terraform graph.'
     throw error
   }
-  print 'Terraform graph was successful.'
+  print 'Terraform graph was successful. Writing graph output to "graph.gv" in current working directory.'
+
+  writeFile(file: 'graph.gv', text: dotGraph)
 }
 
 void imports(config) {
