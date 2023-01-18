@@ -65,6 +65,13 @@ pipeline {
         }
       }
     }
+    stage('Graph') {
+      steps {
+        script {
+          terraform.graph(plan: '/tmp/plan.tfplan')
+        }
+      }
+    }
     stage('Apply') {
       steps {
         script {

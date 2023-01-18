@@ -9,6 +9,9 @@
 **Packer**
 - Revert code to Groovy 2.4 compatible.
 
+**Terraform**
+- Add `graph` method.
+
 ### 2.0.1
 **General**
 - Improve `sh` step labels for iterative invocations.

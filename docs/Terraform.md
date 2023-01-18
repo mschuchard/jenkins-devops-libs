@@ -46,6 +46,21 @@ terraform.fmt(
 )
 ```
 
+### terraform.graph()
+Uses Terraform to produce a representation of the dependency graph between different objects in the current configuration and state. The resulting DOT graph is written as `graph.gv` (GraphViz extension) in the current working directory when this method is invoked.
+
+todo: -type
+
+```groovy
+terraform.graph(
+  bin:        '/usr/bin/terraform', // optional path to terraform executable
+  dir:        '/path/to/working_config_dir', // optional path to working config dir (mutually exclusive with plan)
+  drawCycles: false, // optional highlight any cycles in the graph with colored edges
+  plan:       'plan.tfplan', // optional path to plan file for rendering (mutually exclusive with dir)
+  type:       'plan', // optional type of graph to output; valid arguments are plan, plan-refresh-only, plan-destroy, or apply (apply is default if plan parameter also specified)
+)
+```
+
 ### terraform.init()
 Uses Terraform to initialize a working directory.
 
