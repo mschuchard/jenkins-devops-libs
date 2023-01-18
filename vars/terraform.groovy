@@ -114,7 +114,7 @@ void fmt(config) {
   // input checking
   assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   if (config.write && config.check) {
-    throw new Exception("The 'write' and 'check' options for terraform.fmt are mutually exclusive - only one can be enabled.")
+    throw new Exception("The 'write' and 'check' options for terraform.fmt are mutually exclusive; only one can be specified.")
   }
   config.bin = config.bin ?: 'terraform'
 
@@ -150,6 +150,40 @@ void fmt(config) {
     throw error
   }
   print 'Terraform fmt was successful.'
+}
+
+void graph(config) {
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  if (config.plan && config.dir) {
+    throw new Exception("The 'plan' and 'dir' parameters for terraform.graph are mutually exclusive; only one can be specified.")
+  }
+  config.bin = config.bin ?: 'terraform'
+
+  String cmd = "${config.bin} graph"
+
+  // check for optional inputs
+  if (config.plan) {
+    cmd += " -plan=${config.plan}"
+  }
+  else {
+    // cannot cleanly use dir step for this
+    cmd += " -chdir=${config.dir}"
+  }
+  if (config.drawCycles == true) {
+    cmd += ' -draw-cycles'
+  }
+
+  try {
+    sh(label: 'Terraform Graph', script: cmd)
+  }
+  catch(Exception error) {
+    print 'Failure using terraform graph.'
+    throw error
+  }
+  print 'Terraform graph was successful.'
 }
 
 void imports(config) {
