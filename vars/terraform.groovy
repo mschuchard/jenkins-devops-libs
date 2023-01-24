@@ -112,7 +112,12 @@ void fmt(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
   if (config.write && config.check) {
     throw new Exception("The 'write' and 'check' options for terraform.fmt are mutually exclusive; only one can be specified.")
   }
@@ -159,6 +164,9 @@ void graph(config) {
   // input checking
   if (config.plan && config.dir) {
     throw new Exception("The 'plan' and 'dir' parameters for terraform.graph are mutually exclusive; only one can be specified.")
+  }
+  else if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
   config.bin = config.bin ?: 'terraform'
 
@@ -250,7 +258,12 @@ void init(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert fileExists(config.dir) : "Working config directory ${config.dir} does not exist!"
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} init -input=false -no-color"
@@ -369,8 +382,12 @@ def plan(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.dir : '"dir" is a required parameter for terraform.plan.'
-  assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} plan -no-color -input=false"
@@ -591,7 +608,12 @@ def validate(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} validate -no-color"
@@ -624,9 +646,14 @@ void workspace(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (config.dir instanceof String && config.workspace instanceof String) : 'A required parameter is missing from this terraform.workspace block. Please consult the documentation for proper usage.'
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
+  assert config.workspace instanceof String : 'The "workspace" parameter must be specified for the "workspace" method.'
   config.bin = config.bin ?: 'terraform'
-  assert fileExists(config.dir) : "The config directory ${config.dir} does not exist!"
 
   dir(config.dir) {
     // select workspace in terraform config directory
