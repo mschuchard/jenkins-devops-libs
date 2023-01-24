@@ -11,6 +11,7 @@
 
 **Terraform**
 - Add `graph` method.
+- Default to `cwd` for config directories where possible.
 
 ### 2.0.1
 **General**

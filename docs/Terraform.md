@@ -40,7 +40,7 @@ terraform.fmt(
   bin:       '/usr/bin/terraform', // optional path to terraform executable
   check:     false, // optional check files within config dir and return an error if any files are not formatted correctly (cannot be used with `write`)
   diff:      false, // optional present a diff if any files within config dir are not formatted correctly
-  dir:       '/path/to/working_config_dir', // path to working config dir
+  dir:       env.WORKSPACE, // optional path to working config dir
   recursive: false, // optional check subdirectories of config dir recursively
   write:     true // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
 )
@@ -48,8 +48,6 @@ terraform.fmt(
 
 ### terraform.graph()
 Uses Terraform to produce a representation of the dependency graph between different objects in the current configuration and state. The resulting DOT graph is written as `graph.gv` (GraphViz extension) in the current working directory when this method is invoked.
-
-todo: -type
 
 ```groovy
 terraform.graph(
@@ -69,7 +67,7 @@ terraform.init(
   backend:       true // optional false to omit backend initialization
   backendConfig: ['/path/to/backend.hcl'] // optional paths to hcl files with backend configs
   bin:           '/usr/bin/terraform', // optional path to terraform executable
-  dir:           '/path/to/working_config_dir', // path to working config dir
+  dir:           env.WORKSPACE, // optional path to working config dir
   forceCopy:     false, // optional suppress prompts about copying state data when initializating a new state backend
   migrateState:  false, // optional reconfigure a backend and attempt to migrate any existing state
   pluginDir:     '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
@@ -112,7 +110,7 @@ Uses Terraform to generate an execution plan. The output plan file `plan.tfplan`
 terraform.plan(
   bin:         '/usr/bin/terraform', // optional path to terraform executable
   destroy:     false, // optional generate a plan to destroy resources
-  dir:         '/path/to/config_dir_or_plan_file', // path to config dir
+  dir:         env.WORKSPACE, // optional path to config dir
   display:     false, // optional display plan output
   out:         'plan.tfplan', // optional plan output file path (extension must be .tfplan)
   refreshOnly: false, // optional check if remote objects match outcome of most recent apply (>= 0.15)
@@ -161,7 +159,7 @@ Uses Terraform to validate a config directory.
 ```groovy
 terraform.validate(
   bin:    '/usr/bin/terraform', // optional path to terraform executable
-  dir:    '/path/to/config_dir', // path to config dir
+  dir:    env.WORKSPACE, // optional path to config dir
   json:   false, // optional produce output in a machine-readable JSON format
   return: false, // optional return validate output from method (mostly useful with json: true)
 )
@@ -173,7 +171,7 @@ Selects the Terraform workspace for a config directory. Ideally executed in Pipe
 ```groovy
 terraform.workspace(
   bin:       '/usr/bin', // optional location of terraform install
-  dir:       '/path/to/config', // location of terraform config directory
+  dir:       env.WORKSPACE, // optional location of terraform config directory
   workspace: 'default' // terraform workspace to select
 )
 ```

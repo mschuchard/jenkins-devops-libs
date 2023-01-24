@@ -16,7 +16,9 @@ pipeline {
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/terraform/main.tf -o /tmp/main.tf'
 
         script {
-          terraform.init(dir: '/tmp')
+          dir('/tmp') {
+            terraform.init()
+          }
         }
       }
     }
