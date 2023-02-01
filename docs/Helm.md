@@ -110,7 +110,7 @@ helm.rollback(
   context:   'default', // optional kube-context from kube config
   name:      'happy-panda', // release object name to rollback
   namespace: 'default', // optional namespace for the rolled back release object
-  version:   '1' // version of release-object to rollback to
+  version:   'previous' // optional version of release-object to rollback to
 )
 ```
 

@@ -273,7 +273,6 @@ void repo(config) {
 
 void rollback(config) {
   // input checking
-  assert config.version instanceof String : "The required parameter 'version' was not set."
   assert config.name instanceof String : "The required parameter 'name' was not set."
   config.bin = config.bin ?: 'helm'
 
@@ -294,9 +293,17 @@ void rollback(config) {
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
   assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
 
+  // append rollback version if specified
+  if (config.version) {
+    cmd += "${cmd} ${config.name} ${config.version}"
+  }
+  else {
+    cmd += "${cmd} ${config.name}"
+  }
+
   // rollback with helm
   try {
-    sh(label: 'Helm rollback', script: "${cmd} ${config.name} ${config.version}")
+    sh(label: 'Helm rollback', script: cmd)
   }
   catch(Exception error) {
     print 'Failure using helm rollback.'
