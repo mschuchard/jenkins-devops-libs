@@ -3,7 +3,7 @@
 - More type checking for required parameters.
 
 **Helm**
-- Add `atomic` and `createNS` parameters to appropriate methods.
+- Add `atomic`, `version`, and `createNS` parameters to appropriate methods.
 - Add `registry_login` method.
 
 **Packer**

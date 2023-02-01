@@ -24,6 +24,7 @@ helm.install(
   namespace: 'default', // optional namespace for the installed release object
   values:    ['config.yaml'], // optional value overrides yaml file or url
   verify:    true, // optional verify the provenance of the chart
+  version:   'latest', // optional chart version to install
   wait:      false, // optional wait until everything is in a ready state
   set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )
@@ -179,6 +180,7 @@ helm.upgrade(
   namespace: 'default', // optional namespace for the upgraded release object
   values:    ['config.yaml'], // optional value overrides yaml file or url
   verify:    true, // optional verify the provenance of the chart
+  version:   'latest', // optional chart version to install
   wait:      false, // optional wait until everything is in a ready state
   set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )

@@ -29,6 +29,9 @@ void install(config) {
       cmd += " --set ${var}=${value}"
     }
   }
+  if (config.version) {
+    cmd += " --version ${config.version}"
+  }
   if (config.dryRun == true) {
     cmd += ' --dry-run'
   }
@@ -504,6 +507,9 @@ void upgrade(config) {
     config.set.each() { var, value ->
       cmd += " --set ${var}=${value}"
     }
+  }
+  if (config.version) {
+    cmd += " --version ${config.version}"
   }
   if (config.verify == true) {
     cmd += ' --verify'
