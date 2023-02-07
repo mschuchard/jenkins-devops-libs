@@ -3,6 +3,9 @@ import devops.common.utils
 
 void codeDeploy(config) {
   // input checking
+  if (config.tokenFile && config.credentialsId) {
+    throw new Exception("The 'tokenFile' and 'credentialsId' parameters for puppet.codeDeploy are mutually exclusive; only one can be specified.")
+  }
   assert config.tokenFile || (config.credentialsId instanceof String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
     assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
@@ -99,6 +102,9 @@ void codeDeploy(config) {
 
 void task(config) {
   // input checking
+  if (config.tokenFile && config.credentialsId) {
+    throw new Exception("The 'tokenFile' and 'credentialsId' parameters for puppet.task are mutually exclusive; only one can be specified.")
+  }
   assert config.tokenFile || (config.credentialsId instanceof String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
     assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"

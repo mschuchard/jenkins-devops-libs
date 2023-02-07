@@ -5,6 +5,9 @@ void install(config) {
   // input checking
   assert config.name instanceof String : 'The required parameter "name" was not set.'
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
+  if (config.version && config.devel) {
+    throw new Exception("The 'version' and 'devel' parameters for helm.install are mutually exclusive; only one can be specified.")
+  }
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} install"
@@ -160,6 +163,9 @@ void packages(config) {
   config.bin = config.bin ?: 'helm'
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
   assert readYaml("${config.chart}/Chart.yaml") instanceof String : "The supplied path ${config.chart} to the chart does not contain a valid Chart.yaml!"
+  if (config.key && config.keyring) {
+    throw new Exception("The 'key' and 'keyring' parameters for helm.packages are mutually exclusive; only one can be specified.")
+  }
 
   String cmd = "${config.bin} package"
 
@@ -492,6 +498,9 @@ void uninstall(config) {
 
 void upgrade(config) {
   // input checking
+  if (config.version && config.devel) {
+    throw new Exception("The 'version' and 'devel' parameters for helm.upgrade are mutually exclusive; only one can be specified.")
+  }
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
   assert config.name instanceof String : 'The required parameter "name" was not set.'
   config.bin = config.bin ?: 'helm'
