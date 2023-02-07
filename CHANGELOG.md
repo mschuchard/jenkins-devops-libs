@@ -3,7 +3,7 @@
 - More type checking for required parameters.
 
 **Helm**
-- Add `atomic`, `version`, and `createNS` parameters to appropriate methods.
+- Add `atomic`, `version`, `devel`, and `createNS` parameters to appropriate methods.
 - Add `registry_login` method.
 - Convert `version` parameter to optional in `rollback` method.
 

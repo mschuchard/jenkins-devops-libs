@@ -19,12 +19,13 @@ helm.install(
   chart:     'chart', // chart repository, local archive, directory, or url to install
   context:   'default', // optional kube-context from kube config
   createNS:  false, // optional create the release namespace if not present
+  devel:     false, // optional also use development versions (mutually exclusive with version)
   dryRun:    false, // optional simulate an install
   name:      'happy-panda', // required name for the installed release object
   namespace: 'default', // optional namespace for the installed release object
   values:    ['config.yaml'], // optional value overrides yaml file or url
   verify:    true, // optional verify the provenance of the chart
-  version:   'latest', // optional chart version to install
+  version:   'latest', // optional chart version to install (mutually exclusive with devel)
   wait:      false, // optional wait until everything is in a ready state
   set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )
@@ -174,13 +175,14 @@ helm.upgrade(
   chart:     'chart', // chart repository, local archive, directory, or url to upgrade
   context:   'default', // optional kube-context from kube config
   createNS:  false, // optional create the release namespace if not present and install occurs
+  devel:     false, // optional also use development versions (mutually exclusive with version)
   dryRun:    false, // optional simulate an upgrade
   install:   false, // optional install if release not already present
   name:      'happy-panda', // name of the upgraded release object
   namespace: 'default', // optional namespace for the upgraded release object
   values:    ['config.yaml'], // optional value overrides yaml file or url
   verify:    true, // optional verify the provenance of the chart
-  version:   'latest', // optional chart version to install
+  version:   'latest', // optional chart version to install (mutually exclusive with devel)
   wait:      false, // optional wait until everything is in a ready state
   set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )

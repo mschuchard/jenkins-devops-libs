@@ -32,6 +32,9 @@ void install(config) {
   if (config.version) {
     cmd += " --version ${config.version}"
   }
+  else if (config.devel) {
+    cmd += " --devel"
+  }
   if (config.dryRun == true) {
     cmd += ' --dry-run'
   }
@@ -517,6 +520,9 @@ void upgrade(config) {
   }
   if (config.version) {
     cmd += " --version ${config.version}"
+  }
+  else if (config.devel) {
+    cmd += " --devel"
   }
   if (config.verify == true) {
     cmd += ' --verify'
