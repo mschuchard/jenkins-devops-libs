@@ -603,6 +603,39 @@ void taint(config) {
   print 'Terraform taints were successful.'
 }
 
+void test(config) {
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
+  config.bin = config.bin ?: 'terraform'
+
+  String cmd = "${config.bin} test -no-color"
+
+  // optional inputs
+  if (config.compactWarnings == true) {
+    cmd += ' -compact-warnings'
+  }
+
+  // execute tests
+  try {
+    dir(config.dir) {
+      sh(label: 'Terraform Test', script: cmd)
+    }
+  }
+  catch(Exception error) {
+    print 'Failure using terraform test.'
+    throw error
+  }
+  print 'Terraform test was successful.'
+}
+
 def validate(config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
