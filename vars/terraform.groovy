@@ -432,6 +432,7 @@ def plan(config) {
     // execute plan
     dir(config.dir) {
       final String planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: config.return)
+      print "Plan output artifact written to: ${out}"
     }
 
     // display plan output if specified
@@ -621,6 +622,10 @@ void test(config) {
   // optional inputs
   if (config.compactWarnings == true) {
     cmd += ' -compact-warnings'
+  }
+  if (config.junitResults == true) {
+    cmd += " -junit-xml=${config.dir}/test_results.xml"
+    print "Results also written to JUnit XML at: ${config.dir}/test_results.xml"
   }
 
   // execute tests
