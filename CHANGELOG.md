@@ -11,7 +11,7 @@
 - Revert code to Groovy 2.4 compatible.
 
 **Terraform**
-- Add `graph` method.
+- Add `graph` and `test` methods.
 - Default to `cwd` for config directories where possible.
 
 ### 2.0.1

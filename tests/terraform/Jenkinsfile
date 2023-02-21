@@ -105,5 +105,13 @@ pipeline {
         }
       }
     }
+    stage('Test') {
+      steps {
+        script {
+          print 'This will fail at runtime, but should succeed during compilation.'
+          terraform.test(dir: '/tmp')
+        }
+      }
+    }
   }
 }
