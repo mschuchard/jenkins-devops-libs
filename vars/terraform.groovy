@@ -339,6 +339,12 @@ def output(config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} output -no-color"
@@ -359,7 +365,9 @@ def output(config) {
   // display outputs from the state
   try {
     // capture output(s)
-    final String outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
+    dir(config.dir) {
+      final String outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
+    }
   }
   catch(Exception error) {
     print 'Failure using terraform output.'
@@ -518,6 +526,12 @@ void state(config) {
 
   // input checking
   assert (['move', 'remove', 'push', 'list'].contains(config.command)) : "The command parameter must be one of: move, remove, list, or push."
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
   config.bin = config.bin ?: 'terraform'
   String cmd = "${config.bin} state"
 
@@ -536,26 +550,34 @@ void state(config) {
       case 'move':
         assert (config.resources instanceof Map) : 'Parameter resources must be a Map of strings for move command.';
 
-        config.resources.each() { from, to ->
-          sh(label: "Terraform State Move ${from} to ${to}", script: "${cmd} mv ${from} ${to}")
+        dir(config.dir) {
+          config.resources.each() { from, to ->
+            sh(label: "Terraform State Move ${from} to ${to}", script: "${cmd} mv ${from} ${to}")
+          };
         };
         break;
       case 'remove':
         assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for remove command.';
 
-        config.resources.each() { resource ->
-          sh(label: "Terraform State Remove ${resource}", script: "${cmd} rm ${resource}")
+        dir(config.dir) {
+          config.resources.each() { resource ->
+            sh(label: "Terraform State Remove ${resource}", script: "${cmd} rm ${resource}")
+          };
         };
         break;
       case 'push':
         assert !config.resources : 'Resources parameter is not allowed for push command.';
 
-        sh(label: 'Terraform State Push', script: "${cmd} push");
+        dir(config.dir) {
+          sh(label: 'Terraform State Push', script: "${cmd} push");
+        };
         break;
       case 'list':
         assert !config.resources : 'Resources parameter is not allowed for push command.';
 
-        final String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
+        dir(config.dir) {
+          final String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
+        };
         print 'Terraform state output is as follows:'
         print stateList
 
@@ -579,6 +601,12 @@ void taint(config) {
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
   assert (config.resources instanceof List) : 'Parameter resources must be a list of strings.'
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} taint -no-color"
@@ -593,8 +621,10 @@ void taint(config) {
   // taint the resources
   try {
     // taint each resource
-    config.resources.each() { resource ->
-      sh(label: "Terraform Taint ${resource}", script: "${cmd} ${resource}")
+    dir(config.dir) {
+      config.resources.each() { resource ->
+        sh(label: "Terraform Taint ${resource}", script: "${cmd} ${resource}")
+      }
     }
   }
   catch(Exception error) {

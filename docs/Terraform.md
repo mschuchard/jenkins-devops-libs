@@ -96,6 +96,7 @@ Reads an output variable from a Terraform state and prints the value.
 ```groovy
 terraform.plan(
   bin:     '/usr/bin/terraform', // optional path to terraform executable
+  dir:     env.WORKSPACE, // optional path to config dir
   display: false, // optional display outputs; else they will be returned as String from method
   json:    false, // optional json format output
   name:    'module.foo.server_ip_address', // optional output name
@@ -136,6 +137,7 @@ Manipulate or display the Terraform state. The resources parameter should be `nu
 terraform.state(
   bin:       '/usr/bin/terraform', // optional path to terraform executable
   command:   'move', // state command; one of 'move', 'remove', 'list', or 'push'
+  dir:       env.WORKSPACE, // optional path to config dir
   resources: ['resource.from':'resource.to', 'resource.other_from':'resource.other_to'], // resources to move
   resources: ['resource.one', 'resource.two'], // resources to remove
   state:     'terraform.tfstate' // optional path to read and save state
@@ -148,6 +150,7 @@ Manually marks a resource as tainted. This forces a destroy and recreate on the 
 ```groovy
 terraform.taint(
   bin:       '/usr/bin/terraform', // optional path to terraform executable
+  dir:       env.WORKSPACE, // optional path to config dir
   resources: ['resource.name', 'other.name'], // names of the resources to taint
   state:     'terraform.tfstate' // optional path to read and save state
 )

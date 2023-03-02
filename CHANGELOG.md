@@ -14,6 +14,7 @@
 **Terraform**
 - Add `graph` and `test` methods.
 - Default to `cwd` for config directories where possible.
+- Add `dir` param to methods where absent.
 
 ### 2.0.1
 **General**
