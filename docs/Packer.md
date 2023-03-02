@@ -66,14 +66,18 @@ packer.plugins(
 ```
 
 ### packer.validate()
+**`evalData` and `warnUndeclVar` require Packer version >= 1.8.5**
+
 Uses Packer to validate a build template or template directory.
 
 ```groovy
 packer.validate(
-  bin:      '/usr/bin/packer', // optional location of packer install
-  only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to validate
-  template: '/path/to/template.pkr.hcl', // // location of packer template file or templates directory
-  var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile: '/path/to/variables.json' // optional location of variables file
+  bin:           '/usr/bin/packer', // optional location of packer install
+  evalData:      false, // optional evaluate datasources during validation
+  only:          ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to validate
+  template:      '/path/to/template.pkr.hcl', // // location of packer template file or templates directory
+  var:           ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:       '/path/to/variables.json' // optional location of variables file
+  warnUndeclVar: true, // optional warn on user variable files containing undeclared variables
 )
 ```

@@ -251,6 +251,12 @@ void validate(config) {
 
     cmd += " -only=${config.only.join(',')}"
   }
+  if (config.evalData == true) {
+    cmd += ' -evaluate-datasources'
+  }
+  if (config.warnUndeclVar == false) {
+    cmd += ' -no-warn-undeclared-var'
+  }
 
   // validate template with packer
   try {

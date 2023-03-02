@@ -9,6 +9,7 @@
 
 **Packer**
 - Revert code to Groovy 2.4 compatible.
+- Add `evalData` and `warnUndeclVar` params to `validate` method.
 
 **Terraform**
 - Add `graph` and `test` methods.
