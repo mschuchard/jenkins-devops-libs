@@ -121,12 +121,13 @@ String stringParam() {}
 String boolParam() {}
 
 private String subCommand(param, String cmdArg) {
+  // initialize subcommand string
+  String subCmd = ''
+
   // immediately verify param is not null
   if (param) {
-    // initialize subcommand string
-    String subCmd = ''
     // different behavior based on param type
-    switch(param instanceof) {
+    switch(param.getClass()) {
       case Map:
         // iterate through param value pairs and concatenate full arg and value pairs to subcommand
         param.each() { paramValueName, paramValue ->
@@ -144,12 +145,9 @@ private String subCommand(param, String cmdArg) {
       case Boolean:
         break;
       default:
-        throw new Exception("Unexpected parameter type '${param instanceof}' for command argument '${cmdArg}'.");
+        throw new Exception("Unexpected parameter type '${param.getClass()}' for command argument '${cmdArg}'.");
     }
-    // return subcommand
-    return subCmd
   }
-  else {
-    return ''
-  }
+
+  return subCmd
 }
