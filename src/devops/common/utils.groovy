@@ -102,3 +102,22 @@ Map paramsConverter(body) {
 // example usage: void globalVarMethod(body)
 // where body is closure or map
 // Map config = new utils().paramsConverter(body)
+
+// the following methods handle parameter subcommand generation
+// the various wrapper methods all rely upon subCommand for actual functionality, and the various definitions exist purely for type checking
+
+String listParam(List param, String cmdArg) {
+  return subCommand(param, cmdArg)
+}
+
+String mapParam(Map param, String cmdArg) {
+  return subCommand(param, cmdArg)
+}
+
+// placeholder
+String stringParam() {}
+
+// placeholder
+String boolParam() {}
+
+private String subCommand()

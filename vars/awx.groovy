@@ -50,7 +50,7 @@ void hostDelete(String id, String bin = 'awx') {
 }
 
 // helper method for create and modify
-void inventory(config) {
+private void inventory(config) {
   // input checking
   assert config.name instanceof String : "'name' is a required parameter for awx.inventory_${config.action}."
   assert config.organization instanceof String : "'organization' is a required parameter for awx.inventory_${config.action}."
