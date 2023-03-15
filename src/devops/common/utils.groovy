@@ -120,4 +120,36 @@ String stringParam() {}
 // placeholder
 String boolParam() {}
 
-private String subCommand()
+private String subCommand(param, String cmdArg) {
+  // immediately verify param is not null
+  if (param) {
+    // initialize subcommand string
+    String subCmd = ''
+    // different behavior based on param type
+    switch(param instanceof) {
+      case Map:
+        // iterate through param value pairs and concatenate full arg and value pairs to subcommand
+        param.each() { paramValueName, paramValue ->
+          cmd += " ${cmdArg}${paramValueName}=${paramValue}"
+        }
+        break;
+      case List:
+        // iterate through param values and concatenate full arg and value to subcommand
+        param.each() { paramValue ->
+          subCmd += " ${cmdArg}${paramValue}"
+        }
+        break;
+      case String:
+        break;
+      case Boolean:
+        break;
+      default:
+        throw new Exception("Unexpected parameter type '${param instanceof}' for command argument '${cmdArg}'.");
+    }
+    // return subcommand
+    return subCmd
+  }
+  else {
+    return ''
+  }
+}
