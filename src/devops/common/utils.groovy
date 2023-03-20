@@ -104,7 +104,7 @@ Map paramsConverter(body) {
 // Map config = new utils().paramsConverter(body)
 
 // the following methods handle parameter subcommand generation
-// the various wrapper methods all rely upon subCommand for actual functionality, and the various definitions exist purely for type checking
+// the various wrapper methods all rely upon subCommand for actual functionality, and the various definitions exist primarily for type checking
 
 String listParam(List param, String cmdArg) {
   return subCommand(param, cmdArg)
@@ -114,11 +114,39 @@ String mapParam(Map param, String cmdArg) {
   return subCommand(param, cmdArg)
 }
 
-// placeholder
-String stringParam() {}
+// TODO: combine with subCommand
+String stringParams(Map paramCmdArg) {
+  // initialize aggregate sub command
+  String aggregateSubCommand = ''
 
-// placeholder
-String boolParam() {}
+  // iterate through map of params and corresponding command arguments
+  paramCmdArg.each() { param, cmdArg ->
+    // check if param is configured
+    if (param) {
+      // build aggregate sub command with consecutive subCommand returns
+      aggregateSubCommand += " ${cmdArg}${param}"
+    }
+  }
+
+  return aggregateSubCommand
+}
+
+// TODO: combine with stringParams; account for possible false conditional
+String boolParams(Map paramCmdArg) {
+  // initialize aggregateSubCommand
+  String aggregateSubCommand = ''
+
+  // iterate through map of params and corresponding command arguments
+  paramCmdArg.each() { param, cmdArg ->
+    // check if param is configured
+    if (param == true) {
+      // build aggregate sub command with consecutive subCommand returns
+      aggregateSubCommand += " ${cmdArg}"
+    }
+  }
+
+  return aggregateSubCommand
+}
 
 private String subCommand(param, String cmdArg) {
   // initialize subcommand string
@@ -141,6 +169,7 @@ private String subCommand(param, String cmdArg) {
         }
         break;
       case String:
+
         break;
       case Boolean:
         break;
