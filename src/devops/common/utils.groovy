@@ -114,40 +114,20 @@ String mapParam(Map param, String cmdArg) {
   return subCommand(param, cmdArg)
 }
 
-// TODO: combine with subCommand
-String stringParams(Map paramCmdArg) {
+String stringBoolParams(Map paramCmdArg) {
   // initialize aggregate sub command
   String aggregateSubCommand = ''
 
   // iterate through map of params and corresponding command arguments
   paramCmdArg.each() { param, cmdArg ->
-    // check if param is configured
-    if (param) {
-      // build aggregate sub command with consecutive subCommand returns
-      aggregateSubCommand += " ${cmdArg}${param}"
-    }
+    // build aggregated sub command
+    aggregateSubCommand += subCommand(param, cmdArg)
   }
 
   return aggregateSubCommand
 }
 
-// TODO: combine with stringParams; account for possible false conditional
-String boolParams(Map paramCmdArg) {
-  // initialize aggregateSubCommand
-  String aggregateSubCommand = ''
-
-  // iterate through map of params and corresponding command arguments
-  paramCmdArg.each() { param, cmdArg ->
-    // check if param is configured
-    if (param == true) {
-      // build aggregate sub command with consecutive subCommand returns
-      aggregateSubCommand += " ${cmdArg}"
-    }
-  }
-
-  return aggregateSubCommand
-}
-
+// TODO: list, string, boolean can probablly be combined as they are algorithmically similar
 private String subCommand(param, String cmdArg) {
   // initialize subcommand string
   String subCmd = ''
@@ -159,7 +139,7 @@ private String subCommand(param, String cmdArg) {
       case Map:
         // iterate through param value pairs and concatenate full arg and value pairs to subcommand
         param.each() { paramValueName, paramValue ->
-          cmd += " ${cmdArg}${paramValueName}=${paramValue}"
+          subCmd += " ${cmdArg}${paramValueName}=${paramValue}"
         }
         break;
       case List:
@@ -169,9 +149,12 @@ private String subCommand(param, String cmdArg) {
         }
         break;
       case String:
-
+        // build aggregate sub command with consecutive subCommand returns
+        subCmd += " ${cmdArg}${param}"
         break;
       case Boolean:
+        // build aggregate sub command with consecutive subCommand returns
+        subCmd += " ${cmdArg}"
         break;
       default:
         throw new Exception("Unexpected parameter type '${param.getClass()}' for command argument '${cmdArg}'.");
