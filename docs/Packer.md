@@ -4,7 +4,7 @@ Interacts with Packer. The `template` argument must generally be a `pkr.json` te
 
 ### Dependencies
 
-- Packer CLI binary executable >= 1.5
+- Packer CLI binary executable >= 1.5 (INFO: will be raised to 1.7 at version 2.1.0 of library)
 
 ### packer.build()
 Uses Packer to build an artifact from a template or template directory.
