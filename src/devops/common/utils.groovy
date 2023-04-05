@@ -2,8 +2,8 @@
 package devops.common;
 
 // imports
-import com.cloudbees.groovy.cps.NonCPS
 import groovy.json.JsonOutput
+import com.cloudbees.groovy.cps.NonCPS
 import hudson.FilePath
 import jenkins.model.Jenkins
 
@@ -127,7 +127,6 @@ String stringBoolParams(Map paramCmdArg) {
   return aggregateSubCommand
 }
 
-// TODO: list, string, boolean can probablly be combined as they are algorithmically similar
 private String subCommand(param, String cmdArg) {
   // initialize subcommand string
   String subCmd = ''
@@ -135,7 +134,7 @@ private String subCommand(param, String cmdArg) {
   // immediately verify param is not null
   if (param) {
     // different behavior based on param type
-    switch(param.getClass()) {
+    switch(param) {
       case Map:
         // iterate through param value pairs and concatenate full arg and value pairs to subcommand
         param.each() { paramValueName, paramValue ->
