@@ -53,13 +53,16 @@ String render(config) {
 
     // optional inputs
     if (config.gossfile) {
-      cmd += " -g ${config.gossfile}"
+      cmd += " -g ${config.gossfile} render"
+    }
+    else {
+      cmd += ' render'
     }
     if (config.debug == true) {
       cmd += ' --debug'
     }
 
-    final String rendered = sh(label: 'GoSS Render', script: "${cmd} render", returnStdout: true)
+    final String rendered = sh(label: 'GoSS Render', script: cmd, returnStdout: true)
   }
   catch(Exception error) {
     print 'Failure using goss render.'
@@ -85,7 +88,7 @@ void server(config) {
 
   // create goss rest api endpoint
   try {
-    String cmd = "${config.bin} serve"
+    String cmd = config.bin
 
     // check for optional inputs
     if (config.vars) {
@@ -94,7 +97,10 @@ void server(config) {
       cmd += " --vars ${config.vars}"
     }
     if (config.gossfile) {
-      cmd += " -g ${config.gossfile}"
+      cmd += " -g ${config.gossfile} serve"
+    }
+    else {
+      cmd += ' serve'
     }
 
     sh(label: 'GoSS Server', script: "nohup ${cmd} -f ${config.format} -e ${config.endpoint} -l :${config.port} &")
@@ -119,7 +125,7 @@ void validate(config) {
 
   // validate with goss
   try {
-    String cmd = "${config.bin} validate --no-color"
+    String cmd = config.bin
 
     // check for optional inputs
     if (config.vars) {
@@ -128,7 +134,10 @@ void validate(config) {
       cmd += " --vars ${config.vars}"
     }
     if (config.gossfile) {
-      cmd += " -g ${config.gossfile}"
+      cmd += " -g ${config.gossfile} validate --no-color"
+    }
+    else {
+      cmd += ' validate --no-color'
     }
 
     sh(label: 'GoSS Validate', script: "${cmd} -f ${config.format}")

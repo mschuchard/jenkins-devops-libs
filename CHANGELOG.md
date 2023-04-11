@@ -2,6 +2,9 @@
 **General**
 - More type checking for required parameters.
 
+**GoSS**
+- Fix flag and argument ordering.
+
 **Helm**
 - Add `atomic`, `version`, `devel`, and `createNS` parameters to appropriate methods.
 - Add `registry_login` method.
