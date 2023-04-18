@@ -52,6 +52,14 @@ String render(config) {
     String cmd = config.bin
 
     // optional inputs
+    if (config.package) {
+      cmd += " --package ${config.package}"
+    }
+    if (config.vars) {
+      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
+
+      cmd += " --vars ${config.vars}"
+    }
     if (config.gossfile) {
       cmd += " -g ${config.gossfile} render"
     }
@@ -96,6 +104,9 @@ void server(config) {
 
       cmd += " --vars ${config.vars}"
     }
+    if (config.package) {
+      cmd += " --package ${config.package}"
+    }
     if (config.gossfile) {
       cmd += " -g ${config.gossfile} serve"
     }
@@ -132,6 +143,9 @@ void validate(config) {
       assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
 
       cmd += " --vars ${config.vars}"
+    }
+    if (config.package) {
+      cmd += " --package ${config.package}"
     }
     if (config.gossfile) {
       cmd += " -g ${config.gossfile} validate --no-color"
