@@ -55,6 +55,12 @@ String render(config) {
     if (config.package) {
       cmd += " --package ${config.package}"
     }
+    if (config.varsInline) {
+      assert config.varsInline instanceof Map : "The inline vars parameter must be a Map."
+      final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
+
+      cmd += " --vars-inline ${varsInlineJSON}"
+    }
     if (config.vars) {
       assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
 
@@ -99,6 +105,12 @@ void server(config) {
     String cmd = config.bin
 
     // check for optional inputs
+    if (config.varsInline) {
+      assert config.varsInline instanceof Map : "The inline vars parameter must be a Map."
+      final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
+
+      cmd += " --vars-inline ${varsInlineJSON}"
+    }
     if (config.vars) {
       assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
 
@@ -139,6 +151,12 @@ void validate(config) {
     String cmd = config.bin
 
     // check for optional inputs
+    if (config.varsInline) {
+      assert config.varsInline instanceof Map : "The inline vars parameter must be a Map."
+      final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
+
+      cmd += " --vars-inline ${varsInlineJSON}"
+    }
     if (config.vars) {
       assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
 

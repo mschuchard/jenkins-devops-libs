@@ -13,11 +13,12 @@ Renders a single valid GoSSfile from separated individual test files. This metho
 
 ```groovy
 goss.render(
-  bin:      '/usr/bin/goss', // optional executable path for goss
-  debug:    false, // optional print rendered golang template prior to gossfile
-  gossfile: 'goss.yaml', // optional location of gossfile with included directive
-  package:  null, // optional package type to use (apk, dpkg, pacman, rpm)
-  vars:     'vars.yaml' // optional vars file to use with gossfile
+  bin:        '/usr/bin/goss', // optional executable path for goss
+  debug:      false, // optional print rendered golang template prior to gossfile
+  gossfile:   'goss.yaml', // optional location of gossfile with included directive
+  package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
+  vars:       'vars.yaml', // optional vars file to use with gossfile
+  varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 )
 ```
 
@@ -26,13 +27,14 @@ Creates a persistent REST API endpoint with GoSS.
 
 ```groovy
 goss.server(
-  bin:      '/usr/bin/goss', // optional executable path for goss
-  endpoint: '/healthz', // optional endpoint to expose
-  format:   'rspecish', // optional formatter to use for output
-  gossfile: 'goss.yaml', // optional location of gossfile
-  package:  null, // optional package type to use (apk, dpkg, pacman, rpm)
-  port:     '8080', // optional specified port to listen on
-  vars:     'vars.yaml' // optional vars file to use with gossfile
+  bin:        '/usr/bin/goss', // optional executable path for goss
+  endpoint:   '/healthz', // optional endpoint to expose
+  format:     'rspecish', // optional formatter to use for output
+  gossfile:   'goss.yaml', // optional location of gossfile
+  package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
+  port:       '8080', // optional specified port to listen on
+  vars:       'vars.yaml', // optional vars file to use with gossfile
+  varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 )
 ```
 
@@ -41,11 +43,12 @@ Locally executes a `gossfile` with GoSS.
 
 ```groovy
 goss.validate(
-  bin:      '/usr/bin/goss', // optional executable path for goss
-  format:   'rspecish', // optional formatter to use for output
-  gossfile: 'goss.yaml', // optional location of gossfile
-  package:  null, // optional package type to use (apk, dpkg, pacman, rpm)
-  vars:     'vars.yaml' // optional vars file to use with gossfile
+  bin:        '/usr/bin/goss', // optional executable path for goss
+  format:     'rspecish', // optional formatter to use for output
+  gossfile:   'goss.yaml', // optional location of gossfile
+  package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
+  vars:       'vars.yaml', // optional vars file to use with gossfile
+  varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 )
 ```
 

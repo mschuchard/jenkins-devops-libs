@@ -4,7 +4,7 @@
 
 **GoSS**
 - Fix flag and argument ordering.
-- Add `package` parameter to appropriate methods.
+- Add `package` and `varsInline` parameters to appropriate methods.
 - Add `vars` parameter to `render` method.
 
 **Helm**
