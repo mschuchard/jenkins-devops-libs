@@ -32,6 +32,7 @@ goss.server(
   format:     'rspecish', // optional formatter to use for output
   formatOpts: 'perfdata', // optional extra formatter options (perfdata, pretty, or verbose)
   gossfile:   'goss.yaml', // optional location of gossfile
+  maxConcur:  '50', // optional maximum number of tests to run concurrently
   package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
   port:       '8080', // optional specified port to listen on
   vars:       'vars.yaml', // optional vars file to use with gossfile
@@ -48,6 +49,7 @@ goss.validate(
   format:     'rspecish', // optional formatter to use for output
   formatOpts: 'perfdata', // optional extra formatter options (perfdata, pretty, or verbose)
   gossfile:   'goss.yaml', // optional location of gossfile
+  maxConcur:  '50', // optional maximum number of tests to run concurrently
   package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
   vars:       'vars.yaml', // optional vars file to use with gossfile
   varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')

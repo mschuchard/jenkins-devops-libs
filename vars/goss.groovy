@@ -125,6 +125,9 @@ void server(config) {
     else {
       cmd += ' serve'
     }
+    if (config.maxConcur) {
+      cmd += " --max-concurrent ${config.maxConcur}"
+    }
     if (config.formatOpts) {
       assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
 
@@ -175,6 +178,9 @@ void validate(config) {
     }
     else {
       cmd += ' validate --no-color'
+    }
+    if (config.maxConcur) {
+      cmd += " --max-concurrent ${config.maxConcur}"
     }
     if (config.formatOpts) {
       assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
