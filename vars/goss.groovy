@@ -125,6 +125,11 @@ void server(config) {
     else {
       cmd += ' serve'
     }
+    if (config.formatOpts) {
+      assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+
+      cmd += " -o ${config.formatOpts}"
+    }
 
     sh(label: 'GoSS Server', script: "nohup ${cmd} -f ${config.format} -e ${config.endpoint} -l :${config.port} &")
   }
@@ -170,6 +175,11 @@ void validate(config) {
     }
     else {
       cmd += ' validate --no-color'
+    }
+    if (config.formatOpts) {
+      assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+
+      cmd += " -o ${config.formatOpts}"
     }
 
     sh(label: 'GoSS Validate', script: "${cmd} -f ${config.format}")

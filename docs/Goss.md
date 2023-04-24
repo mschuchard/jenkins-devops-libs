@@ -30,6 +30,7 @@ goss.server(
   bin:        '/usr/bin/goss', // optional executable path for goss
   endpoint:   '/healthz', // optional endpoint to expose
   format:     'rspecish', // optional formatter to use for output
+  formatOpts: 'perfdata', // optional extra formatter options (perfdata, pretty, or verbose)
   gossfile:   'goss.yaml', // optional location of gossfile
   package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
   port:       '8080', // optional specified port to listen on
@@ -45,6 +46,7 @@ Locally executes a `gossfile` with GoSS.
 goss.validate(
   bin:        '/usr/bin/goss', // optional executable path for goss
   format:     'rspecish', // optional formatter to use for output
+  formatOpts: 'perfdata', // optional extra formatter options (perfdata, pretty, or verbose)
   gossfile:   'goss.yaml', // optional location of gossfile
   package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
   vars:       'vars.yaml', // optional vars file to use with gossfile

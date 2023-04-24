@@ -6,6 +6,7 @@
 - Fix flag and argument ordering.
 - Add `package` and `varsInline` parameters to appropriate methods.
 - Add `vars` parameter to `render` method.
+- Add `formatOpts` parameter to `server` and `validate` methods.
 
 **Helm**
 - Add `atomic`, `version`, `devel`, and `createNS` parameters to appropriate methods.
