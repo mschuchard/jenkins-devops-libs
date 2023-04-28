@@ -96,7 +96,6 @@ void server(config) {
     assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
   config.endpoint = config.endpoint ?: '/healthz'
-  config.format = config.format ?: 'rspecish'
   config.port = config.port ?: '8080'
   config.bin = config.bin ?: 'goss'
 
@@ -128,13 +127,19 @@ void server(config) {
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
     }
-    if (config.formatOpts) {
-      assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+    if (config.format) {
+      assert (['documentation', 'json', 'json_oneline', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
-      cmd += " -o ${config.formatOpts}"
+      cmd += " -f ${config.format}"
+
+      if (config.formatOpts) {
+        assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+
+        cmd += " -o ${config.formatOpts}"
+      }
     }
 
-    sh(label: 'GoSS Server', script: "nohup ${cmd} -f ${config.format} -e ${config.endpoint} -l :${config.port} &")
+    sh(label: 'GoSS Server', script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
   }
   catch(Exception error) {
     print 'Failure using goss serve.'
@@ -151,7 +156,6 @@ void validate(config) {
   else {
     assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
-  config.format = config.format ?: 'rspecish'
   config.bin = config.bin ?: 'goss'
 
   // validate with goss
@@ -182,13 +186,19 @@ void validate(config) {
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
     }
-    if (config.formatOpts) {
-      assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+    if (config.format) {
+      assert (['documentation', 'json', 'json_oneline', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
-      cmd += " -o ${config.formatOpts}"
+      cmd += " -f ${config.format}"
+
+      if (config.formatOpts) {
+        assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+
+        cmd += " -o ${config.formatOpts}"
+      }
     }
 
-    sh(label: 'GoSS Validate', script: "${cmd} -f ${config.format}")
+    sh(label: 'GoSS Validate', script: cmd)
   }
   catch(Exception error) {
     print 'Failure using goss validate.'
