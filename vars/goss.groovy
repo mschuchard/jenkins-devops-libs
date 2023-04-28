@@ -62,7 +62,7 @@ String render(config) {
       cmd += " --vars-inline ${varsInlineJSON}"
     }
     if (config.vars) {
-      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
+      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
 
       cmd += " --vars ${config.vars}"
     }
@@ -111,7 +111,7 @@ void server(config) {
       cmd += " --vars-inline ${varsInlineJSON}"
     }
     if (config.vars) {
-      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
+      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
 
       cmd += " --vars ${config.vars}"
     }
@@ -170,7 +170,7 @@ void validate(config) {
       cmd += " --vars-inline ${varsInlineJSON}"
     }
     if (config.vars) {
-      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist or is not a valid YAML file!"
+      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
 
       cmd += " --vars ${config.vars}"
     }

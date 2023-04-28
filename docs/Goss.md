@@ -17,7 +17,7 @@ goss.render(
   debug:      false, // optional print rendered golang template prior to gossfile
   gossfile:   'goss.yaml', // optional location of gossfile with included directive
   package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
-  vars:       'vars.yaml', // optional vars file to use with gossfile
+  vars:       'vars.yaml', // optional YAML or JSON vars file to use with gossfile
   varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 )
 ```
@@ -35,7 +35,7 @@ goss.server(
   maxConcur:  '50', // optional maximum number of tests to run concurrently
   package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
   port:       '8080', // optional specified port to listen on
-  vars:       'vars.yaml', // optional vars file to use with gossfile
+  vars:       'vars.yaml', // optional YAML or JSON vars file to use with gossfile
   varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 )
 ```
@@ -51,7 +51,7 @@ goss.validate(
   gossfile:   'goss.yaml', // optional location of gossfile
   maxConcur:  '50', // optional maximum number of tests to run concurrently
   package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
-  vars:       'vars.yaml', // optional vars file to use with gossfile
+  vars:       'vars.yaml', // optional YAML or JSON vars file to use with gossfile
   varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 )
 ```
