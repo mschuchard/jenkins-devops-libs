@@ -7,6 +7,8 @@
 - Add `package` and `varsInline` parameters to appropriate methods.
 - Add `vars` parameter to `render` method.
 - Add `formatOpts` and `maxConcur` parameters to `server` and `validate` methods.
+- Add `cache` parameter to `server` method.
+- Add `sleep` and `retry-timeout` parameters to `validate` method.
 
 **Helm**
 - Add `atomic`, `version`, `devel`, and `createNS` parameters to appropriate methods.

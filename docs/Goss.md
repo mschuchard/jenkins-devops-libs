@@ -28,6 +28,7 @@ Creates a persistent REST API endpoint with GoSS.
 ```groovy
 goss.server(
   bin:        '/usr/bin/goss', // optional executable path for goss
+  cache:      '5s', // optional time to cache the results
   endpoint:   '/healthz', // optional endpoint to expose
   format:     'rspecish', // optional formatter to use for output
   formatOpts: 'perfdata', // optional extra formatter options (perfdata, pretty, or verbose)
@@ -45,14 +46,16 @@ Locally executes a `gossfile` with GoSS.
 
 ```groovy
 goss.validate(
-  bin:        '/usr/bin/goss', // optional executable path for goss
-  format:     'rspecish', // optional formatter to use for output
-  formatOpts: 'perfdata', // optional extra formatter options (perfdata, pretty, or verbose)
-  gossfile:   'goss.yaml', // optional location of gossfile
-  maxConcur:  '50', // optional maximum number of tests to run concurrently
-  package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
-  vars:       'vars.yaml', // optional YAML or JSON vars file to use with gossfile
-  varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
+  bin:          '/usr/bin/goss', // optional executable path for goss
+  format:       'rspecish', // optional formatter to use for output
+  formatOpts:   'perfdata', // optional extra formatter options (perfdata, pretty, or verbose)
+  gossfile:     'goss.yaml', // optional location of gossfile
+  maxConcur:    '50', // optional maximum number of tests to run concurrently
+  package:      null, // optional package type to use (apk, dpkg, pacman, rpm)
+  retryTimeout: '0s', // optional retry on failure so long as elapsed + `sleep` time is less than this value
+  sleep:        '1s', // optional time to sleep between retries (ignored unless `retryTimeout` also specified)
+  vars:         'vars.yaml', // optional YAML or JSON vars file to use with gossfile
+  varsInline:   ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 )
 ```
 

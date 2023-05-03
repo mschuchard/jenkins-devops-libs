@@ -138,6 +138,9 @@ void server(config) {
         cmd += " -o ${config.formatOpts}"
       }
     }
+    if (config.cache) {
+      cmd += " -c ${config.cache}"
+    }
 
     sh(label: 'GoSS Server', script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
   }
@@ -195,6 +198,13 @@ void validate(config) {
         assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
 
         cmd += " -o ${config.formatOpts}"
+      }
+    }
+    if (config.retryTimeout) {
+      cmd += " -r ${config.retryTimeout}"
+
+      if (config.sleep) {
+        cmd += " -s ${config.sleep}"
       }
     }
 
