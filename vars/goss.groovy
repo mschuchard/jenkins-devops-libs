@@ -116,6 +116,8 @@ void server(config) {
       cmd += " --vars ${config.vars}"
     }
     if (config.package) {
+      assert (['apk', 'dpkg', 'pacman', 'rpm'].contains(config.package)) : 'The "package" parameter must be one of: apk, dpkg, pacman, or rpm'
+
       cmd += " --package ${config.package}"
     }
     if (config.gossfile) {
@@ -178,6 +180,8 @@ void validate(config) {
       cmd += " --vars ${config.vars}"
     }
     if (config.package) {
+      assert (['apk', 'dpkg', 'pacman', 'rpm'].contains(config.package)) : 'The "package" parameter must be one of: apk, dpkg, pacman, or rpm'
+
       cmd += " --package ${config.package}"
     }
     if (config.gossfile) {
