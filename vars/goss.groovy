@@ -133,12 +133,11 @@ void server(config) {
       assert (['documentation', 'json', 'json_oneline', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
       cmd += " -f ${config.format}"
+    }
+    if (config.formatOpts) {
+      assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
 
-      if (config.formatOpts) {
-        assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
-
-        cmd += " -o ${config.formatOpts}"
-      }
+      cmd += " -o ${config.formatOpts}"
     }
     if (config.cache) {
       cmd += " -c ${config.cache}"
@@ -197,12 +196,11 @@ void validate(config) {
       assert (['documentation', 'json', 'json_oneline', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
       cmd += " -f ${config.format}"
+    }
+    if (config.formatOpts) {
+      assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
 
-      if (config.formatOpts) {
-        assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
-
-        cmd += " -o ${config.formatOpts}"
-      }
+      cmd += " -o ${config.formatOpts}"
     }
     if (config.retryTimeout) {
       cmd += " -r ${config.retryTimeout}"

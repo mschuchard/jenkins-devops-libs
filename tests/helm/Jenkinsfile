@@ -8,7 +8,7 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent { docker { image 'alpine/helm:3.10.3' } }
+  agent { docker { image 'alpine/helm:3.11.3' } }
 
   environment { KUBECONFIG = '/home/vagrant/.kube/config' }
 
