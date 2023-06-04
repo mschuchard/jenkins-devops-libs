@@ -1,4 +1,4 @@
-### 2.0.2 (Next)
+### 2.0.2
 **General**
 - More type checking for required parameters.
 
