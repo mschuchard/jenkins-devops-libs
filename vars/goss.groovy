@@ -52,20 +52,7 @@ String render(config) {
     String cmd = config.bin
 
     // optional inputs
-    if (config.package) {
-      cmd += " --package ${config.package}"
-    }
-    if (config.varsInline) {
-      assert config.varsInline instanceof Map : "The inline vars parameter must be a Map."
-      final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
-
-      cmd += " --vars-inline ${varsInlineJSON}"
-    }
-    if (config.vars) {
-      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
-
-      cmd += " --vars ${config.vars}"
-    }
+    cmd += globalArgsCmd(config)
     if (config.gossfile) {
       cmd += " -g ${config.gossfile} render"
     }
@@ -104,22 +91,7 @@ void server(config) {
     String cmd = config.bin
 
     // check for optional inputs
-    if (config.varsInline) {
-      assert config.varsInline instanceof Map : "The inline vars parameter must be a Map."
-      final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
-
-      cmd += " --vars-inline ${varsInlineJSON}"
-    }
-    if (config.vars) {
-      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
-
-      cmd += " --vars ${config.vars}"
-    }
-    if (config.package) {
-      assert (['apk', 'dpkg', 'pacman', 'rpm'].contains(config.package)) : 'The "package" parameter must be one of: apk, dpkg, pacman, or rpm'
-
-      cmd += " --package ${config.package}"
-    }
+    cmd += globalArgsCmd(config)
     if (config.gossfile) {
       cmd += " -g ${config.gossfile} serve"
     }
@@ -167,22 +139,7 @@ void validate(config) {
     String cmd = config.bin
 
     // check for optional inputs
-    if (config.varsInline) {
-      assert config.varsInline instanceof Map : "The inline vars parameter must be a Map."
-      final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
-
-      cmd += " --vars-inline ${varsInlineJSON}"
-    }
-    if (config.vars) {
-      assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
-
-      cmd += " --vars ${config.vars}"
-    }
-    if (config.package) {
-      assert (['apk', 'dpkg', 'pacman', 'rpm'].contains(config.package)) : 'The "package" parameter must be one of: apk, dpkg, pacman, or rpm'
-
-      cmd += " --package ${config.package}"
-    }
+    cmd += globalArgsCmd(config)
     if (config.gossfile) {
       cmd += " -g ${config.gossfile} validate --no-color"
     }
@@ -258,4 +215,31 @@ void validateGossfile(String gossfile) {
     throw error
   }
   print "${gossfile} is valid YAML."
+}
+
+// "private" methods
+String globalArgsCmd(Map config) {
+  // initialize subcommand from global args
+  String subCmd = ''
+
+  // check for optional global args
+  if (config.varsInline) {
+    assert config.varsInline instanceof Map : "The inline vars parameter must be a Map."
+    final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
+
+    subCmd += " --vars-inline ${varsInlineJSON}"
+  }
+  else if (config.vars) {
+    assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
+
+    subCmd += " --vars ${config.vars}"
+  }
+  if (config.package) {
+    assert (['apk', 'dpkg', 'pacman', 'rpm'].contains(config.package)) : 'The "package" parameter must be one of: apk, dpkg, pacman, or rpm'
+
+    subCmd += " --package ${config.package}"
+  }
+
+  // return subcommand based from global arguments
+  return subCmd
 }
