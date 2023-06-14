@@ -1,3 +1,7 @@
+### 2.1.0 (Next)
+**Packer**
+- Increase minimum supported version to 1.7.
+
 ### 2.0.2
 **General**
 - More type checking for required parameters.
