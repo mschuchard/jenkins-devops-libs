@@ -181,11 +181,14 @@ terraform.validate(
 ```
 
 ### terraform.workspace()
+**`create` requires version >= 1.4**
+
 Selects the Terraform workspace for a config directory. Ideally executed in Pipeline before other Terraform blocks.
 
 ```groovy
 terraform.workspace(
   bin:       '/usr/bin', // optional location of terraform install
+  create:    false, // optionally create the workspace if it does not exist
   dir:       env.WORKSPACE, // optional location of terraform config directory
   workspace: 'default' // terraform workspace to select
 )

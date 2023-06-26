@@ -723,10 +723,17 @@ void workspace(config) {
   assert config.workspace instanceof String : 'The "workspace" parameter must be specified for the "workspace" method.'
   config.bin = config.bin ?: 'terraform'
 
+  String cmd = "${config.bin} workspace select"
+
+  // optional inputs
+  if (config.create == true) {
+    cmd += ' -or-create'
+  }
+
   dir(config.dir) {
     // select workspace in terraform config directory
     try {
-      sh(label: 'Terraform Workspace Select', script: "${config.bin} workspace select ${config.workspace}")
+      sh(label: 'Terraform Workspace Select', script: "${config.cmd} ${config.workspace}")
     }
     catch(Exception error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
