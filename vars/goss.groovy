@@ -53,12 +53,7 @@ String render(config) {
 
     // optional inputs
     cmd += globalArgsCmd(config)
-    if (config.gossfile) {
-      cmd += " -g ${config.gossfile} render"
-    }
-    else {
-      cmd += ' render'
-    }
+    cmd += ' render'
     if (config.debug == true) {
       cmd += ' --debug'
     }
@@ -92,12 +87,7 @@ void server(config) {
 
     // check for optional inputs
     cmd += globalArgsCmd(config)
-    if (config.gossfile) {
-      cmd += " -g ${config.gossfile} serve"
-    }
-    else {
-      cmd += ' serve'
-    }
+    cmd += ' serve'
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
     }
@@ -140,12 +130,7 @@ void validate(config) {
 
     // check for optional inputs
     cmd += globalArgsCmd(config)
-    if (config.gossfile) {
-      cmd += " -g ${config.gossfile} validate --no-color"
-    }
-    else {
-      cmd += ' validate --no-color'
-    }
+    cmd += ' validate --no-color'
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
     }
@@ -238,6 +223,9 @@ String globalArgsCmd(Map config) {
     assert (['apk', 'dpkg', 'pacman', 'rpm'].contains(config.package)) : 'The "package" parameter must be one of: apk, dpkg, pacman, or rpm'
 
     subCmd += " --package ${config.package}"
+  }
+  if (config.gossfile) {
+    subCmd += " -g ${config.gossfile}"
   }
 
   // return subcommand based from global arguments
