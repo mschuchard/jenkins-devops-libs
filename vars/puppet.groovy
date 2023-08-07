@@ -1,7 +1,7 @@
 // vars/puppet.groovy
 import devops.common.utils
 
-void codeDeploy(config) {
+void codeDeploy(Map config) {
   // input checking
   if (config.tokenFile && config.credentialsId) {
     throw new Exception("The 'tokenFile' and 'credentialsId' parameters for puppet.codeDeploy are mutually exclusive; only one can be specified.")
@@ -100,7 +100,7 @@ void codeDeploy(config) {
   print 'Code manager deployment(s) was successful.'
 }
 
-void task(config) {
+void task(Map config) {
   // input checking
   if (config.tokenFile && config.credentialsId) {
     throw new Exception("The 'tokenFile' and 'credentialsId' parameters for puppet.task are mutually exclusive; only one can be specified.")
@@ -224,7 +224,7 @@ void task(config) {
   print 'Puppet Orchestrator Task execution successfully requested.'
 }
 
-void token (config) {
+void token (Map config) {
   // input checking
   assert config.username instanceof String : 'The username parameter is required.'
   assert config.password instanceof String : 'The password parameter is required.'

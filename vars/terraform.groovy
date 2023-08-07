@@ -1,7 +1,7 @@
 // vars/terraform.groovy
 import devops.common.utils
 
-void apply(config) {
+void apply(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -54,7 +54,7 @@ void apply(config) {
   print 'Terraform apply was successful.'
 }
 
-void destroy(config) {
+void destroy(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -107,7 +107,7 @@ void destroy(config) {
   print 'Terraform destroy was successful.'
 }
 
-void fmt(config) {
+void fmt(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -157,7 +157,7 @@ void fmt(config) {
   print 'Terraform fmt was successful.'
 }
 
-void graph(config) {
+void graph(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -201,7 +201,7 @@ void graph(config) {
   writeFile(file: 'graph.gv', text: dotGraph)
 }
 
-void imports(config) {
+void imports(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -253,7 +253,7 @@ void imports(config) {
   print 'Terraform imports were successful.'
 }
 
-void init(config) {
+void init(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -309,7 +309,7 @@ void init(config) {
   print 'Terraform init was successful.'
 }
 
-void install(config) {
+void install(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -334,7 +334,7 @@ void install(config) {
   print "Terraform successfully installed at ${config.installPath}/terraform."
 }
 
-def output(config) {
+def output(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -385,7 +385,7 @@ def output(config) {
   }
 }
 
-def plan(config) {
+def plan(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -461,7 +461,7 @@ def plan(config) {
   }
 }
 
-void pluginInstall(config) {
+void pluginInstall(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -520,7 +520,7 @@ void providers(String rootDir, String bin = 'terraform') {
   print 'Terraform providers was successful.'
 }
 
-void state(config) {
+void state(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -594,7 +594,7 @@ void state(config) {
   print 'Terraform state manipulation was successful.'
 }
 
-void taint(config) {
+void taint(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -634,7 +634,7 @@ void taint(config) {
   print 'Terraform taints were successful.'
 }
 
-void test(config) {
+void test(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -671,7 +671,7 @@ void test(config) {
   print 'Terraform test was successful.'
 }
 
-def validate(config) {
+def validate(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -709,7 +709,7 @@ def validate(config) {
   }
 }
 
-void workspace(config) {
+void workspace(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 

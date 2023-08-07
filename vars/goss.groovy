@@ -37,7 +37,7 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
   print "DGoSS successfully installed at ${installPath}/dgoss."
 }
 
-String render(config) {
+String render(Map config) {
   // input checking
   if (config.gossfile) {
     assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
@@ -52,7 +52,7 @@ String render(config) {
     String cmd = config.bin
 
     // optional inputs
-    cmd += globalArgsCmd(config)
+    cmd += globalArgsCmd(Map config)
     cmd += ' render'
     if (config.debug == true) {
       cmd += ' --debug'
@@ -69,7 +69,7 @@ String render(config) {
   return rendered
 }
 
-void server(config) {
+void server(Map config) {
   // input checking
   if (config.gossfile) {
     assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
@@ -86,7 +86,7 @@ void server(config) {
     String cmd = config.bin
 
     // check for optional inputs
-    cmd += globalArgsCmd(config)
+    cmd += globalArgsCmd(Map config)
     cmd += ' serve'
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
@@ -114,7 +114,7 @@ void server(config) {
   print 'GoSS server endpoint created successfully.'
 }
 
-void validate(config) {
+void validate(Map config) {
   // input checking
   if (config.gossfile) {
     assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
@@ -129,7 +129,7 @@ void validate(config) {
     String cmd = config.bin
 
     // check for optional inputs
-    cmd += globalArgsCmd(config)
+    cmd += globalArgsCmd(Map config)
     cmd += ' validate --no-color'
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
@@ -161,7 +161,7 @@ void validate(config) {
   print 'GoSS validate command was successful.'
 }
 
-void validateDocker(config) {
+void validateDocker(Map config) {
   // input checking
   assert config.image instanceof String : 'The required image parameter was not set.'
   config.bin = config.bin ?: 'dgoss'

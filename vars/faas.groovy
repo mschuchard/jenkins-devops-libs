@@ -1,7 +1,7 @@
 // vars/faas.groovy
 import devops.common.utils
 
-void build(config) {
+void build(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
@@ -37,7 +37,7 @@ void build(config) {
   print 'FaaS build image created successfully.'
 }
 
-void deploy(config) {
+void deploy(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   if (config.replace && config.update) {
@@ -83,7 +83,7 @@ void deploy(config) {
   print 'FaaS function deployed successfully.'
 }
 
-void install(config) {
+void install(Map config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform instanceof String && config.version instanceof String) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
@@ -114,7 +114,7 @@ void install(config) {
   print "FaaS CLI successfully installed at ${config.installPath}/faas-cli."
 }
 
-void invoke(config) {
+void invoke(Map config) {
   // input checking
   config.bin = config.bin ?: 'faas-cli'
   assert config.function instanceof String : 'The required parameter function was not set.'
@@ -163,7 +163,7 @@ void invoke(config) {
   print 'FaaS function container image pushed successfully.'
 }
 
-void login(config) {
+void login(Map config) {
   // input checking
   assert config.gateway instanceof String : 'The required gateway parameter was not set.'
   assert config.password instanceof String : 'The required password parameter was not set.'
@@ -188,7 +188,7 @@ void login(config) {
   print 'Successfully logged in to FaaS gateway.'
 }
 
-void push(config) {
+void push(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
@@ -221,7 +221,7 @@ void push(config) {
   print 'FaaS function container image pushed successfully.'
 }
 
-void remove(config) {
+void remove(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"

@@ -1,7 +1,7 @@
 // vars/awx.groovy
 import devops.common.utils
 
-void hostCreate(config) {
+void hostCreate(Map config) {
   // input checking
   assert config.name instanceof String : '"name" is a required parameter for awx.hostCreate.'
   assert config.inventory instanceof String : '"inventory" is a required parameter for awx.hostCreate.'
@@ -50,7 +50,7 @@ void hostDelete(String id, String bin = 'awx') {
 }
 
 // helper method for create and modify
-private void inventory(config) {
+private void inventory(Map config) {
   // input checking
   assert config.name instanceof String : "'name' is a required parameter for awx.inventory_${config.action}."
   assert config.organization instanceof String : "'organization' is a required parameter for awx.inventory_${config.action}."
@@ -90,10 +90,10 @@ private void inventory(config) {
 }
 
 // invokes inventory helper method
-void inventoryCreate(config) {
+void inventoryCreate(Map config) {
   // invoke helper method with create
   config.action = 'create'
-  inventory(config)
+  inventory(Map config)
 }
 
 void inventoryDelete(String id, String bin = 'awx') {
@@ -109,13 +109,13 @@ void inventoryDelete(String id, String bin = 'awx') {
 }
 
 // invokes inventory helper method
-void inventoryModify(config) {
+void inventoryModify(Map config) {
   // invoke helper method with modify
   config.action = 'modify'
-  inventory(config)
+  inventory(Map config)
 }
 
-void jobTemplateLaunch(config) {
+void jobTemplateLaunch(Map config) {
   // input checking
   assert config.id instanceof int : '"id" is a required parameter for awx.jobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
@@ -163,7 +163,7 @@ void jobTemplateLaunch(config) {
   print 'awx job template launch was successful.'
 }
 
-void projectsUpdate(config) {
+void projectsUpdate(Map config) {
   // input checking
   assert config.id instanceof int : '"id" is a required parameter for awx.projectsUpdate.'
   config.bin = config.bin ?: 'awx'
@@ -187,7 +187,7 @@ void projectsUpdate(config) {
   print 'awx projects update was successful.'
 }
 
-void workflowJobTemplateLaunch(config) {
+void workflowJobTemplateLaunch(Map config) {
   // input checking
   assert config.id instanceof int : '"id" is a required parameter for awx.workflowJobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'

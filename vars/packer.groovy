@@ -1,7 +1,7 @@
 // vars/packer.groovy
 import devops.common.utils
 
-void build(config) {
+void build(Map config) {
   // input checking
   assert config.template instanceof String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
@@ -54,7 +54,7 @@ void build(config) {
   print 'Packer build artifact created successfully.'
 }
 
-void fmt(config) {
+void fmt(Map config) {
   // input checking
   assert config.template instanceof String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
@@ -99,7 +99,7 @@ void fmt(config) {
   print 'Packer fmt was successful.'
 }
 
-void init(config) {
+void init(Map config) {
   // input checking
   assert fileExists(config.dir) : "Working template directory ${config.dir} does not exist."
   config.bin = config.bin ?: 'packer'
@@ -139,7 +139,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
   print 'Packer inspect was successful'
 }
 
-void install(config) {
+void install(Map config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform instanceof String && config.version instanceof String) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
@@ -191,7 +191,7 @@ void pluginInstall(String url, String installLoc) {
   print "Packer plugin successfully installed at ${installLoc}."
 }
 
-void plugins(config) {
+void plugins(Map config) {
   // input checking
   assert (['installed', 'required'].contains(config.command)) : 'The command parameter must be one of "installed" or "required".'
   config.bin = config.bin ?: 'packer'
@@ -225,7 +225,7 @@ void plugins(config) {
   print 'Packer plugins executed successfully.'
 }
 
-void validate(config) {
+void validate(Map config) {
   // input checking
   assert config.template instanceof String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"

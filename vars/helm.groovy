@@ -1,7 +1,7 @@
 //vars/helm.groovy
 import devops.common.utils
 
-void install(config) {
+void install(Map config) {
   // input checking
   assert config.name instanceof String : 'The required parameter "name" was not set.'
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
@@ -96,7 +96,7 @@ void kubectl(String version, String installPath = '/usr/bin/') {
   print "Kubectl successfully installed at ${installPath}/kubectl."
 }
 
-void lint(config) {
+void lint(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
@@ -158,7 +158,7 @@ void lint(config) {
   print 'Helm lint executed successfully.'
 }
 
-void packages(config) {
+void packages(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
@@ -201,7 +201,7 @@ void packages(config) {
   print 'Helm package command was successful.'
 }
 
-void plugin(config) {
+void plugin(Map config) {
   // input checking
   assert (['install', 'list', 'uninstall', 'update'].contains(config.command)) : 'The argument must be one of: install, list, uninstall, or update.'
   assert (config.plugin instanceof String) && (config.command != 'list') : 'The required parameter "plugin" was not set for a non-list command.'
@@ -225,7 +225,7 @@ void plugin(config) {
   print "Helm plugin ${config.command} executed successfully."
 }
 
-void registry_login(config) {
+void registry_login(Map config) {
   // input checking
   assert config.host instanceof String : 'The required parameter "host" was not set.'
   assert config.password instanceof String : 'The required parameter "password" was not set.'
@@ -250,7 +250,7 @@ void registry_login(config) {
   print 'Helm registry login executed successfully.'
 }
 
-void repo(config) {
+void repo(Map config) {
   // input checking
   assert config.repo instanceof String : 'The required parameter "repo" was not set.'
   assert config.url instanceof String : 'The required parameter "url" was not set.'
@@ -280,7 +280,7 @@ void repo(config) {
   print 'Helm repo add executed successfully.'
 }
 
-void rollback(config) {
+void rollback(Map config) {
   // input checking
   assert config.name instanceof String : "The required parameter 'name' was not set."
   config.bin = config.bin ?: 'helm'
@@ -340,7 +340,7 @@ void setup(String version, String installPath = '/usr/bin/') {
   }
 }
 
-void show(config) {
+void show(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
@@ -358,7 +358,7 @@ void show(config) {
   print 'Helm show executed successfully.'
 }
 
-void status(config) {
+void status(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name instanceof String : 'The required parameter "name" was not set.'
@@ -391,7 +391,7 @@ void status(config) {
   print 'Helm status executed successfully.'
 }
 
-void test(config) {
+void test(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name instanceof String : 'The required parameter "name" was not set.'
@@ -463,7 +463,7 @@ void test(config) {
   print 'Helm test executed successfully.'
 }
 
-void uninstall(config) {
+void uninstall(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name instanceof String : 'The required parameter "name" was not set.'
@@ -496,7 +496,7 @@ void uninstall(config) {
   print 'Helm uninstall executed successfully.'
 }
 
-void upgrade(config) {
+void upgrade(Map config) {
   // input checking
   if (config.version && config.devel) {
     throw new Exception("The 'version' and 'devel' parameters for helm.upgrade are mutually exclusive; only one can be specified.")
