@@ -1,9 +1,11 @@
 ### 2.1.0 (Next)
 **Packer**
 - Increase minimum supported version to 1.7.
+- Support complex type variable input values.
 
 **Terraform**
 - Add `create` parameter to `workspace` method.
+- Support complex type variable input values.
 
 ### 2.0.2
 **General**

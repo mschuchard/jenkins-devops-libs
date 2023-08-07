@@ -24,6 +24,11 @@ void apply(Map config) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
       config.var.each() { var, value ->
+        // convert value to json if not string type
+        if (value instanceof List) || (value instanceof Map) {
+          value = writeJSON(json: value, returnText: true)
+        }
+
         cmd += " -var ${var}=${value}"
       }
     }
@@ -77,6 +82,11 @@ void destroy(Map config) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
       config.var.each() { var, value ->
+        // convert value to json if not string type
+        if (value instanceof List) || (value instanceof Map) {
+          value = writeJSON(json: value, returnText: true)
+        }
+
         cmd += " -var ${var}=${value}"
       }
     }
@@ -222,6 +232,11 @@ void imports(Map config) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
     config.var.each() { var, value ->
+      // convert value to json if not string type
+      if (value instanceof List) || (value instanceof Map) {
+        value = writeJSON(json: value, returnText: true)
+      }
+
       cmd += " -var ${var}=${value}"
     }
   }
@@ -410,6 +425,11 @@ def plan(Map config) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
     config.var.each() { var, value ->
+      // convert value to json if not string type
+      if (value instanceof List) || (value instanceof Map) {
+        value = writeJSON(json: value, returnText: true)
+      }
+
       cmd += " -var ${var}=${value}"
     }
   }
