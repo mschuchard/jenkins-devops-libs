@@ -540,6 +540,60 @@ void providers(String rootDir, String bin = 'terraform') {
   print 'Terraform providers was successful.'
 }
 
+void refresh(Map config) {
+  // set terraform env for automation
+  env.TF_IN_AUTOMATION = true
+
+  // input checking
+  if (config.dir) {
+    assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
+  }
+  else {
+    config.dir = env.WORKSPACE
+  }
+  config.bin = config.bin ?: 'terraform'
+
+  String cmd = "${config.bin} refresh -no-color -input=false"
+
+  // check for optional inputs
+  if (config.varFile) {
+    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
+
+    cmd += " -var-file=${config.varFile}"
+  }
+  if (config.var) {
+    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+
+    config.var.each() { var, value ->
+      // convert value to json if not string type
+      if (value instanceof List) || (value instanceof Map) {
+        value = writeJSON(json: value, returnText: true)
+      }
+
+      cmd += " -var ${var}=${value}"
+    }
+  }
+  if (config.target) {
+    assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
+
+    config.target.each() { target ->
+      cmd += " -target=${target}"
+    }
+  }
+
+  // refresh the state
+  try {
+    dir(config.dir) {
+      sh(label: 'Terraform Refresh', script: cmd)
+    }
+  }
+  catch(Exception error) {
+    print 'Failure using terraform refresh.'
+    throw error
+  }
+  print 'Terraform refresh was successful.'
+}
+
 void state(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
