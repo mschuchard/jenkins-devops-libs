@@ -130,6 +130,19 @@ Prints out a tree of modules in the referenced configuration annotated with thei
 terraform.providers('/path/to/root_module_dir')
 ```
 
+### terraform.refresh()
+Update the state file of your infrastructure with metadata that matches the physical resources they are tracking.
+
+```groovy
+terraform.refresh(
+  bin:         '/usr/bin/terraform', // optional path to terraform executable
+  dir:         env.WORKSPACE, // optional path to config dir
+  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:     '/path/to/variables.tf' // optional location of variables file
+)
+```
+
 ### terraform.state()
 Manipulate or display the Terraform state. The resources parameter should be `null` for a `push` or `list`, a list of strings for a `remove`, and a map of strings for a `move`.
 

@@ -5,6 +5,7 @@
 
 **Terraform**
 - Add `create` parameter to `workspace` method.
+- Add `refresh` method.
 - Support complex type variable input values.
 
 ### 2.0.2

@@ -88,6 +88,13 @@ pipeline {
         }
       }
     }
+    stage('Refresh') {
+      steps {
+        script {
+          terraform.refresh(dir: '/tmp')
+        }
+      }
+    }
     stage('State') {
       steps {
         script {
