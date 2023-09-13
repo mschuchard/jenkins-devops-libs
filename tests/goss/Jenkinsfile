@@ -8,7 +8,7 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent { docker { image 'aelsabbahy/goss:v0.3.21' } }
+  agent { docker { image 'aelsabbahy/goss:v0.3.16' } }
 
   stages {
     stage('Validate Gossfile') {
