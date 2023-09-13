@@ -1,4 +1,7 @@
 ### 2.1.0 (Next)
+**Helm**
+- Rename `registryLogin` method to camelCase.
+
 **Packer**
 - Increase minimum supported version to 1.7.
 - Support complex type variable input values.

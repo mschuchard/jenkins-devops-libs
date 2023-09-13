@@ -225,7 +225,7 @@ void plugin(Map config) {
   print "Helm plugin ${config.command} executed successfully."
 }
 
-void registry_login(Map config) {
+void registryLogin(Map config) {
   // input checking
   assert config.host instanceof String : 'The required parameter "host" was not set.'
   assert config.password instanceof String : 'The required parameter "password" was not set.'
