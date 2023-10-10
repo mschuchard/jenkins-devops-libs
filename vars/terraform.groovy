@@ -453,6 +453,11 @@ def plan(Map config) {
   if (config.refreshOnly == true) {
     cmd += ' -refresh-only'
   }
+  if (config.genConfig) {
+    assert !fileExists(config.genConfig) : "The path at ${config.genConfig} is required to not exist prior to Terraform config generation, but the path does exist."
+
+    cmd += "-generate-config-out=${config.genConfig}"
+  }
   String out = config.out ?: "${config.dir}/plan.tfplan"
 
   // generate a plan from the config directory

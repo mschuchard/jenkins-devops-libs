@@ -8,6 +8,7 @@
 
 **Terraform**
 - Add `create` parameter to `workspace` method.
+- Add `genConfig` parameter to `plan` method.
 - Add `refresh` method.
 - Support complex type variable input values.
 

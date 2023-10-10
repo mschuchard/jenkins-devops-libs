@@ -113,6 +113,7 @@ terraform.plan(
   destroy:     false, // optional generate a plan to destroy resources
   dir:         env.WORKSPACE, // optional path to config dir
   display:     false, // optional display plan output
+  genConfig:   'config.tf', // optional hcl generation for import blocks (>= 1.5)
   out:         'plan.tfplan', // optional plan output file path (extension must be .tfplan)
   refreshOnly: false, // optional check if remote objects match outcome of most recent apply (>= 0.15)
   replace:     ['aws_instance.example', 'aws_eip.ip'], // optional resources to unconditionally recreate in plan
