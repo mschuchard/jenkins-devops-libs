@@ -13,6 +13,8 @@ def history(Map config) {
     cmd += "--max ${config.max}"
   }
   if (config.outputFormat) {
+    assert (['table', 'json', 'yaml'].contains(config.outputFormat)) : 'The outputFormat parameter must be one of table, json, or yaml'
+
     cmd += "-o ${config.outputFormat}"
   }
   if (config.context) {

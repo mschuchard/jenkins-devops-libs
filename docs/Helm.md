@@ -9,6 +9,21 @@ Also please note direct Kubernetes support will never exist in this library. The
 - Helm CLI binary executable >= 3.0
 - Kubernetes cluster
 
+### helm.history()
+Prints historical revisions for a given release.
+
+```groovy
+helm.history(
+  bin:          '/usr/bin/helm', // optional executable path for helm
+  context:      'default', // optional kube-context from kube config
+  max:          256, // optional maximum number of revisions to include in history (default 256)
+  name:         'happy-panda', // required name for the release object
+  namespace:    'default', // optional namespace for the installed release object
+  outputFormat: 'table', // optional format for output (table, json, or yaml)
+  return:       false, // optional return history output from method as String
+)
+```
+
 ### helm.install()
 Performs an installation with Helm onto the Kubernetes cluster.
 
