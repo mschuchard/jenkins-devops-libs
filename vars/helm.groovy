@@ -1,6 +1,40 @@
 //vars/helm.groovy
 import devops.common.utils
 
+def history(Map config) {
+  // input checking
+  assert config.name instanceof String : 'The required parameter "name" was not set.'
+  config.bin = config.bin ?: 'helm'
+
+  String cmd = "${config.bin} history"
+
+  // check for optional inputs
+  if (config.max) {
+    cmd += "--max ${config.max}"
+  }
+  if (config.outputFormat) {
+    cmd += "-o ${config.outputFormat}"
+  }
+  if (config.context) {
+    cmd += " --kube-context ${config.context}"
+    lister += " --kube-context ${config.context}"
+  }
+  if (config.namespace) {
+    cmd += " --namespace ${config.namespace}"
+    lister += " --namespace ${config.namespace}"
+  }
+
+  // gather release revision history with helm
+  try {
+    sh(label: 'Helm History', script: "${cmd} ${config.name}")
+  }
+  catch(Exception error) {
+    print 'Failure using helm history.'
+    throw error
+  }
+  print 'Helm history executed successfully.'
+}
+
 void install(Map config) {
   // input checking
   assert config.name instanceof String : 'The required parameter "name" was not set.'
