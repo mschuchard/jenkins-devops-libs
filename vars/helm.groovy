@@ -26,13 +26,18 @@ def history(Map config) {
 
   // gather release revision history with helm
   try {
-    sh(label: 'Helm History', script: "${cmd} ${config.name}")
+    final String historyOutput = sh(label: 'Helm History', script: "${cmd} ${config.name}", returnStdout: config.return)
   }
   catch(Exception error) {
     print 'Failure using helm history.'
     throw error
   }
   print 'Helm history executed successfully.'
+
+  // return history output if requested
+  if (config.return == true) {
+    return historyOutput
+  }
 }
 
 void install(Map config) {

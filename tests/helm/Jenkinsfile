@@ -114,5 +114,12 @@ pipeline {
         }
       }
     }
+    stage('History') {
+      steps {
+        script {
+          helm.history)name: 'happy-panda'
+        }
+      }
+    }
   }
 }
