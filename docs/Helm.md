@@ -87,6 +87,18 @@ helm.packages(
 )
 ```
 
+### helm.push
+Upload a chart to a registry.
+
+```groovy
+helm.push(
+  bin:      '/usr/bin/helm', // optional executable path for helm
+  chart:    'helm-chart-1.0.0.tgz', // absolute or relative path to packaged chart
+  insecure: false, // optional skip tls certificate checks for the chart upload
+  remote:   'oci://my.registry.com/', // address of the remote chart registry
+)
+```
+
 ### helm.registryLogin
 Authenticate to a remote registry.
 

@@ -1,7 +1,7 @@
 ### 2.1.0 (Next)
 **Helm**
 - Rename `registryLogin` method to camelCase.
-- Add `history` method.
+- Add `history` and `push` methods.
 
 **Packer**
 - Increase minimum supported version to 1.7.
