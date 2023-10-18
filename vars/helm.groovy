@@ -266,6 +266,31 @@ void plugin(Map config) {
   print "Helm plugin ${config.command} executed successfully."
 }
 
+void push(Map config) {
+  // input checking
+  assert config.chart instanceof String : 'The required parameter "chart" was not set.'
+  assert fileExists(config.chart) : "The chart does not exist at ${config.chart}."
+  assert config.remote instanceof String : 'The required parameter "remote" was not set.'
+  config.bin = config.bin ?: 'helm'
+
+  String cmd = "${config.bin} push"
+
+  // optional inputs
+  if (config.insecure == true) {
+    cmd += ' --insecure-skip-tls-verify'
+  }
+
+  // push helm chart to remote registry
+  try {
+    sh(label: 'Helm Push', script: "${cmd} ${config.chart} ${config.remote}")
+  }
+  catch (Exception error) {
+    print 'Failure using helm push'
+    throw error
+  }
+  print 'Helm push executed successfully'
+}
+
 void registryLogin(Map config) {
   // input checking
   assert config.host instanceof String : 'The required parameter "host" was not set.'
