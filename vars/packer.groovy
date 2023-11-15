@@ -20,7 +20,7 @@ void build(Map config) {
 
     config.var.each() { var, value ->
       // convert value to json if not string type
-      if (value instanceof List) || (value instanceof Map) {
+      if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
       }
 
@@ -249,7 +249,7 @@ void validate(Map config) {
 
     config.var.each() { var, value ->
       // convert value to json if not string type
-      if (value instanceof List) || (value instanceof Map) {
+      if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
       }
 

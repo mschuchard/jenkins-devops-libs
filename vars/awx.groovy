@@ -93,7 +93,7 @@ private void inventory(Map config) {
 void inventoryCreate(Map config) {
   // invoke helper method with create
   config.action = 'create'
-  inventory(Map config)
+  inventory(config)
 }
 
 void inventoryDelete(String id, String bin = 'awx') {
@@ -112,7 +112,7 @@ void inventoryDelete(String id, String bin = 'awx') {
 void inventoryModify(Map config) {
   // invoke helper method with modify
   config.action = 'modify'
-  inventory(Map config)
+  inventory(config)
 }
 
 void jobTemplateLaunch(Map config) {

@@ -52,7 +52,7 @@ String render(Map config) {
     String cmd = config.bin
 
     // optional inputs
-    cmd += globalArgsCmd(Map config)
+    cmd += globalArgsCmd(config)
     cmd += ' render'
     if (config.debug == true) {
       cmd += ' --debug'
@@ -86,7 +86,7 @@ void server(Map config) {
     String cmd = config.bin
 
     // check for optional inputs
-    cmd += globalArgsCmd(Map config)
+    cmd += globalArgsCmd(config)
     cmd += ' serve'
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
@@ -129,7 +129,7 @@ void validate(Map config) {
     String cmd = config.bin
 
     // check for optional inputs
-    cmd += globalArgsCmd(Map config)
+    cmd += globalArgsCmd(config)
     cmd += ' validate --no-color'
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
