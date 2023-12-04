@@ -73,6 +73,7 @@ packer.validate(
   bin:           '/usr/bin/packer', // optional location of packer install
   evalData:      false, // optional evaluate datasources during validation
   only:          ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to validate
+  syntaxOnly:    false, // optional only check syntax and do not verify config
   template:      '/path/to/template.pkr.hcl', // // location of packer template file or templates directory
   var:           ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile:       '/path/to/variables.json' // optional location of variables file

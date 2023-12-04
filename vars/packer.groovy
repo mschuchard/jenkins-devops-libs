@@ -267,6 +267,9 @@ void validate(Map config) {
   if (config.warnUndeclVar == false) {
     cmd += ' -no-warn-undeclared-var'
   }
+  if (config.syntaxOnly == true) {
+    cmd += ' -syntax-only'
+  }
 
   // validate template with packer
   try {

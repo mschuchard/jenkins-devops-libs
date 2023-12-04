@@ -6,6 +6,7 @@
 **Packer**
 - Increase minimum supported version to 1.7.
 - Support complex type variable input values.
+- Add `syntaxOnly` parameter to `validate` method.
 
 **Terraform**
 - Add `create` parameter to `workspace` method.
