@@ -11,7 +11,7 @@ pipeline {
   agent { docker { image 'aelsabbahy/goss:v0.3.16' } }
 
   stages {
-    stage('Validate Gossfile') {
+    stage('Validate GoSSfile') {
       steps {
         sh 'curl -L https://raw.githubusercontent.com/mschuchard/jenkins-devops-libs/master/tests/goss/goss.yaml -o /tmp/goss.yaml'
 

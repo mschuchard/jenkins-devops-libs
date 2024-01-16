@@ -2,7 +2,7 @@
 package devops.common;
 
 // imports
-@Grab('com.bertramlabs.plugins:hcl4j:0.4.4')
+@Grab('com.bertramlabs.plugins:hcl4j:0.7.3')
 import com.bertramlabs.plugins.hcl4j.HCLParser;
 
 // wrapper method for returning a map from a hcl file
