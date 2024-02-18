@@ -1,4 +1,4 @@
-### 2.1.0 (Next)
+### 2.1.0
 **Helm**
 - Rename `registryLogin` method to camelCase.
 - Add `history` and `push` methods.
