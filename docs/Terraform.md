@@ -1,6 +1,6 @@
 # Terraform
 
-Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each method.
+Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each method. Note that OpenTofu can also be used with these by assigning a value to the `bin` parameter for each method that is the path to the OpenTofu binary executable.
 
 ### Dependencies
 
