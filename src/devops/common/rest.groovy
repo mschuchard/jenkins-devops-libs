@@ -35,7 +35,7 @@ Map request(String url, Map headers = [:], Map body = [:], HTTPMethod method = G
       response = client.delete(headers: headers)
       break
     default:
-      throw new Exception("Invalid REST API interaction method ${method} specified.")
+      throw new Exception("Invalid REST API interaction method '${method}' specified.")
   }
 
   // handle the response
