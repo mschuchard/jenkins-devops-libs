@@ -14,7 +14,7 @@ enum HTTPMethod{
 }
 
 // defines a method for interacting with rest apis
-Map request(String url, Map headers = [:], Map body = [:], HTTPMethod method = GET) {
+Map request(String url, HTTPMethod method = GET, Map body = [:], Map headers = [:]) {
   // initialize client and expected status code
   def client = new RESTClient(url)
   int status = 200

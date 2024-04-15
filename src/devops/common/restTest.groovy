@@ -14,14 +14,14 @@ class restTest extends GroovyTestCase {
 
   @Test
   void testPost() {
-    final Map response = new rest().request(config.url, config.headers, config.body, 'post')
+    final Map response = new rest().request('https://www.google.com', POST)
 
     assert response
   }
 
   @Test
   void testPut() {
-    final Map response = new rest().request(config.url, config.headers, config.body, 'put')
+    final Map response = new rest().request('https://www.google.com', PUT)
 
     assert response
   }
