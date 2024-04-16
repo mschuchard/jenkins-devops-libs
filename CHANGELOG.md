@@ -1,3 +1,5 @@
+### 2.1.1 (Next)
+
 ### 2.1.0
 **Helm**
 - Rename `registryLogin` method to camelCase.

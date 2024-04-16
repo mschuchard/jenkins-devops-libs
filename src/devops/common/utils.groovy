@@ -79,18 +79,18 @@ String mapToJSON(Map content) {
 // bridges gap between users of older DSL and newer DSL
 Map paramsConverter(body) {
   // initialize config
-  Map config = [:]
+  Map config = [:];
 
   // if we received older DSL, convert it into config map
   if (body instanceof Closure) {
     // evaluate the body block and collect configuration into the object
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = config
-    body()
+    body.resolveStrategy = Closure.DELEGATE_FIRST;
+    body.delegate = config;
+    body();
   }
   // if newer DSL, return same map as the config
   else if (body instanceof Map) {
-    config = body
+    config = body;
   }
   // params are invalid type
   else {
@@ -116,7 +116,7 @@ String mapParam(Map param, String cmdArg) {
 
 String stringBoolParams(Map paramCmdArg) {
   // initialize aggregate sub command
-  String aggregateSubCommand = ''
+  String aggregateSubCommand = '';
 
   // iterate through map of params and corresponding command arguments
   paramCmdArg.each() { param, cmdArg ->
@@ -129,7 +129,7 @@ String stringBoolParams(Map paramCmdArg) {
 
 private String subCommand(param, String cmdArg) {
   // initialize subcommand string
-  String subCmd = ''
+  String subCmd = '';
 
   // immediately verify param is not null
   if (param) {
@@ -149,11 +149,11 @@ private String subCommand(param, String cmdArg) {
         break;
       case String:
         // build aggregate sub command with consecutive subCommand returns
-        subCmd += " ${cmdArg}${param}"
+        subCmd += " ${cmdArg}${param}";
         break;
       case Boolean:
         // build aggregate sub command with consecutive subCommand returns
-        subCmd += " ${cmdArg}"
+        subCmd += " ${cmdArg}";
         break;
       default:
         throw new Exception("Unexpected parameter type '${param.getClass()}' for command argument '${cmdArg}'.");
