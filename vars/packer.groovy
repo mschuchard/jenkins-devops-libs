@@ -1,5 +1,6 @@
 // vars/packer.groovy
 import devops.common.utils
+import devops.common.hcl
 
 void build(Map config) {
   // input checking
@@ -164,6 +165,11 @@ void install(Map config) {
   unzip(zipFile: 'packer.zip', dir: config.installPath)
   new utils().removeFile('packer.zip')
   print "Packer successfully installed at ${config.installPath}/packer."
+}
+
+Map parse(String file) {
+  // return map of parsed hcl
+  return new hcl().hclToMap(file)
 }
 
 void pluginInstall(String url, String installLoc) {

@@ -21,6 +21,13 @@ pipeline {
         }
       }
     }
+    stage('Parse') {
+      steps {
+        script {
+          parsedMap = packer.parse('docker.pkr.hcl')
+        }
+      }
+    }
     stage('Plugins') {
       steps {
         script {

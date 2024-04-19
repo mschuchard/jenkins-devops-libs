@@ -52,6 +52,13 @@ Inspects a template and parses and outputs the components a template defines.
 packer.inspect('/path/to/template.pkr.json', '/usr/local/bin/packer')
 ```
 
+### packer.parse(String template)
+Provides a thin wrapper around [HCL4j](https://github.com/bertramdev/hcl4j) for inputting a Packer template or config, and returning a `Map` representing the parsed HCL2. Note this requires local installation of the HCL4j dependency, and therefore the agent must have sufficient permissions to do so.
+
+```groovy
+parsedMap = packer.parse('/path/to/template.pkr.hcl')
+```
+
 ### packer.plugins()
 Uses Packer to interact with plugins and display information about them.
 
