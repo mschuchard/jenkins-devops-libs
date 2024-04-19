@@ -104,6 +104,13 @@ terraform.plan(
 )
 ```
 
+### terraform.parse(String template)
+Provides a thin wrapper around [HCL4j](https://github.com/bertramdev/hcl4j) for inputting a Terraform config, and returning a `Map` representing the parsed HCL2. Note this requires local installation of the HCL4j dependency, and therefore the agent must have sufficient permissions to do so.
+
+```groovy
+parsedMap = terraform.parse('/path/to/config.tf')
+```
+
 ### terraform.plan()
 Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` will be written to the same directory as the input config directory if the `out` parameter is not specified. Otherwise, the output plan file will be written to the filesystem at the path specified in the `out` parameter. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons.
 

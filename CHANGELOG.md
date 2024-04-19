@@ -2,6 +2,9 @@
 **Packer**
 - Add `parse` method.
 
+**Terraform**
+- Add `parse` method.
+
 ### 2.1.0
 **Helm**
 - Rename `registryLogin` method to camelCase.

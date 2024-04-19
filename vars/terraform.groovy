@@ -1,5 +1,6 @@
 // vars/terraform.groovy
 import devops.common.utils
+import devops.common.hcl
 
 void apply(Map config) {
   // set terraform env for automation
@@ -398,6 +399,11 @@ def output(Map config) {
     print 'Terraform output was successful.'
     return outputs
   }
+}
+
+Map parse(String file) {
+  // return map of parsed hcl
+  return new hcl().hclToMap(file)
 }
 
 def plan(Map config) {
