@@ -735,12 +735,22 @@ void test(Map config) {
   String cmd = "${config.bin} test -no-color"
 
   // optional inputs
-  if (config.compactWarnings == true) {
-    cmd += ' -compact-warnings'
+  if (config.varFile) {
+    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
+
+    cmd += " -var-file=${config.varFile}"
   }
-  if (config.junitResults == true) {
-    cmd += " -junit-xml=${config.dir}/test_results.xml"
-    print "Results also written to JUnit XML at: ${config.dir}/test_results.xml"
+  if (config.var) {
+    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+
+    config.var.each() { var, value ->
+      // convert value to json if not string type
+      if (value instanceof List || value instanceof Map) {
+        value = writeJSON(json: value, returnText: true)
+      }
+
+      cmd += " -var ${var}=${value}"
+    }
   }
 
   // execute tests

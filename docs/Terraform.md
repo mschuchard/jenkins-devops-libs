@@ -178,14 +178,14 @@ terraform.taint(
 ```
 
 ### terraform.test()
-Uses Terraform to execute experimental automated integration testing of shared modules.
+Uses Terraform to execute experimental automated integration testing of shared modules. **This method usage will correlate to a recent version of Terraform as this subcommand changes greatly between versions.**
 
 ```groovy
 terraform.test(
-  bin:             '/usr/bin/terraform', // optional path to terraform executable
-  compactWarnings: false, // optional more compact representation for warnings
-  dir:             env.WORKSPACE, // optional path to config dir
-  junitResults:    false, // optional additionally write test results to junit xml file in config directory at 'test_results.xml'
+  bin:     '/usr/bin/terraform', // optional path to terraform executable
+  dir:     env.WORKSPACE, // optional path to config dir
+  var:     ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile: '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
