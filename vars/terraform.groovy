@@ -735,6 +735,9 @@ void test(Map config) {
   String cmd = "${config.bin} test -no-color"
 
   // optional inputs
+  if (config.json == true) {
+    cmd += ' -json'
+  }
   if (config.varFile) {
     assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
@@ -756,7 +759,7 @@ void test(Map config) {
   // execute tests
   try {
     dir(config.dir) {
-      sh(label: 'Terraform Test', script: cmd)
+      final String testOutput = sh(label: 'Terraform Test', script: cmd, returnStdout: config.return)
     }
   }
   catch(Exception error) {
@@ -764,6 +767,11 @@ void test(Map config) {
     throw error
   }
   print 'Terraform test was successful.'
+
+  // return test output if requested
+  if (config.return == true) {
+    return testOutput
+  }
 }
 
 def validate(Map config) {

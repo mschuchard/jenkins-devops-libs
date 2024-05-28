@@ -184,8 +184,10 @@ Uses Terraform to execute experimental automated integration testing of shared m
 terraform.test(
   bin:     '/usr/bin/terraform', // optional path to terraform executable
   dir:     env.WORKSPACE, // optional path to config dir
+  json:    false, // optional produce output in a machine-readable JSON format
   var:     ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile: '/path/to/variables.tf' // optional location of variables file
+  return:  false, // optional return test output from method (mostly useful with json: true)
 )
 ```
 
