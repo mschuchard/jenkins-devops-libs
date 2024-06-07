@@ -4,6 +4,7 @@
 
 **Terraform**
 - Add `parse` method.
+- Update `test` method usage for 1.7.
 
 ### 2.1.0
 **Helm**

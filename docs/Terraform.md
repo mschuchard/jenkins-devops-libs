@@ -185,6 +185,7 @@ terraform.test(
   bin:      '/usr/bin/terraform', // optional path to terraform executable
   cloudRun: 'app.terraform.io/:ORG/:MODULE_NAME/:PROVIDER', // optional source of a private module in a registry to execute tests remotely against via terraform cloud
   dir:      env.WORKSPACE, // optional path to config dir
+  filter:   ['machine.tf', 'network.tf'], // optional list of test files to execute
   json:     false, // optional produce output in a machine-readable JSON format
   testDir:  'tests', // optional terraform test directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting

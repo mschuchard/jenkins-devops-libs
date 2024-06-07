@@ -738,6 +738,13 @@ void test(Map config) {
   if (config.cloudRun) {
     cmd += " -cloud-run=${config.cloudRun}"
   }
+  if (config.filter) {
+    assert (config.filter instanceof List) : 'The filter parameter must be a list of strings.'
+
+    config.filter.each() { filter ->
+      cmd += " -filter=${filter}"
+    }
+  }
   if (config.json == true) {
     cmd += ' -json'
   }
