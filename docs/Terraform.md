@@ -182,12 +182,14 @@ Uses Terraform to execute experimental automated integration testing of shared m
 
 ```groovy
 terraform.test(
-  bin:     '/usr/bin/terraform', // optional path to terraform executable
-  dir:     env.WORKSPACE, // optional path to config dir
-  json:    false, // optional produce output in a machine-readable JSON format
-  var:     ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile: '/path/to/variables.tf' // optional location of variables file
-  return:  false, // optional return test output from method (mostly useful with json: true)
+  bin:      '/usr/bin/terraform', // optional path to terraform executable
+  cloudRun: 'app.terraform.io/:ORG/:MODULE_NAME/:PROVIDER', // optional source of a private module in a registry to execute tests remotely against via terraform cloud
+  dir:      env.WORKSPACE, // optional path to config dir
+  json:     false, // optional produce output in a machine-readable JSON format
+  testDir:  'tests', // optional terraform test directory
+  var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:  '/path/to/variables.tf' // optional location of variables file
+  return:   false, // optional return test output from method (mostly useful with json: true)
 )
 ```
 

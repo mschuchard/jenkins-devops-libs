@@ -735,8 +735,16 @@ void test(Map config) {
   String cmd = "${config.bin} test -no-color"
 
   // optional inputs
+  if (config.cloudRun) {
+    cmd += " -cloud-run=${config.cloudRun}"
+  }
   if (config.json == true) {
     cmd += ' -json'
+  }
+  if (config.testDir) {
+    assert fileExists(config.testDir) : "The test directory ${config.testDir} does not exist."
+
+    cmd += " -test-directory=${config.testDir}"
   }
   if (config.varFile) {
     assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
