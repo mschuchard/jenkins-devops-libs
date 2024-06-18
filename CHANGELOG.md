@@ -5,6 +5,7 @@
 **Terraform**
 - Add `parse` method.
 - Update `test` method usage for 1.7.
+- Add `init` support for backend setting with key-value pairs.
 
 ### 2.1.0
 **Helm**

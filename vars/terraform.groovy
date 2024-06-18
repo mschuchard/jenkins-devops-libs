@@ -311,6 +311,13 @@ void init(Map config) {
       cmd += " -backend-config=${backconf}"
     }
   }
+  if (config.backendKV) {
+    assert (config.backendKV instanceof Map) : 'Parameter backendKV must be a map of strings.'
+
+    config.backendKV.each() { key, value ->
+      cmd += " -backend-config='${key}=${value}'"
+    }
+  }
 
   // initialize the working config directory
   try {

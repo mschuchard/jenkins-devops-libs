@@ -1,6 +1,6 @@
 # Jenkins DevOps Shared Libraries
 
-A collection of Jenkins Pipeline shared libraries for common DevOps software. Usage and dependencies for each can be found in the [documentation](docs).
+A collection of Jenkins Pipeline shared libraries for common "DevOps" software. Usage and dependencies for each can be found in the [documentation](docs).
 
 Unsure how to use these in your declarative syntax `Jenkinsfile`? Check the declarative Jenkinsfile shared library [documentation](https://jenkins.io/doc/book/pipeline/shared-libraries/#using-libraries).
 

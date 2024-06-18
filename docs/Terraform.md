@@ -66,6 +66,7 @@ Uses Terraform to initialize a working directory.
 terraform.init(
   backend:       true // optional false to omit backend initialization
   backendConfig: ['/path/to/backend.hcl'] // optional paths to hcl files with backend configs
+  backendKV:     ['address':'demo.consul.io', 'scheme':'https'], // optional key-value pairs for backend settings
   bin:           '/usr/bin/terraform', // optional path to terraform executable
   dir:           env.WORKSPACE, // optional path to working config dir
   forceCopy:     false, // optional suppress prompts about copying state data when initializating a new state backend
