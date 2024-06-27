@@ -188,10 +188,11 @@ terraform.test(
   dir:      env.WORKSPACE, // optional path to config dir
   filter:   ['machine.tf', 'network.tf'], // optional list of test files to execute
   json:     false, // optional produce output in a machine-readable JSON format
+  return:   false, // optional return test output from method (mostly useful with json: true)
   testDir:  'tests', // optional terraform test directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile:  '/path/to/variables.tf' // optional location of variables file
-  return:   false, // optional return test output from method (mostly useful with json: true)
+  verbose:  false, // optional print plan or state for each test as it executes
 )
 ```
 

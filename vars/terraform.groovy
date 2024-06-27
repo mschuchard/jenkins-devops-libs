@@ -777,6 +777,9 @@ void test(Map config) {
       cmd += " -var ${var}=${value}"
     }
   }
+  if (config.verbose == true) {
+    cmd += ' -verbose'
+  }
 
   // execute tests
   try {

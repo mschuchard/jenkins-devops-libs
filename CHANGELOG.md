@@ -4,7 +4,7 @@
 
 **Terraform**
 - Add `parse` method.
-- Update `test` method usage for 1.7.
+- Update `test` method usage for 1.8.
 - Add `init` support for backend setting with key-value pairs.
 
 ### 2.1.0
