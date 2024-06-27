@@ -12,8 +12,9 @@ Uses Packer to build an artifact from a template or template directory.
 ```groovy
 packer.build(
   bin:      '/usr/bin/packer', // optional location of packer install
+  except:   ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to ignore during build (mutually exclusive with only)
   force:    false, // optional force a build to continue if artifacts exist and deletes existing artifacts
-  only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build
+  only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build (mutually exclusive with except)
   onError:  'default', // optional 'default' cleanup, 'abort', 'ask', or 'run-cleanup-provisioner'
   template: '/path/to/template.pkr.json', // location of packer template file or templates directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
@@ -79,7 +80,8 @@ Uses Packer to validate a build template or template directory.
 packer.validate(
   bin:           '/usr/bin/packer', // optional location of packer install
   evalData:      false, // optional evaluate datasources during validation
-  only:          ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to validate
+  except:   ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to ignore during build (mutually exclusive with only)
+  only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build (mutually exclusive with except)
   syntaxOnly:    false, // optional only check syntax and do not verify config
   template:      '/path/to/template.pkr.hcl', // // location of packer template file or templates directory
   var:           ['foo':'bar', 'bar':'baz'], // optional variable setting

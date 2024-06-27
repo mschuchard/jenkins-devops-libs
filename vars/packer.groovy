@@ -5,6 +5,9 @@ import devops.common.hcl
 void build(Map config) {
   // input checking
   assert config.template instanceof String : 'The required template parameter was not set.'
+  if (config.except && config.only) {
+    throw new Exception("The 'except' and 'only' parameters for packer.build are mutually exclusive; only one can be specified.")
+  }
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
 
@@ -27,6 +30,11 @@ void build(Map config) {
 
       cmd += " -var ${var}=${value}"
     }
+  }
+  if (config.except) {
+    assert (config.except instanceof List) : 'The except parameter must be a list of strings.'
+
+    cmd += " -except=${config.except.join(',')}"
   }
   if (config.only) {
     assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
@@ -239,6 +247,9 @@ void plugins(Map config) {
 void validate(Map config) {
   // input checking
   assert config.template instanceof String : 'The required template parameter was not set.'
+  if (config.except && config.only) {
+    throw new Exception("The 'except' and 'only' parameters for packer.validate are mutually exclusive; only one can be specified.")
+  }
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
 
@@ -261,6 +272,11 @@ void validate(Map config) {
 
       cmd += " -var ${var}=${value}"
     }
+  }
+  if (config.except) {
+    assert (config.except instanceof List) : 'The except parameter must be a list of strings.'
+
+    cmd += " -except=${config.except.join(',')}"
   }
   if (config.only) {
     assert (config.only instanceof List) : 'The only parameter must be a list of strings.'

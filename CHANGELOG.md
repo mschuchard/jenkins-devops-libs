@@ -1,6 +1,7 @@
 ### 2.1.1 (Next)
 **Packer**
 - Add `parse` method.
+- Add `except` parameter to `build` and `validate` methods.
 
 **Terraform**
 - Add `parse` method.
