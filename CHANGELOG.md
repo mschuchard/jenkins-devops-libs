@@ -1,4 +1,4 @@
-### 2.1.1 (Next)
+### 2.1.1
 **Packer**
 - Add `parse` method.
 - Add `except` parameter to `build` and `validate` methods.

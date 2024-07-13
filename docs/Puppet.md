@@ -9,14 +9,14 @@ Interacts with Puppet Enterprise endpoints. This library is considered experimen
 - Puppet Enterprise installation
 
 ### puppet.codeDeploy()
-Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to `true`, errors returned by Code Manager will be returned and cause the pipeline to fatally error.
+Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to `true`, then errors returned by Code Manager will be returned and cause the pipeline to fatally error.
 
 ```groovy
 puppet.codeDeploy(
   credentialsId: 'pe_token', // token bindings credentials id for rbac token; mutually exclusive with token
   environments:  ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
   servers:       ['puppet'], // optional server hosting code manager
-  tokenFile:     '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code manager; mutually exclusive with credentialId
+  tokenFile:     '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code manager; mutually exclusive with credentialsId
   wait:          false // optional wait for code manager to finish deployment
 )
 ```
