@@ -92,14 +92,14 @@ terraform.imports(
 ```
 
 ### terraform.output()
-Reads an output variable from a Terraform state and prints the value.
+Reads an output variable from a Terraform state and returns the value as a String.
 
 ```groovy
-terraform.plan(
+terraform.output(
   bin:     '/usr/bin/terraform', // optional path to terraform executable
   dir:     env.WORKSPACE, // optional path to config dir
-  display: false, // optional display outputs; else they will be returned as String from method
-  json:    false, // optional json format output
+  display: false, // optional display outputs
+  json:    false, // optional JSON format String return
   name:    'module.foo.server_ip_address', // optional output name
   state:   'terraform.tfstate', // optional path to the source state file
 )

@@ -357,7 +357,7 @@ void install(Map config) {
   print "Terraform successfully installed at ${config.installPath}/terraform."
 }
 
-def output(Map config) {
+String output(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -396,16 +396,15 @@ def output(Map config) {
     print 'Failure using terraform output.'
     throw error
   }
+
+  print 'Terraform output was successful.'
   // display output
   if (config.display == true) {
     print 'Terraform outputs are displayed below:'
     print outputs
   }
   // return output
-  else {
-    print 'Terraform output was successful.'
-    return outputs
-  }
+  return outputs
 }
 
 Map parse(String file) {

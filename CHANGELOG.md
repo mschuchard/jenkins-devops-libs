@@ -2,6 +2,7 @@
 **Terraform**
 - Cast resource namespace as literal string for `imports` method.
 - Increase minimum supported version to 1.0.
+- Always return outputs as String for `output` method.
 
 ### 2.1.1
 **Packer**
