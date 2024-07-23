@@ -259,7 +259,7 @@ void imports(Map config) {
   try {
     // import each resource
     config.resources.each() { name, id ->
-      sh(label: "Terraform Import ${name}", script: "${cmd} ${name} ${id}")
+      sh(label: "Terraform Import ${name}", script: "${cmd} '${name}' ${id}")
     }
   }
   catch(Exception error) {

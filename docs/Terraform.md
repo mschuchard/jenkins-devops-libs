@@ -4,7 +4,7 @@ Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each metho
 
 ### Dependencies
 
-- Terraform CLI binary executable >= 0.12
+- Terraform CLI binary executable >= 1.0
 
 ### terraform.apply()
 Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this and the `out` parameter was not specified, then the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath` parameter value, then the `vars` and `target` parameters will be ignored.
