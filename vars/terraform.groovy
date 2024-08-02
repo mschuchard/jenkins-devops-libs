@@ -179,18 +179,18 @@ void graph(Map config) {
   else if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
-  config.bin = config.bin ?: 'terraform'
+  String cmd = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} graph"
-
-  // check for optional inputs
+  // check for plan versus dir target
   if (config.plan) {
-    cmd += " -plan=${config.plan}"
+    cmd += " graph -plan=${config.plan}"
   }
   else {
     // cannot cleanly use dir step for this, and also because of later graph file write
-    cmd += " -chdir=${config.dir}"
+    cmd += " -chdir=${config.dir} graph"
   }
+
+  // check for optional inputs
   if (config.type) {
     assert (['plan', 'plan-refresh-only', 'plan-destroy', 'apply'].contains(config.type)) : 'The type parameter must be one of: plan, plan-refresh-only, plan-destroy, or apply.'
 
