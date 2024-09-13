@@ -60,6 +60,29 @@ Provides a thin wrapper around [HCL4j](https://github.com/bertramdev/hcl4j) for 
 parsedMap = packer.parse('/path/to/template.pkr.hcl')
 ```
 
+### packer.pluginsInstall()
+Uses Packer to install the most recent compatible Packer plugin matching the version constraint. When the version parameter is omitted, then the most recent version will be installed. `packer.init()` with a config file is recommended instead of this method.
+
+```groovy
+packer.pluginsInstall(
+  bin:     '/usr/bin/packer', // optional location of packer install
+  plugin:  'github.com/hashicorp/happycloud',
+  force:   false, // optional force reinstallation of plugins
+  version: 'v1.2.3', // optional version of plugin to install
+)
+```
+
+### packer.pluginsRemove()
+Uses Packer to remove all Packer plugins matching the version constraint for the current OS and architecture. When the version parameter is omitted all installed versions will be removed. `packer.init()` with a config file is recommended instead of this method.
+
+```groovy
+packer.pluginsRemove(
+  bin: '/usr/bin/packer', // optional location of packer install
+  plugin:  'github.com/hashicorp/happycloud',
+  version: 'v1.2.3', // optional version of plugin to install
+)
+```
+
 ### packer.plugins()
 Uses Packer to interact with plugins and display information about them.
 

@@ -36,6 +36,8 @@ pipeline {
             command: 'required',
             dir:     '.'
           )
+          packer.pluginsInstall(plugin: 'github.com/hashicorp/docker')
+          packer.pluginsRemove(plugin: 'github.com/hashicorp/docker')
         }
       }
     }
