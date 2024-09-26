@@ -238,6 +238,28 @@ void pluginsInstall(Map config) {
   print 'Packer plugins install executed successfully.'
 }
 
+void pluginsRemove(Map config) {
+  config.bin = config.bin ?: 'packer'
+  assert config.plugin instanceof String : 'The required "plugin" parameter was not assigned a value.'
+
+  String cmd = "${config.bin} remove ${config.plugin}"
+
+  // optional inputs
+  if (config.version) {
+    cmd += " ${config.version}"
+  }
+
+  // remove plugin
+  try {
+    sh(label: 'Packer Plugins Remove', script: cmd)
+  }
+  catch(Exception error) {
+    print 'Failure using packer plugins remove.'
+    throw error
+  }
+  print 'Packer plugins remove executed successfully.'
+}
+
 void plugins(Map config) {
   // input checking
   assert (['installed', 'required'].contains(config.command)) : 'The command parameter must be one of "installed" or "required".'

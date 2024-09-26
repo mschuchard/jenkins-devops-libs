@@ -5,6 +5,9 @@
 - Always return outputs as String for `output` method.
 - Fix `chdir` argument position in `graph` method.
 
+**Packer**
+- Add `pluginsInstall` and `pluginsRemove` methods.
+
 ### 2.1.1
 **Packer**
 - Add `parse` method.
