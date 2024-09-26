@@ -210,6 +210,34 @@ void pluginInstall(String url, String installLoc) {
   print "Packer plugin successfully installed at ${installLoc}."
 }
 
+void pluginsInstall(Map config) {
+  config.bin = config.bin ?: 'packer'
+  assert config.plugin instanceof String : 'The required "plugin" parameter was not assigned a value.'
+
+  String cmd = "${config.bin} install"
+
+  // optional inputs
+  if (config.force) == true {
+    cmd += ' -force'
+  }
+  // append plugin since optional version must be last argument
+  cmd += " ${config.plugin}"
+
+  if (config.version) {
+    cmd += " ${config.version}"
+  }
+
+  // install plugin
+  try {
+    sh(label: 'Packer Plugins Install', script: cmd)
+  }
+  catch(Exception error) {
+    print 'Failure using packer plugins install.'
+    throw error
+  }
+  print 'Packer plugins install executed successfully.'
+}
+
 void plugins(Map config) {
   // input checking
   assert (['installed', 'required'].contains(config.command)) : 'The command parameter must be one of "installed" or "required".'
