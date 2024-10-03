@@ -197,14 +197,16 @@ terraform.test(
 ```
 
 ### terraform.validate()
-Uses Terraform to validate a config directory.
+Uses Terraform to validate a config directory. **This subcommand's usage varies greatly between different versions of Terraform, and therefore not all parameters may be supported in your utilized version.**
 
 ```groovy
 terraform.validate(
-  bin:    '/usr/bin/terraform', // optional path to terraform executable
-  dir:    env.WORKSPACE, // optional path to config dir
-  json:   false, // optional produce output in a machine-readable JSON format
-  return: false, // optional return validate output from method (mostly useful with json: true)
+  bin:     '/usr/bin/terraform', // optional path to terraform executable
+  dir:     env.WORKSPACE, // optional path to config dir
+  json:    false, // optional produce output in a machine-readable JSON format
+  return:  false, // optional return validate output from method (mostly useful with json: true)
+  testDir: 'tests', // optional terraform test directory
+  tests:   true, // optional validate test files
 )
 ```
 

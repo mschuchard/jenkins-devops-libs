@@ -4,6 +4,7 @@
 - Increase minimum supported version to 1.0.
 - Always return outputs as String for `output` method.
 - Fix `chdir` argument position in `graph` method.
+- Add `testDir` and `tests` parameters to `validate` method.
 
 **Packer**
 - Add `pluginsInstall` and `pluginsRemove` methods.
