@@ -13,7 +13,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: jenkins/jenkins:lts-slim
     steps:
     - name: checkout
