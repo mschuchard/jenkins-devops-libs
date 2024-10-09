@@ -334,6 +334,9 @@ void repo(Map config) {
   else if ((config.ca) && (config.cert) && (config.key)) {
     cmd += " --ca-file ${config.ca} --cert-file ${config.cert} --key-file ${config.key}"
   }
+  if (config.force == true) {
+    cmd += ' --force-update'
+  }
   if ((config.user) && (config.password)) {
     cmd += " --username ${config.user} --password ${config.password}"
   }

@@ -1,13 +1,17 @@
 ### 2.2.0 (Next)
+**Helm**
+- Add `force` parameter to `install`, `repo`, and `upgrade` methods.
+- Add `withSubcharts` parameter to `lint` method.
+
+**Packer**
+- Add `pluginsInstall` and `pluginsRemove` methods.
+
 **Terraform**
 - Cast resource namespace as literal string for `imports` method.
 - Increase minimum supported version to 1.0.
 - Always return outputs as String for `output` method.
 - Fix `chdir` argument position in `graph` method.
 - Add `testDir` and `tests` parameters to `validate` method.
-
-**Packer**
-- Add `pluginsInstall` and `pluginsRemove` methods.
 
 ### 2.1.1
 **Packer**

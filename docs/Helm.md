@@ -52,13 +52,14 @@ Runs a series of tests to verify that the chart is well-formed.
 
 ```groovy
 helm.lint(
-  bin:       '/usr/bin/helm', // optional executable path for helm
-  chart:     'chart', // chart repository, local archive, directory, or url to install
-  context:   'default', // optional kube-context from kube config
-  namespace: 'default', // optional namespace for the installed release object
-  set:       ['foo':'bar', 'bar':'baz'], // optional value override
-  strict:    false // optional fail on warnings
-  values:    ['config.yaml'], // optional value overrides yaml file or url
+  bin:           '/usr/bin/helm', // optional executable path for helm
+  chart:         'chart', // chart repository, local archive, directory, or url to install
+  context:       'default', // optional kube-context from kube config
+  namespace:     'default', // optional namespace for the installed release object
+  set:           ['foo':'bar', 'bar':'baz'], // optional value override
+  strict:        false // optional fail on warnings
+  values:        ['config.yaml'], // optional value overrides yaml file or url
+  withSubcharts: false, // optional lin dependent charts
 )
 ```
 
@@ -121,6 +122,7 @@ helm.repo(
   bin:      '/usr/local/bin/helm', // optional executable path
   ca:       '/path/to/crt.ca', // optional path to CA bundle to verify certificates of HTTPS servers
   cert:     '/path/to/ca.crt', // optional path to HTTPS client SSL certificate file
+  force:    false, // optional replace/overwrite the repo if it exists
   insecure: false, // optional skip tls certificate checks
   key:      '/path/to/rsa.key', // optional path to HTTPS client SSL key file
   password: 'mypassword', // optional chart repository password
