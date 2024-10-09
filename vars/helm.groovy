@@ -82,6 +82,9 @@ void install(Map config) {
   if (config.dryRun == true) {
     cmd += ' --dry-run'
   }
+  if (config.force == true) {
+    cmd += ' --force'
+  }
   if (config.context) {
     cmd += " --kube-context ${config.context}"
     lister += " --kube-context ${config.context}"

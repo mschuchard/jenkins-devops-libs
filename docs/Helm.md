@@ -36,13 +36,14 @@ helm.install(
   createNS:  false, // optional create the release namespace if not present
   devel:     false, // optional also use development versions (mutually exclusive with version)
   dryRun:    false, // optional simulate an install
+  force:     false, // optional force resource updates through replacement strategy
   name:      'happy-panda', // required name for the installed release object
   namespace: 'default', // optional namespace for the installed release object
+  set:       ['key1':'val1', 'key2':'val2'], // optional set input values
   values:    ['config.yaml'], // optional value overrides yaml file or url
   verify:    true, // optional verify the provenance of the chart
   version:   'latest', // optional chart version to install (mutually exclusive with devel)
   wait:      false, // optional wait until everything is in a ready state
-  set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )
 ```
 
@@ -55,9 +56,9 @@ helm.lint(
   chart:     'chart', // chart repository, local archive, directory, or url to install
   context:   'default', // optional kube-context from kube config
   namespace: 'default', // optional namespace for the installed release object
-  values:    ['config.yaml'], // optional value overrides yaml file or url
   set:       ['foo':'bar', 'bar':'baz'], // optional value override
   strict:    false // optional fail on warnings
+  values:    ['config.yaml'], // optional value overrides yaml file or url
 )
 ```
 
@@ -204,14 +205,15 @@ helm.upgrade(
   createNS:  false, // optional create the release namespace if not present and install occurs
   devel:     false, // optional also use development versions (mutually exclusive with version)
   dryRun:    false, // optional simulate an upgrade
+  force:     false, // optional force resource updates through replacement strategy
   install:   false, // optional install if release not already present
   name:      'happy-panda', // name of the upgraded release object
   namespace: 'default', // optional namespace for the upgraded release object
+  set:       ['key1':'val1', 'key2':'val2'], // optional set input values
   values:    ['config.yaml'], // optional value overrides yaml file or url
   verify:    true, // optional verify the provenance of the chart
   version:   'latest', // optional chart version to install (mutually exclusive with devel)
   wait:      false, // optional wait until everything is in a ready state
-  set:       ['foo':'bar', 'bar':'baz'] // optional value override
 )
 ```
 
