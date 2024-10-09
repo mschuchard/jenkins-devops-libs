@@ -350,6 +350,16 @@ void repo(Map config) {
     throw error
   }
   print 'Helm repo add executed successfully.'
+
+  // update the repo
+  try {
+    sh(label: 'Helm Repo Update', script: "${cmd.replaceFirst('add', 'update')} ${config.repo} ${config.url}")
+  }
+  catch(Exception error) {
+    print 'Failure using helm repo update.'
+    throw error
+  }
+  print 'Helm repo update executed successfully.'
 }
 
 void rollback(Map config) {

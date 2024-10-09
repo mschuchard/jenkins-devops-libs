@@ -115,7 +115,7 @@ helm.registryLogin(
 ```
 
 ### helm.repo()
-Add a Helm chart repository. The repository will update if it has already been added.
+Add and update a Helm chart repository. The repository will update if it has already been added.
 
 ```groovy
 helm.repo(
