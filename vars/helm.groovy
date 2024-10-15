@@ -353,7 +353,7 @@ void repo(Map config) {
 
   // update the repo
   try {
-    sh(label: 'Helm Repo Update', script: "${cmd.replaceFirst('add', 'update')} ${config.repo} ${config.url}")
+    sh(label: 'Helm Repo Update', script: "${cmd.replaceFirst('add', 'update')} ${config.repo}")
   }
   catch(Exception error) {
     print 'Failure using helm repo update.'
@@ -370,7 +370,7 @@ void rollback(Map config) {
   String cmd = "${config.bin} rollback"
   String lister = "${config.bin} list"
 
-  // optional inputs
+  // optional inputs also applicable to lister
   if (config.context) {
     cmd += " --kube-context ${config.context}"
     lister += " --kube-context ${config.context}"
@@ -384,6 +384,17 @@ void rollback(Map config) {
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
   assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
 
+  // optional inputs
+  if (config.force == true) {
+    cmd += ' --force'
+  }
+  if (config.hooks == false) {
+    cmd += ' --no-hooks'
+  }
+  if (config.recreatePods == true) {
+    cmd += ' --recreate-pods'
+  }
+
   // append rollback version if specified
   if (config.version) {
     cmd += "${cmd} ${config.name} ${config.version}"
@@ -394,7 +405,7 @@ void rollback(Map config) {
 
   // rollback with helm
   try {
-    sh(label: 'Helm rollback', script: cmd)
+    sh(label: 'Helm Rollback', script: cmd)
   }
   catch(Exception error) {
     print 'Failure using helm rollback.'

@@ -137,11 +137,14 @@ Roll back the release object to a previous release with Helm.
 
 ```groovy
 helm.rollback(
-  bin:       '/usr/local/bin/helm', // optional executable path for helm
-  context:   'default', // optional kube-context from kube config
-  name:      'happy-panda', // release object name to rollback
-  namespace: 'default', // optional namespace for the rolled back release object
-  version:   'previous' // optional version of release-object to rollback to
+  bin:          '/usr/local/bin/helm', // optional executable path for helm
+  context:      'default', // optional kube-context from kube config
+  force:        false, // optional force resource update through delete/recreate if needed
+  hooks:        true, // optional hooks run during rollback
+  name:         'happy-panda', // release object name to rollback
+  namespace:    'default', // optional namespace for the rolled back release object
+  recreatePods: false, // optional performs pods restart for the resource if applicable
+  version:      'previous' // optional version of release-object to rollback to
 )
 ```
 

@@ -1,7 +1,8 @@
 ### 2.2.0 (Next)
 **Helm**
-- Add `force` parameter to `install`, `repo`, and `upgrade` methods.
+- Add `force` parameter to `install`, `repo`, `rollback`, and `upgrade` methods.
 - Add `withSubcharts` parameter to `lint` method.
+- Add `hooks` and `recreatePods` parameters to `rollback` method.
 
 **Packer**
 - Add `pluginsInstall` and `pluginsRemove` methods.
