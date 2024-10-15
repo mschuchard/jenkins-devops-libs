@@ -155,7 +155,7 @@ Show information about a chart.
 helm.show(
   bin:   '/usr/local/bin/helm', // optional executable path for helm
   chart: 'chart', // chart repository, local archive, directory, or url to display
-  info:  'all', // info to display; one of 'all', 'chart', 'readme', or 'values'
+  info:  'all', // info to display; one of 'all', 'chart', 'crds', 'readme', or 'values'
 )
 ```
 
