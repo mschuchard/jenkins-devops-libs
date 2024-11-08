@@ -164,11 +164,14 @@ Shows the status of a named release. This will also return the displayed informa
 
 ```groovy
 helm.status(
-  bin:       '/usr/bin/helm', // optional executable path for helm
-  name:      'happy-panda', // name for the release object to be queried
-  context:   'default', // optional kube-context from kube config
-  namespace: 'default', // optional namespace for the queried release object
-  outputFormat:    'table' // optional return output in specified format
+  bin:          '/usr/bin/helm', // optional executable path for helm
+  description:  false, // optional display release description message
+  name:         'happy-panda', // name for the release object to be queried
+  context:      'default', // optional kube-context from kube config
+  namespace:    'default', // optional namespace for the queried release object
+  outputFormat: 'table' // optional format for output (table, json, or yaml)
+  resources:    false, // optional display release resources
+  revision:     0, // optional display the status of the release revision
 )
 ```
 

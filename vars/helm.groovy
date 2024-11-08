@@ -463,6 +463,9 @@ String status(Map config) {
     cmd += " --kube-context ${config.context}"
     lister += " --kube-context ${config.context}"
   }
+  if (config.description) {
+    cmd += '--show-desc'
+  }
   if (config.namespace) {
     cmd += " --namespace ${config.namespace}"
     lister += " --namespace ${config.namespace}"
@@ -471,6 +474,14 @@ String status(Map config) {
     assert (['table', 'json', 'yaml'].contains(config.outputFormat)) : 'The outputFormat parameter must be one of table, json, or yaml'
 
     cmd += "-o ${config.outputFormat}"
+  }
+  if (config.resources) {
+    cmd += '--show-resources'
+  }
+  if (config.revision) {
+    assert config.revision instanceof Integer : 'The parameter "revision" must be an integer'
+
+    cmd += " --revision ${config.revision}"
   }
 
   // check release object

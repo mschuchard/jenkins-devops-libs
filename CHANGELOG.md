@@ -3,7 +3,7 @@
 - Add `force` parameter to `install`, `repo`, `rollback`, and `upgrade` methods.
 - Add `withSubcharts` parameter to `lint` method.
 - Add `hooks` and `recreatePods` parameters to `rollback` method.
-- Add `outputFormat` parameter to `status` method.
+- Add `description`, `outputFormat`, `resources`, and `revision` parameters to `status` method.
 - Support `crds` for `show` method.
 
 **Packer**
