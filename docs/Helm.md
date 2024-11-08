@@ -160,14 +160,15 @@ helm.show(
 ```
 
 ### helm.status()
-Shows the status of a named release.
+Shows the status of a named release. This will also return the displayed information as a `String` type for further consumption and usage.
 
 ```groovy
 helm.status(
   bin:       '/usr/bin/helm', // optional executable path for helm
   name:      'happy-panda', // name for the release object to be queried
-  context:   'default' // optional kube-context from kube config
-  namespace: 'default' // optional namespace for the queried release object
+  context:   'default', // optional kube-context from kube config
+  namespace: 'default', // optional namespace for the queried release object
+  outputFormat:    'table' // optional return output in specified format
 )
 ```
 

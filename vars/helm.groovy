@@ -450,7 +450,7 @@ void show(Map config) {
   print 'Helm show executed successfully.'
 }
 
-void status(Map config) {
+String status(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.name instanceof String : 'The required parameter "name" was not set.'
@@ -467,6 +467,11 @@ void status(Map config) {
     cmd += " --namespace ${config.namespace}"
     lister += " --namespace ${config.namespace}"
   }
+  if (config.outputFormat) {
+    assert (['table', 'json', 'yaml'].contains(config.outputFormat)) : 'The outputFormat parameter must be one of table, json, or yaml'
+
+    cmd += "-o ${config.outputFormat}"
+  }
 
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
@@ -474,13 +479,15 @@ void status(Map config) {
 
   // attempt to query a release object's status
   try {
-    sh(label: 'Helm Status', script: "${cmd} ${config.name}")
+    String status = sh(label: 'Helm Status', script: "${cmd} ${config.name}", returnStdout: true)
   }
   catch(Exception error) {
     print 'Failure using helm status.'
     throw error
   }
   print 'Helm status executed successfully.'
+
+  return status
 }
 
 void test(Map config) {
