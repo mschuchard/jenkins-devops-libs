@@ -181,12 +181,10 @@ Executes the tests for a release.
 ```groovy
 helm.test(
   bin:       '/usr/bin/helm', // optional executable path for helm
-  cleanup:   false, // optional delete test pods upon completion
   context:   'default', // optional kube-context from kube config
   kubectl:   '/usr/bin/kubectl', // optional executable path for kubectl
   name:      'happy-panda', // name of a deployed release
   namespace: 'default' // optional namespace for the queried release object
-  parallel:  false // optional run test pods in parallel
 )
 ```
 

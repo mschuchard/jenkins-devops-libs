@@ -4,6 +4,7 @@
 - Add `withSubcharts` parameter to `lint` method.
 - Add `hooks` and `recreatePods` parameters to `rollback` method.
 - Add `description`, `outputFormat`, `resources`, and `revision` parameters to `status` method.
+- Remove `cleanup` and `parallel` parameters from `test` method.
 - Support `crds` for `show` method.
 
 **Packer**

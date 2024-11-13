@@ -515,12 +515,6 @@ void test(Map config) {
   }
 
   // optional inputs
-  if (config.cleanup == true) {
-    cmd += ' --cleanup'
-  }
-  if (config.parallel == true) {
-    cmd += ' --parallel'
-  }
   if (config.context) {
     cmd += " --kube-context ${config.context}"
   }
