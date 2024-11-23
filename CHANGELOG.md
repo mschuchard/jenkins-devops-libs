@@ -1,4 +1,4 @@
-### 2.1.2 (Next)
+### 2.1.2
 **Helm**
 - Add `force` parameter to `install`, `repo`, `rollback`, and `upgrade` methods.
 - Add `withSubcharts` parameter to `lint` method.
