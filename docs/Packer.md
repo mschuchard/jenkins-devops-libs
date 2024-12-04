@@ -27,11 +27,12 @@ Uses Packer to check for properly canonically formatted code.
 
 ```groovy
 packer.fmt(
-  bin:      '/usr/bin/packer', // optional location of packer install
-  check:    false, // optional check template and return an error if file is not formatted correctly (cannot be used with `write`)
-  diff:     false, // optional present a diff if the template is not formatted correctly
-  template: '/path/to/template_dir', // location of packer templates directory
-  write:    true // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
+  bin:       '/usr/bin/packer', // optional location of packer install
+  check:     false, // optional check template and return an error if file is not formatted correctly (cannot be used with `write`)
+  diff:      false, // optional present a diff if the template is not formatted correctly
+  recursive: false, // optional also process files in subdirectories
+  template:  '/path/to/template_dir', // location of packer templates directory
+  write:     true // optional write changes directly to files that are not formatted directly (cannot be used with `check`)
 )
 ```
 

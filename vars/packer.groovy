@@ -90,6 +90,9 @@ void fmt(Map config) {
   else if (config.write == true) {
     cmd += ' -write'
   }
+  if (config.recursive == true) {
+    cmd += ' -recursive'
+  }
 
   try {
     if (config.template ==~ /\.pkr\./) {

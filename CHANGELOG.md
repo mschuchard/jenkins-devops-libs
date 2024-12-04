@@ -1,3 +1,7 @@
+### 2.1.3 (Next)
+**Packer**
+- Add `recursive` parameter to `fmt` method.
+
 ### 2.1.2
 **Helm**
 - Add `force` parameter to `install`, `repo`, `rollback`, and `upgrade` methods.
