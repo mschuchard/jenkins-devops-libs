@@ -2,6 +2,9 @@
 **Packer**
 - Add `recursive` parameter to `fmt` method.
 
+**Terraform**
+- Add `testDir` parameter to `init` method.
+
 ### 2.1.2
 **Helm**
 - Add `force` parameter to `install`, `repo`, `rollback`, and `upgrade` methods.

@@ -318,6 +318,11 @@ void init(Map config) {
       cmd += " -backend-config='${key}=${value}'"
     }
   }
+  if (config.testDir) {
+    assert fileExists(config.testDir) : "The test directory ${config.testDir} does not exist."
+
+    cmd += " -test-directory=${config.testDir}"
+  }
 
   // initialize the working config directory
   try {
