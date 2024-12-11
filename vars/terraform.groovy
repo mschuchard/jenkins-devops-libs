@@ -386,6 +386,10 @@ String output(Map config) {
   if (config.json == true) {
     cmd += ' -json'
   }
+  if (config.raw == true) {
+    cmd += ' -raw'
+  }
+  // must be last param
   if (config.name) {
     cmd += " ${config.name}"
   }

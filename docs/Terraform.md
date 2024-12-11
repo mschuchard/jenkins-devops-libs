@@ -59,6 +59,21 @@ terraform.graph(
 )
 ```
 
+### terraform.imports()
+Imports existing infrastructure into your Terraform state.
+
+```groovy
+terraform.imports(
+  bin:       '/usr/bin/terraform', // optional path to terraform executable
+  dir:       '/path/to/config', // optional path to terraform config for provider
+  resources: ['resource.name':'resource.id', 'aws_instance.this':'i-1234567890'], // resource name and id mappings to import
+  provider:  'template', // optional specific provider for import
+  state:     'terraform.tfstate', // optional path to the source state file
+  var:       ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:   '/path/to/variables.tf' // optional location of variables file
+)
+```
+
 ### terraform.init()
 Uses Terraform to initialize a working directory.
 
@@ -77,21 +92,6 @@ terraform.init(
 )
 ```
 
-### terraform.imports()
-Imports existing infrastructure into your Terraform state.
-
-```groovy
-terraform.imports(
-  bin:       '/usr/bin/terraform', // optional path to terraform executable
-  dir:       '/path/to/config', // optional path to terraform config for provider
-  resources: ['resource.name':'resource.id', 'aws_instance.this':'i-1234567890'], // resource name and id mappings to import
-  provider:  'template', // optional specific provider for import
-  state:     'terraform.tfstate', // optional path to the source state file
-  var:       ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile:   '/path/to/variables.tf' // optional location of variables file
-)
-```
-
 ### terraform.output()
 Reads an output variable from a Terraform state and returns the value as a String.
 
@@ -102,6 +102,7 @@ terraform.output(
   display: false, // optional display outputs
   json:    false, // optional JSON format String return
   name:    'module.foo.server_ip_address', // optional output name
+  raw:     false, // optional output raw strings
   state:   'terraform.tfstate', // optional path to the source state file
 )
 ```
