@@ -7,7 +7,7 @@ Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each metho
 - Terraform CLI binary executable >= 1.0
 
 ### terraform.apply()
-Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this and the `out` parameter was not specified, then the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath` parameter value, then the `vars` and `target` parameters will be ignored.
+Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this and the `out` parameter was not specified, then the resultant plan file is in `${configDir}/plan.tfplan` by default. If a plan file is specified as the `configPath` parameter value, then the `vars` and `target` parameters will be ignored.
 
 ```groovy
 terraform.apply(
@@ -20,7 +20,7 @@ terraform.apply(
 ```
 
 ### terraform.destroy()
-Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: configDir)` with `destroy: true` was invoked before this, then the resultant plan file is in `${configDir}/plan.tfplan`. If a plan file is specified as the `configPath` parameter value, then the vars and target parameters will be ignored.
+Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: configDir)` with `destroy: true` was invoked before this, then the resultant plan file is in `${configDir}/plan.tfplan` by default. If a plan file is specified as the `configPath` parameter value, then the vars and target parameters will be ignored.
 
 ```groovy
 terraform.destroy(
@@ -115,11 +115,12 @@ parsedMap = terraform.parse('/path/to/config.tf')
 ```
 
 ### terraform.plan()
-Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` will be written to the same directory as the input config directory if the `out` parameter is not specified. Otherwise, the output plan file will be written to the filesystem at the path specified in the `out` parameter. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons.
+Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` (default) will be written to the same directory as the input config directory if the `out` parameter is not specified. Otherwise, the output plan file will be written to the filesystem at the path specified in the `out` parameter. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons.
 
 ```groovy
 terraform.plan(
   bin:         '/usr/bin/terraform', // optional path to terraform executable
+  compactWarn: false, // optional warnings as compact summary messages
   destroy:     false, // optional generate a plan to destroy resources
   dir:         env.WORKSPACE, // optional path to config dir
   display:     false, // optional display plan output

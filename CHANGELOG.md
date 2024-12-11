@@ -5,6 +5,7 @@
 **Terraform**
 - Add `testDir` parameter to `init` method.
 - Add `raw` parameter to `output` method.
+- Add `compactWarn` parameter to `plan` method.
 
 ### 2.1.2
 **Helm**

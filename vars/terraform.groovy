@@ -474,6 +474,9 @@ def plan(Map config) {
   if (config.refreshOnly == true) {
     cmd += ' -refresh-only'
   }
+  if (config.compactWarn == true) {
+    cmd += ' -compact-warnings'
+  }
   if (config.genConfig) {
     assert !fileExists(config.genConfig) : "The path at ${config.genConfig} is required to not exist prior to Terraform config generation, but the path does exist."
 
