@@ -147,11 +147,12 @@ Update the state file of your infrastructure with metadata that matches the phys
 
 ```groovy
 terraform.refresh(
-  bin:     '/usr/bin/terraform', // optional path to terraform executable
-  dir:     env.WORKSPACE, // optional path to config dir
-  target:  ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:     ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile: '/path/to/variables.tf' // optional location of variables file
+  bin:         '/usr/bin/terraform', // optional path to terraform executable
+  compactWarn: false, // optional warnings as compact summary messages
+  dir:         env.WORKSPACE, // optional path to config dir
+  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:     '/path/to/variables.tf' // optional location of variables file
 )
 ```
 

@@ -613,6 +613,9 @@ void refresh(Map config) {
       cmd += " -target=${target}"
     }
   }
+  if (config.compactWarn == true) {
+    cmd += ' -compact-warnings'
+  }
 
   // refresh the state
   try {

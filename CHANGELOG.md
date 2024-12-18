@@ -5,7 +5,7 @@
 **Terraform**
 - Add `testDir` parameter to `init` method.
 - Add `raw` parameter to `output` method.
-- Add `compactWarn` parameter to `plan` method.
+- Add `compactWarn` parameter to `plan` and `refresh` methods.
 - Add `rootDir` parameter default value for `providers` method.
 - Fix `rootDir` existence check in `providers` method.
 
