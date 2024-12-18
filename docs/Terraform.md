@@ -135,7 +135,7 @@ terraform.plan(
 )
 ```
 
-### terraform.providers(String rootDir, String bin = 'terraform')
+### terraform.providers(String rootDir = env.WORKSPACE, String bin = 'terraform')
 Prints out a tree of modules in the referenced configuration annotated with their provider requirements.
 
 ```groovy

@@ -549,12 +549,16 @@ void pluginInstall(Map config) {
   print "Terraform plugin successfully installed at ${installLoc}."
 }
 
-void providers(String rootDir, String bin = 'terraform') {
+void providers(String rootDir = '', String bin = 'terraform') {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert fileExists(dir) : "Config directory ${dir} does not exist!"
+  if rootDir.length() == 0 {
+    rootDir = env.WORKSPACE
+  } else {
+    assert fileExists(rootDir) : "Config directory ${rootDir} does not exist!"
+  }
 
   // output provider information
   try {
