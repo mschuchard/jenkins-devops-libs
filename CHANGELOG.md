@@ -8,6 +8,7 @@
 - Add `compactWarn` parameter to `plan` and `refresh` methods.
 - Add `rootDir` parameter default value for `providers` method.
 - Fix `rootDir` existence check in `providers` method.
+- Add `show` command to `state` method.
 
 ### 2.1.2
 **Helm**

@@ -635,7 +635,7 @@ void state(Map config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (['move', 'remove', 'push', 'list'].contains(config.command)) : "The command parameter must be one of: move, remove, list, or push."
+  assert (['move', 'remove', 'push', 'list', 'show'].contains(config.command)) : "The command parameter must be one of: move, remove, list, or push."
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
@@ -663,8 +663,9 @@ void state(Map config) {
         dir(config.dir) {
           config.resources.each() { from, to ->
             sh(label: "Terraform State Move ${from} to ${to}", script: "${cmd} mv ${from} ${to}")
-          };
-        };
+          }
+        }
+
         break;
       case 'remove':
         assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for remove command.';
@@ -672,24 +673,40 @@ void state(Map config) {
         dir(config.dir) {
           config.resources.each() { resource ->
             sh(label: "Terraform State Remove ${resource}", script: "${cmd} rm ${resource}")
-          };
-        };
+          }
+        }
+
         break;
       case 'push':
         assert !config.resources : 'Resources parameter is not allowed for push command.';
 
         dir(config.dir) {
           sh(label: 'Terraform State Push', script: "${cmd} push");
-        };
+        }
+
         break;
       case 'list':
         assert !config.resources : 'Resources parameter is not allowed for push command.';
 
         dir(config.dir) {
           final String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
-        };
+        }
+
         print 'Terraform state output is as follows:'
         print stateList
+
+        break;
+      case 'show':
+        assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for show command.';
+
+        dir(config.dir) {
+          config.resources.each() { resource ->
+            String stateShow = sh(label: "Terraform State Show ${resource}", script: "${cmd} show ${resource}", returnStdout: true)
+
+            print 'Terraform state output is as follows:'
+            print stateShow
+          }
+        }
 
         break;
       default:

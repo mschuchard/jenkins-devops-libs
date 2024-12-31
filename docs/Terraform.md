@@ -162,10 +162,10 @@ Manipulate or display the Terraform state. The resources parameter should be `nu
 ```groovy
 terraform.state(
   bin:       '/usr/bin/terraform', // optional path to terraform executable
-  command:   'move', // state command; one of 'move', 'remove', 'list', or 'push'
+  command:   'move', // state command; one of 'move', 'remove', 'list', 'show', or 'push'
   dir:       env.WORKSPACE, // optional path to config dir
   resources: ['resource.from':'resource.to', 'resource.other_from':'resource.other_to'], // resources to move
-  resources: ['resource.one', 'resource.two'], // resources to remove
+  resources: ['resource.one', 'resource.two'], // resources to remove or show
   state:     'terraform.tfstate' // optional path to read and save state
 )
 ```
