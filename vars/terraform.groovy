@@ -635,7 +635,7 @@ void state(Map config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (['move', 'remove', 'push', 'list', 'show'].contains(config.command)) : "The command parameter must be one of: move, remove, list, or push."
+  assert (['move', 'remove', 'push', 'list', 'show', 'pull'].contains(config.command)) : "The command parameter must be one of: move, remove, list, show, pull, or push."
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
@@ -647,7 +647,7 @@ void state(Map config) {
 
   // optional inputs
   if (config.state) {
-    assert config.command != 'push' : 'The state parameter is incompatible with state pushing.'
+    assert config.command != 'push' && config.command != 'pull' : 'The state parameter is incompatible with state pushing and pulling.'
     assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
     cmd += " -state=${config.state}"
@@ -709,6 +709,14 @@ void state(Map config) {
         }
 
         break;
+      case 'pull':
+          assert !config.resources : 'Resources parameter is not allowed for pull command.';
+
+          dir(config.dir) {
+            sh(label: 'Terraform State Pull', script: "${cmd} pull");
+          }
+
+          break;
       default:
         // should never reach this because of above assert
         throw new Exception("Unknown Terraform state command ${config.command} specified.");
