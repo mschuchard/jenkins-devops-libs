@@ -345,14 +345,6 @@ void validate(Map config) {
   if (config.syntaxOnly == true) {
     cmd += ' -syntax-only'
   }
-  if (config.testDir) {
-    assert fileExists(config.testDir) : "The test directory ${config.testDir} does not exist."
-
-    cmd += " -test-directory=${config.testDir}"
-  }
-  if (config.tests == false) {
-    cmd += ' -no-tests'
-  }
 
   // validate template with packer
   try {

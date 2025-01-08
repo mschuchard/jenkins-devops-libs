@@ -864,6 +864,14 @@ def validate(Map config) {
   if (config.json == true) {
     cmd += ' -json'
   }
+  if (config.tests == false) {
+    cmd += ' -no-tests'
+  }
+  else if (config.testDir) {
+    assert fileExists(config.testDir) : "The test directory ${config.testDir} does not exist."
+
+    cmd += " -test-directory=${config.testDir}"
+  }
 
   // validate the config directory
   try {
