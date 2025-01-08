@@ -175,10 +175,11 @@ Manually marks a resource as tainted. This forces a destroy and recreate on the 
 
 ```groovy
 terraform.taint(
-  bin:       '/usr/bin/terraform', // optional path to terraform executable
-  dir:       env.WORKSPACE, // optional path to config dir
-  resources: ['resource.name', 'other.name'], // names of the resources to taint
-  state:     'terraform.tfstate' // optional path to read and save state
+  allowMissing: false, // optional succeed even if resource is missing
+  bin:          '/usr/bin/terraform', // optional path to terraform executable
+  dir:          env.WORKSPACE, // optional path to config dir
+  resources:    ['resource.name', 'other.name'], // names of the resources to taint
+  state:        'terraform.tfstate' // optional path to read and save state
 )
 ```
 

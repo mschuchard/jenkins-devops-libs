@@ -752,6 +752,9 @@ void taint(Map config) {
 
     cmd += " -state=${config.state}"
   }
+  if (config.allowMissing == true) {
+    cmd += ' -allow-missing'
+  }
 
   // taint the resources
   try {

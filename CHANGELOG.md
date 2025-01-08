@@ -9,6 +9,7 @@
 - Add `rootDir` parameter default value for `providers` method.
 - Fix `rootDir` existence check in `providers` method.
 - Add `show` and `pull` commands to `state` method.
+- Add `allowMissing` parameter to `taint` method.
 
 ### 2.1.2
 **Helm**
