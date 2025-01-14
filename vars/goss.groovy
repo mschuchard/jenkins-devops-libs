@@ -51,9 +51,11 @@ String render(Map config) {
   try {
     String cmd = config.bin
 
-    // optional inputs
+    // check for optional global inputs and establish command
     cmd += globalArgsCmd(config)
     cmd += ' render'
+
+    // check for optional inputs
     if (config.debug == true) {
       cmd += ' --debug'
     }
@@ -77,6 +79,10 @@ void server(Map config) {
   else {
     assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
+  if (config.logLevel) {
+    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
+  }
+
   config.endpoint = config.endpoint ?: '/healthz'
   config.port = config.port ?: '8080'
   config.bin = config.bin ?: 'goss'
@@ -85,9 +91,11 @@ void server(Map config) {
   try {
     String cmd = config.bin
 
-    // check for optional inputs
+    // check for optional global inputs and establish command
     cmd += globalArgsCmd(config)
     cmd += ' serve'
+
+    // check for optional inputs
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
     }
@@ -103,6 +111,9 @@ void server(Map config) {
     }
     if (config.cache) {
       cmd += " -c ${config.cache}"
+    }
+    if (config.logLevel) {
+      cmd += " -L ${config.logLevel.toUpperCase()}"
     }
 
     sh(label: 'GoSS Server', script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
@@ -128,9 +139,11 @@ void validate(Map config) {
   try {
     String cmd = config.bin
 
-    // check for optional inputs
+    // check for optional global inputs and establish command
     cmd += globalArgsCmd(config)
     cmd += ' validate --no-color'
+
+    // check for optional inputs
     if (config.maxConcur) {
       cmd += " --max-concurrent ${config.maxConcur}"
     }

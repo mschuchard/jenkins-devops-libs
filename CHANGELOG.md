@@ -1,4 +1,7 @@
 ### 2.1.3 (Next)
+**GoSS**
+- Add `logLevel` parameter to `server` method.
+
 **Packer**
 - Add `recursive` parameter to `fmt` method.
 
