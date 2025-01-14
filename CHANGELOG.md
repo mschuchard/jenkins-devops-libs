@@ -1,7 +1,8 @@
 ### 2.1.3 (Next)
 **GoSS**
-- Add `logLevel` parameter to `server` method.
-- Remove deprecated format values for `validate` method.
+- Add `logLevel` parameter to `server` and `validate` methods.
+- Remove deprecated `format` values for `validate` method.
+- Add `sort` value for `formatOpts` parameter for `validate` method.
 
 **Packer**
 - Add `recursive` parameter to `fmt` method.

@@ -51,6 +51,7 @@ goss.validate(
   format:       'rspecish', // optional formatter to use for output
   formatOpts:   'perfdata', // optional extra formatter options (perfdata, pretty, sort, or verbose)
   gossfile:     'goss.yaml', // optional location of gossfile
+  logLevel:   'info', // optional logging verbosity level; one of 'error', 'warn', 'info', 'debug', or 'trace'
   maxConcur:    '50', // optional maximum number of tests to run concurrently
   package:      null, // optional package type to use (apk, dpkg, pacman, rpm)
   retryTimeout: '0s', // optional retry on failure so long as elapsed + `sleep` time is less than this value

@@ -133,6 +133,9 @@ void validate(Map config) {
   else {
     assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
+  if (config.logLevel) {
+    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
+  }
   config.bin = config.bin ?: 'goss'
 
   // validate with goss
@@ -163,6 +166,9 @@ void validate(Map config) {
       if (config.sleep) {
         cmd += " -s ${config.sleep}"
       }
+    }
+    if (config.logLevel) {
+      cmd += " -L ${config.logLevel.toUpperCase()}"
     }
 
     sh(label: 'GoSS Validate', script: cmd)
