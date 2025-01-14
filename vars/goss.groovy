@@ -148,12 +148,12 @@ void validate(Map config) {
       cmd += " --max-concurrent ${config.maxConcur}"
     }
     if (config.format) {
-      assert (['documentation', 'json', 'json_oneline', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
+      assert (['documentation', 'json', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
       cmd += " -f ${config.format}"
     }
     if (config.formatOpts) {
-      assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+      assert (['perfdata', 'pretty', 'sort', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
 
       cmd += " -o ${config.formatOpts}"
     }

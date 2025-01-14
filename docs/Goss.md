@@ -49,7 +49,7 @@ Locally executes a `gossfile` with GoSS.
 goss.validate(
   bin:          '/usr/bin/goss', // optional executable path for goss
   format:       'rspecish', // optional formatter to use for output
-  formatOpts:   'perfdata', // optional extra formatter options (perfdata, pretty, or verbose)
+  formatOpts:   'perfdata', // optional extra formatter options (perfdata, pretty, sort, or verbose)
   gossfile:     'goss.yaml', // optional location of gossfile
   maxConcur:    '50', // optional maximum number of tests to run concurrently
   package:      null, // optional package type to use (apk, dpkg, pacman, rpm)
