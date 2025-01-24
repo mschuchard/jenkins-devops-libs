@@ -11,25 +11,29 @@ void codeDeploy(Map config) {
     assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
   }
 
-  config.servers = config.servers ?: ['puppet']
-  assert (config.servers instanceof List) : 'The servers parameter must be a list of strings.'
+  if (config.servers) {
+    assert (config.servers instanceof List) : 'The servers parameter must be a list of strings.'
+  }
+  else {
+    config.servers = ['puppet']
+  }
 
   // init payload
   Map<String,String> payload = [:]
 
   // check for environments
-  if (!config.environments) {
-    payload['deploy-all'] = true
-  }
-  else {
+  if (config.environments) {
     assert (config.environments instanceof List) : 'The environments parameter must be a list of strings.'
 
     // preface environments payload
     payload['environments'] = config.environments
   }
+  else {
+    payload['deploy-all'] = true
+  }
   // check for wait
-  if (config.wait) {
-    payload['wait'] = config.wait
+  if (config.wait == true) {
+    payload['wait'] = true
   }
 
   // convert map to json string
@@ -40,6 +44,7 @@ void codeDeploy(Map config) {
   def jsonResponse = [:]
   Map response = [:]
   String token = ''
+
   // set token with logic from appropriate parameter
   if (config.credentialsId) {
     withCredentials([token(credentialsId: config.credentialsId, variable: 'theToken')]) {
@@ -69,7 +74,8 @@ void codeDeploy(Map config) {
     }
     catch(Exception error) {
       print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse.status}."
-      throw error
+      print error
+      errored = true
     }
     // parse response
     try {
@@ -77,7 +83,8 @@ void codeDeploy(Map config) {
     }
     catch(Exception error) {
       print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
-      throw error
+      print error
+      errored = true
     }
     // check for errors if waited
     if (config.wait == true) {
