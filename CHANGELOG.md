@@ -16,6 +16,9 @@
 - Add `show` and `pull` commands to `state` method.
 - Add `allowMissing` parameter to `taint` method.
 
+**Puppet**
+- Miscellaneous minor improvements and fixes.
+
 ### 2.1.2
 **Helm**
 - Add `force` parameter to `install`, `repo`, `rollback`, and `upgrade` methods.

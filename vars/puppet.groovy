@@ -165,11 +165,8 @@ void task(Map config) {
   // convert map to json file
   payload = new utils().mapToJSON(payload)
 
-  // initialize vars
-  def jsonResponse = [:]
-  Map response = [:]
-  String token = ''
   // set token with logic from appropriate parameter
+  String token = ''
   if (config.credentialsId) {
     withCredentials([token(credentialsId: config.credentialsId, variable: 'theToken')]) {
       token = theToken
@@ -182,7 +179,7 @@ void task(Map config) {
 
   // trigger task orchestration
   try {
-    jsonResponse = httpRequest(
+    final def jsonResponse = httpRequest(
       acceptType:             'APPLICATION_JSON',
       consoleLogResponseBody: true,
       contentType:            'APPLICATION_JSON',
@@ -200,7 +197,7 @@ void task(Map config) {
   }
   // receive and parse response
   try {
-    response = readJSON(text: json.content)
+    final Map response = readJSON(text: json.content)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
@@ -247,13 +244,9 @@ void token (Map config) {
   // convert map to json file
   payload = new utils().mapToJSON(payload)
 
-  // initialize vars
-  def jsonResponse = [:]
-  Map response = [:]
-
   // trigger token generation
   try {
-    jsonResponse = httpRequest(
+    final def jsonResponse = httpRequest(
       acceptType:             'APPLICATION_JSON',
       consoleLogResponseBody: true,
       contentType:            'APPLICATION_JSON',
@@ -271,7 +264,7 @@ void token (Map config) {
   }
   // receive and parse response
   try {
-    response = readJSON(text: jsonResponse.content)
+    final Map response = readJSON(text: jsonResponse.content)
   }
   catch(Exception error) {
     print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
