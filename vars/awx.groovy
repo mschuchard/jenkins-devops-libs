@@ -66,8 +66,10 @@ private void inventory(Map config) {
   if (config.description) {
     cmd += " --description ${config.description}"
   }
-  if (config.smart == true) {
-    cmd += ' --kind smart'
+  if (config.kind) {
+    assert ['smart', 'constructed'].contains(cconfig.kind) : 'Inventory kind parameter value must be "smart" or "constructed".'
+
+    cmd += " --kind ${config.kind}"
   }
   if (config.hostFilter) {
     cmd += " --host_filter ${config.hostFilter}"

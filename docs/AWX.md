@@ -42,7 +42,7 @@ awx.inventoryCreate(
   hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
   name:         'my_inventory', // name of this inventory
   organization: 'my_org', // organization containing this inventory
-  smart:        false, // optional smart inventory
+  kind:         '', // optional kind of inventory ('smart' or 'constructed' are accepted; otherwise do not specify a value)
   variables:    ['foo': 'bar', 'baz': 1] // optional inventory variables
 )
 ```
@@ -66,7 +66,7 @@ awx.inventoryModify(
   hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
   name:         'my_inventory', // name of this inventory
   organization: 'my_org', // organization containing this inventory
-  smart:        false, // optional smart inventory
+  kind:         '', // optional kind of inventory ('smart' or 'constructed' are accepted; otherwise do not specify a value)
   variables:    ['foo': 'bar', 'baz': 1] // optional inventory variables
 )
 ```
