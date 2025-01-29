@@ -1,4 +1,7 @@
 ### 2.1.3 (Next)
+**AWX**
+- Add `instanceId` parameter to `hostCreate` method.
+
 **GoSS**
 - Add `logLevel` parameter to `server` and `validate` methods.
 - Remove deprecated `format` values for `validate` method.

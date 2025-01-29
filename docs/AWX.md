@@ -16,8 +16,9 @@ awx.hostCreate(
   bin:         '/usr/bin/awx', // optional path to awx executable
   description: 'my host', // optional description of the host
   enabled:     true, // optional is host available and online for running jobs
-  inventory:   'my_inventory', // ID of the associated inventory
-  name:        'foo.bar.com', // name of the host
+  instanceId:  'foo.bar.com', // host ID in the remote inventory source
+  inventory:   'my_inventory', // associated inventory ID
+  name:        'webserver1', // name of the host
   variables:   ['foo': 'bar', 'baz': 1] // optional host variables
 )
 ```

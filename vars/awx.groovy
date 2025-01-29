@@ -17,6 +17,9 @@ void hostCreate(Map config) {
   if (config.enabled == true) {
     cmd += ' --enabled'
   }
+  if (config.instanceId) {
+    cmd += "--instance_id ${config.instanceId}"
+  }
   if (config.variables) {
     assert (config.variables instanceof Map) : 'The variables parameter must be a Map.'
 
