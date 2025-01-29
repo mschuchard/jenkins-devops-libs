@@ -2,6 +2,7 @@
 **AWX**
 - Add `instanceId` parameter to `hostCreate` method.
 - Update `smart` parameter to `kind` for inventory methods.
+- Fix `inventoryModify` method by adding mandatory `id` parameter.
 
 **GoSS**
 - Add `logLevel` parameter to `server` and `validate` methods.

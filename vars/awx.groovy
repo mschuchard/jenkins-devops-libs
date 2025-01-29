@@ -54,9 +54,12 @@ void hostDelete(String id, String bin = 'awx') {
 
 // helper method for create and modify
 private void inventory(Map config) {
+  // helpful constant
+  final String capAction = config.action.capitalize()
+
   // input checking
-  assert config.name instanceof String : "'name' is a required parameter for awx.inventory_${config.action}."
-  assert config.organization instanceof String : "'organization' is a required parameter for awx.inventory_${config.action}."
+  assert config.name instanceof String : "'name' is a required parameter for inventory${capAction}."
+  assert config.organization instanceof String : "'organization' is a required parameter for inventory${capAction}."
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -82,16 +85,21 @@ private void inventory(Map config) {
 
     cmd += " --variables ${variables}"
   }
+  if (config.action == 'modify') {
+    assert config.inventory instanceof String : 'inventory is a required parameter for inventoryModify'
+
+    cmd += " ${config.inventory}"
+  }
 
   // "something" a inventory
   try {
-    sh(label: "AWX Inventory ${config.action}", script: cmd)
+    sh(label: "AWX Inventory ${capAction}", script: cmd)
   }
   catch(Exception error) {
-    print "Failure using awx inventory ${config.action}."
+    print "Failure using awx inventory${config.action}."
     throw error
   }
-  print "awx inventory ${config.action} was successful."
+  print "awx inventory${config.action} was successful."
 }
 
 // invokes inventory helper method

@@ -64,6 +64,7 @@ awx.inventoryModify(
   bin:          '/usr/bin/awx', // optional path to awx executable
   description:  'an inventory', // optional description of this inventory
   hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
+  inventory:    'my_inventory', // ID or unique name of inventory
   name:         'my_inventory', // name of this inventory
   organization: 'my_org', // organization containing this inventory
   kind:         '', // optional kind of inventory ('smart' or 'constructed' are accepted; otherwise do not specify a value)
