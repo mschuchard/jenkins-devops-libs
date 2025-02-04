@@ -40,9 +40,9 @@ awx.inventoryCreate(
   bin:          '/usr/bin/awx', // optional path to awx executable
   description:  'an inventory', // optional description of this inventory
   hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
+  kind:         '', // optional kind of inventory ('smart' or 'constructed' are accepted; otherwise do not specify a value)
   name:         'my_inventory', // name of this inventory
   organization: 'my_org', // organization containing this inventory
-  kind:         '', // optional kind of inventory ('smart' or 'constructed' are accepted; otherwise do not specify a value)
   variables:    ['foo': 'bar', 'baz': 1] // optional inventory variables
 )
 ```
@@ -65,9 +65,9 @@ awx.inventoryModify(
   description:  'an inventory', // optional description of this inventory
   hostFilter:   'myhosts*', // optional filter that will be applied to the hosts of this inventory
   inventory:    'my_inventory', // ID or unique name of inventory
+  kind:         '', // optional kind of inventory ('smart' or 'constructed' are accepted; otherwise do not specify a value)
   name:         'my_inventory', // name of this inventory
   organization: 'my_org', // organization containing this inventory
-  kind:         '', // optional kind of inventory ('smart' or 'constructed' are accepted; otherwise do not specify a value)
   variables:    ['foo': 'bar', 'baz': 1] // optional inventory variables
 )
 ```
@@ -78,14 +78,16 @@ Uses AWX to launch a job from a job template.
 
 ```groovy
 awx.jobTemplateLaunch(
-  bin:       '/usr/bin/awx', // optional path to awx executable
-  extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
-  id:        5, // job template id
-  inventory: 2, // optional ID of the associated inventory
-  jobType:   'run', // optional job type (run or check)
-  limit:     'hosts*.com', // optional host limit
-  monitor:   false, // optional wait until launched job finishes
-  skipTags:  ['skipper', 'to_skip'] // optional tags to skip
+  bin:          '/usr/bin/awx', // optional path to awx executable
+  credentials:  ['sshkey', 'password'], // optional list of credentials IDs or name
+  executionEnv: 'rhel9', // optional execution environment ID
+  extraVars:    ['foo': 'bar', 'baz': 1], // optional extra variables
+  id:           5, // job template id
+  inventory:    'my_inventory', // optional ID or name of the associated inventory
+  jobType:      'run', // optional job type (run or check)
+  limit:        'hosts*.com', // optional host limit
+  monitor:      false, // optional wait until launched job finishes
+  skipTags:     ['skipper', 'to_skip'] // optional tags to skip
 )
 ```
 
@@ -106,7 +108,7 @@ awx.projectsUpdate(
 Uses AWX to launch a workflow job from a workflow job template.
 
 ```groovy
-awx.jobTemplateLaunch(
+awx.workflowJobTemplateLaunch(
   bin:       '/usr/bin/awx', // optional path to awx executable
   extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
   id:        5, // workflow job template id

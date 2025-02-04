@@ -137,6 +137,14 @@ void jobTemplateLaunch(Map config) {
   String cmd = "${config.bin} job_templates launch"
 
   // check for optional inputs
+  if (config.credentials) {
+    assert (config.credentials instanceof List) : 'The credentials parameter must be a list of strings.'
+
+    cmd += " --credentials ${config.credentials.join(',')}"
+  }
+  if (config.executionEnv) {
+    cmd += " --execution_environment ${config.executionEnv}"
+  }
   if (config.monitor == true) {
     cmd += ' --monitor'
   }
