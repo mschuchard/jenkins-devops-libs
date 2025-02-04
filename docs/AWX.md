@@ -112,7 +112,9 @@ awx.workflowJobTemplateLaunch(
   bin:       '/usr/bin/awx', // optional path to awx executable
   extraVars: ['foo': 'bar', 'baz': 1], // optional extra variables
   id:        5, // workflow job template id
-  inventory: 2, // optional ID of the associated inventory
+  inventory: 'my_inventory', // optional ID of the associated inventory
+  limit:     'hosts*.com', // optional host limit
   monitor:   false, // optional wait until launched job finishes
+  skipTags:  ['skipper', 'to_skip'] // optional tags to skip
 )
 ```

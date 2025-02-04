@@ -220,6 +220,9 @@ void workflowJobTemplateLaunch(Map config) {
   if (config.monitor == true) {
     cmd += ' --monitor'
   }
+  if (config.limit) {
+    cmd += " --limit ${config.limit}"
+  }
   if (config.inventory) {
     cmd += " --inventory ${config.inventory}"
   }
@@ -230,6 +233,11 @@ void workflowJobTemplateLaunch(Map config) {
     final String extraVars = new utils().mapToJSON(config.variables)
 
     cmd += " --extra_vars ${extraVars}"
+  }
+  if (config.skipTags) {
+    assert (config.skipTags instanceof List) : 'The skipTags parameter must be a List.'
+
+    cmd += " --skip_tags ${config.skipTags.join(',')}"
   }
 
   // launch a workflow job template job
