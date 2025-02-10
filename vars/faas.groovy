@@ -49,14 +49,17 @@ void deploy(Map config) {
   if (config.replace && config.update) {
     throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
   }
-  config.bin = config.bin ?: 'faas-cli'
   assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
+  config.bin = config.bin ?: 'faas-cli'
   String cmd = "${config.bin} deploy"
 
   // check for optional inputs
   if (config.filter) {
     cmd += " --filter '${config.filter}'"
+  }
+  if (config.gateway) {
+    cmd += " -g ${config.gateway}"
   }
   if (config.label) {
     assert (config.label instanceof Map) : 'The label parameter must be a Map.'
@@ -64,6 +67,9 @@ void deploy(Map config) {
     config.label.each() { label, value ->
       cmd += " --label ${label}=${value}"
     }
+  }
+  if (config.namespace) {
+    cmd += " -n ${config.namespace}"
   }
   if (config.regex) {
     cmd += " --regex '${config.regex}'"

@@ -29,14 +29,16 @@ Deploys OpenFaaS function containers.
 
 ```groovy
 faas.deploy(
-  bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
-  filter:   'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
-  label:    ['canary':'true', 'dev':'false'], // optional labels to set
-  regex:    'regexp_string', // optional regex to match with function names in yaml file (default is unused)
-  replace: true, // optional replace any existing function
-  secret:   'dockerhuborg', // optional secure secret to give function access to
-  template: 'samples.yaml', // path to yaml file describing function(s)
-  update:   false // optional update existing functions
+  bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
+  filter:    'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
+  gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
+  label:     ['canary':'true', 'dev':'false'], // optional labels to set
+  namespace: 'default', // optional namespace of the function
+  regex:     'regexp_string', // optional regex to match with function names in yaml file (default is unused)
+  replace:   true, // optional replace any existing function (mutually exclusive with update)
+  secret:    'dockerhuborg', // optional secure secret to give function access to
+  template:  'samples.yaml', // path to yaml file describing function(s)
+  update:    false // optional update existing functions (mutually exclusive with replace)
 )
 ```
 
