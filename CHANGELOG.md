@@ -6,6 +6,9 @@
 - Add `credentials` and `executionEnv` parameters to `jobTemplateLaunch` method.
 - Add `limit` and `skipTags` parameters to `workflowJobTemplateLaunch` method.
 
+**FaaS**
+- Add `pull` and `tag` parameters to `build` method.
+
 **GoSS**
 - Add `logLevel` parameter to `server` and `validate` methods.
 - Remove deprecated `format` values for `validate` method.

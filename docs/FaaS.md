@@ -16,8 +16,10 @@ faas.build(
   filter:   'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
   noCache:  false, // optional do not use docker's build cache
   parallel: '1', // optional build in parallel to depth specified
+  pull:     false, // optional force re-pull of base images
   regex:    'regexp_string', // optional regex to match with function names in yaml file (default is unused)
   squash:   false, // optional use docker's squash flag for smaller images
+  tag:      'latest', // optional tag override for function image
   template: 'samples.yaml' // path to yaml file describing function(s)
 )
 ```

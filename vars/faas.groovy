@@ -19,11 +19,17 @@ void build(Map config) {
   if (config.parallel) {
     cmd += " --parallel ${config.parallel}"
   }
+  if (config.pull) {
+    cmd += ' --pull'
+  }
   if (config.regex) {
     cmd += " --regex '${config.regex}'"
   }
   if (config.squash == true) {
     cmd += ' --squash'
+  }
+  if (config.tag) {
+    cmd += " --tag ${config.tag}"
   }
 
   // create image with faas
