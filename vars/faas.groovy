@@ -140,6 +140,9 @@ void invoke(Map config) {
   if (config.contentType) {
     cmd += " --content-type ${config.contentType}"
   }
+  if (config.gateway) {
+    cmd += " -g ${config.gateway}"
+  }
   if (config.header) {
     assert (config.header instanceof Map) : 'The header parameter must be a Map.'
 
@@ -149,6 +152,9 @@ void invoke(Map config) {
   }
   if (config.method) {
     cmd += " -m ${config.method}"
+  }
+  if (config.namespace) {
+    cmd += " -n ${config.namespace}"
   }
   if (config.query) {
     assert (config.query instanceof Map) : 'The query parameter must be a Map.'

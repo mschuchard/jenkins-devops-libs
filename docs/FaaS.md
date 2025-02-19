@@ -51,11 +51,13 @@ faas.invoke(
   bin:         '/usr/bin/faas-cli', // optional executable path for faas-cli
   contentType: 'text/plain', // optional content-type HTTP header
   function:    'echo', // name of the deployed function
+  gateway:     'http://127.0.0.1:8080', // optional gateway url with protocol
   header:      ['X-Callback-Url':'http://gateway:8080/function/send2slack', 'X-Ping-Url':'http://request.bin/etc'], // optional HTTP request headers
   method:      'POST', // optional HTTP request method
+  namespace:   'default', // optional namespace of the function
   query:       ['repo':'faas-cli', 'org':'openfaas'], // optional queries for request
   stdin:       'image.png', // optional stdin for function to receive
-  tls:         true // optional TLS validation (enabled by default)
+  tls:         true // optional TLS validation
 )
 ```
 

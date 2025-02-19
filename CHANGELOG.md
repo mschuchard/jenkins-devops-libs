@@ -8,7 +8,7 @@
 
 **FaaS**
 - Add `pull` and `tag` parameters to `build` method.
-- Add `gateway` and `namespace` parameters to `deploy` method.
+- Add `gateway` and `namespace` parameters to `deploy` and `invoke` methods.
 
 **GoSS**
 - Add `logLevel` parameter to `server` and `validate` methods.
