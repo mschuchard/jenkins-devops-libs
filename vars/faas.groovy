@@ -183,21 +183,25 @@ void invoke(Map config) {
 
 void login(Map config) {
   // input checking
-  assert config.gateway instanceof String : 'The required gateway parameter was not set.'
   assert config.password instanceof String : 'The required password parameter was not set.'
-  assert config.user instanceof String : 'The required user parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} login"
 
   // check for optional inputs
+  if (config.gateway) {
+    cmd += " -g ${config.gateway}"
+  }
   if (config.tls == false) {
     cmd += ' --tls-no-verify'
+  }
+  if (config.user) {
+    cmd += " -u ${config.user}"
   }
 
   // login to faas gateway
   try {
-    sh(label: 'OpenFaaS Login', script: "${cmd} -u ${config.user} -p ${config.password} -g ${config.gateway}")
+    sh(label: 'OpenFaaS Login', script: "${cmd} -p ${config.password}")
   }
   catch(Exception error) {
     print 'Failure using faas-cli login.'
