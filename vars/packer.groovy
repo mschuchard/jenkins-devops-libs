@@ -220,7 +220,7 @@ void pluginsInstall(Map config) {
   String cmd = "${config.bin} install"
 
   // optional inputs
-  if (config.force) == true {
+  if (config.force == true) {
     cmd += ' -force'
   }
   // append plugin since optional version must be last argument

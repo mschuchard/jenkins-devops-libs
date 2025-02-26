@@ -554,7 +554,7 @@ void providers(String rootDir = '', String bin = 'terraform') {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  if rootDir.length() == 0 {
+  if (rootDir.length() == 0) {
     rootDir = env.WORKSPACE
   } else {
     assert fileExists(rootDir) : "Config directory ${rootDir} does not exist!"
