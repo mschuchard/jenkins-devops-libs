@@ -38,6 +38,7 @@ faas.deploy(
   replace:   true, // optional replace any existing function (mutually exclusive with update)
   secret:    'dockerhuborg', // optional secure secret to give function access to
   template:  'samples.yaml', // path to yaml file describing function(s)
+  tls:       true // optional TLS validation
   update:    false // optional update existing functions (mutually exclusive with replace)
 )
 ```
@@ -99,6 +100,7 @@ faas.remove(
   namespace: 'default', // optional namespace of the function
   regex:     'regexp_string', // optional regex to match with function names in yaml file (default is unused)
   template:  'samples.yaml' // path to yaml file describing function(s)
+  tls:       true // optional TLS validation
 )
 ```
 

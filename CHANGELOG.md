@@ -10,6 +10,7 @@
 - Add `pull` and `tag` parameters to `build` method.
 - Add `gateway` and `namespace` parameters to `deploy`, `invoke`, and `remove` methods.
 - `gateway` and `user` parameters no longer mandatory for `login` method.
+- Add `tls` parameter to `deploy` and `remove` methods.
 
 **GoSS**
 - Add `logLevel` parameter to `server` and `validate` methods.

@@ -80,6 +80,9 @@ void deploy(Map config) {
   if (config.secret) {
     cmd += " --secret ${config.secret}"
   }
+  if (config.tls == false) {
+    cmd += ' --tls-no-verify'
+  }
   if (config.update == true) {
     cmd += ' --update=true'
   }
@@ -263,6 +266,9 @@ void remove(Map config) {
   }
   if (config.regex) {
     cmd += " --regex '${config.regex}'"
+  }
+  if (config.tls == false) {
+    cmd += ' --tls-no-verify'
   }
 
   // remove function with faas
