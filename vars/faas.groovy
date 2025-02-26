@@ -255,6 +255,12 @@ void remove(Map config) {
   if (config.filter) {
     cmd += " --filter '${config.filter}'"
   }
+  if (config.gateway) {
+    cmd += " -g ${config.gateway}"
+  }
+  if (config.namespace) {
+    cmd += " -n ${config.namespace}"
+  }
   if (config.regex) {
     cmd += " --regex '${config.regex}'"
   }

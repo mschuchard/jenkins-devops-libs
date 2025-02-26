@@ -8,7 +8,7 @@
 
 **FaaS**
 - Add `pull` and `tag` parameters to `build` method.
-- Add `gateway` and `namespace` parameters to `deploy` and `invoke` methods.
+- Add `gateway` and `namespace` parameters to `deploy`, `invoke`, and `remove` methods.
 - `gateway` and `user` parameters no longer mandatory for `login` method.
 
 **GoSS**
