@@ -1,4 +1,4 @@
-### 2.1.3 (Next)
+### 2.1.3
 **AWX**
 - Add `instanceId` parameter to `hostCreate` method.
 - Update `smart` parameter to `kind` for inventory methods.
