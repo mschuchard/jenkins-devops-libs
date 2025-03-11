@@ -488,7 +488,7 @@ def plan(Map config) {
   try {
     // execute plan
     dir(config.dir) {
-      final String planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: config.return)
+      final String planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: true)
       print "Plan output artifact written to: ${out}"
     }
 
@@ -504,10 +504,7 @@ def plan(Map config) {
   }
   print 'Terraform plan was successful.'
 
-  // return plan output if requested
-  if (config.return == true) {
-    return planOutput
-  }
+  return planOutput
 }
 
 void pluginInstall(Map config) {

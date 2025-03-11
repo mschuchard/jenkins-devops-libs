@@ -100,7 +100,7 @@ terraform.output(
   bin:     '/usr/bin/terraform', // optional path to terraform executable
   dir:     env.WORKSPACE, // optional path to config dir
   display: false, // optional display outputs
-  json:    false, // optional JSON format String return
+  json:    false, // optional String return in JSON format
   name:    'module.foo.server_ip_address', // optional output name
   raw:     false, // optional output raw strings
   state:   'terraform.tfstate', // optional path to the source state file

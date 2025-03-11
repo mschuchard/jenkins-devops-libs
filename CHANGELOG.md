@@ -2,6 +2,9 @@
 **Helm**
 - Always return value for `history` method.
 
+**Terraform**
+- Always return value for `plan` method.
+
 ### 2.1.3
 **AWX**
 - Add `instanceId` parameter to `hostCreate` method.
