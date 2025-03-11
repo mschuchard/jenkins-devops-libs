@@ -9,7 +9,7 @@ Interacts with GoSS.
 - DGoSS CLI binary exeuctable (`validateDocker`)
 
 ### goss.render()
-Renders a single valid GoSSfile from separated individual test files. This method will return the rendered GoSSfile as a string, and does not perform any further actions with the rendered content.
+Renders a single valid GoSSfile from separated individual test files. This method will return the rendered GoSSfile as a String, and does not perform any further actions with the rendered content.
 
 ```groovy
 goss.render(

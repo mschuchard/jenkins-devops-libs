@@ -1,3 +1,7 @@
+### 2.2.0 (Next)
+**Helm**
+- Always return value for `history` method.
+
 ### 2.1.3
 **AWX**
 - Add `instanceId` parameter to `hostCreate` method.

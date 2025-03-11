@@ -1,7 +1,7 @@
 //vars/helm.groovy
 import devops.common.utils
 
-def history(Map config) {
+String history(Map config) {
   // input checking
   assert config.name instanceof String : 'The required parameter "name" was not set.'
   config.bin = config.bin ?: 'helm'
@@ -28,7 +28,7 @@ def history(Map config) {
 
   // gather release revision history with helm
   try {
-    final String historyOutput = sh(label: 'Helm History', script: "${cmd} ${config.name}", returnStdout: config.return)
+    final String historyOutput = sh(label: 'Helm History', script: "${cmd} ${config.name}", returnStdout: true)
   }
   catch(Exception error) {
     print 'Failure using helm history.'
@@ -36,10 +36,7 @@ def history(Map config) {
   }
   print 'Helm history executed successfully.'
 
-  // return history output if requested
-  if (config.return == true) {
-    return historyOutput
-  }
+  return historyOutput
 }
 
 void install(Map config) {

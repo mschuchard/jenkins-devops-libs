@@ -10,7 +10,7 @@ Also please note direct Kubernetes support will never exist in this library. The
 - Kubernetes cluster
 
 ### helm.history()
-Prints historical revisions for a given release.
+Prints historical revisions for a given release, and also returns the information as a String.
 
 ```groovy
 helm.history(
@@ -20,7 +20,6 @@ helm.history(
   name:         'happy-panda', // required name for the release object
   namespace:    'default', // optional namespace for the installed release object
   outputFormat: 'table', // optional format for output (table, json, or yaml)
-  return:       false, // optional return history output from method as String
 )
 ```
 
