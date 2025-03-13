@@ -421,7 +421,7 @@ Map parse(String file) {
   return new hcl().hclToMap(file)
 }
 
-def plan(Map config) {
+String plan(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -769,7 +769,7 @@ void taint(Map config) {
   print 'Terraform taints were successful.'
 }
 
-void test(Map config) {
+String test(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -827,7 +827,7 @@ void test(Map config) {
   // execute tests
   try {
     dir(config.dir) {
-      final String testOutput = sh(label: 'Terraform Test', script: cmd, returnStdout: config.return)
+      final String testOutput = sh(label: 'Terraform Test', script: cmd, returnStdout: true)
     }
   }
   catch(Exception error) {
@@ -836,10 +836,7 @@ void test(Map config) {
   }
   print 'Terraform test was successful.'
 
-  // return test output if requested
-  if (config.return == true) {
-    return testOutput
-  }
+  return testOutput
 }
 
 def validate(Map config) {

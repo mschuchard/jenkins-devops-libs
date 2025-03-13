@@ -115,7 +115,7 @@ parsedMap = terraform.parse('/path/to/config.tf')
 ```
 
 ### terraform.plan()
-Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` (default) will be written to the same directory as the input config directory if the `out` parameter is not specified. Otherwise, the output plan file will be written to the filesystem at the path specified in the `out` parameter. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons.
+Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` (default) will be written to the same directory as the input config directory if the `out` parameter is not specified. Otherwise, the output plan file will be written to the filesystem at the path specified in the `out` parameter. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons. The plan will also be returned as a String.
 
 ```groovy
 terraform.plan(
@@ -128,7 +128,6 @@ terraform.plan(
   out:         'plan.tfplan', // optional plan output file path (extension must be .tfplan)
   refreshOnly: false, // optional check if remote objects match outcome of most recent apply (>= 0.15)
   replace:     ['aws_instance.example', 'aws_eip.ip'], // optional resources to unconditionally recreate in plan
-  return:      false, // optional return plan output from method as String
   target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
   var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile:     '/path/to/variables.tf' // optional location of variables file
@@ -184,7 +183,7 @@ terraform.taint(
 ```
 
 ### terraform.test()
-Uses Terraform to execute experimental automated integration testing of shared modules. **This method usage will correlate to a recent version of Terraform as this subcommand changes greatly between versions.**
+Uses Terraform to execute experimental automated integration testing of shared modules. The test output is also returned as a String (mostly useful with `json: true`). **This method usage will correlate to a recent version of Terraform as this subcommand changes greatly between versions.**
 
 ```groovy
 terraform.test(
@@ -193,7 +192,6 @@ terraform.test(
   dir:      env.WORKSPACE, // optional path to config dir
   filter:   ['machine.tf', 'network.tf'], // optional list of test files to execute
   json:     false, // optional produce output in a machine-readable JSON format
-  return:   false, // optional return test output from method (mostly useful with json: true)
   testDir:  'tests', // optional terraform test directory
   var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
   varFile:  '/path/to/variables.tf' // optional location of variables file
