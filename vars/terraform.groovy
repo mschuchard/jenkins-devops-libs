@@ -839,7 +839,7 @@ String test(Map config) {
   return testOutput
 }
 
-def validate(Map config) {
+String validate(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -870,7 +870,7 @@ def validate(Map config) {
   // validate the config directory
   try {
     dir(config.dir) {
-      final String validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: config.return)
+      final String validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: true)
     }
   }
   catch(Exception error) {
@@ -879,10 +879,7 @@ def validate(Map config) {
   }
   print 'Terraform validate was successful.'
 
-  // return validate output if requested
-  if (config.return == true) {
-    return validateOutput
-  }
+  return validateOutput
 }
 
 void workspace(Map config) {

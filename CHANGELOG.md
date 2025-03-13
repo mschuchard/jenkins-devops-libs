@@ -3,7 +3,7 @@
 - Always return value for `history` method.
 
 **Terraform**
-- Always return value for `plan` method.
+- Always return value for `plan`, `test`, and `validate` methods.
 
 ### 2.1.3
 **AWX**
