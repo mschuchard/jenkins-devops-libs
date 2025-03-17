@@ -282,7 +282,7 @@ void remove(Map config) {
   print 'FaaS function removed successfully.'
 }
 
-void validateTemplate(String template) {
+Boolean validateTemplate(String template) {
   // ensure template exists and then check yaml syntax
   assert readFile(template) instanceof String : "Template ${template} does not exist!"
 
@@ -291,7 +291,10 @@ void validateTemplate(String template) {
   }
   catch(Exception error) {
     print 'Template failed YAML validation.'
-    throw error
+    print error.getMessage()
+    return false
   }
+
   print "${template} is valid YAML."
+  return true
 }

@@ -43,7 +43,7 @@ goss.server(
 ```
 
 ### goss.validate()
-Locally executes a `gossfile` with GoSS. This method will return a `Boolean` type indicating whether the validation was successful (`true`) or not (`false`).
+Locally executes a `gossfile` with GoSS.
 
 ```groovy
 goss.validate(
@@ -74,7 +74,7 @@ goss.validateDocker(
 ```
 
 ### goss.validateGossfile(String gossfile)
-Validates `gossfile` syntax.
+Validates `gossfile` syntax. This method will return a `Boolean` type indicating whether the validation was successful (`true`) or not (`false`).
 
 ```groovy
 goss.validateGossfile('gossfile.yaml')

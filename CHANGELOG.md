@@ -1,4 +1,7 @@
 ### 2.2.0 (Next)
+**FaaS**
+- Return `Boolean` for `validateTemplate`.
+
 **GoSS**
 - Return `Boolean` for `validateGossfile`.
 

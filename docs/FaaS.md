@@ -105,7 +105,7 @@ faas.remove(
 ```
 
 ### faas.validateTemplate(String template)
-Validates template syntax.
+Validates template syntax. This method will return a `Boolean` type indicating whether the validation was successful (`true`) or not (`false`).
 
 ```groovy
 faas.validateTemplate('template.yaml')
