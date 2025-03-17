@@ -98,7 +98,7 @@ packer.plugins(
 ### packer.validate()
 **`evalData` and `warnUndeclVar` require Packer version >= 1.8.5**
 
-Uses Packer to validate a build template or template directory.
+Uses Packer to validate a build template or template directory. This method will return a `Boolean` type indicating whether the validation was successful (`true`) or not (`false`).
 
 ```groovy
 packer.validate(

@@ -2,6 +2,9 @@
 **Helm**
 - Always return value for `history` method.
 
+**Packer**
+- Improve `validate` and return `Boolean`.
+
 **Terraform**
 - Always return value for `plan`, `test`, and `validate` methods.
 

@@ -297,7 +297,7 @@ void plugins(Map config) {
   print 'Packer plugins executed successfully.'
 }
 
-void validate(Map config) {
+Boolean validate(Map config) {
   // input checking
   assert config.template instanceof String : 'The required template parameter was not set.'
   if (config.except && config.only) {
@@ -347,19 +347,27 @@ void validate(Map config) {
   }
 
   // validate template with packer
-  try {
-    if (config.template ==~ /\.pkr\./) {
-      sh(label: 'Packer Validate', script: "${cmd} ${config.template}")
-    }
-    else {
-      dir(config.template) {
-        sh(label: 'Packer Validate', script: "${cmd} .")
-      }
+  int returnCode
+  if (config.template ==~ /\.pkr\./) {
+    returnCode = sh(label: 'Packer Validate', script: "${cmd} ${config.template}", returnStatus: true)
+  }
+  else {
+    dir(config.template) {
+      returnCode = sh(label: 'Packer Validate', script: "${cmd} .")
     }
   }
-  catch(Exception error) {
+
+  // return by code
+  if returnCode == 0 {
+    print 'Packer validate executed successfully.'
+    return true
+  }
+  if returnCode == 1 {
+    print 'Packer validate executed successfully.'
+    return false
+  }
+  else {
     print 'Failure using packer validate.'
     throw error
   }
-  print 'Packer validate executed successfully.'
 }
