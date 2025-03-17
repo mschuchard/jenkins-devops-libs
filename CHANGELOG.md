@@ -1,4 +1,7 @@
 ### 2.2.0 (Next)
+**GoSS**
+- Return `Boolean` for `validateGossfile`.
+
 **Helm**
 - Always return value for `history` method.
 

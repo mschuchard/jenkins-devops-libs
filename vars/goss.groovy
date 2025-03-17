@@ -207,7 +207,7 @@ void validateDocker(Map config) {
   print 'DGoSS run command was successful.'
 }
 
-void validateGossfile(String gossfile) {
+Boolean validateGossfile(String gossfile) {
   // ensure gossfile exists and then check yaml syntax
   assert readFile(gossfile) instanceof String : "Gossfile ${gossfile} does not exist!"
 
@@ -216,9 +216,12 @@ void validateGossfile(String gossfile) {
   }
   catch(Exception error) {
     print 'Gossfile failed YAML validation.'
-    throw error
+    print error.getMessage()
+    return false
   }
+
   print "${gossfile} is valid YAML."
+  return true
 }
 
 // "private" methods
