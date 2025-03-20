@@ -684,13 +684,19 @@ Boolean verify(String chartPath, String helmPath = 'helm') {
   assert fileExists(chartPath) : "The chart at ${chartPath} does not exist."
 
   // verify helm chart
-  try {
-    sh(label: 'Helm Verify', script: "${helmPath} verify ${chartPath}")
+  int returnCode = sh(label: 'Helm Verify', script: "${helmPath} verify ${chartPath}", returnStatus: true)
+
+  // return by code
+  if returnCode == 0 {
     print "The chart at ${chartPath} successfully verified."
     return true
   }
-  catch(Exception error) {
+  else if returnCode == 1 {
     print "The chart at ${chartPath} failed verification."
     return false
+  }
+  else {
+    print 'Failure using helm verify'
+    throw new Exception("Helm verify failed unexpectedly")
   }
 }

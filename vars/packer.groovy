@@ -362,12 +362,12 @@ Boolean validate(Map config) {
     print 'Packer validate executed successfully.'
     return true
   }
-  if returnCode == 1 {
+  else if returnCode == 1 {
     print 'Packer validate executed successfully.'
     return false
   }
   else {
     print 'Failure using packer validate.'
-    throw error
+    throw new Exception("Packer validate failed unexpectedly")
   }
 }

@@ -7,6 +7,7 @@
 
 **Helm**
 - Always return value for `history` method.
+- Improve `verify` method return logic.
 
 **Packer**
 - Improve `validate` and return `Boolean`.
