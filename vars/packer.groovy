@@ -359,11 +359,11 @@ Boolean validate(Map config) {
 
   // return by code
   if returnCode == 0 {
-    print 'Packer validate executed successfully.'
+    print 'The configs and templates successfully validated.'
     return true
   }
   else if returnCode == 1 {
-    print 'Packer validate executed successfully.'
+    print 'The configs and templates failed validation.'
     return false
   }
   else {

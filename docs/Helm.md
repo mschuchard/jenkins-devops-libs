@@ -47,7 +47,7 @@ helm.install(
 ```
 
 ### helm.lint()
-Runs a series of tests to verify that the chart is well-formed.
+Runs a series of tests to verify that the chart is well-formed. This method will return a `Boolean` type indicating whether the chart linting was successful (`true`) or not (`false`).
 
 ```groovy
 helm.lint(

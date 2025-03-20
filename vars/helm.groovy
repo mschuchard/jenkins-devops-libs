@@ -137,7 +137,7 @@ void kubectl(String version, String installPath = '/usr/bin/') {
   print "Kubectl successfully installed at ${installPath}/kubectl."
 }
 
-void lint(Map config) {
+Boolean lint(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
@@ -174,29 +174,21 @@ void lint(Map config) {
   }
 
   // lint with helm
-  try {
-    final String lintOutput = sh(label: 'Helm Lint', returnStdout: true, script: "${cmd} ${config.chart}")
+  final int returnCode = sh(label: 'Helm Lint', script: "${cmd} ${config.chart}", returnStatus: true)
 
-    if (!(lintOutput)) {
-      print 'No errors or warnings from helm lint.'
-    }
-    else {
-      print 'Helm lint output is:'
-      print lintOutput
-    }
+  // return by code
+  if returnCode == 0 {
+    print 'The chart successfully linted.'
+    return true
   }
-  catch(Exception error) {
-    print 'Chart failed helm lint.'
-
-    // if the chart caused the error, then give more information about that
-    if (lintOutput) {
-      print 'Output of helm lint is:'
-      print lintOutput
-    }
-
-    throw error
+  else if returnCode == 1 {
+    print 'The chart failed linting.'
+    return false
   }
-  print 'Helm lint executed successfully.'
+  else {
+    print 'Failure using helm lint.'
+    throw new Exception("Helm lint failed unexpectedly")
+  }
 }
 
 void packages(Map config) {
@@ -684,7 +676,7 @@ Boolean verify(String chartPath, String helmPath = 'helm') {
   assert fileExists(chartPath) : "The chart at ${chartPath} does not exist."
 
   // verify helm chart
-  int returnCode = sh(label: 'Helm Verify', script: "${helmPath} verify ${chartPath}", returnStatus: true)
+  final int returnCode = sh(label: 'Helm Verify', script: "${helmPath} verify ${chartPath}", returnStatus: true)
 
   // return by code
   if returnCode == 0 {
