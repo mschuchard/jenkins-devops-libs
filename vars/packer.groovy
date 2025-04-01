@@ -353,7 +353,7 @@ Boolean validate(Map config) {
   }
   else {
     dir(config.template) {
-      returnCode = sh(label: 'Packer Validate', script: "${cmd} .")
+      returnCode = sh(label: 'Packer Validate', script: "${cmd} .", returnStatus: true)
     }
   }
 

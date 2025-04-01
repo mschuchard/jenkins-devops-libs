@@ -43,7 +43,7 @@ goss.server(
 ```
 
 ### goss.validate()
-Locally executes a `gossfile` with GoSS.
+Locally executes a `gossfile` with GoSS. This method will return a `Boolean` type indicating whether the validation was successful (`true`) or not (`false`).
 
 ```groovy
 goss.validate(

@@ -125,7 +125,7 @@ void server(Map config) {
   print 'GoSS server endpoint created successfully.'
 }
 
-void validate(Map config) {
+Boolean validate(Map config) {
   // input checking
   if (config.gossfile) {
     assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
@@ -138,46 +138,54 @@ void validate(Map config) {
   }
   config.bin = config.bin ?: 'goss'
 
+  // optional inputs
+  String cmd = config.bin
+
+  // check for optional global inputs and establish command
+  cmd += globalArgsCmd(config)
+  cmd += ' validate --no-color'
+
+  // check for optional inputs
+  if (config.maxConcur) {
+    cmd += " --max-concurrent ${config.maxConcur}"
+  }
+  if (config.format) {
+    assert (['documentation', 'json', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
+
+    cmd += " -f ${config.format}"
+  }
+  if (config.formatOpts) {
+    assert (['perfdata', 'pretty', 'sort', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+
+    cmd += " -o ${config.formatOpts}"
+  }
+  if (config.retryTimeout) {
+    cmd += " -r ${config.retryTimeout}"
+
+    if (config.sleep) {
+      cmd += " -s ${config.sleep}"
+    }
+  }
+  if (config.logLevel) {
+    cmd += " -L ${config.logLevel.toUpperCase()}"
+  }
+
   // validate with goss
-  try {
-    String cmd = config.bin
+  final int returnCode = sh(label: 'GoSS Validate', script: cmd, returnStatus: true)
 
-    // check for optional global inputs and establish command
-    cmd += globalArgsCmd(config)
-    cmd += ' validate --no-color'
-
-    // check for optional inputs
-    if (config.maxConcur) {
-      cmd += " --max-concurrent ${config.maxConcur}"
-    }
-    if (config.format) {
-      assert (['documentation', 'json', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
-
-      cmd += " -f ${config.format}"
-    }
-    if (config.formatOpts) {
-      assert (['perfdata', 'pretty', 'sort', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
-
-      cmd += " -o ${config.formatOpts}"
-    }
-    if (config.retryTimeout) {
-      cmd += " -r ${config.retryTimeout}"
-
-      if (config.sleep) {
-        cmd += " -s ${config.sleep}"
-      }
-    }
-    if (config.logLevel) {
-      cmd += " -L ${config.logLevel.toUpperCase()}"
-    }
-
-    sh(label: 'GoSS Validate', script: cmd)
+  // return by code
+  if returnCode == 0 {
+    print 'The system successfully validated.'
+    return true
   }
-  catch(Exception error) {
+  else if returnCode == 1 {
+    print 'The system failed validation.'
+    return false
+  }
+  else {
     print 'Failure using goss validate.'
-    throw error
+    throw new Exception("GoSS validate failed unexpectedly")
   }
-  print 'GoSS validate command was successful.'
 }
 
 void validateDocker(Map config) {

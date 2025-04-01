@@ -3,7 +3,7 @@
 - Return `Boolean` for `validateTemplate`.
 
 **GoSS**
-- Return `Boolean` for `validateGossfile`.
+- Return `Boolean` for `validate` and `validateGossfile`.
 
 **Helm**
 - Always return value for `history` method.
