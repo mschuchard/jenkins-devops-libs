@@ -115,7 +115,7 @@ parsedMap = terraform.parse('/path/to/config.tf')
 ```
 
 ### terraform.plan()
-Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` (default) will be written to the same directory as the input config directory if the `out` parameter is not specified. Otherwise, the output plan file will be written to the filesystem at the path specified in the `out` parameter. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons. The plan will also be returned as a String.
+Uses Terraform to generate an execution plan. The output plan file `plan.tfplan` (default) will be written to the same directory as the input config directory if the `out` parameter is not specified. Otherwise, the output plan file will be written to the filesystem at the path specified in the `out` parameter. This is recommended practice to provide as an input in a Pipeline to a subsequent `apply` or `destroy` for various reasons. The unencoded plan content will also be returned as a String.
 
 ```groovy
 terraform.plan(
@@ -123,7 +123,6 @@ terraform.plan(
   compactWarn: false, // optional warnings as compact summary messages
   destroy:     false, // optional generate a plan to destroy resources
   dir:         env.WORKSPACE, // optional path to config dir
-  display:     false, // optional display plan output
   genConfig:   'config.tf', // optional hcl generation for import blocks (>= 1.5)
   out:         'plan.tfplan', // optional plan output file path (extension must be .tfplan)
   refreshOnly: false, // optional check if remote objects match outcome of most recent apply (>= 0.15)

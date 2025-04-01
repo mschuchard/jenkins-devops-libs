@@ -482,7 +482,7 @@ String plan(Map config) {
 
     cmd += "-generate-config-out=${config.genConfig}"
   }
-  String out = config.out ?: "${config.dir}/plan.tfplan"
+  final String out = config.out ?: "${config.dir}/plan.tfplan"
 
   // generate a plan from the config directory
   try {
@@ -490,12 +490,6 @@ String plan(Map config) {
     dir(config.dir) {
       final String planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: true)
       print "Plan output artifact written to: ${out}"
-    }
-
-    // display plan output if specified
-    if (config.display == true) {
-      print 'Terraform plan output is:'
-      print planOutput
     }
   }
   catch(Exception error) {
