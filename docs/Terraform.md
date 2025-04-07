@@ -33,7 +33,7 @@ terraform.destroy(
 ```
 
 ### terraform.fmt()
-Uses Terraform to check for properly formatted code. Note that in Terraform 0.12.x the `recursive` option was added (Terraform < 0.12 automatically recursed through subdirectories). The `check` and `write` parameters are mutually exclusive, and so only one of them may be enabled at a time.
+Uses Terraform to check for properly formatted code. Note that in Terraform 0.12.x the `recursive` option was added (Terraform < 0.12 automatically recursed through subdirectories). The `check` and `write` parameters are mutually exclusive, and so only one of them may be enabled at a time. This method will return a `Boolean` type indicating whether the format check was successful (`true`) or not (`false`). Note that if `check` is `false` then the return will always be `true`.
 
 ```groovy
 terraform.fmt(

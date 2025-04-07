@@ -118,7 +118,7 @@ void destroy(Map config) {
   print 'Terraform destroy was successful.'
 }
 
-void fmt(Map config) {
+Boolean fmt(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
@@ -159,13 +159,16 @@ void fmt(Map config) {
     // report if formatting check detected issues
     if ((config.check == true) && (fmtStatus != 0)) {
       print 'Terraform fmt has detected formatting errors.'
+      return false
     }
   }
   catch(Exception error) {
     print 'Failure using terraform fmt.'
     throw error
   }
+
   print 'Terraform fmt was successful.'
+  return true
 }
 
 void graph(Map config) {

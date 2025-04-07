@@ -23,7 +23,7 @@ packer.build(
 ```
 
 ### packer.fmt()
-Uses Packer to check for properly canonically formatted code.
+Uses Packer to check for properly canonically formatted code. This method will return a `Boolean` type indicating whether the format check was successful (`true`) or not (`false`). Note that if `check` is `false` then the return will always be `true`.
 
 ```groovy
 packer.fmt(

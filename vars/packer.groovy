@@ -68,7 +68,7 @@ void build(Map config) {
   print 'Packer build artifact created successfully.'
 }
 
-void fmt(Map config) {
+Boolean fmt(Map config) {
   // input checking
   assert config.template instanceof String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
@@ -107,13 +107,16 @@ void fmt(Map config) {
     // report if formatting check detected issues
     if ((config.check == true) && (fmtStatus != 0)) {
       print 'Packer fmt has detected formatting errors.'
+      return false
     }
   }
   catch(Exception error) {
     print 'Failure using packer fmt.'
     throw error
   }
+
   print 'Packer fmt was successful.'
+  return true
 }
 
 void init(Map config) {

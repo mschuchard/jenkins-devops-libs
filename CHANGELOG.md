@@ -12,9 +12,11 @@
 
 **Packer**
 - Improve `validate` and return `Boolean`.
+- Return `Boolean` for `fmt`.
 
 **Terraform**
 - Always return value for `plan`, `test`, and `validate` methods.
+- Return `Boolean` for `fmt`.
 
 ### 2.1.3
 **AWX**
