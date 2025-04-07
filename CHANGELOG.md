@@ -3,6 +3,7 @@
 - Return `Boolean` for `validateTemplate`.
 
 **GoSS**
+- Increase minimum supported version to 0.4.
 - Return `Boolean` for `validate` and `validateGossfile`.
 
 **Helm**
