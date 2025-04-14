@@ -62,6 +62,21 @@ faas.invoke(
 )
 ```
 
+### faas.list()
+List OpenFaaS functions. The output function list and information is also returned by this method as a `String`.
+
+```groovy
+faas.list(
+  bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
+  gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
+  namespace: 'default', // optional namespace of the function
+  quiet:     false, // optional display only the function's id (mutually exclusive with verbose)
+  sort:      'name', // optional sort category (valid: 'name' or 'invocations')
+  tls:       true // optional TLS validation
+  verbose:   false, // optional display extra function information (mutually exclusive with quiet)
+)
+```
+
 ### faas.login()
 Log in to the specified OpenFaaS gateway.
 
