@@ -184,6 +184,49 @@ void invoke(Map config) {
   print 'FaaS function container image pushed successfully.'
 }
 
+String list(Map config) {
+  // input checking
+  if (config.quiet) && (config.verbose) {
+    throw new Exception('The "quiet" and "verbose" parameters for faas.list are mutually exclusive; only one can be specified.')
+  }
+  assert ['name', 'invocations'].contains(config.sort) : 'The "sort" parameter value must be either "name" or "invocations".'
+  config.bin = config.bin ?: 'faas-cli'
+
+  String cmd = "${config.bin} list"
+
+  // optional inputs
+  if (config.gateway) {
+    cmd += " -g ${config.gateway}"
+  }
+  if (config.namespace) {
+    cmd += " -n ${config.namespace}"
+  }
+  if (config.quiet) {
+    cmd += ' -q'
+  }
+  else if (config.verbose) {
+    cmd += ' -v'
+  }
+  if (config.sort) {
+    cmd += " --sort ${config.sort}"
+  }
+  if (config.tls == false) {
+    cmd += ' --tls-no-verify'
+  }
+
+  // list faas functions
+  try {
+    final String functions = sh(label: 'OpenFaaS List', script: cmd, returnStdout: true)
+  }
+  catch(Exception error) {
+    print 'Failure using faas-cli list.'
+    throw error
+  }
+
+  print 'FaaS function list executed successfully.'
+  return functions
+}
+
 void login(Map config) {
   // input checking
   assert config.password instanceof String : 'The required password parameter was not set.'
