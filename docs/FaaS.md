@@ -90,6 +90,22 @@ faas.login(
 )
 ```
 
+### faas.logs()
+Fetch logs for a given function name. The logs are returned by this method as a `String`.
+
+```groovy
+faas.logs(
+  bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
+  gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
+  instance:  false, // optional print the function instance name/id
+  name:      'sadpanda', // function name for which to retrieve logs
+  namespace: 'default', // optional namespace of the function
+  format:    'plain', // optional return format (plain, keyvalue, or json)
+  since:     '5s', // optional return logs newer than relative duration
+  tls:       true // optional TLS validation
+)
+```
+
 ### faas.push()
 Pushes the OpenFaaS function container image(s) to a remote repository. These container images must already be present in your local image cache.
 

@@ -1,7 +1,7 @@
 ### 2.2.0 (Next)
 **FaaS**
 - Return `Boolean` for `validateTemplate`.
-- Add `list` method.
+- Add `list` and `logs` methods.
 
 **GoSS**
 - Increase minimum supported version to 0.4.
