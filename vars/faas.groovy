@@ -189,7 +189,6 @@ String list(Map config) {
   if (config.quiet) && (config.verbose) {
     throw new Exception('The "quiet" and "verbose" parameters for faas.list are mutually exclusive; only one can be specified.')
   }
-  assert ['name', 'invocations'].contains(config.sort) : 'The "sort" parameter value must be either "name" or "invocations".'
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} list"
@@ -208,6 +207,8 @@ String list(Map config) {
     cmd += ' -v'
   }
   if (config.sort) {
+    assert ['name', 'invocations'].contains(config.sort) : 'The "sort" parameter value must be either "name" or "invocations".'
+
     cmd += " --sort ${config.sort}"
   }
   if (config.tls == false) {
@@ -254,6 +255,48 @@ void login(Map config) {
     throw error
   }
   print 'Successfully logged in to FaaS gateway.'
+}
+
+String logs(Map config) {
+  // input checking
+  assert config.name instanceof String : 'The required "name" parameter was not set.'
+  config.bin = config.bin ?: 'faas-cli'
+
+  String cmd = "${config.bin} logs"
+
+  // optional inputs
+  if (config.gateway) {
+    cmd += " -g ${config.gateway}"
+  }
+  if (config.instance) {
+    cmd += '--instance'
+  }
+  if (config.namespace) {
+    cmd += " -n ${config.namespace}"
+  }
+  if (config.format) {
+    assert ['plain', 'keyvalue', 'json'].contains(config.format)
+
+    cmd += "-o ${config.format}"
+  }
+  if (config.since) {
+    cmd += "--since ${config.since}"
+  }
+  if (config.tls == false) {
+    cmd += ' --tls-no-verify'
+  }
+
+  // retrieve function logs
+  try {
+    final String logs = sh(label: 'OpenFaaS Logs', script: "${cmd} ${config.name}", returnStdout: true)
+  }
+  catch(Exception error) {
+    print 'Failure using faas-cli logs.'
+    throw error
+  }
+
+  print 'FaaS function log retrieval executed successfully.'
+  return logs
 }
 
 void push(Map config) {
