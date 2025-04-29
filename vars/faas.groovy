@@ -36,7 +36,7 @@ void build(Map config) {
   try {
     sh(label: 'OpenFaaS Build', script: "${cmd} -f ${config.template}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using faas-cli build.'
     throw error
   }
@@ -64,7 +64,7 @@ void deploy(Map config) {
   if (config.label) {
     assert (config.label instanceof Map) : 'The label parameter must be a Map.'
 
-    config.label.each() { label, value ->
+    config.label.each { label, value ->
       cmd += " --label ${label}=${value}"
     }
   }
@@ -91,7 +91,7 @@ void deploy(Map config) {
   try {
     sh(label: 'OpenFaaS Deploy', script: "${cmd} -f ${config.template}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using faas-cli deploy.'
     throw error
   }
@@ -115,12 +115,12 @@ void install(Map config) {
   // otherwise determine extension based on platform
   String extension = ''
   switch (config.platform) {
-    case 'linux': extension = ''; break;
-    case 'windows': extension = '.exe'; break;
-    case 'darwin': extension = '-darwin'; break;
-    case 'linux-arm64': extension = '-arm64'; break;
-    case 'linux-armhf': extension = '-armhf'; break;
-    default: throw new Exception("Unsupported platform ${config.platform} specified!");
+    case 'linux': extension = ''; break
+    case 'windows': extension = '.exe'; break
+    case 'darwin': extension = '-darwin'; break
+    case 'linux-arm64': extension = '-arm64'; break
+    case 'linux-armhf': extension = '-armhf'; break
+    default: throw new Exception("Unsupported platform ${config.platform} specified!")
   }
   // download and install specified version
   new utils().downloadFile("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.installPath}/faas-cli")
@@ -149,7 +149,7 @@ void invoke(Map config) {
   if (config.header) {
     assert (config.header instanceof Map) : 'The header parameter must be a Map.'
 
-    config.header.each() { header, value ->
+    config.header.each { header, value ->
       cmd += " -H ${header}=${value}"
     }
   }
@@ -162,7 +162,7 @@ void invoke(Map config) {
   if (config.query) {
     assert (config.query instanceof Map) : 'The query parameter must be a Map.'
 
-    config.query.each() { query, value ->
+    config.query.each { query, value ->
       cmd += " --query ${query}=${value}"
     }
   }
@@ -177,16 +177,16 @@ void invoke(Map config) {
   try {
     sh(label: 'OpenFaaS Invoke', script: "${cmd} ${config.function}")
   }
-  catch(Exception error) {
-    print 'Failure using faas-cli push.'
+  catch (Exception error) {
+    print 'Failure using faas-cli invoke.'
     throw error
   }
-  print 'FaaS function container image pushed successfully.'
+  print 'FaaS function invoked successfully.'
 }
 
 String list(Map config) {
   // input checking
-  if (config.quiet) && (config.verbose) {
+  if (config.quiet && config.verbose) {
     throw new Exception('The "quiet" and "verbose" parameters for faas.list are mutually exclusive; only one can be specified.')
   }
   config.bin = config.bin ?: 'faas-cli'
@@ -216,10 +216,11 @@ String list(Map config) {
   }
 
   // list faas functions
+  String functions
   try {
-    final String functions = sh(label: 'OpenFaaS List', script: cmd, returnStdout: true)
+    functions = sh(label: 'OpenFaaS List', script: cmd, returnStdout: true)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using faas-cli list.'
     throw error
   }
@@ -250,7 +251,7 @@ void login(Map config) {
   try {
     sh(label: 'OpenFaaS Login', script: "${cmd} -p ${config.password}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using faas-cli login.'
     throw error
   }
@@ -287,10 +288,11 @@ String logs(Map config) {
   }
 
   // retrieve function logs
+  String logs
   try {
-    final String logs = sh(label: 'OpenFaaS Logs', script: "${cmd} ${config.name}", returnStdout: true)
+    logs = sh(label: 'OpenFaaS Logs', script: "${cmd} ${config.name}", returnStdout: true)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using faas-cli logs.'
     throw error
   }
@@ -325,7 +327,7 @@ void push(Map config) {
   try {
     sh(label: 'OpenFaaS Push', script: "${cmd} -f ${config.template}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using faas-cli push.'
     throw error
   }
@@ -361,7 +363,7 @@ void remove(Map config) {
   try {
     sh(label: 'OpenFaaS Remove', script: "${cmd} -f ${config.template}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using faas-cli remove.'
     throw error
   }
@@ -375,7 +377,7 @@ Boolean validateTemplate(String template) {
   try {
     readYaml(file: template)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Template failed YAML validation.'
     print error.getMessage()
     return false
