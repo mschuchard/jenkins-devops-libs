@@ -61,14 +61,15 @@ String render(Map config) {
     }
 
     final String rendered = sh(label: 'GoSS Render', script: cmd, returnStdout: true)
+
+    print 'GoSSfile rendered successfully.'
+
+    return rendered
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using goss render.'
     throw error
   }
-  print 'GoSSfile rendered successfully.'
-
-  return rendered
 }
 
 void server(Map config) {
@@ -118,7 +119,7 @@ void server(Map config) {
 
     sh(label: 'GoSS Server', script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using goss serve.'
     throw error
   }
@@ -174,18 +175,17 @@ Boolean validate(Map config) {
   final int returnCode = sh(label: 'GoSS Validate', script: cmd, returnStatus: true)
 
   // return by code
-  if returnCode == 0 {
+  if (returnCode == 0) {
     print 'The system successfully validated.'
     return true
   }
-  else if returnCode == 1 {
+  else if (returnCode == 1) {
     print 'The system failed validation.'
     return false
   }
-  else {
-    print 'Failure using goss validate.'
-    throw new Exception("GoSS validate failed unexpectedly")
-  }
+
+  print 'Failure using goss validate.'
+  throw new Exception('GoSS validate failed unexpectedly')
 }
 
 void validateDocker(Map config) {
@@ -201,14 +201,14 @@ void validateDocker(Map config) {
     if (config.flags) {
       assert (config.flags instanceof Map) : 'The flags parameter must be a Map.'
 
-      config.flags.each() { flag, value ->
+      config.flags.each { flag, value ->
         cmd += " -e ${flag}=${value}"
       }
     }
 
     sh(label: 'DGoSS Validate Docker', script: "${cmd} ${config.image}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using dgoss run.'
     throw error
   }
@@ -222,7 +222,7 @@ Boolean validateGossfile(String gossfile) {
   try {
     readYaml(file: gossfile)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Gossfile failed YAML validation.'
     print error.getMessage()
     return false
@@ -239,7 +239,7 @@ String globalArgsCmd(Map config) {
 
   // check for optional global args
   if (config.varsInline) {
-    assert config.varsInline instanceof Map : "The inline vars parameter must be a Map."
+    assert config.varsInline instanceof Map : 'The inline vars parameter must be a Map.'
     final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
 
     subCmd += " --vars-inline ${varsInlineJSON}"

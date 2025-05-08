@@ -53,7 +53,7 @@ void apply(Map config) {
       }
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform apply.'
     throw error
   }
@@ -111,7 +111,7 @@ void destroy(Map config) {
       }
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform destroy.'
     throw error
   }
@@ -162,7 +162,7 @@ Boolean fmt(Map config) {
       return false
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform fmt.'
     throw error
   }
@@ -206,7 +206,7 @@ void graph(Map config) {
   try {
     final String dotGraph = sh(label: 'Terraform Graph', script: cmd)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform graph.'
     throw error
   }
@@ -265,7 +265,7 @@ void imports(Map config) {
       sh(label: "Terraform Import ${name}", script: "${cmd} '${name}' ${id}")
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform import.'
     throw error
   }
@@ -333,7 +333,7 @@ void init(Map config) {
       sh(label: 'Terraform Init', script: cmd)
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform init.'
     throw error
   }
@@ -404,7 +404,7 @@ String output(Map config) {
       final String outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform output.'
     throw error
   }
@@ -495,7 +495,7 @@ String plan(Map config) {
       print "Plan output artifact written to: ${out}"
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform plan.'
     throw error
   }
@@ -560,7 +560,7 @@ void providers(String rootDir = '', String bin = 'terraform') {
       sh(label: 'Terraform Providers Information', script: "${bin} providers")
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform providers.'
     throw error
   }
@@ -617,7 +617,7 @@ void refresh(Map config) {
       sh(label: 'Terraform Refresh', script: cmd)
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform refresh.'
     throw error
   }
@@ -629,7 +629,7 @@ void state(Map config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert (['move', 'remove', 'push', 'list', 'show', 'pull'].contains(config.command)) : "The command parameter must be one of: move, remove, list, show, pull, or push."
+  assert (['move', 'remove', 'push', 'list', 'show', 'pull'].contains(config.command)) : 'The command parameter must be one of: move, remove, list, show, pull, or push.'
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
@@ -652,7 +652,7 @@ void state(Map config) {
     // perform different commands based upon type of state action
     switch (config.command) {
       case 'move':
-        assert (config.resources instanceof Map) : 'Parameter resources must be a Map of strings for move command.';
+        assert (config.resources instanceof Map) : 'Parameter resources must be a Map of strings for move command.'
 
         dir(config.dir) {
           config.resources.each() { from, to ->
@@ -660,9 +660,9 @@ void state(Map config) {
           }
         }
 
-        break;
+        break
       case 'remove':
-        assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for remove command.';
+        assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for remove command.'
 
         dir(config.dir) {
           config.resources.each() { resource ->
@@ -670,17 +670,17 @@ void state(Map config) {
           }
         }
 
-        break;
+        break
       case 'push':
-        assert !config.resources : 'Resources parameter is not allowed for push command.';
+        assert !config.resources : 'Resources parameter is not allowed for push command.'
 
         dir(config.dir) {
-          sh(label: 'Terraform State Push', script: "${cmd} push");
+          sh(label: 'Terraform State Push', script: "${cmd} push")
         }
 
-        break;
+        break
       case 'list':
-        assert !config.resources : 'Resources parameter is not allowed for push command.';
+        assert !config.resources : 'Resources parameter is not allowed for push command.'
 
         dir(config.dir) {
           final String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
@@ -689,9 +689,9 @@ void state(Map config) {
         print 'Terraform state output is as follows:'
         print stateList
 
-        break;
+        break
       case 'show':
-        assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for show command.';
+        assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for show command.'
 
         dir(config.dir) {
           config.resources.each() { resource ->
@@ -702,21 +702,21 @@ void state(Map config) {
           }
         }
 
-        break;
+        break
       case 'pull':
-          assert !config.resources : 'Resources parameter is not allowed for pull command.';
+        assert !config.resources : 'Resources parameter is not allowed for pull command.'
 
-          dir(config.dir) {
-            sh(label: 'Terraform State Pull', script: "${cmd} pull");
-          }
+        dir(config.dir) {
+            sh(label: 'Terraform State Pull', script: "${cmd} pull")
+        }
 
-          break;
+        break
       default:
         // should never reach this because of above assert
-        throw new Exception("Unknown Terraform state command ${config.command} specified.");
+        throw new Exception("Unknown Terraform state command ${config.command} specified.")
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform state manipulation.'
     throw error
   }
@@ -759,7 +759,7 @@ void taint(Map config) {
       }
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform taint.'
     throw error
   }
@@ -827,7 +827,7 @@ String test(Map config) {
       final String testOutput = sh(label: 'Terraform Test', script: cmd, returnStdout: true)
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform test.'
     throw error
   }
@@ -870,7 +870,7 @@ String validate(Map config) {
       final String validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: true)
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using terraform validate.'
     throw error
   }
@@ -905,7 +905,7 @@ void workspace(Map config) {
     try {
       sh(label: 'Terraform Workspace Select', script: "${config.cmd} ${config.workspace}")
     }
-    catch(Exception error) {
+    catch (Exception error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
 
       final String workspaces = sh(label: 'Terraform Workspace List', script: "${config.bin} workspace list", returnStdout: true)
