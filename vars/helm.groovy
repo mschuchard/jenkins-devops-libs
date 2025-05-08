@@ -29,14 +29,15 @@ String history(Map config) {
   // gather release revision history with helm
   try {
     final String historyOutput = sh(label: 'Helm History', script: "${cmd} ${config.name}", returnStdout: true)
+
+    print 'Helm history executed successfully.'
+
+    return historyOutput
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm history.'
     throw error
   }
-  print 'Helm history executed successfully.'
-
-  return historyOutput
 }
 
 void install(Map config) {
@@ -74,7 +75,7 @@ void install(Map config) {
     cmd += " --version ${config.version}"
   }
   else if (config.devel == true) {
-    cmd += " --devel"
+    cmd += ' --devel'
   }
   if (config.dryRun == true) {
     cmd += ' --dry-run'
@@ -113,7 +114,7 @@ void install(Map config) {
   try {
     sh(label: 'Helm Install', script: "${cmd} ${config.name} ${config.chart}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm install.'
     throw error
   }
@@ -177,18 +178,17 @@ Boolean lint(Map config) {
   final int returnCode = sh(label: 'Helm Lint', script: "${cmd} ${config.chart}", returnStatus: true)
 
   // return by code
-  if returnCode == 0 {
+  if (returnCode == 0) {
     print 'The chart successfully linted.'
     return true
   }
-  else if returnCode == 1 {
+  else if (returnCode == 1) {
     print 'The chart failed linting.'
     return false
   }
-  else {
-    print 'Failure using helm lint.'
-    throw new Exception("Helm lint failed unexpectedly")
-  }
+
+  print 'Failure using helm lint.'
+  throw new Exception('Helm lint failed unexpectedly')
 }
 
 void packages(Map config) {
@@ -227,7 +227,7 @@ void packages(Map config) {
   try {
     sh(label: 'Helm Package', script: "${cmd} ${config.chart}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm package.'
     throw error
   }
@@ -251,7 +251,7 @@ void plugin(Map config) {
   try {
     sh(label: 'Helm Plugin', script: cmd)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print "Failure using helm plugin ${config.command}."
     throw error
   }
@@ -301,7 +301,7 @@ void registryLogin(Map config) {
   try {
     sh(label: 'Helm Registry Login', script: "${cmd} ${config.host}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm registry login.'
     throw error
   }
@@ -334,7 +334,7 @@ void repo(Map config) {
   try {
     sh(label: 'Helm Repo Add', script: "${cmd} ${config.repo} ${config.url}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm repo add.'
     throw error
   }
@@ -344,7 +344,7 @@ void repo(Map config) {
   try {
     sh(label: 'Helm Repo Update', script: "${cmd.replaceFirst('add', 'update')} ${config.repo}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm repo update.'
     throw error
   }
@@ -396,7 +396,7 @@ void rollback(Map config) {
   try {
     sh(label: 'Helm Rollback', script: cmd)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm rollback.'
     throw error
   }
@@ -426,13 +426,13 @@ void show(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart instanceof String : 'The required parameter "chart" was not set.'
-  assert (['all', 'chart', 'crds', 'readme', 'values']).contains(config.info) : "The info parameter must be one of all, chart, crds, readme, or values."
+  assert (['all', 'chart', 'crds', 'readme', 'values']).contains(config.info) : 'The info parameter must be one of all, chart, crds, readme, or values.'
 
   // show chart info
   try {
     sh(label: 'Helm Show', script: "${config.bin} ${config.info} ${config.chart}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm show.'
     throw error
   }
@@ -480,14 +480,15 @@ String status(Map config) {
   // attempt to query a release object's status
   try {
     String status = sh(label: 'Helm Status', script: "${cmd} ${config.name}", returnStdout: true)
+
+    print 'Helm status executed successfully.'
+
+    return status
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm status.'
     throw error
   }
-  print 'Helm status executed successfully.'
-
-  return status
 }
 
 void test(Map config) {
@@ -515,7 +516,7 @@ void test(Map config) {
   try {
     sh(label: 'Helm Test', script: "${cmd} ${config.name}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     // no longer relevant as of version 1.6.0, but still interesting code
     if (!(logs)) {
       print 'Release failed helm test. kubectl will now access the logs of the test pods and display them for debugging (unless using cleanup param).'
@@ -534,7 +535,7 @@ void test(Map config) {
       final String namespace = status['namespace']
       // iterate through results and store names of test pods
       List<String> testPods = []
-      status['info']['status']['last_test_suite_run']['results'].each() { result ->
+      status['info']['status']['last_test_suite_run']['results'].each { result ->
         testPods.push(result['name'])
       }
 
@@ -542,7 +543,7 @@ void test(Map config) {
       config.kubectl = config.kubectl ?: 'kubectl'
 
       // iterate through test pods, display the logs for each, and then delete the test pod
-      testPods.each() { testPod ->
+      testPods.each { testPod ->
         final String podLogs = sh(label: "List Pod Logs for ${testPod}", returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${testPod}")
         print "Logs for ${testPod} for release ${config.name} are:"
         print podLogs
@@ -582,7 +583,7 @@ void uninstall(Map config) {
   try {
     sh(label: 'Helm Uninstall', script: "${cmd} ${config.name}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm uninstall.'
     throw error
   }
@@ -605,7 +606,7 @@ void upgrade(Map config) {
   if (config.values) {
     assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
 
-    config.values.each() { value ->
+    config.values.each { value ->
       if (!(value ==~ /:\/\//)) {
         assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
@@ -616,7 +617,7 @@ void upgrade(Map config) {
   if (config.set) {
     assert (config.set instanceof Map) : 'The set parameter must be a Map.'
 
-    config.set.each() { var, value ->
+    config.set.each { var, value ->
       cmd += " --set ${var}=${value}"
     }
   }
@@ -624,7 +625,7 @@ void upgrade(Map config) {
     cmd += " --version ${config.version}"
   }
   else if (config.devel == true) {
-    cmd += " --devel"
+    cmd += ' --devel'
   }
   if (config.verify == true) {
     cmd += ' --verify'
@@ -664,7 +665,7 @@ void upgrade(Map config) {
   try {
     sh(label: 'Helm Upgrade', script: "${cmd} ${config.name} ${config.chart}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using helm upgrade.'
     throw error
   }
@@ -679,16 +680,15 @@ Boolean verify(String chartPath, String helmPath = 'helm') {
   final int returnCode = sh(label: 'Helm Verify', script: "${helmPath} verify ${chartPath}", returnStatus: true)
 
   // return by code
-  if returnCode == 0 {
+  if (returnCode == 0) {
     print "The chart at ${chartPath} successfully verified."
     return true
   }
-  else if returnCode == 1 {
+  else if (returnCode == 1) {
     print "The chart at ${chartPath} failed verification."
     return false
   }
-  else {
-    print 'Failure using helm verify'
-    throw new Exception("Helm verify failed unexpectedly")
-  }
+
+  print 'Failure using helm verify'
+  throw new Exception('Helm verify failed unexpectedly')
 }
