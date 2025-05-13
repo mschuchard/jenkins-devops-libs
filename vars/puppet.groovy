@@ -41,7 +41,7 @@ void codeDeploy(Map config) {
 
   // initialize vars
   boolean errored = false
-  def jsonResponse = [:]
+  Map jsonResponse = [:]
   Map response = [:]
   String token = ''
 
@@ -72,7 +72,7 @@ void codeDeploy(Map config) {
         url:                    "https://${server}:8170/code-manager/v1/deploys",
       )
     }
-    catch(Exception error) {
+    catch (Exception error) {
       print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse.status}."
       print error
       errored = true
@@ -81,7 +81,7 @@ void codeDeploy(Map config) {
     try {
       response = readJSON(text: jsonResponse.content)
     }
-    catch(Exception error) {
+    catch (Exception error) {
       print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
       print error
       errored = true
@@ -165,8 +165,12 @@ void task(Map config) {
   // convert map to json file
   payload = new utils().mapToJSON(payload)
 
-  // set token with logic from appropriate parameter
+  // initialize vars
+  Map jsonResponse = [:]
+  Map response = [:]
   String token = ''
+
+  // set token with logic from appropriate parameter
   if (config.credentialsId) {
     withCredentials([token(credentialsId: config.credentialsId, variable: 'theToken')]) {
       token = theToken
@@ -179,7 +183,7 @@ void task(Map config) {
 
   // trigger task orchestration
   try {
-    final def jsonResponse = httpRequest(
+    jsonResponse = httpRequest(
       acceptType:             'APPLICATION_JSON',
       consoleLogResponseBody: true,
       contentType:            'APPLICATION_JSON',
@@ -191,20 +195,20 @@ void task(Map config) {
       url:                    "https://${server}:8143/orchestrator/v1/command/task",
     )
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse.status}."
     throw error
   }
   // receive and parse response
   try {
-    final Map response = readJSON(text: json.content)
+    response = readJSON(text: json.content)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
     throw error
   }
   // handle errors in response
-  response.each() { hash ->
+  response.each { hash ->
     if (hash.containsKey('puppetlabs.orchestrator/unknown-environment')) {
       throw new Exception('The environment does not exist!')
     }
@@ -221,14 +225,14 @@ void task(Map config) {
       throw new Exception('The user does not have permission to run the task on the requested nodes!')
     }
     else {
-      print "Successful response from Orchestrator below:"
+      print 'Successful response from Orchestrator below:'
       print hash.toMapString()
     }
   }
   print 'Puppet Orchestrator Task execution successfully requested.'
 }
 
-void token (Map config) {
+void token(Map config) {
   // input checking
   assert config.username instanceof String : 'The username parameter is required.'
   assert config.password instanceof String : 'The password parameter is required.'
@@ -244,9 +248,14 @@ void token (Map config) {
   // convert map to json file
   payload = new utils().mapToJSON(payload)
 
+  // initialize vars
+  Map jsonResponse = [:]
+  Map response = [:]
+  String token = ''
+
   // trigger token generation
   try {
-    final def jsonResponse = httpRequest(
+    jsonResponse = httpRequest(
       acceptType:             'APPLICATION_JSON',
       consoleLogResponseBody: true,
       contentType:            'APPLICATION_JSON',
@@ -258,15 +267,15 @@ void token (Map config) {
       url:                    "https://${server}:4433/rbac-api/v1/auth/token",
     )
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print "Failure executing REST API request against ${server} with username ${config.username}. Returned status: ${jsonResponse.status}."
     throw error
   }
   // receive and parse response
   try {
-    final Map response = readJSON(text: jsonResponse.content)
+    response = readJSON(text: jsonResponse.content)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
     throw error
   }
