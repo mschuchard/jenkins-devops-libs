@@ -22,7 +22,7 @@ void build(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each() { var, value ->
+    config.var.each { var, value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
@@ -42,10 +42,10 @@ void build(Map config) {
     cmd += " -only=${config.only.join(',')}"
   }
   if (config.force == true) {
-    cmd += " -force"
+    cmd += ' -force'
   }
   if (config.onError) {
-    assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.onError)) : "The argument must be one of: default, abort, ask, or run-cleanup-provisioner."
+    assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.onError)) : 'The argument must be one of: default, abort, ask, or run-cleanup-provisioner.'
 
     cmd += " -on-error=${config.onError}"
   }
@@ -61,7 +61,7 @@ void build(Map config) {
       }
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using packer build.'
     throw error
   }
@@ -94,13 +94,14 @@ Boolean fmt(Map config) {
     cmd += ' -recursive'
   }
 
+  int fmtStatus
   try {
     if (config.template ==~ /\.pkr\./) {
-      final int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
+      fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
     }
     else {
       dir(config.template) {
-        final int fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} .")
+        fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} .")
       }
     }
 
@@ -110,7 +111,7 @@ Boolean fmt(Map config) {
       return false
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using packer fmt.'
     throw error
   }
@@ -137,7 +138,7 @@ void init(Map config) {
       sh(label: 'Packer Init', script: "${cmd} .")
     }
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using packer init.'
     throw error
   }
@@ -152,7 +153,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
   try {
     sh(label: 'Packer Inspect', script: "${bin} inspect ${template}")
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure inspecting the template.'
     throw error
   }
@@ -237,7 +238,7 @@ void pluginsInstall(Map config) {
   try {
     sh(label: 'Packer Plugins Install', script: cmd)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using packer plugins install.'
     throw error
   }
@@ -259,7 +260,7 @@ void pluginsRemove(Map config) {
   try {
     sh(label: 'Packer Plugins Remove', script: cmd)
   }
-  catch(Exception error) {
+  catch (Exception error) {
     print 'Failure using packer plugins remove.'
     throw error
   }
@@ -292,13 +293,13 @@ void plugins(Map config) {
     else {
       sh(label: 'Packer Plugins', script: cmd)
     }
-  }
-  catch(Exception error) {
+    }
+  catch (Exception error) {
     print 'Failure using packer plugins.'
     throw error
   }
   print 'Packer plugins executed successfully.'
-}
+  }
 
 Boolean validate(Map config) {
   // input checking
@@ -320,7 +321,7 @@ Boolean validate(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each() { var, value ->
+    config.var.each { var, value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
@@ -361,16 +362,14 @@ Boolean validate(Map config) {
   }
 
   // return by code
-  if returnCode == 0 {
+  if (returnCode == 0) {
     print 'The configs and templates successfully validated.'
     return true
   }
-  else if returnCode == 1 {
+  else if (returnCode == 1) {
     print 'The configs and templates failed validation.'
     return false
   }
-  else {
-    print 'Failure using packer validate.'
-    throw new Exception("Packer validate failed unexpectedly")
-  }
+  print 'Failure using packer validate.'
+  throw new Exception('Packer validate failed unexpectedly')
 }
