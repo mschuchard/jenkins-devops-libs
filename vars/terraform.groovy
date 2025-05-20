@@ -24,7 +24,7 @@ void apply(Map config) {
     if (config.var) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-      config.var.each() { var, value ->
+      config.var.each { var, value ->
         // convert value to json if not string type
         if (value instanceof List || value instanceof Map) {
           value = writeJSON(json: value, returnText: true)
@@ -36,7 +36,7 @@ void apply(Map config) {
     if (config.target) {
       assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
-      config.target.each() { target ->
+      config.target.each { target ->
         cmd += " -target=${target}"
       }
     }
@@ -82,7 +82,7 @@ void destroy(Map config) {
     if (config.var) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-      config.var.each() { var, value ->
+      config.var.each { var, value ->
         // convert value to json if not string type
         if (value instanceof List || value instanceof Map) {
           value = writeJSON(json: value, returnText: true)
@@ -94,7 +94,7 @@ void destroy(Map config) {
     if (config.target) {
       assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
-      config.target.each() { target ->
+      config.target.each { target ->
         cmd += " -target=${target}"
       }
     }
@@ -151,9 +151,11 @@ Boolean fmt(Map config) {
     cmd += ' -write'
   }
 
+  // canonically format the code
+  int fmtStatus
   try {
     dir(config.configDir) {
-      final int fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
+      fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
     }
 
     // report if formatting check detected issues
@@ -203,8 +205,9 @@ void graph(Map config) {
     cmd += ' -draw-cycles'
   }
 
+  String dotGraph
   try {
-    final String dotGraph = sh(label: 'Terraform Graph', script: cmd)
+    dotGraph = sh(label: 'Terraform Graph', script: cmd)
   }
   catch (Exception error) {
     print 'Failure using terraform graph.'
@@ -235,7 +238,7 @@ void imports(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each() { var, value ->
+    config.var.each { var, value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
@@ -261,7 +264,7 @@ void imports(Map config) {
   // import the resources
   try {
     // import each resource
-    config.resources.each() { name, id ->
+    config.resources.each { name, id ->
       sh(label: "Terraform Import ${name}", script: "${cmd} '${name}' ${id}")
     }
   }
@@ -308,7 +311,7 @@ void init(Map config) {
   if (config.backendConfig) {
     assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
 
-    config.backendConfig.each() { backconf ->
+    config.backendConfig.each { backconf ->
       assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
 
       cmd += " -backend-config=${backconf}"
@@ -317,7 +320,7 @@ void init(Map config) {
   if (config.backendKV) {
     assert (config.backendKV instanceof Map) : 'Parameter backendKV must be a map of strings.'
 
-    config.backendKV.each() { key, value ->
+    config.backendKV.each { key, value ->
       cmd += " -backend-config='${key}=${value}'"
     }
   }
@@ -398,10 +401,11 @@ String output(Map config) {
   }
 
   // display outputs from the state
+  String outputs
   try {
     // capture output(s)
     dir(config.dir) {
-      final String outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
+      outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
     }
   }
   catch (Exception error) {
@@ -448,7 +452,7 @@ String plan(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each() { var, value ->
+    config.var.each { var, value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
@@ -460,14 +464,14 @@ String plan(Map config) {
   if (config.target) {
     assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
-    config.target.each() { target ->
+    config.target.each { target ->
       cmd += " -target=${target}"
     }
   }
   if (config.replace) {
     assert (config.replace instanceof List) : 'The replace parameter must be a list of strings.'
 
-    config.replace.each() { resource ->
+    config.replace.each { resource ->
       cmd += " -replace=${resource}"
     }
   }
@@ -488,10 +492,11 @@ String plan(Map config) {
   final String out = config.out ?: "${config.dir}/plan.tfplan"
 
   // generate a plan from the config directory
+  String planOutput
   try {
     // execute plan
     dir(config.dir) {
-      final String planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: true)
+      planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: true)
       print "Plan output artifact written to: ${out}"
     }
   }
@@ -591,7 +596,7 @@ void refresh(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each() { var, value ->
+    config.var.each { var, value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
@@ -603,7 +608,7 @@ void refresh(Map config) {
   if (config.target) {
     assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
-    config.target.each() { target ->
+    config.target.each { target ->
       cmd += " -target=${target}"
     }
   }
@@ -655,7 +660,7 @@ void state(Map config) {
         assert (config.resources instanceof Map) : 'Parameter resources must be a Map of strings for move command.'
 
         dir(config.dir) {
-          config.resources.each() { from, to ->
+          config.resources.each { from, to ->
             sh(label: "Terraform State Move ${from} to ${to}", script: "${cmd} mv ${from} ${to}")
           }
         }
@@ -665,7 +670,7 @@ void state(Map config) {
         assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for remove command.'
 
         dir(config.dir) {
-          config.resources.each() { resource ->
+          config.resources.each { resource ->
             sh(label: "Terraform State Remove ${resource}", script: "${cmd} rm ${resource}")
           }
         }
@@ -682,8 +687,9 @@ void state(Map config) {
       case 'list':
         assert !config.resources : 'Resources parameter is not allowed for push command.'
 
+        String stateList
         dir(config.dir) {
-          final String stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
+          stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
         }
 
         print 'Terraform state output is as follows:'
@@ -694,7 +700,7 @@ void state(Map config) {
         assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for show command.'
 
         dir(config.dir) {
-          config.resources.each() { resource ->
+          config.resources.each { resource ->
             String stateShow = sh(label: "Terraform State Show ${resource}", script: "${cmd} show ${resource}", returnStdout: true)
 
             print 'Terraform state output is as follows:'
@@ -822,9 +828,10 @@ String test(Map config) {
   }
 
   // execute tests
+  String testOutput
   try {
     dir(config.dir) {
-      final String testOutput = sh(label: 'Terraform Test', script: cmd, returnStdout: true)
+      testOutput = sh(label: 'Terraform Test', script: cmd, returnStdout: true)
     }
   }
   catch (Exception error) {
@@ -865,9 +872,10 @@ String validate(Map config) {
   }
 
   // validate the config directory
+  String validateOutput
   try {
     dir(config.dir) {
-      final String validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: true)
+      validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: true)
     }
   }
   catch (Exception error) {
