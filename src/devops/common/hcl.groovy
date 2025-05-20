@@ -13,7 +13,7 @@ Map hclToMap(String filePath) {
   // load the file from the jenkins master
   if (env['NODE_NAME'].equals('master')) {
     // verify file exists
-    if !(File(filePath).exists()) {
+    if (!(File(filePath).exists())) {
       print "File does not exist at ${filePath}"
       throw new FileNotFoundException("HCL file does not exist")
     }
@@ -23,7 +23,7 @@ Map hclToMap(String filePath) {
   // load the file from the build agent/node
   else {
     // verify file exists
-    if !(FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dir).exists()) {
+    if (!(FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dir).exists())) {
       print "File does not exist at ${filePath}"
       throw new FileNotFoundException("HCL file does not exist")
     }

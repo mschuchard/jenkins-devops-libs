@@ -1,4 +1,7 @@
 ### 2.2.0 (Next)
+**General**
+- Miscellanous improvements and fixes from code linting.
+
 **FaaS**
 - Return `Boolean` for `validateTemplate`.
 - Add `list` and `logs` methods.

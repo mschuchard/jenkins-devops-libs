@@ -1,0 +1,11 @@
+{
+    "extends": "recommended",
+    "rules": {
+        "formatting.Indentation": {
+            "spacesPerIndentLevel": 2
+        },
+        "formatting.LineLength": {
+            "length": 240
+        }
+    }
+}

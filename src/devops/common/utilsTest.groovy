@@ -1,16 +1,17 @@
 // src/devops/common/utilsTest.groovy
-package devops.common;
+package devops.common
 
 import org.junit.Test
 
 class utilsTest {
+
   @Test
   void testDefaultInput() {
-    final override = new utils().defaultInput('foo', 'bar')
+    final String override = new utils().defaultInput('foo', 'bar')
 
     assert override == 'foo'
 
-    final backup = new utils().defaultInput(null, 'bar')
+    final String backup = new utils().defaultInput(null, 'bar')
 
     assert backup == 'bar'
   }
@@ -21,4 +22,5 @@ class utilsTest {
 
     assert json
   }
+
 }

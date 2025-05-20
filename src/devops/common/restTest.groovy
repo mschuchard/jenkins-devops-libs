@@ -1,10 +1,11 @@
 // src/devops/common/restTest.groovy
-package devops.common;
+package devops.common
 
-import org.junit.Test
 import static groovy.test.GroovyAssert.shouldFail
+import org.junit.Test
 
 class restTest extends GroovyTestCase {
+
   @Test
   void testGet() {
     final Map response = new rest().request('https://www.google.com')
@@ -34,4 +35,5 @@ class restTest extends GroovyTestCase {
 
     assert exception.message == "Invalid REST API interaction method 'error' specified."
   }
+
 }
