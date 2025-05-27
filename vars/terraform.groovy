@@ -41,6 +41,9 @@ void apply(Map config) {
       }
     }
   }
+  if (config.compactWarn == true) {
+    cmd += ' -compact-warnings'
+  }
 
   // apply the config
   try {

@@ -22,6 +22,7 @@
 **Terraform**
 - Always return value for `plan`, `test`, and `validate` methods.
 - Return `Boolean` for `fmt`.
+- Add `compactWarn` parameter to `apply` method.
 
 ### 2.1.3
 **AWX**
