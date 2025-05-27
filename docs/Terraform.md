@@ -21,15 +21,16 @@ terraform.apply(
 ```
 
 ### terraform.destroy()
-Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: configDir)` with `destroy: true` was invoked before this, then the resultant plan file is in `${configDir}/plan.tfplan` by default. If a plan file is specified as the `configPath` parameter value, then the vars and target parameters will be ignored.
+Uses Terraform to destroy an applied config. Note that if `terraform.plan(path: configDir)` with `destroy: true` was invoked before this, then the resultant plan file is in `${configDir}/plan.tfplan` by default. If a plan file is specified as the `configPath` parameter value, then the `vars` and `target` parameters will be ignored.
 
 ```groovy
 terraform.destroy(
-  bin:        '/usr/bin/terraform', // optional path to terraform executable
-  configPath: '/path/to/config_dir', // path to config dir or plan file
-  target:     ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:        ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile:    '/path/to/variables.tf' // optional location of variables file
+  bin:         '/usr/bin/terraform', // optional path to terraform executable
+  compactWarn: false, // optional warnings as compact summary messages
+  configPath:  '/path/to/config_dir_or_plan_file', // path to config dir or plan file
+  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:     '/path/to/variables.tf' // optional location of variables file
 )
 ```
 

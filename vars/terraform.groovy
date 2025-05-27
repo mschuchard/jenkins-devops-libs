@@ -2,12 +2,12 @@
 import devops.common.utils
 import devops.common.hcl
 
-void apply(Map config) {
+private void execute(Map config) {
   // set terraform env for automation
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.configPath instanceof String : '"configPath" is a required parameter for terraform.apply.'
+  assert config.configPath instanceof String : "'configPath' is a required parameter for terraform.${config.action}."
   assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
@@ -44,6 +44,9 @@ void apply(Map config) {
   if (config.compactWarn == true) {
     cmd += ' -compact-warnings'
   }
+  if (config.action == 'destroy') {
+    cmd += ' -destroy'
+  }
 
   // apply the config
   try {
@@ -57,68 +60,22 @@ void apply(Map config) {
     }
   }
   catch (Exception error) {
-    print 'Failure using terraform apply.'
+    print "Failure using terraform ${config.action}."
     throw error
   }
-  print 'Terraform apply was successful.'
+  print "Terraform ${config.action} was successful."
+}
+
+void apply(Map config) {
+  // invoke helper method with apply
+  config.action = 'apply'
+  execute(config)
 }
 
 void destroy(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
-  // input checking
-  config.bin = config.bin ?: 'terraform'
-  assert config.configPath instanceof String : '"configPath" is a required parameter for terraform.destroy.'
-  assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
-
-  String cmd = "${config.bin} destroy -input=false -no-color -auto-approve"
-
-  // check if a directory was passed for the config path
-  if (!(config.configPath ==~ /\.tfplan$/)) {
-    // check for optional var inputs
-    if (config.varFile) {
-      assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
-
-      cmd += " -var-file=${config.varFile}"
-    }
-    if (config.var) {
-      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
-
-      config.var.each { var, value ->
-        // convert value to json if not string type
-        if (value instanceof List || value instanceof Map) {
-          value = writeJSON(json: value, returnText: true)
-        }
-
-        cmd += " -var ${var}=${value}"
-      }
-    }
-    if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
-
-      config.target.each { target ->
-        cmd += " -target=${target}"
-      }
-    }
-  }
-
-  // destroy the state
-  try {
-    if (config.configPath ==~ /\.tfplan$/) {
-      sh(label: 'Terraform Destroy', script: "${cmd} ${config.configPath}")
-    }
-    else {
-      dir(config.configPath) {
-        sh(label: 'Terraform Destroy', script: cmd)
-      }
-    }
-  }
-  catch (Exception error) {
-    print 'Failure using terraform destroy.'
-    throw error
-  }
-  print 'Terraform destroy was successful.'
+  // invoke helper method with destroy
+  config.action = 'destroy'
+  execute(config)
 }
 
 Boolean fmt(Map config) {
