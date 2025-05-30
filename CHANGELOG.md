@@ -19,6 +19,9 @@
 - Improve `validate` and return `Boolean`.
 - Return `Boolean` for `fmt`.
 
+**Puppet**
+- Add `port` parameter to all methods.
+
 **Terraform**
 - Always return value for `plan`, `test`, and `validate` methods.
 - Return `Boolean` for `fmt`.

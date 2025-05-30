@@ -15,7 +15,8 @@ Deploys code and data with the Puppet Enterprise Code Manager. If wait is set to
 puppet.codeDeploy(
   credentialsId: 'pe_token', // token bindings credentials id for rbac token; mutually exclusive with token
   environments:  ['development', 'production'], // optional environments to deploy (default is to deploy all environments)
-  servers:       ['puppet'], // optional server hosting code manager
+  port:          8170, // optional code manager api endpoint port
+  servers:       ['puppet'], // optional servers hosting code manager
   tokenFile:     '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code manager; mutually exclusive with credentialsId
   wait:          false // optional wait for code manager to finish deployment
 )
@@ -31,6 +32,7 @@ puppet.task(
   environment:   'production', // optional environment to execute the task on (default is production)
   noop:          true, // optional execute task in noop (default is false)
   params:        ['action':'install', 'name':'httpd'], // optional input parameters (default is empty)
+  port:          8170, // optional orchestrator api endpoint port
   scope:         ['node1.example.com', 'node2.example.com'], // scope for deployment (if string, will be passed as `node_group` or `application`; if array of strings, will be passed as `nodes` or `query`; internal logic attempts to correctly determine which)
   server:        'puppet', // optional server hosting puppet orchestrator
   task:          'package', // name of the task to execute
@@ -45,6 +47,7 @@ Generates a RBAC token for use with Puppet Enterprise endpoints, and saves it as
 puppet.token(
   password: 'password', // password for the rbac token
   path:     '$HOME/.puppetlabs', // optional path to save rbac token to
+  port:     4433, // optional puppet server api endpoint port
   secure:   true, // optional verify ssl connection
   server:   'puppet', // optional server hosting puppet server
   username: 'username' // username for the rbac token

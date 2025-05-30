@@ -18,6 +18,8 @@ void codeDeploy(Map config) {
     config.servers = ['puppet']
   }
 
+  config.port = config.port ?: 8170
+
   // init payload
   Map<String,String> payload = [:]
 
@@ -57,7 +59,7 @@ void codeDeploy(Map config) {
   }
 
   // iterate through servers
-  config.servers.each() { server ->
+  config.servers.each { server ->
     // trigger code manager deployment
     try {
       jsonResponse = httpRequest(
@@ -69,7 +71,7 @@ void codeDeploy(Map config) {
         ignoreSslErrors:        true,
         quiet:                  true,
         requestBody:            payload,
-        url:                    "https://${server}:8170/code-manager/v1/deploys",
+        url:                    "https://${server}:${config.port}/code-manager/v1/deploys",
       )
     }
     catch (Exception error) {
@@ -120,6 +122,7 @@ void task(Map config) {
   assert config.scope : 'The required scope parameter was not set.'
 
   config.server = config.server ?: 'puppet'
+  config.port = config.port ?: 8143
 
   // initialize payload
   Map<String,String> payload = [:]
@@ -192,7 +195,7 @@ void task(Map config) {
       ignoreSslErrors:        true,
       quiet:                  true,
       requestBody:            payload,
-      url:                    "https://${server}:8143/orchestrator/v1/command/task",
+      url:                    "https://${server}:${config.port}/orchestrator/v1/command/task",
     )
   }
   catch (Exception error) {
@@ -238,6 +241,7 @@ void token(Map config) {
   assert config.password instanceof String : 'The password parameter is required.'
 
   config.server = config.server ?: 'puppet'
+  config.port = config.port ?: 4433
   config.path = config.path ?: "${env.JENKINS_HOME}/.puppetlabs"
 
   //construct payload
@@ -264,7 +268,7 @@ void token(Map config) {
       ignoreSslErrors:        !config.secure,
       quiet:                  true,
       requestBody:            payload,
-      url:                    "https://${server}:4433/rbac-api/v1/auth/token",
+      url:                    "https://${server}:${config.port}/rbac-api/v1/auth/token",
     )
   }
   catch (Exception error) {
