@@ -21,6 +21,7 @@
 
 **Puppet**
 - Add `port` parameter to all methods.
+- Remove mandatory `https://` URI from API endpoint URLs.
 
 **Terraform**
 - Always return value for `plan`, `test`, and `validate` methods.

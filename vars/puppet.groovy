@@ -71,7 +71,7 @@ void codeDeploy(Map config) {
         ignoreSslErrors:        true,
         quiet:                  true,
         requestBody:            payload,
-        url:                    "https://${server}:${config.port}/code-manager/v1/deploys",
+        url:                    "${server}:${config.port}/code-manager/v1/deploys",
       )
     }
     catch (Exception error) {
@@ -195,7 +195,7 @@ void task(Map config) {
       ignoreSslErrors:        true,
       quiet:                  true,
       requestBody:            payload,
-      url:                    "https://${server}:${config.port}/orchestrator/v1/command/task",
+      url:                    "${server}:${config.port}/orchestrator/v1/command/task",
     )
   }
   catch (Exception error) {
@@ -268,7 +268,7 @@ void token(Map config) {
       ignoreSslErrors:        !config.secure,
       quiet:                  true,
       requestBody:            payload,
-      url:                    "https://${server}:${config.port}/rbac-api/v1/auth/token",
+      url:                    "${server}:${config.port}/rbac-api/v1/auth/token",
     )
   }
   catch (Exception error) {
