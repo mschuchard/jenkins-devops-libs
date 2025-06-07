@@ -1,4 +1,4 @@
-### 2.2.0 (Next)
+### 2.2.0
 **General**
 - Miscellanous improvements and fixes from code linting.
 
