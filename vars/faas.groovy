@@ -58,18 +58,12 @@ void deploy(Map config) {
   if (config.filter) {
     cmd += " --filter '${config.filter}'"
   }
-  if (config.gateway) {
-    cmd += " -g ${config.gateway}"
-  }
   if (config.label) {
     assert (config.label instanceof Map) : 'The label parameter must be a Map.'
 
     config.label.each { String label, String value ->
       cmd += " --label ${label}=${value}"
     }
-  }
-  if (config.namespace) {
-    cmd += " -n ${config.namespace}"
   }
   if (config.regex) {
     cmd += " --regex '${config.regex}'"
@@ -80,12 +74,10 @@ void deploy(Map config) {
   if (config.secret) {
     cmd += " --secret ${config.secret}"
   }
-  if (config.tls == false) {
-    cmd += ' --tls-no-verify'
-  }
   if (config.update == true) {
     cmd += ' --update=true'
   }
+  cmd += globalArgsCmd(config)
 
   // deploy function with faas
   try {
@@ -143,9 +135,6 @@ void invoke(Map config) {
   if (config.contentType) {
     cmd += " --content-type ${config.contentType}"
   }
-  if (config.gateway) {
-    cmd += " -g ${config.gateway}"
-  }
   if (config.header) {
     assert (config.header instanceof Map) : 'The header parameter must be a Map.'
 
@@ -156,9 +145,6 @@ void invoke(Map config) {
   if (config.method) {
     cmd += " -m ${config.method}"
   }
-  if (config.namespace) {
-    cmd += " -n ${config.namespace}"
-  }
   if (config.query) {
     assert (config.query instanceof Map) : 'The query parameter must be a Map.'
 
@@ -166,12 +152,10 @@ void invoke(Map config) {
       cmd += " --query ${query}=${value}"
     }
   }
-  if (config.tls == false) {
-    cmd += ' --tls-no-verify'
-  }
   if (config.stdin) {
     cmd += " < ${config.stdin}"
   }
+  cmd += globalArgsCmd(config)
 
   // invoke faas function
   try {
@@ -194,12 +178,6 @@ String list(Map config) {
   String cmd = "${config.bin} list"
 
   // optional inputs
-  if (config.gateway) {
-    cmd += " -g ${config.gateway}"
-  }
-  if (config.namespace) {
-    cmd += " -n ${config.namespace}"
-  }
   if (config.quiet) {
     cmd += ' -q'
   }
@@ -211,9 +189,7 @@ String list(Map config) {
 
     cmd += " --sort ${config.sort}"
   }
-  if (config.tls == false) {
-    cmd += ' --tls-no-verify'
-  }
+  cmd += globalArgsCmd(config)
 
   // list faas functions
   String functions
@@ -237,15 +213,10 @@ void login(Map config) {
   String cmd = "${config.bin} login"
 
   // check for optional inputs
-  if (config.gateway) {
-    cmd += " -g ${config.gateway}"
-  }
-  if (config.tls == false) {
-    cmd += ' --tls-no-verify'
-  }
   if (config.user) {
     cmd += " -u ${config.user}"
   }
+  cmd += globalArgsCmd(config)
 
   // login to faas gateway
   try {
@@ -266,14 +237,8 @@ String logs(Map config) {
   String cmd = "${config.bin} logs"
 
   // optional inputs
-  if (config.gateway) {
-    cmd += " -g ${config.gateway}"
-  }
   if (config.instance) {
     cmd += '--instance'
-  }
-  if (config.namespace) {
-    cmd += " -n ${config.namespace}"
   }
   if (config.format) {
     assert ['plain', 'keyvalue', 'json'].contains(config.format)
@@ -283,9 +248,7 @@ String logs(Map config) {
   if (config.since) {
     cmd += "--since ${config.since}"
   }
-  if (config.tls == false) {
-    cmd += ' --tls-no-verify'
-  }
+  cmd += globalArgsCmd(config)
 
   // retrieve function logs
   String logs
@@ -346,18 +309,10 @@ void remove(Map config) {
   if (config.filter) {
     cmd += " --filter '${config.filter}'"
   }
-  if (config.gateway) {
-    cmd += " -g ${config.gateway}"
-  }
-  if (config.namespace) {
-    cmd += " -n ${config.namespace}"
-  }
   if (config.regex) {
     cmd += " --regex '${config.regex}'"
   }
-  if (config.tls == false) {
-    cmd += ' --tls-no-verify'
-  }
+  cmd += globalArgsCmd(config)
 
   // remove function with faas
   try {
@@ -385,4 +340,24 @@ Boolean validateTemplate(String template) {
 
   print "${template} is valid YAML."
   return true
+}
+
+// private method for global arguments
+private String globalArgsCmd(Map config) {
+  // initialize subcommand from global args
+  String subCmd = ''
+
+  // check for optional inputs
+  if (config.gateway) {
+    subCmd += " -g ${config.gateway}"
+  }
+  if (config.namespace) {
+    subCmd += " -n ${config.namespace}"
+  }
+  if (config.tls == false) {
+    subCmd += ' --tls-no-verify'
+  }
+
+  // return subcommand based from global arguments
+  return subCmd
 }
