@@ -201,7 +201,7 @@ void validateDocker(Map config) {
     if (config.flags) {
       assert (config.flags instanceof Map) : 'The flags parameter must be a Map.'
 
-      config.flags.each { flag, value ->
+      config.flags.each { String flag, String value ->
         cmd += " -e ${flag}=${value}"
       }
     }

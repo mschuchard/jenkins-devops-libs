@@ -24,7 +24,7 @@ private void execute(Map config) {
     if (config.var) {
       assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-      config.var.each { var, value ->
+      config.var.each { String var, String value ->
         // convert value to json if not string type
         if (value instanceof List || value instanceof Map) {
           value = writeJSON(json: value, returnText: true)
@@ -36,7 +36,7 @@ private void execute(Map config) {
     if (config.target) {
       assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
-      config.target.each { target ->
+      config.target.each { String target ->
         cmd += " -target=${target}"
       }
     }
@@ -198,7 +198,7 @@ void imports(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each { var, value ->
+    config.var.each { String var, String value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
@@ -224,7 +224,7 @@ void imports(Map config) {
   // import the resources
   try {
     // import each resource
-    config.resources.each { name, id ->
+    config.resources.each { String name, String id ->
       sh(label: "Terraform Import ${name}", script: "${cmd} '${name}' ${id}")
     }
   }
@@ -271,7 +271,7 @@ void init(Map config) {
   if (config.backendConfig) {
     assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
 
-    config.backendConfig.each { backconf ->
+    config.backendConfig.each { String backconf ->
       assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
 
       cmd += " -backend-config=${backconf}"
@@ -280,7 +280,7 @@ void init(Map config) {
   if (config.backendKV) {
     assert (config.backendKV instanceof Map) : 'Parameter backendKV must be a map of strings.'
 
-    config.backendKV.each { key, value ->
+    config.backendKV.each { String key, String value ->
       cmd += " -backend-config='${key}=${value}'"
     }
   }
@@ -412,7 +412,7 @@ String plan(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each { var, value ->
+    config.var.each { String var, String value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
@@ -424,14 +424,14 @@ String plan(Map config) {
   if (config.target) {
     assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
-    config.target.each { target ->
+    config.target.each { String target ->
       cmd += " -target=${target}"
     }
   }
   if (config.replace) {
     assert (config.replace instanceof List) : 'The replace parameter must be a list of strings.'
 
-    config.replace.each { resource ->
+    config.replace.each { String resource ->
       cmd += " -replace=${resource}"
     }
   }
@@ -556,7 +556,7 @@ void refresh(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each { var, value ->
+    config.var.each { String var, String value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)
@@ -568,7 +568,7 @@ void refresh(Map config) {
   if (config.target) {
     assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
 
-    config.target.each { target ->
+    config.target.each { String target ->
       cmd += " -target=${target}"
     }
   }
@@ -620,7 +620,7 @@ void state(Map config) {
         assert (config.resources instanceof Map) : 'Parameter resources must be a Map of strings for move command.'
 
         dir(config.dir) {
-          config.resources.each { from, to ->
+          config.resources.each { String from, String to ->
             sh(label: "Terraform State Move ${from} to ${to}", script: "${cmd} mv ${from} ${to}")
           }
         }
@@ -630,7 +630,7 @@ void state(Map config) {
         assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for remove command.'
 
         dir(config.dir) {
-          config.resources.each { resource ->
+          config.resources.each { String resource ->
             sh(label: "Terraform State Remove ${resource}", script: "${cmd} rm ${resource}")
           }
         }
@@ -660,7 +660,7 @@ void state(Map config) {
         assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for show command.'
 
         dir(config.dir) {
-          config.resources.each { resource ->
+          config.resources.each { String resource ->
             String stateShow = sh(label: "Terraform State Show ${resource}", script: "${cmd} show ${resource}", returnStdout: true)
 
             print 'Terraform state output is as follows:'
@@ -720,7 +720,7 @@ void taint(Map config) {
   try {
     // taint each resource
     dir(config.dir) {
-      config.resources.each() { resource ->
+      config.resources.each { String resource ->
         sh(label: "Terraform Taint ${resource}", script: "${cmd} ${resource}")
       }
     }
@@ -754,7 +754,7 @@ String test(Map config) {
   if (config.filter) {
     assert (config.filter instanceof List) : 'The filter parameter must be a list of strings.'
 
-    config.filter.each() { filter ->
+    config.filter.each { String filter ->
       cmd += " -filter=${filter}"
     }
   }
@@ -774,7 +774,7 @@ String test(Map config) {
   if (config.var) {
     assert (config.var instanceof Map) : 'The var parameter must be a Map.'
 
-    config.var.each() { var, value ->
+    config.var.each { String var, String value ->
       // convert value to json if not string type
       if (value instanceof List || value instanceof Map) {
         value = writeJSON(json: value, returnText: true)

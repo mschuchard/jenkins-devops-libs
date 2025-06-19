@@ -56,7 +56,7 @@ void install(Map config) {
   if (config.values) {
     assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
 
-    config.values.each() { value ->
+    config.values.each() { String value ->
       if (!(value ==~ /:\/\//)) {
         assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
@@ -67,7 +67,7 @@ void install(Map config) {
   if (config.set) {
     assert (config.set instanceof Map) : 'The set parameter must be a Map.'
 
-    config.set.each() { var, value ->
+    config.set.each() { String var, String value ->
       cmd += " --set ${var}=${value}"
     }
   }
@@ -149,7 +149,7 @@ Boolean lint(Map config) {
   if (config.values) {
     assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
 
-    config.values.each() { value ->
+    config.values.each { String value ->
       if (!(value ==~ /:\/\//)) {
         assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
@@ -160,7 +160,7 @@ Boolean lint(Map config) {
   if (config.set) {
     assert (config.set instanceof Map) : 'The set parameter must be a Map.'
 
-    config.set.each() { var, value ->
+    config.set.each { String var, String value ->
       cmd += " --set ${var}=${value}"
     }
   }
@@ -543,7 +543,7 @@ void test(Map config) {
       config.kubectl = config.kubectl ?: 'kubectl'
 
       // iterate through test pods, display the logs for each, and then delete the test pod
-      testPods.each { testPod ->
+      testPods.each { String testPod ->
         final String podLogs = sh(label: "List Pod Logs for ${testPod}", returnStdout: true, script: "${config.kubectl} -n ${namespace} logs ${testPod}")
         print "Logs for ${testPod} for release ${config.name} are:"
         print podLogs
@@ -606,7 +606,7 @@ void upgrade(Map config) {
   if (config.values) {
     assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
 
-    config.values.each { value ->
+    config.values.each { String value ->
       if (!(value ==~ /:\/\//)) {
         assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
@@ -617,7 +617,7 @@ void upgrade(Map config) {
   if (config.set) {
     assert (config.set instanceof Map) : 'The set parameter must be a Map.'
 
-    config.set.each { var, value ->
+    config.set.each { String var, String value ->
       cmd += " --set ${var}=${value}"
     }
   }

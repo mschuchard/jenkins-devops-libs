@@ -59,7 +59,7 @@ void codeDeploy(Map config) {
   }
 
   // iterate through servers
-  config.servers.each { server ->
+  config.servers.each { String server ->
     // trigger code manager deployment
     try {
       jsonResponse = httpRequest(
@@ -90,7 +90,7 @@ void codeDeploy(Map config) {
     }
     // check for errors if waited
     if (config.wait == true) {
-      response.each() { hash ->
+      response.each { Map hash ->
         if (hash.containsKey('error')) {
           print "Response from Code Manager for environment ${hash['environment']} was an error of kind ${hash['error']['kind']}."
           print hash['error']['msg']
@@ -211,7 +211,7 @@ void task(Map config) {
     throw error
   }
   // handle errors in response
-  response.each { hash ->
+  response.each { Map hash ->
     if (hash.containsKey('puppetlabs.orchestrator/unknown-environment')) {
       throw new Exception('The environment does not exist!')
     }

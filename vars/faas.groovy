@@ -64,7 +64,7 @@ void deploy(Map config) {
   if (config.label) {
     assert (config.label instanceof Map) : 'The label parameter must be a Map.'
 
-    config.label.each { label, value ->
+    config.label.each { String label, String value ->
       cmd += " --label ${label}=${value}"
     }
   }
@@ -149,7 +149,7 @@ void invoke(Map config) {
   if (config.header) {
     assert (config.header instanceof Map) : 'The header parameter must be a Map.'
 
-    config.header.each { header, value ->
+    config.header.each { String header, String value ->
       cmd += " -H ${header}=${value}"
     }
   }
@@ -162,7 +162,7 @@ void invoke(Map config) {
   if (config.query) {
     assert (config.query instanceof Map) : 'The query parameter must be a Map.'
 
-    config.query.each { query, value ->
+    config.query.each { String query, String value ->
       cmd += " --query ${query}=${value}"
     }
   }
