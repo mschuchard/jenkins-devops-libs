@@ -13,11 +13,11 @@ Builds OpenFaaS function containers.
 ```groovy
 faas.build(
   bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
-  filter:   'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
+  filter:   'filter_string', // optional wildcard to match with function names in yaml file
   noCache:  false, // optional do not use docker's build cache
   parallel: '1', // optional build in parallel to depth specified
   pull:     false, // optional force re-pull of base images
-  regex:    'regexp_string', // optional regex to match with function names in yaml file (default is unused)
+  regex:     'regexp_string', // optional regex to match with function names in yaml file
   squash:   false, // optional use docker's squash flag for smaller images
   tag:      'latest', // optional tag override for function image
   template: 'samples.yaml' // path to yaml file describing function(s)
@@ -30,12 +30,13 @@ Deploys OpenFaaS function containers.
 ```groovy
 faas.deploy(
   bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
-  filter:    'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
+  filter:   'filter_string', // optional wildcard to match with function names in yaml file
   gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
   label:     ['canary':'true', 'dev':'false'], // optional labels to set
   namespace: 'default', // optional namespace of the function
   regex:     'regexp_string', // optional regex to match with function names in yaml file (default is unused)
   replace:   true, // optional replace any existing function (mutually exclusive with update)
+  regex:     'regexp_string', // optional regex to match with function names in yaml file
   secret:    'dockerhuborg', // optional secure secret to give function access to
   template:  'samples.yaml', // path to yaml file describing function(s)
   tls:       true // optional TLS validation
@@ -51,12 +52,14 @@ faas.invoke(
   async:       false, // optional invoke the function asynchronously
   bin:         '/usr/bin/faas-cli', // optional executable path for faas-cli
   contentType: 'text/plain', // optional content-type HTTP header
+  filter:      'filter_string', // optional wildcard to match with function names in yaml file
   function:    'echo', // name of the deployed function
   gateway:     'http://127.0.0.1:8080', // optional gateway url with protocol
   header:      ['X-Callback-Url':'http://gateway:8080/function/send2slack', 'X-Ping-Url':'http://request.bin/etc'], // optional HTTP request headers
   method:      'POST', // optional HTTP request method
   namespace:   'default', // optional namespace of the function
   query:       ['repo':'faas-cli', 'org':'openfaas'], // optional queries for request
+  regex:       'regexp_string', // optional regex to match with function names in yaml file
   stdin:       'image.png', // optional stdin for function to receive
   tls:         true // optional TLS validation
 )
@@ -68,9 +71,11 @@ List OpenFaaS functions. The output function list and information is also return
 ```groovy
 faas.list(
   bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
+  filter:   'filter_string', // optional wildcard to match with function names in yaml file
   gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
   namespace: 'default', // optional namespace of the function
   quiet:     false, // optional display only the function's id (mutually exclusive with verbose)
+  regex:     'regexp_string', // optional regex to match with function names in yaml file
   sort:      'name', // optional sort category (valid: 'name' or 'invocations')
   tls:       true // optional TLS validation
   verbose:   false, // optional display extra function information (mutually exclusive with quiet)
@@ -96,11 +101,13 @@ Fetch logs for a given function name. The logs are returned by this method as a 
 ```groovy
 faas.logs(
   bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
+  filter:   'filter_string', // optional wildcard to match with function names in yaml file
+  format:    'plain', // optional return format (plain, keyvalue, or json)
   gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
   instance:  false, // optional print the function instance name/id
   name:      'sadpanda', // function name for which to retrieve logs
   namespace: 'default', // optional namespace of the function
-  format:    'plain', // optional return format (plain, keyvalue, or json)
+  regex:     'regexp_string', // optional regex to match with function names in yaml file
   since:     '5s', // optional return logs newer than relative duration
   tls:       true // optional TLS validation
 )
@@ -112,9 +119,9 @@ Pushes the OpenFaaS function container image(s) to a remote repository. These co
 ```groovy
 faas.push(
   bin:      '/usr/bin/faas-cli', // optional executable path for faas-cli
-  filter:   'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
+  filter:   'filter_string', // optional wildcard to match with function names in yaml file
   parallel: '1', // optional build in parallel to depth specified
-  regex:    'regexp_string', // optional regex to match with function names in yaml file (default is unused)
+  regex:    'regexp_string', // optional regex to match with function names in yaml file
   tag:      'latest', // override latest tag on function Docker image
   template: 'samples.yaml' // path to yaml file describing function(s)
 )
@@ -126,10 +133,10 @@ Removes/deletes deployed OpenFaaS functions.
 ```groovy
 faas.remove(
   bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
-  filter:    'filter_string', // optional wildcard to match with function names in yaml file (default is unused)
+  filter:    'filter_string', // optional wildcard to match with function names in yaml file
   gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
   namespace: 'default', // optional namespace of the function
-  regex:     'regexp_string', // optional regex to match with function names in yaml file (default is unused)
+  regex:     'regexp_string', // optional regex to match with function names in yaml file
   template:  'samples.yaml' // path to yaml file describing function(s)
   tls:       true // optional TLS validation
 )

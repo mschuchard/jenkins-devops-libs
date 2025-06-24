@@ -10,9 +10,6 @@ void build(Map config) {
   String cmd = "${config.bin} build"
 
   // check for optional inputs
-  if (config.filter) {
-    cmd += " --filter '${config.filter}'"
-  }
   if (config.noCache == true) {
     cmd += ' --no-cache'
   }
@@ -21,9 +18,6 @@ void build(Map config) {
   }
   if (config.pull) {
     cmd += ' --pull'
-  }
-  if (config.regex) {
-    cmd += " --regex '${config.regex}'"
   }
   if (config.squash == true) {
     cmd += ' --squash'
@@ -55,18 +49,12 @@ void deploy(Map config) {
   String cmd = "${config.bin} deploy"
 
   // check for optional inputs
-  if (config.filter) {
-    cmd += " --filter '${config.filter}'"
-  }
   if (config.label) {
     assert (config.label instanceof Map) : 'The label parameter must be a Map.'
 
     config.label.each { String label, String value ->
       cmd += " --label ${label}=${value}"
     }
-  }
-  if (config.regex) {
-    cmd += " --regex '${config.regex}'"
   }
   if (config.replace == false) {
     cmd += ' --replace=false'
@@ -273,12 +261,6 @@ void push(Map config) {
   String cmd = "${config.bin} push"
 
   // check for optional inputs
-  if (config.filter) {
-    cmd += " --filter '${config.filter}'"
-  }
-  if (config.regex) {
-    cmd += " --regex '${config.regex}'"
-  }
   if (config.parallel) {
     cmd += " --parallel ${config.parallel}"
   }
@@ -306,12 +288,6 @@ void remove(Map config) {
   String cmd = "${config.bin} rm"
 
   // check for optional inputs
-  if (config.filter) {
-    cmd += " --filter '${config.filter}'"
-  }
-  if (config.regex) {
-    cmd += " --regex '${config.regex}'"
-  }
   cmd += globalArgsCmd(config)
 
   // remove function with faas
@@ -342,17 +318,23 @@ Boolean validateTemplate(String template) {
   return true
 }
 
-// private method for global arguments
+// private method for global arguments pertaining to all methods
 private String globalArgsCmd(Map config) {
   // initialize subcommand from global args
   String subCmd = ''
 
   // check for optional inputs
+  if (config.filter) {
+    cmd += " --filter '${config.filter}'"
+  }
   if (config.gateway) {
     subCmd += " -g ${config.gateway}"
   }
   if (config.namespace) {
     subCmd += " -n ${config.namespace}"
+  }
+  if (config.regex) {
+    cmd += " --regex '${config.regex}'"
   }
   if (config.tls == false) {
     subCmd += ' --tls-no-verify'
