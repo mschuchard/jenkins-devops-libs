@@ -31,7 +31,7 @@ void hostCreate(Map config) {
 
   // create a host in the inventory
   try {
-    sh(label: 'AWX Host Create', script: cmd)
+    sh(label: "AWX Host Create ${config.name}", script: cmd)
   }
   catch (Exception error) {
     print 'Failure using awx host create.'
@@ -43,7 +43,7 @@ void hostCreate(Map config) {
 void hostDelete(String id, String bin = 'awx') {
   // delete a host in the inventory
   try {
-    sh(label: 'AWX Host Delete', script: "${bin} hosts delete ${id}")
+    sh(label: "AWX Host Delete ${id}", script: "${bin} hosts delete ${id}")
   }
   catch (Exception error) {
     print 'Failure using awx host delete.'
@@ -93,7 +93,7 @@ private void inventory(Map config) {
 
   // "something" a inventory
   try {
-    sh(label: "AWX Inventory ${capAction}", script: cmd)
+    sh(label: "AWX Inventory ${capAction} ${config.name}", script: cmd)
   }
   catch (Exception error) {
     print "Failure using awx inventory${config.action}."
@@ -112,7 +112,7 @@ void inventoryCreate(Map config) {
 void inventoryDelete(String id, String bin = 'awx') {
   // delete an inventory
   try {
-    sh(label: 'AWX Inventory Delete', script: "${bin} inventory delete ${id}")
+    sh(label: "AWX Inventory Delete ${id}", script: "${bin} inventory delete ${id}")
   }
   catch (Exception error) {
     print 'Failure using awx inventory delete.'
@@ -175,7 +175,7 @@ void jobTemplateLaunch(Map config) {
 
   // launch a job template job
   try {
-    sh(label: 'AWX Job Template Launch', script: "${cmd} ${config.id}")
+    sh(label: "AWX Job Template Launch ${config.id}", script: "${cmd} ${config.id}")
   }
   catch (Exception error) {
     print 'Failure using awx job template launch.'
@@ -199,7 +199,7 @@ void projectsUpdate(Map config) {
 
   // launch a project update job
   try {
-    sh(label: 'AWX Project Update', script: "${cmd} ${config.id}")
+    sh(label: "AWX Project Update ${config.id}", script: "${cmd} ${config.id}")
   }
   catch (Exception error) {
     print 'Failure using awx projects update.'
@@ -242,7 +242,7 @@ void workflowJobTemplateLaunch(Map config) {
 
   // launch a workflow job template job
   try {
-    sh(label: 'AWX Workflow Job Template Launch', script: "${cmd} ${config.id}")
+    sh(label: "AWX Workflow Job Template Launch ${config.id}", script: "${cmd} ${config.id}")
   }
   catch (Exception error) {
     print 'Failure using awx workflow job template launch.'
