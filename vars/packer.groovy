@@ -53,11 +53,11 @@ void build(Map config) {
   // create artifact with packer
   try {
     if (config.template ==~ /\.pkr\./) {
-      sh(label: 'Packer Build', script: "${cmd} ${config.template}")
+      sh(label: "Packer Build ${config.template}", script: "${cmd} ${config.template}")
     }
     else {
       dir(config.template) {
-        sh(label: 'Packer Build', script: "${cmd} .")
+        sh(label: "Packer Build ${config.template}", script: "${cmd} .")
       }
     }
   }
@@ -97,11 +97,11 @@ Boolean fmt(Map config) {
   int fmtStatus
   try {
     if (config.template ==~ /\.pkr\./) {
-      fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} ${config.template}")
+      fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} ${config.template}")
     }
     else {
       dir(config.template) {
-        fmtStatus = sh(label: 'Packer Format', returnStatus: true, script: "${cmd} .")
+        fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} .")
       }
     }
 
@@ -135,7 +135,7 @@ void init(Map config) {
   // initialize the working template directory
   try {
     dir(config.dir) {
-      sh(label: 'Packer Init', script: "${cmd} .")
+      sh(label: "Packer Init ${config.dir}", script: "${cmd} .")
     }
   }
   catch (Exception error) {
@@ -151,7 +151,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
 
   // inspect the packer template
   try {
-    sh(label: 'Packer Inspect', script: "${bin} inspect ${template}")
+    sh(label: "Packer Inspect ${template}", script: "${bin} inspect ${template}")
   }
   catch (Exception error) {
     print 'Failure inspecting the template.'
@@ -236,7 +236,7 @@ void pluginsInstall(Map config) {
 
   // install plugin
   try {
-    sh(label: 'Packer Plugins Install', script: cmd)
+    sh(label: "Packer Plugins Install ${config.plugin}", script: cmd)
   }
   catch (Exception error) {
     print 'Failure using packer plugins install.'
@@ -258,7 +258,7 @@ void pluginsRemove(Map config) {
 
   // remove plugin
   try {
-    sh(label: 'Packer Plugins Remove', script: cmd)
+    sh(label: "Packer Plugins Remove ${config.plugin}", script: cmd)
   }
   catch (Exception error) {
     print 'Failure using packer plugins remove.'
@@ -287,11 +287,11 @@ void plugins(Map config) {
     // groovy 3: if (config.command === 'required') {
     if (config.command == 'required') {
       dir(config.dir) {
-        sh(label: 'Packer Plugins', script: "${cmd} .")
+        sh(label: "Packer Plugins ${config.command.capitalize()}", script: "${cmd} .")
       }
     }
     else {
-      sh(label: 'Packer Plugins', script: cmd)
+      sh(label: "Packer Plugins ${config.command.capitalize()}", script: cmd)
     }
     }
   catch (Exception error) {
@@ -353,11 +353,11 @@ Boolean validate(Map config) {
   // validate template with packer
   int returnCode
   if (config.template ==~ /\.pkr\./) {
-    returnCode = sh(label: 'Packer Validate', script: "${cmd} ${config.template}", returnStatus: true)
+    returnCode = sh(label: "Packer Validate ${config.template}", script: "${cmd} ${config.template}", returnStatus: true)
   }
   else {
     dir(config.template) {
-      returnCode = sh(label: 'Packer Validate', script: "${cmd} .", returnStatus: true)
+      returnCode = sh(label: "Packer Validate ${config.template}", script: "${cmd} .", returnStatus: true)
     }
   }
 

@@ -60,7 +60,7 @@ String render(Map config) {
       cmd += ' --debug'
     }
 
-    final String rendered = sh(label: 'GoSS Render', script: cmd, returnStdout: true)
+    final String rendered = sh(label: "GoSS Render ${config.gossfile}", script: cmd, returnStdout: true)
 
     print 'GoSSfile rendered successfully.'
 
@@ -117,7 +117,7 @@ void server(Map config) {
       cmd += " -L ${config.logLevel.toUpperCase()}"
     }
 
-    sh(label: 'GoSS Server', script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
+    sh(label: "GoSS Server ${config.gossfile}", script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
   }
   catch (Exception error) {
     print 'Failure using goss serve.'
@@ -172,7 +172,7 @@ Boolean validate(Map config) {
   }
 
   // validate with goss
-  final int returnCode = sh(label: 'GoSS Validate', script: cmd, returnStatus: true)
+  final int returnCode = sh(label: "GoSS Validate ${config.gossfile}", script: cmd, returnStatus: true)
 
   // return by code
   if (returnCode == 0) {
@@ -206,7 +206,7 @@ void validateDocker(Map config) {
       }
     }
 
-    sh(label: 'DGoSS Validate Docker', script: "${cmd} ${config.image}")
+    sh(label: "DGoSS Validate Docker ${config.image}", script: "${cmd} ${config.image}")
   }
   catch (Exception error) {
     print 'Failure using dgoss run.'
