@@ -28,7 +28,7 @@ String history(Map config) {
 
   // gather release revision history with helm
   try {
-    final String historyOutput = sh(label: 'Helm History', script: "${cmd} ${config.name}", returnStdout: true)
+    final String historyOutput = sh(label: "Helm History ${config.name}", script: "${cmd} ${config.name}", returnStdout: true)
 
     print 'Helm history executed successfully.'
 
@@ -112,7 +112,7 @@ void install(Map config) {
 
   // install with helm
   try {
-    sh(label: 'Helm Install', script: "${cmd} ${config.name} ${config.chart}")
+    sh(label: "Helm Install ${config.name}", script: "${cmd} ${config.name} ${config.chart}")
   }
   catch (Exception error) {
     print 'Failure using helm install.'
@@ -175,7 +175,7 @@ Boolean lint(Map config) {
   }
 
   // lint with helm
-  final int returnCode = sh(label: 'Helm Lint', script: "${cmd} ${config.chart}", returnStatus: true)
+  final int returnCode = sh(label: "Helm Lint ${config.chart}", script: "${cmd} ${config.chart}", returnStatus: true)
 
   // return by code
   if (returnCode == 0) {
@@ -225,7 +225,7 @@ void packages(Map config) {
 
   // package with helm
   try {
-    sh(label: 'Helm Package', script: "${cmd} ${config.chart}")
+    sh(label: "Helm Package ${config.chart}", script: "${cmd} ${config.chart}")
   }
   catch (Exception error) {
     print 'Failure using helm package.'

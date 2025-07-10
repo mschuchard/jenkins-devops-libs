@@ -39,8 +39,8 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
 
 String render(Map config) {
   // input checking
-  if (config.gossfile) {
-    assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
+  if (config?.gossfile) {
+    assert readYaml(config?.gossfile) instanceof String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
     assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
@@ -60,7 +60,7 @@ String render(Map config) {
       cmd += ' --debug'
     }
 
-    final String rendered = sh(label: "GoSS Render ${config.gossfile}", script: cmd, returnStdout: true)
+    final String rendered = sh(label: "GoSS Render ${config?.gossfile}", script: cmd, returnStdout: true)
 
     print 'GoSSfile rendered successfully.'
 
@@ -74,8 +74,8 @@ String render(Map config) {
 
 void server(Map config) {
   // input checking
-  if (config.gossfile) {
-    assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
+  if (config?.gossfile) {
+    assert readYaml(config?.gossfile) instanceof String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
     assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
@@ -117,7 +117,7 @@ void server(Map config) {
       cmd += " -L ${config.logLevel.toUpperCase()}"
     }
 
-    sh(label: "GoSS Server ${config.gossfile}", script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
+    sh(label: "GoSS Server ${config?.gossfile}", script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
   }
   catch (Exception error) {
     print 'Failure using goss serve.'
@@ -128,8 +128,8 @@ void server(Map config) {
 
 Boolean validate(Map config) {
   // input checking
-  if (config.gossfile) {
-    assert readYaml(config.gossfile) instanceof String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
+  if (config?.gossfile) {
+    assert readYaml(config?.gossfile) instanceof String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
     assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
@@ -172,7 +172,7 @@ Boolean validate(Map config) {
   }
 
   // validate with goss
-  final int returnCode = sh(label: "GoSS Validate ${config.gossfile}", script: cmd, returnStatus: true)
+  final int returnCode = sh(label: "GoSS Validate ${config?.gossfile}", script: cmd, returnStatus: true)
 
   // return by code
   if (returnCode == 0) {
@@ -254,8 +254,8 @@ private String globalArgsCmd(Map config) {
 
     subCmd += " --package ${config.package}"
   }
-  if (config.gossfile) {
-    subCmd += " -g ${config.gossfile}"
+  if (config?.gossfile) {
+    subCmd += " -g ${config?.gossfile}"
   }
 
   // return subcommand based from global arguments
