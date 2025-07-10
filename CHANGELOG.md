@@ -1,8 +1,13 @@
+### 2.2.1 (Next)
+**General**
+- Improve label descriptions for `sh` steps.
+
 ### 2.2.0
 **General**
 - Miscellanous improvements and fixes from code linting.
 
 **FaaS**
+- Increase minimum supported version to 0.17.
 - Return `Boolean` for `validateTemplate`.
 - Add `list` and `logs` methods.
 

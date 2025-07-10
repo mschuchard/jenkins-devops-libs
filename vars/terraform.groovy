@@ -51,11 +51,11 @@ private void execute(Map config) {
   // apply the config
   try {
     if (config.configPath ==~ /\.tfplan$/) {
-      sh(label: 'Terraform Apply', script: "${cmd} ${config.configPath}")
+      sh(label: "Terraform Apply ${config.configPath}", script: "${cmd} ${config.configPath}")
     }
     else {
       dir(config.configPath) {
-        sh(label: 'Terraform Apply', script: cmd)
+        sh(label: "Terraform Apply ${config.configPath}", script: cmd)
       }
     }
   }
@@ -871,7 +871,7 @@ void workspace(Map config) {
   dir(config.dir) {
     // select workspace in terraform config directory
     try {
-      sh(label: 'Terraform Workspace Select', script: "${config.cmd} ${config.workspace}")
+      sh(label: "Terraform Workspace Select ${config.workspace}", script: "${config.cmd} ${config.workspace}")
     }
     catch (Exception error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
