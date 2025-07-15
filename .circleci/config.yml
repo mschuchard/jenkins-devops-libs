@@ -2,6 +2,16 @@
 version: 2.1
 
 jobs:
+  lint:
+    working_directory: /tmp/project
+    docker:
+    - image: nvuillam/npm-groovy-lint
+    resource_class: small
+    steps:
+    - checkout
+    - run:
+        name: lint
+        command: npm-groovy-lint {src,vars}
   test:
     working_directory: /tmp/project
     docker:
@@ -34,4 +44,5 @@ jobs:
 workflows:
   execute_tests:
     jobs:
-    - test
+    - lint
+#    - test
