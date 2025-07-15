@@ -12,18 +12,26 @@ on:
     - '**.groovy'
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
-    container: jenkins/jenkins:lts-slim
+    container: nvuillam/npm-groovy-lint
     steps:
     - name: checkout
       uses: actions/checkout@v4
-    - name: install jenkins pipeline and pipeline utility steps plugins
-      run: jenkins-plugin-cli -p workflow-aggregator pipeline-utility-steps http_request
-    - name: start jenkins server
-      run: /opt/java/openjdk/bin/java -jar /usr/share/jenkins/jenkins.war &
-    - name: pause for jenkins startup and then install jenkins cli
-      run: sleep 10 && curl localhost:8080/jnlpJars/jenkins-cli.jar -o /var/jenkins_home/war/WEB-INF/lib/jenkins-cli.jar
-    - name: execute syntax check
-    # TODO: currently jenkins cli does not parse groovysh args correctly
-      run: /opt/java/openjdk/bin/java -jar /var/jenkins_home/war/WEB-INF/lib/jenkins-cli.jar -s http://localhost:8080 -auth admin:$(cat /var/jenkins_home/secrets/initialAdminPassword) 'groovysh -cp src:/usr/share/jenkins:/usr/share/jenkins/ref/plugins -q -e vars/*.groovy'
+    - name: lint
+      run: npm-groovy-lint [OPTIONS] {src,vars}
+#  test:
+#    runs-on: ubuntu-latest
+#    container: jenkins/jenkins:lts-slim
+#    steps:
+#    - name: checkout
+#      uses: actions/checkout@v4
+#    - name: install jenkins pipeline and pipeline utility steps plugins
+#      run: jenkins-plugin-cli -p workflow-aggregator pipeline-utility-steps http_request
+#    - name: start jenkins server
+#      run: /opt/java/openjdk/bin/java -jar /usr/share/jenkins/jenkins.war &
+#    - name: pause for jenkins startup and then install jenkins cli
+#      run: sleep 10 && curl localhost:8080/jnlpJars/jenkins-cli.jar -o /var/jenkins_home/war/WEB-INF/lib/jenkins-cli.jar
+#    - name: execute syntax check
+#    # TODO: currently jenkins cli does not parse groovysh args correctly
+#      run: /opt/java/openjdk/bin/java -jar /var/jenkins_home/war/WEB-INF/lib/jenkins-cli.jar -s http://localhost:8080 -auth admin:$(cat /var/jenkins_home/secrets/initialAdminPassword) 'groovysh -cp src:/usr/share/jenkins:/usr/share/jenkins/ref/plugins -q -e vars/*.groovy'
