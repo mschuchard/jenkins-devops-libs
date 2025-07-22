@@ -11,7 +11,7 @@ jobs:
     - checkout
     - run:
         name: lint
-        command: npm-groovy-lint {src,vars}
+        command: npm-groovy-lint --failon error {src,vars}
   test:
     working_directory: /tmp/project
     docker:

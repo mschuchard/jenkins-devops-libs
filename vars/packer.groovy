@@ -4,7 +4,7 @@ import devops.common.hcl
 
 void build(Map config) {
   // input checking
-  assert config.template instanceof String : 'The required template parameter was not set.'
+  assert config.template in String : 'The required template parameter was not set.'
   if (config.except && config.only) {
     throw new Exception("The 'except' and 'only' parameters for packer.build are mutually exclusive; only one can be specified.")
   }
@@ -20,11 +20,11 @@ void build(Map config) {
     cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
-    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+    assert (config.var in Map) : 'The var parameter must be a Map.'
 
     config.var.each { String var, String value ->
       // convert value to json if not string type
-      if (value instanceof List || value instanceof Map) {
+      if (value in List || value in Map) {
         value = writeJSON(json: value, returnText: true)
       }
 
@@ -32,12 +32,12 @@ void build(Map config) {
     }
   }
   if (config.except) {
-    assert (config.except instanceof List) : 'The except parameter must be a list of strings.'
+    assert (config.except in List) : 'The except parameter must be a list of strings.'
 
     cmd += " -except=${config.except.join(',')}"
   }
   if (config.only) {
-    assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
+    assert (config.only in List) : 'The only parameter must be a list of strings.'
 
     cmd += " -only=${config.only.join(',')}"
   }
@@ -70,7 +70,7 @@ void build(Map config) {
 
 Boolean fmt(Map config) {
   // input checking
-  assert config.template instanceof String : 'The required template parameter was not set.'
+  assert config.template in String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   if (config.write && config.check) {
     throw new Exception("The 'write' and 'check' options for packer.fmt are mutually exclusive - only one can be enabled.")
@@ -163,7 +163,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
 void install(Map config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
-  assert (config.platform instanceof String && config.version instanceof String) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
+  assert (config.platform in String && config.version in String) : 'A required parameter ("platform" or "version") is missing from the packer.install method. Please consult the documentation for proper usage.'
 
   new utils().makeDirParents(config.installPath)
 
@@ -219,7 +219,7 @@ void pluginInstall(String url, String installLoc) {
 
 void pluginsInstall(Map config) {
   config.bin = config.bin ?: 'packer'
-  assert config.plugin instanceof String : 'The required "plugin" parameter was not assigned a value.'
+  assert config.plugin in String : 'The required "plugin" parameter was not assigned a value.'
 
   String cmd = "${config.bin} install"
 
@@ -247,7 +247,7 @@ void pluginsInstall(Map config) {
 
 void pluginsRemove(Map config) {
   config.bin = config.bin ?: 'packer'
-  assert config.plugin instanceof String : 'The required "plugin" parameter was not assigned a value.'
+  assert config.plugin in String : 'The required "plugin" parameter was not assigned a value.'
 
   String cmd = "${config.bin} remove ${config.plugin}"
 
@@ -278,7 +278,7 @@ void plugins(Map config) {
   // conditional based on command to double verify dir param input both exists and is valid
   // groovy 3: if (config.command === 'required') {
   if (config.command == 'required') {
-    assert config.dir instanceof String : 'The required "dir" parameter was not set.'
+    assert config.dir in String : 'The required "dir" parameter was not set.'
     assert fileExists(config.dir) : "The Packer config directory ${config.dir} does not exist!"
   }
 
@@ -303,7 +303,7 @@ void plugins(Map config) {
 
 Boolean validate(Map config) {
   // input checking
-  assert config.template instanceof String : 'The required template parameter was not set.'
+  assert config.template in String : 'The required template parameter was not set.'
   if (config.except && config.only) {
     throw new Exception("The 'except' and 'only' parameters for packer.validate are mutually exclusive; only one can be specified.")
   }
@@ -319,11 +319,11 @@ Boolean validate(Map config) {
     cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
-    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+    assert (config.var in Map) : 'The var parameter must be a Map.'
 
     config.var.each { String var, String value ->
       // convert value to json if not string type
-      if (value instanceof List || value instanceof Map) {
+      if (value in List || value in Map) {
         value = writeJSON(json: value, returnText: true)
       }
 
@@ -331,12 +331,12 @@ Boolean validate(Map config) {
     }
   }
   if (config.except) {
-    assert (config.except instanceof List) : 'The except parameter must be a list of strings.'
+    assert (config.except in List) : 'The except parameter must be a list of strings.'
 
     cmd += " -except=${config.except.join(',')}"
   }
   if (config.only) {
-    assert (config.only instanceof List) : 'The only parameter must be a list of strings.'
+    assert (config.only in List) : 'The only parameter must be a list of strings.'
 
     cmd += " -only=${config.only.join(',')}"
   }

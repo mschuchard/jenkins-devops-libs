@@ -6,13 +6,13 @@ void codeDeploy(Map config) {
   if (config.tokenFile && config.credentialsId) {
     throw new Exception("The 'tokenFile' and 'credentialsId' parameters for puppet.codeDeploy are mutually exclusive; only one can be specified.")
   }
-  assert config.tokenFile || (config.credentialsId instanceof String) : 'The required token or credentialsId parameter was not set.'
+  assert config.tokenFile || (config.credentialsId in String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
-    assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
+    assert readFile(config.tokenFile) in String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
   }
 
   if (config.servers) {
-    assert (config.servers instanceof List) : 'The servers parameter must be a list of strings.'
+    assert (config.servers in List) : 'The servers parameter must be a list of strings.'
   }
   else {
     config.servers = ['puppet']
@@ -25,7 +25,7 @@ void codeDeploy(Map config) {
 
   // check for environments
   if (config.environments) {
-    assert (config.environments instanceof List) : 'The environments parameter must be a list of strings.'
+    assert (config.environments in List) : 'The environments parameter must be a list of strings.'
 
     // preface environments payload
     payload['environments'] = config.environments
@@ -114,11 +114,11 @@ void task(Map config) {
   if (config.tokenFile && config.credentialsId) {
     throw new Exception("The 'tokenFile' and 'credentialsId' parameters for puppet.task are mutually exclusive; only one can be specified.")
   }
-  assert config.tokenFile || (config.credentialsId instanceof String) : 'The required token or credentialsId parameter was not set.'
+  assert config.tokenFile || (config.credentialsId in String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
-    assert readFile(config.tokenFile) instanceof String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
+    assert readFile(config.tokenFile) in String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
   }
-  assert config.task instanceof String : 'The required task parameter was not set.'
+  assert config.task in String : 'The required task parameter was not set.'
   assert config.scope : 'The required scope parameter was not set.'
 
   config.server = config.server ?: 'puppet'
@@ -141,9 +141,9 @@ void task(Map config) {
   payload['task'] = config.task
   payload['scope'] = [:]
 
-  if (config.scope instanceof List) {
+  if (config.scope in List) {
     // is the last element of the list a nested list
-    if (config.scope[-1] instanceof List) {
+    if (config.scope[-1] in List) {
       payload['scope']['query'] = config.scope
     }
     // otherwise it is a list of strings which is then a node list
@@ -151,7 +151,7 @@ void task(Map config) {
       payload['scope']['nodes'] = config.scope
     }
   }
-  else if (config.scope instanceof String) {
+  else if (config.scope in String) {
     // does the string look like an app orchestrator string
     if (config.scope ==~ /\[.*\]$/) {
       payload['scope']['application'] = config.scope
@@ -237,8 +237,8 @@ void task(Map config) {
 
 void token(Map config) {
   // input checking
-  assert config.username instanceof String : 'The username parameter is required.'
-  assert config.password instanceof String : 'The password parameter is required.'
+  assert config.username in String : 'The username parameter is required.'
+  assert config.password in String : 'The password parameter is required.'
 
   config.server = config.server ?: 'puppet'
   config.port = config.port ?: 4433

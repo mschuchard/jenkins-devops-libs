@@ -3,7 +3,7 @@ import devops.common.utils
 
 String history(Map config) {
   // input checking
-  assert config.name instanceof String : 'The required parameter "name" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} history"
@@ -42,8 +42,8 @@ String history(Map config) {
 
 void install(Map config) {
   // input checking
-  assert config.name instanceof String : 'The required parameter "name" was not set.'
-  assert config.chart instanceof String : 'The required parameter "chart" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
   if (config.version && config.devel) {
     throw new Exception("The 'version' and 'devel' parameters for helm.install are mutually exclusive; only one can be specified.")
   }
@@ -54,18 +54,18 @@ void install(Map config) {
 
   // check for optional inputs
   if (config.values) {
-    assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
+    assert (config.values in List) : 'The values parameter must be a list of strings.'
 
     config.values.each() { String value ->
       if (!(value ==~ /:\/\//)) {
-        assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
+        assert readYaml(value) in String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
 
       cmd += " -f ${value}"
     }
   }
   if (config.set) {
-    assert (config.set instanceof Map) : 'The set parameter must be a Map.'
+    assert (config.set in Map) : 'The set parameter must be a Map.'
 
     config.set.each() { String var, String value ->
       cmd += " --set ${var}=${value}"
@@ -141,24 +141,24 @@ void kubectl(String version, String installPath = '/usr/bin/') {
 Boolean lint(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart instanceof String : 'The required parameter "chart" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
 
   String cmd = "${config.bin} lint"
 
   // check for optional inputs
   if (config.values) {
-    assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
+    assert (config.values in List) : 'The values parameter must be a list of strings.'
 
     config.values.each { String value ->
       if (!(value ==~ /:\/\//)) {
-        assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
+        assert readYaml(value) in String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
 
       cmd += " -f ${value}"
     }
   }
   if (config.set) {
-    assert (config.set instanceof Map) : 'The set parameter must be a Map.'
+    assert (config.set in Map) : 'The set parameter must be a Map.'
 
     config.set.each { String var, String value ->
       cmd += " --set ${var}=${value}"
@@ -194,8 +194,8 @@ Boolean lint(Map config) {
 void packages(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart instanceof String : 'The required parameter "chart" was not set.'
-  assert readYaml("${config.chart}/Chart.yaml") instanceof String : "The supplied path ${config.chart} to the chart does not contain a valid Chart.yaml!"
+  assert config.chart in String : 'The required parameter "chart" was not set.'
+  assert readYaml("${config.chart}/Chart.yaml") in String : "The supplied path ${config.chart} to the chart does not contain a valid Chart.yaml!"
   if (config.key && config.keyring) {
     throw new Exception("The 'key' and 'keyring' parameters for helm.packages are mutually exclusive; only one can be specified.")
   }
@@ -212,7 +212,7 @@ void packages(Map config) {
     cmd += " --sign --key ${config.key}"
   }
   else if (config.keyring) {
-    assert readYaml(config.keyring) instanceof String : "The keyring ${config.keyring} does not exist or is not a valid YAML file."
+    assert readYaml(config.keyring) in String : "The keyring ${config.keyring} does not exist or is not a valid YAML file."
 
     cmd += " --sign --keyring ${config.keyring}"
   }
@@ -237,7 +237,7 @@ void packages(Map config) {
 void plugin(Map config) {
   // input checking
   assert (['install', 'list', 'uninstall', 'update'].contains(config.command)) : 'The argument must be one of: install, list, uninstall, or update.'
-  assert (config.plugin instanceof String) && (config.command != 'list') : 'The required parameter "plugin" was not set for a non-list command.'
+  assert (config.plugin in String) && (config.command != 'list') : 'The required parameter "plugin" was not set for a non-list command.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} plugin ${config.command}"
@@ -260,9 +260,9 @@ void plugin(Map config) {
 
 void push(Map config) {
   // input checking
-  assert config.chart instanceof String : 'The required parameter "chart" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
   assert fileExists(config.chart) : "The chart does not exist at ${config.chart}."
-  assert config.remote instanceof String : 'The required parameter "remote" was not set.'
+  assert config.remote in String : 'The required parameter "remote" was not set.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} push"
@@ -285,9 +285,9 @@ void push(Map config) {
 
 void registryLogin(Map config) {
   // input checking
-  assert config.host instanceof String : 'The required parameter "host" was not set.'
-  assert config.password instanceof String : 'The required parameter "password" was not set.'
-  assert config.username instanceof String : 'The required parameter "username" was not set.'
+  assert config.host in String : 'The required parameter "host" was not set.'
+  assert config.password in String : 'The required parameter "password" was not set.'
+  assert config.username in String : 'The required parameter "username" was not set.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} registry login --username ${config.username} --password ${config.password}"
@@ -310,8 +310,8 @@ void registryLogin(Map config) {
 
 void repo(Map config) {
   // input checking
-  assert config.repo instanceof String : 'The required parameter "repo" was not set.'
-  assert config.url instanceof String : 'The required parameter "url" was not set.'
+  assert config.repo in String : 'The required parameter "repo" was not set.'
+  assert config.url in String : 'The required parameter "url" was not set.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} repo add"
@@ -353,7 +353,7 @@ void repo(Map config) {
 
 void rollback(Map config) {
   // input checking
-  assert config.name instanceof String : "The required parameter 'name' was not set."
+  assert config.name in String : "The required parameter 'name' was not set."
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} rollback"
@@ -425,7 +425,7 @@ void setup(String version, String installPath = '/usr/bin/') {
 void show(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart instanceof String : 'The required parameter "chart" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
   assert (['all', 'chart', 'crds', 'readme', 'values']).contains(config.info) : 'The info parameter must be one of all, chart, crds, readme, or values.'
 
   // show chart info
@@ -442,7 +442,7 @@ void show(Map config) {
 String status(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.name instanceof String : 'The required parameter "name" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
 
   String cmd = "${config.bin} status"
   String lister = "${config.bin} list"
@@ -468,7 +468,7 @@ String status(Map config) {
     cmd += '--show-resources'
   }
   if (config.revision) {
-    assert config.revision instanceof Integer : 'The parameter "revision" must be an integer'
+    assert config.revision in Integer : 'The parameter "revision" must be an integer'
 
     cmd += " --revision ${config.revision}"
   }
@@ -494,7 +494,7 @@ String status(Map config) {
 void test(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.name instanceof String : 'The required parameter "name" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
 
   String cmd = "${config.bin} test"
 
@@ -560,7 +560,7 @@ void test(Map config) {
 void uninstall(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.name instanceof String : 'The required parameter "name" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
 
   String cmd = "${config.bin} uninstall"
   String lister = "${config.bin} list"
@@ -595,8 +595,8 @@ void upgrade(Map config) {
   if (config.version && config.devel) {
     throw new Exception("The 'version' and 'devel' parameters for helm.upgrade are mutually exclusive; only one can be specified.")
   }
-  assert config.chart instanceof String : 'The required parameter "chart" was not set.'
-  assert config.name instanceof String : 'The required parameter "name" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
   config.bin = config.bin ?: 'helm'
 
   String cmd = "${config.bin} upgrade"
@@ -604,18 +604,18 @@ void upgrade(Map config) {
 
   // check for optional inputs
   if (config.values) {
-    assert (config.values instanceof List) : 'The values parameter must be a list of strings.'
+    assert (config.values in List) : 'The values parameter must be a list of strings.'
 
     config.values.each { String value ->
       if (!(value ==~ /:\/\//)) {
-        assert readYaml(value) instanceof String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
+        assert readYaml(value) in String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
 
       cmd += " -f ${value}"
     }
   }
   if (config.set) {
-    assert (config.set instanceof Map) : 'The set parameter must be a Map.'
+    assert (config.set in Map) : 'The set parameter must be a Map.'
 
     config.set.each { String var, String value ->
       cmd += " --set ${var}=${value}"

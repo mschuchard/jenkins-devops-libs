@@ -7,7 +7,7 @@ private void execute(Map config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.configPath instanceof String : "'configPath' is a required parameter for terraform.${config.action}."
+  assert config.configPath in String : "'configPath' is a required parameter for terraform.${config.action}."
   assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
@@ -22,11 +22,11 @@ private void execute(Map config) {
       cmd += " -var-file=${config.varFile}"
     }
     if (config.var) {
-      assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+      assert (config.var in Map) : 'The var parameter must be a Map.'
 
       config.var.each { String var, String value ->
         // convert value to json if not string type
-        if (value instanceof List || value instanceof Map) {
+        if (value in List || value in Map) {
           value = writeJSON(json: value, returnText: true)
         }
 
@@ -34,7 +34,7 @@ private void execute(Map config) {
       }
     }
     if (config.target) {
-      assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
+      assert (config.target in List) : 'The target parameter must be a list of strings.'
 
       config.target.each { String target ->
         cmd += " -target=${target}"
@@ -184,7 +184,7 @@ void imports(Map config) {
 
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
-  assert (config.resources instanceof List) : 'Parameter resources must be a list of strings.'
+  assert (config.resources in List) : 'Parameter resources must be a list of strings.'
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} import -no-color -input=false"
@@ -196,11 +196,11 @@ void imports(Map config) {
     cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
-    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+    assert (config.var in Map) : 'The var parameter must be a Map.'
 
     config.var.each { String var, String value ->
       // convert value to json if not string type
-      if (value instanceof List || value instanceof Map) {
+      if (value in List || value in Map) {
         value = writeJSON(json: value, returnText: true)
       }
 
@@ -269,7 +269,7 @@ void init(Map config) {
     cmd += ' -force-copy'
   }
   if (config.backendConfig) {
-    assert (config.backendConfig instanceof List) : 'Parameter backendConfig must be a list of strings.'
+    assert (config.backendConfig in List) : 'Parameter backendConfig must be a list of strings.'
 
     config.backendConfig.each { String backconf ->
       assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
@@ -278,7 +278,7 @@ void init(Map config) {
     }
   }
   if (config.backendKV) {
-    assert (config.backendKV instanceof Map) : 'Parameter backendKV must be a map of strings.'
+    assert (config.backendKV in Map) : 'Parameter backendKV must be a map of strings.'
 
     config.backendKV.each { String key, String value ->
       cmd += " -backend-config='${key}=${value}'"
@@ -309,7 +309,7 @@ void install(Map config) {
 
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
-  assert (config.platform instanceof String && config.version instanceof String) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
+  assert (config.platform in String && config.version in String) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
 
   new utils().makeDirParents(config.installPath)
 
@@ -410,11 +410,11 @@ String plan(Map config) {
     cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
-    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+    assert (config.var in Map) : 'The var parameter must be a Map.'
 
     config.var.each { String var, String value ->
       // convert value to json if not string type
-      if (value instanceof List || value instanceof Map) {
+      if (value in List || value in Map) {
         value = writeJSON(json: value, returnText: true)
       }
 
@@ -422,14 +422,14 @@ String plan(Map config) {
     }
   }
   if (config.target) {
-    assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
+    assert (config.target in List) : 'The target parameter must be a list of strings.'
 
     config.target.each { String target ->
       cmd += " -target=${target}"
     }
   }
   if (config.replace) {
-    assert (config.replace instanceof List) : 'The replace parameter must be a list of strings.'
+    assert (config.replace in List) : 'The replace parameter must be a list of strings.'
 
     config.replace.each { String resource ->
       cmd += " -replace=${resource}"
@@ -474,8 +474,8 @@ void pluginInstall(Map config) {
   env.TF_IN_AUTOMATION = true
 
   // input checking
-  assert config.url instanceof String : "The required parameter 'url' was not set."
-  assert config.installName instanceof String : "The required parameter 'installName' was not set."
+  assert config.url in String : "The required parameter 'url' was not set."
+  assert config.installName in String : "The required parameter 'installName' was not set."
 
   config.installPath = config.installPath ? config.installPath : '~/.terraform/plugins'
 
@@ -554,11 +554,11 @@ void refresh(Map config) {
     cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
-    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+    assert (config.var in Map) : 'The var parameter must be a Map.'
 
     config.var.each { String var, String value ->
       // convert value to json if not string type
-      if (value instanceof List || value instanceof Map) {
+      if (value in List || value in Map) {
         value = writeJSON(json: value, returnText: true)
       }
 
@@ -566,7 +566,7 @@ void refresh(Map config) {
     }
   }
   if (config.target) {
-    assert (config.target instanceof List) : 'The target parameter must be a list of strings.'
+    assert (config.target in List) : 'The target parameter must be a list of strings.'
 
     config.target.each { String target ->
       cmd += " -target=${target}"
@@ -617,7 +617,7 @@ void state(Map config) {
     // perform different commands based upon type of state action
     switch (config.command) {
       case 'move':
-        assert (config.resources instanceof Map) : 'Parameter resources must be a Map of strings for move command.'
+        assert (config.resources in Map) : 'Parameter resources must be a Map of strings for move command.'
 
         dir(config.dir) {
           config.resources.each { String from, String to ->
@@ -627,7 +627,7 @@ void state(Map config) {
 
         break
       case 'remove':
-        assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for remove command.'
+        assert (config.resources in List) : 'Parameter resources must be a list of strings for remove command.'
 
         dir(config.dir) {
           config.resources.each { String resource ->
@@ -657,7 +657,7 @@ void state(Map config) {
 
         break
       case 'show':
-        assert (config.resources instanceof List) : 'Parameter resources must be a list of strings for show command.'
+        assert (config.resources in List) : 'Parameter resources must be a list of strings for show command.'
 
         dir(config.dir) {
           config.resources.each { String resource ->
@@ -695,7 +695,7 @@ void taint(Map config) {
 
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
-  assert (config.resources instanceof List) : 'Parameter resources must be a list of strings.'
+  assert (config.resources in List) : 'Parameter resources must be a list of strings.'
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
@@ -752,7 +752,7 @@ String test(Map config) {
     cmd += " -cloud-run=${config.cloudRun}"
   }
   if (config.filter) {
-    assert (config.filter instanceof List) : 'The filter parameter must be a list of strings.'
+    assert (config.filter in List) : 'The filter parameter must be a list of strings.'
 
     config.filter.each { String filter ->
       cmd += " -filter=${filter}"
@@ -772,11 +772,11 @@ String test(Map config) {
     cmd += " -var-file=${config.varFile}"
   }
   if (config.var) {
-    assert (config.var instanceof Map) : 'The var parameter must be a Map.'
+    assert (config.var in Map) : 'The var parameter must be a Map.'
 
     config.var.each { String var, String value ->
       // convert value to json if not string type
-      if (value instanceof List || value instanceof Map) {
+      if (value in List || value in Map) {
         value = writeJSON(json: value, returnText: true)
       }
 
@@ -858,7 +858,7 @@ void workspace(Map config) {
   else {
     config.dir = env.WORKSPACE
   }
-  assert config.workspace instanceof String : 'The "workspace" parameter must be specified for the "workspace" method.'
+  assert config.workspace in String : 'The "workspace" parameter must be specified for the "workspace" method.'
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} workspace select"

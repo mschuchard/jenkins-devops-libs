@@ -3,8 +3,8 @@ import devops.common.utils
 
 void hostCreate(Map config) {
   // input checking
-  assert config.name instanceof String : '"name" is a required parameter for awx.hostCreate.'
-  assert config.inventory instanceof String : '"inventory" is a required parameter for awx.hostCreate.'
+  assert config.name in String : '"name" is a required parameter for awx.hostCreate.'
+  assert config.inventory in String : '"inventory" is a required parameter for awx.hostCreate.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -21,7 +21,7 @@ void hostCreate(Map config) {
     cmd += "--instance_id ${config.instanceId}"
   }
   if (config.variables) {
-    assert (config.variables instanceof Map) : 'The variables parameter must be a Map.'
+    assert (config.variables in Map) : 'The variables parameter must be a Map.'
 
     // convert variables map to json for input
     final String variables = new utils().mapToJSON(config.variables)
@@ -58,8 +58,8 @@ private void inventory(Map config) {
   final String capAction = config.action.capitalize()
 
   // input checking
-  assert config.name instanceof String : "'name' is a required parameter for inventory${capAction}."
-  assert config.organization instanceof String : "'organization' is a required parameter for inventory${capAction}."
+  assert config.name in String : "'name' is a required parameter for inventory${capAction}."
+  assert config.organization in String : "'organization' is a required parameter for inventory${capAction}."
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -78,7 +78,7 @@ private void inventory(Map config) {
     cmd += " --host_filter ${config.hostFilter}"
   }
   if (config.variables) {
-    assert (config.variables instanceof Map) : 'The variables parameter must be a Map.'
+    assert (config.variables in Map) : 'The variables parameter must be a Map.'
 
     // convert variables map to json for input
     final String variables = new utils().mapToJSON(config.variables)
@@ -86,7 +86,7 @@ private void inventory(Map config) {
     cmd += " --variables ${variables}"
   }
   if (config.action == 'modify') {
-    assert config.inventory instanceof String : 'inventory is a required parameter for inventoryModify'
+    assert config.inventory in String : 'inventory is a required parameter for inventoryModify'
 
     cmd += " ${config.inventory}"
   }
@@ -130,7 +130,7 @@ void inventoryModify(Map config) {
 
 void jobTemplateLaunch(Map config) {
   // input checking
-  assert config.id instanceof int : '"id" is a required parameter for awx.jobTemplateLaunch.'
+  assert config.id in int : '"id" is a required parameter for awx.jobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -138,7 +138,7 @@ void jobTemplateLaunch(Map config) {
 
   // check for optional inputs
   if (config.credentials) {
-    assert (config.credentials instanceof List) : 'The credentials parameter must be a list of strings.'
+    assert (config.credentials in List) : 'The credentials parameter must be a list of strings.'
 
     cmd += " --credentials ${config.credentials.join(',')}"
   }
@@ -160,12 +160,12 @@ void jobTemplateLaunch(Map config) {
     cmd += " --job_type ${config.jobType}"
   }
   if (config.skipTags) {
-    assert (config.skipTags instanceof List) : 'The skipTags parameter must be a List.'
+    assert (config.skipTags in List) : 'The skipTags parameter must be a List.'
 
     cmd += " --skip_tags ${config.skipTags.join(',')}"
   }
   if (config.extraVars) {
-    assert (config.extraVars instanceof Map) : 'The variables parameter must be a Map.'
+    assert (config.extraVars in Map) : 'The variables parameter must be a Map.'
 
     // convert variables map to json for input
     final String extraVars = new utils().mapToJSON(config.variables)
@@ -186,7 +186,7 @@ void jobTemplateLaunch(Map config) {
 
 void projectsUpdate(Map config) {
   // input checking
-  assert config.id instanceof int : '"id" is a required parameter for awx.projectsUpdate.'
+  assert config.id in int : '"id" is a required parameter for awx.projectsUpdate.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -210,7 +210,7 @@ void projectsUpdate(Map config) {
 
 void workflowJobTemplateLaunch(Map config) {
   // input checking
-  assert config.id instanceof int : '"id" is a required parameter for awx.workflowJobTemplateLaunch.'
+  assert config.id in int : '"id" is a required parameter for awx.workflowJobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -227,7 +227,7 @@ void workflowJobTemplateLaunch(Map config) {
     cmd += " --inventory ${config.inventory}"
   }
   if (config.extraVars) {
-    assert (config.extraVars instanceof Map) : 'The variables parameter must be a Map.'
+    assert (config.extraVars in Map) : 'The variables parameter must be a Map.'
 
     // convert variables map to json for input
     final String extraVars = new utils().mapToJSON(config.variables)
@@ -235,7 +235,7 @@ void workflowJobTemplateLaunch(Map config) {
     cmd += " --extra_vars ${extraVars}"
   }
   if (config.skipTags) {
-    assert (config.skipTags instanceof List) : 'The skipTags parameter must be a List.'
+    assert (config.skipTags in List) : 'The skipTags parameter must be a List.'
 
     cmd += " --skip_tags ${config.skipTags.join(',')}"
   }

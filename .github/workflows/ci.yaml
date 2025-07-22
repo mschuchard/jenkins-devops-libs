@@ -19,7 +19,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
     - name: lint
-      run: npm-groovy-lint {src,vars}
+      run: npm-groovy-lint --failon error {src,vars}
 #  test:
 #    runs-on: ubuntu-latest
 #    container: jenkins/jenkins:lts-slim

@@ -40,10 +40,10 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
 String render(Map config) {
   // input checking
   if (config?.gossfile) {
-    assert readYaml(config?.gossfile) instanceof String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
+    assert readYaml(config?.gossfile) in String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
-    assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
+    assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
   config.bin = config.bin ?: 'goss'
 
@@ -75,10 +75,10 @@ String render(Map config) {
 void server(Map config) {
   // input checking
   if (config?.gossfile) {
-    assert readYaml(config?.gossfile) instanceof String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
+    assert readYaml(config?.gossfile) in String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
-    assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
+    assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
   if (config.logLevel) {
     assert ['error', 'warn', 'info', 'debug', 'trace'].contains(logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
@@ -129,10 +129,10 @@ void server(Map config) {
 Boolean validate(Map config) {
   // input checking
   if (config?.gossfile) {
-    assert readYaml(config?.gossfile) instanceof String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
+    assert readYaml(config?.gossfile) in String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
-    assert readYaml('goss.yaml') instanceof String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
+    assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
   if (config.logLevel) {
     assert ['error', 'warn', 'info', 'debug', 'trace'].contains(logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
@@ -190,7 +190,7 @@ Boolean validate(Map config) {
 
 void validateDocker(Map config) {
   // input checking
-  assert config.image instanceof String : 'The required image parameter was not set.'
+  assert config.image in String : 'The required image parameter was not set.'
   config.bin = config.bin ?: 'dgoss'
 
   // run with dgoss
@@ -199,7 +199,7 @@ void validateDocker(Map config) {
 
     // check for optional inputs
     if (config.flags) {
-      assert (config.flags instanceof Map) : 'The flags parameter must be a Map.'
+      assert (config.flags in Map) : 'The flags parameter must be a Map.'
 
       config.flags.each { String flag, String value ->
         cmd += " -e ${flag}=${value}"
@@ -217,7 +217,7 @@ void validateDocker(Map config) {
 
 Boolean validateGossfile(String gossfile) {
   // ensure gossfile exists and then check yaml syntax
-  assert readFile(gossfile) instanceof String : "Gossfile ${gossfile} does not exist!"
+  assert readFile(gossfile) in String : "Gossfile ${gossfile} does not exist!"
 
   try {
     readYaml(file: gossfile)
@@ -239,13 +239,13 @@ private String globalArgsCmd(Map config) {
 
   // check for optional global args
   if (config.varsInline) {
-    assert config.varsInline instanceof Map : 'The inline vars parameter must be a Map.'
+    assert config.varsInline in Map : 'The inline vars parameter must be a Map.'
     final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
 
     subCmd += " --vars-inline ${varsInlineJSON}"
   }
   else if (config.vars) {
-    assert readYaml(config.vars) instanceof String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
+    assert readYaml(config.vars) in String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
 
     subCmd += " --vars ${config.vars}"
   }

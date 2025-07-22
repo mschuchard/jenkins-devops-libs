@@ -5,7 +5,7 @@ void build(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
-  assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
+  assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
   String cmd = "${config.bin} build"
 
@@ -43,14 +43,14 @@ void deploy(Map config) {
   if (config.replace && config.update) {
     throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
   }
-  assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
+  assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
   config.bin = config.bin ?: 'faas-cli'
   String cmd = "${config.bin} deploy"
 
   // check for optional inputs
   if (config.label) {
-    assert (config.label instanceof Map) : 'The label parameter must be a Map.'
+    assert (config.label in Map) : 'The label parameter must be a Map.'
 
     config.label.each { String label, String value ->
       cmd += " --label ${label}=${value}"
@@ -81,7 +81,7 @@ void deploy(Map config) {
 void install(Map config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
-  assert (config.platform instanceof String && config.version instanceof String) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
+  assert (config.platform in String && config.version in String) : 'A required parameter is missing from this faas.install block. Please consult the documentation for proper usage.'
   new utils().makeDirParents(config.installPath)
 
   // check if current version already installed
@@ -112,7 +112,7 @@ void install(Map config) {
 void invoke(Map config) {
   // input checking
   config.bin = config.bin ?: 'faas-cli'
-  assert config.function instanceof String : 'The required parameter function was not set.'
+  assert config.function in String : 'The required parameter function was not set.'
 
   String cmd = "${config.bin} invoke"
 
@@ -124,7 +124,7 @@ void invoke(Map config) {
     cmd += " --content-type ${config.contentType}"
   }
   if (config.header) {
-    assert (config.header instanceof Map) : 'The header parameter must be a Map.'
+    assert (config.header in Map) : 'The header parameter must be a Map.'
 
     config.header.each { String header, String value ->
       cmd += " -H ${header}=${value}"
@@ -134,7 +134,7 @@ void invoke(Map config) {
     cmd += " -m ${config.method}"
   }
   if (config.query) {
-    assert (config.query instanceof Map) : 'The query parameter must be a Map.'
+    assert (config.query in Map) : 'The query parameter must be a Map.'
 
     config.query.each { String query, String value ->
       cmd += " --query ${query}=${value}"
@@ -195,7 +195,7 @@ String list(Map config) {
 
 void login(Map config) {
   // input checking
-  assert config.password instanceof String : 'The required password parameter was not set.'
+  assert config.password in String : 'The required password parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} login"
@@ -219,7 +219,7 @@ void login(Map config) {
 
 String logs(Map config) {
   // input checking
-  assert config.name instanceof String : 'The required "name" parameter was not set.'
+  assert config.name in String : 'The required "name" parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} logs"
@@ -255,7 +255,7 @@ String logs(Map config) {
 void push(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
-  assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
+  assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} push"
@@ -282,7 +282,7 @@ void push(Map config) {
 void remove(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
-  assert readYaml(config.template) instanceof String : "The template file ${config.template} does not exist or is not a valid YAML file!"
+  assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} rm"
@@ -303,7 +303,7 @@ void remove(Map config) {
 
 Boolean validateTemplate(String template) {
   // ensure template exists and then check yaml syntax
-  assert readFile(template) instanceof String : "Template ${template} does not exist!"
+  assert readFile(template) in String : "Template ${template} does not exist!"
 
   try {
     readYaml(file: template)
