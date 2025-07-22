@@ -3,6 +3,9 @@
 - Improve label descriptions for `sh` steps.
 - Miscellanous improvements from code linting.
 
+**Terraform**
+- Fix check on return from `terraform.fmt`.
+
 ### 2.2.0
 **General**
 - Miscellanous improvements and fixes from code linting.

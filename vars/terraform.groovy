@@ -113,18 +113,19 @@ Boolean fmt(Map config) {
 
   // canonically format the code
   int fmtStatus
-  try {
-    dir(config.configDir) {
-      fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
-    }
+  dir(config.configDir) {
+    fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
+  }
 
-    // report if formatting check detected issues
-    if ((config.check == true) && (fmtStatus != 0)) {
+  // report if formatting check detected issues
+  if (fmtStatus != 0) {
+    // the format check failed
+    if (config.check == true) {
       print 'Terraform fmt has detected formatting errors.'
       return false
     }
-  }
-  catch (Exception error) {
+
+    // the format command failed unexpectedly
     print 'Failure using terraform fmt.'
     throw error
   }
