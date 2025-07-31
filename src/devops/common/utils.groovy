@@ -15,28 +15,33 @@ def defaultInput(input, defaultValue) {
 // removes file
 @NonCPS
 void removeFile(String file) {
-  // delete a file off of the master
-  if (env['NODE_NAME'] == 'master') {
+  // efficient initilization
+  final String node = env['NODE_NAME']
+
+  // delete a file on the master
+  if (node == 'master') {
     new File(file).delete()
   }
   // delete a file off of the build node
   else {
-    new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), file).delete()
+    new FilePath(Jenkins.getInstance().getComputer(node).getChannel(), file).delete()
   }
 }
 
 // downloads file
 @NonCPS
 void downloadFile(String url, String dest) {
-  def file
+  // efficient initilization
+  final String node = env['NODE_NAME']
+  File file
 
   // establish the file download for the master
-  if (env['NODE_NAME'] == 'master') {
+  if (node == 'master') {
     file = new File(dest).newOutputStream()
   }
   // establish the file download for the build node
   else {
-    file = new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dest).newOutputStream()
+    file = new FilePath(Jenkins.getInstance().getComputer(node).getChannel(), dest).newOutputStream()
   }
   // download the file and close the ostream
   file << new URL(url).openStream()
@@ -46,10 +51,13 @@ void downloadFile(String url, String dest) {
 // functionally equivalent to unix mkdir -p
 @NonCPS
 void makeDirParents(String dir) {
-  print "Attempting to recursively create directory ${dir} on Jenkins ${env['NODE_NAME']}"
+  // efficient initilization
+  final String node = env['NODE_NAME']
+
+  print "Attempting to recursively create directory ${dir} on Jenkins ${node}"
 
   // create a directory on the master
-  if (env['NODE_NAME'] == 'master') {
+  if (node == 'master') {
     // short circuit if directory exists
     if (File(dir).exists()) {
       print 'Directory already exists on node.'
@@ -61,12 +69,12 @@ void makeDirParents(String dir) {
   // create a directory on the build agent
   else {
     // short circuit if directory exists
-    if (FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dir).exists()) {
+    if (FilePath(Jenkins.getInstance().getComputer(node).getChannel(), dir).exists()) {
       print 'Directory already exists on node.'
       return
     }
 
-    new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dir).mkdirs()
+    new FilePath(Jenkins.getInstance().getComputer(node).getChannel(), dir).mkdirs()
   }
 }
 
@@ -82,14 +90,14 @@ Map paramsConverter(body) {
   Map config = [:]
 
   // if we received older DSL, convert it into config map
-  if (body instanceof Closure) {
+  if (body in Closure) {
     // evaluate the body block and collect configuration into the object
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
   }
   // if newer DSL, return same map as the config
-  else if (body instanceof Map) {
+  else if (body in Map) {
     config = body
   }
   // params are invalid type
