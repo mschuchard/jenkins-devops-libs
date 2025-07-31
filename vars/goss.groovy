@@ -66,7 +66,7 @@ String render(Map config) {
 
     return rendered
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using goss render.'
     throw error
   }
@@ -119,7 +119,7 @@ void server(Map config) {
 
     sh(label: "GoSS Server ${config?.gossfile}", script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using goss serve.'
     throw error
   }
@@ -208,7 +208,7 @@ void validateDocker(Map config) {
 
     sh(label: "DGoSS Validate Docker ${config.image}", script: "${cmd} ${config.image}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using dgoss run.'
     throw error
   }

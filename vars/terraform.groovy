@@ -59,7 +59,7 @@ private void execute(Map config) {
       }
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print "Failure using terraform ${config.action}."
     throw error
   }
@@ -170,7 +170,7 @@ void graph(Map config) {
   try {
     dotGraph = sh(label: 'Terraform Graph', script: cmd)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform graph.'
     throw error
   }
@@ -229,7 +229,7 @@ void imports(Map config) {
       sh(label: "Terraform Import ${name}", script: "${cmd} '${name}' ${id}")
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform import.'
     throw error
   }
@@ -297,7 +297,7 @@ void init(Map config) {
       sh(label: 'Terraform Init', script: cmd)
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform init.'
     throw error
   }
@@ -369,7 +369,7 @@ String output(Map config) {
       outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform output.'
     throw error
   }
@@ -461,7 +461,7 @@ String plan(Map config) {
       print "Plan output artifact written to: ${out}"
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform plan.'
     throw error
   }
@@ -526,7 +526,7 @@ void providers(String rootDir = '', String bin = 'terraform') {
       sh(label: 'Terraform Providers Information', script: "${bin} providers")
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform providers.'
     throw error
   }
@@ -583,7 +583,7 @@ void refresh(Map config) {
       sh(label: 'Terraform Refresh', script: cmd)
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform refresh.'
     throw error
   }
@@ -683,7 +683,7 @@ void state(Map config) {
         error(message: "Unknown Terraform state command ${config.command} specified.")
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform state manipulation.'
     throw error
   }
@@ -726,7 +726,7 @@ void taint(Map config) {
       }
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform taint.'
     throw error
   }
@@ -795,7 +795,7 @@ String test(Map config) {
       testOutput = sh(label: 'Terraform Test', script: cmd, returnStdout: true)
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform test.'
     throw error
   }
@@ -839,7 +839,7 @@ String validate(Map config) {
       validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: true)
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using terraform validate.'
     throw error
   }
@@ -874,7 +874,7 @@ void workspace(Map config) {
     try {
       sh(label: "Terraform Workspace Select ${config.workspace}", script: "${config.cmd} ${config.workspace}")
     }
-    catch (Exception error) {
+    catch (hudson.AbortException error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
 
       final String workspaces = sh(label: 'Terraform Workspace List', script: "${config.bin} workspace list", returnStdout: true)

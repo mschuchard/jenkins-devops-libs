@@ -33,7 +33,7 @@ void hostCreate(Map config) {
   try {
     sh(label: "AWX Host Create ${config.name}", script: cmd)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using awx host create.'
     throw error
   }
@@ -45,7 +45,7 @@ void hostDelete(String id, String bin = 'awx') {
   try {
     sh(label: "AWX Host Delete ${id}", script: "${bin} hosts delete ${id}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using awx host delete.'
     throw error
   }
@@ -95,7 +95,7 @@ private void inventory(Map config) {
   try {
     sh(label: "AWX Inventory ${capAction} ${config.name}", script: cmd)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print "Failure using awx inventory${config.action}."
     throw error
   }
@@ -114,7 +114,7 @@ void inventoryDelete(String id, String bin = 'awx') {
   try {
     sh(label: "AWX Inventory Delete ${id}", script: "${bin} inventory delete ${id}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using awx inventory delete.'
     throw error
   }
@@ -177,7 +177,7 @@ void jobTemplateLaunch(Map config) {
   try {
     sh(label: "AWX Job Template Launch ${config.id}", script: "${cmd} ${config.id}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using awx job template launch.'
     throw error
   }
@@ -201,7 +201,7 @@ void projectsUpdate(Map config) {
   try {
     sh(label: "AWX Project Update ${config.id}", script: "${cmd} ${config.id}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using awx projects update.'
     throw error
   }
@@ -244,7 +244,7 @@ void workflowJobTemplateLaunch(Map config) {
   try {
     sh(label: "AWX Workflow Job Template Launch ${config.id}", script: "${cmd} ${config.id}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using awx workflow job template launch.'
     throw error
   }

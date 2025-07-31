@@ -34,7 +34,7 @@ String history(Map config) {
 
     return historyOutput
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm history.'
     throw error
   }
@@ -56,7 +56,7 @@ void install(Map config) {
   if (config.values) {
     assert (config.values in List) : 'The values parameter must be a list of strings.'
 
-    config.values.each() { String value ->
+    config.values.each { String value ->
       if (!(value ==~ /:\/\//)) {
         assert readYaml(value) in String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
@@ -67,7 +67,7 @@ void install(Map config) {
   if (config.set) {
     assert (config.set in Map) : 'The set parameter must be a Map.'
 
-    config.set.each() { String var, String value ->
+    config.set.each { String var, String value ->
       cmd += " --set ${var}=${value}"
     }
   }
@@ -114,7 +114,7 @@ void install(Map config) {
   try {
     sh(label: "Helm Install ${config.name}", script: "${cmd} ${config.name} ${config.chart}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm install.'
     throw error
   }
@@ -227,7 +227,7 @@ void packages(Map config) {
   try {
     sh(label: "Helm Package ${config.chart}", script: "${cmd} ${config.chart}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm package.'
     throw error
   }
@@ -251,7 +251,7 @@ void plugin(Map config) {
   try {
     sh(label: 'Helm Plugin', script: cmd)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print "Failure using helm plugin ${config.command}."
     throw error
   }
@@ -276,7 +276,7 @@ void push(Map config) {
   try {
     sh(label: "Helm Push ${config.chart}", script: "${cmd} ${config.chart} ${config.remote}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm push'
     throw error
   }
@@ -301,7 +301,7 @@ void registryLogin(Map config) {
   try {
     sh(label: "Helm Registry Login ${config.host}", script: "${cmd} ${config.host}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm registry login.'
     throw error
   }
@@ -334,7 +334,7 @@ void repo(Map config) {
   try {
     sh(label: "Helm Repo Add ${config.repo}", script: "${cmd} ${config.repo} ${config.url}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm repo add.'
     throw error
   }
@@ -344,7 +344,7 @@ void repo(Map config) {
   try {
     sh(label: "Helm Repo Update ${config.repo}", script: "${cmd.replaceFirst('add', 'update')} ${config.repo}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm repo update.'
     throw error
   }
@@ -396,7 +396,7 @@ void rollback(Map config) {
   try {
     sh(label: "Helm Rollback ${config.name}", script: cmd)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm rollback.'
     throw error
   }
@@ -432,7 +432,7 @@ void show(Map config) {
   try {
     sh(label: "Helm Show ${config.chart}", script: "${config.bin} ${config.info} ${config.chart}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm show.'
     throw error
   }
@@ -485,7 +485,7 @@ String status(Map config) {
 
     return status
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm status.'
     throw error
   }
@@ -516,7 +516,7 @@ void test(Map config) {
   try {
     sh(label: "Helm Test ${config.name}", script: "${cmd} ${config.name}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     // no longer relevant as of version 1.6.0, but still interesting code
     if (!(logs)) {
       print 'Release failed helm test. kubectl will now access the logs of the test pods and display them for debugging (unless using cleanup param).'
@@ -583,7 +583,7 @@ void uninstall(Map config) {
   try {
     sh(label: "Helm Uninstall ${config.name}", script: "${cmd} ${config.name}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm uninstall.'
     throw error
   }
@@ -665,7 +665,7 @@ void upgrade(Map config) {
   try {
     sh(label: "Helm Upgrade ${config.name}", script: "${cmd} ${config.name} ${config.chart}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using helm upgrade.'
     throw error
   }

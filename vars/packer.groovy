@@ -61,7 +61,7 @@ void build(Map config) {
       }
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using packer build.'
     throw error
   }
@@ -104,16 +104,16 @@ Boolean fmt(Map config) {
         fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} .")
       }
     }
-
-    // report if formatting check detected issues
-    if ((config.check == true) && (fmtStatus != 0)) {
-      print 'Packer fmt has detected formatting errors.'
-      return false
-    }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using packer fmt.'
     throw error
+  }
+
+  // report if formatting check detected issues
+  if ((config.check == true) && (fmtStatus != 0)) {
+    print 'Packer fmt has detected formatting errors.'
+    return false
   }
 
   print 'Packer fmt was successful.'
@@ -138,7 +138,7 @@ void init(Map config) {
       sh(label: "Packer Init ${config.dir}", script: "${cmd} .")
     }
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using packer init.'
     throw error
   }
@@ -153,7 +153,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
   try {
     sh(label: "Packer Inspect ${template}", script: "${bin} inspect ${template}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure inspecting the template.'
     throw error
   }
@@ -238,7 +238,7 @@ void pluginsInstall(Map config) {
   try {
     sh(label: "Packer Plugins Install ${config.plugin}", script: cmd)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using packer plugins install.'
     throw error
   }
@@ -260,7 +260,7 @@ void pluginsRemove(Map config) {
   try {
     sh(label: "Packer Plugins Remove ${config.plugin}", script: cmd)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using packer plugins remove.'
     throw error
   }
@@ -294,7 +294,7 @@ void plugins(Map config) {
       sh(label: "Packer Plugins ${config.command.capitalize()}", script: cmd)
     }
     }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using packer plugins.'
     throw error
   }

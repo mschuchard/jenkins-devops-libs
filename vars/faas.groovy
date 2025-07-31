@@ -30,7 +30,7 @@ void build(Map config) {
   try {
     sh(label: "OpenFaaS Build ${config.template}", script: "${cmd} -f ${config.template}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using faas-cli build.'
     throw error
   }
@@ -71,7 +71,7 @@ void deploy(Map config) {
   try {
     sh(label: "OpenFaaS Deploy ${config.template}", script: "${cmd} -f ${config.template}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using faas-cli deploy.'
     throw error
   }
@@ -149,7 +149,7 @@ void invoke(Map config) {
   try {
     sh(label: "OpenFaaS Invoke ${config.function}", script: "${cmd} ${config.function}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using faas-cli invoke.'
     throw error
   }
@@ -184,7 +184,7 @@ String list(Map config) {
   try {
     functions = sh(label: 'OpenFaaS List', script: cmd, returnStdout: true)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using faas-cli list.'
     throw error
   }
@@ -210,7 +210,7 @@ void login(Map config) {
   try {
     sh(label: "OpenFaaS Login ${config.user}", script: "${cmd} -p ${config.password}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using faas-cli login.'
     throw error
   }
@@ -243,7 +243,7 @@ String logs(Map config) {
   try {
     logs = sh(label: "OpenFaaS Logs ${config.name}", script: "${cmd} ${config.name}", returnStdout: true)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using faas-cli logs.'
     throw error
   }
@@ -272,7 +272,7 @@ void push(Map config) {
   try {
     sh(label: "OpenFaaS Push ${config.template}", script: "${cmd} -f ${config.template}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using faas-cli push.'
     throw error
   }
@@ -294,7 +294,7 @@ void remove(Map config) {
   try {
     sh(label: "OpenFaaS Remove ${config.template}", script: "${cmd} -f ${config.template}")
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print 'Failure using faas-cli remove.'
     throw error
   }
