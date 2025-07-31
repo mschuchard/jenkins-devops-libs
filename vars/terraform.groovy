@@ -90,7 +90,7 @@ Boolean fmt(Map config) {
     config.dir = env.WORKSPACE
   }
   if (config.write && config.check) {
-    throw new Exception("The 'write' and 'check' options for terraform.fmt are mutually exclusive; only one can be specified.")
+    error(message: "The 'write' and 'check' options for terraform.fmt are mutually exclusive; only one can be specified.")
   }
   config.bin = config.bin ?: 'terraform'
 
@@ -140,7 +140,7 @@ void graph(Map config) {
 
   // input checking
   if (config.plan && config.dir) {
-    throw new Exception("The 'plan' and 'dir' parameters for terraform.graph are mutually exclusive; only one can be specified.")
+    error(message: "The 'plan' and 'dir' parameters for terraform.graph are mutually exclusive; only one can be specified.")
   }
   else if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -680,7 +680,7 @@ void state(Map config) {
         break
       default:
         // should never reach this because of above assert
-        throw new Exception("Unknown Terraform state command ${config.command} specified.")
+        error(message: "Unknown Terraform state command ${config.command} specified.")
     }
   }
   catch (Exception error) {

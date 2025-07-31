@@ -4,7 +4,7 @@ import devops.common.utils
 void codeDeploy(Map config) {
   // input checking
   if (config.tokenFile && config.credentialsId) {
-    throw new Exception("The 'tokenFile' and 'credentialsId' parameters for puppet.codeDeploy are mutually exclusive; only one can be specified.")
+    error(message: "The 'tokenFile' and 'credentialsId' parameters for puppet.codeDeploy are mutually exclusive; only one can be specified.")
   }
   assert config.tokenFile || (config.credentialsId in String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
@@ -112,7 +112,7 @@ void codeDeploy(Map config) {
 void task(Map config) {
   // input checking
   if (config.tokenFile && config.credentialsId) {
-    throw new Exception("The 'tokenFile' and 'credentialsId' parameters for puppet.task are mutually exclusive; only one can be specified.")
+    error(message: "The 'tokenFile' and 'credentialsId' parameters for puppet.task are mutually exclusive; only one can be specified.")
   }
   assert config.tokenFile || (config.credentialsId in String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
@@ -162,7 +162,7 @@ void task(Map config) {
     }
   }
   else {
-    throw new Exception('The scope parameter is an invalid type!')
+    error(message: 'The scope parameter is an invalid type!')
   }
 
   // convert map to json file
@@ -213,19 +213,19 @@ void task(Map config) {
   // handle errors in response
   response.each { Map hash ->
     if (hash.containsKey('puppetlabs.orchestrator/unknown-environment')) {
-      throw new Exception('The environment does not exist!')
+      error(message: 'The environment does not exist!')
     }
     else if (hash.containsKey('puppetlabs.orchestrator/empty-target')) {
-      throw new Exception('The application instance specified to deploy does not exist or is empty!')
+      error(message: 'The application instance specified to deploy does not exist or is empty!')
     }
     else if (hash.containsKey('puppetlabs.orchestrator/puppetdb-error')) {
-      throw new Exception('The orchestrator is unable to make a query to PuppetDB!')
+      error(message: 'The orchestrator is unable to make a query to PuppetDB!')
     }
     else if (hash.containsKey('puppetlabs.orchestrator/query-error')) {
-      throw new Exception('The user does not have appropriate permissions to run a query, or the query is invalid!')
+      error(message: 'The user does not have appropriate permissions to run a query, or the query is invalid!')
     }
     else if (hash.containsKey('puppetlabs.orchestrator/not-permitted')) {
-      throw new Exception('The user does not have permission to run the task on the requested nodes!')
+      error(message: 'The user does not have permission to run the task on the requested nodes!')
     }
     else {
       print 'Successful response from Orchestrator below:'

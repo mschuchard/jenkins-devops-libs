@@ -6,7 +6,7 @@ void build(Map config) {
   // input checking
   assert config.template in String : 'The required template parameter was not set.'
   if (config.except && config.only) {
-    throw new Exception("The 'except' and 'only' parameters for packer.build are mutually exclusive; only one can be specified.")
+    error(message: "The 'except' and 'only' parameters for packer.build are mutually exclusive; only one can be specified.")
   }
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
@@ -73,7 +73,7 @@ Boolean fmt(Map config) {
   assert config.template in String : 'The required template parameter was not set.'
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   if (config.write && config.check) {
-    throw new Exception("The 'write' and 'check' options for packer.fmt are mutually exclusive - only one can be enabled.")
+    error(message: "The 'write' and 'check' options for packer.fmt are mutually exclusive - only one can be enabled.")
   }
   config.bin = config.bin ?: 'packer'
 
@@ -305,7 +305,7 @@ Boolean validate(Map config) {
   // input checking
   assert config.template in String : 'The required template parameter was not set.'
   if (config.except && config.only) {
-    throw new Exception("The 'except' and 'only' parameters for packer.validate are mutually exclusive; only one can be specified.")
+    error(message: "The 'except' and 'only' parameters for packer.validate are mutually exclusive; only one can be specified.")
   }
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
@@ -371,5 +371,5 @@ Boolean validate(Map config) {
     return false
   }
   print 'Failure using packer validate.'
-  throw new Exception('Packer validate failed unexpectedly')
+  error(message: 'Packer validate failed unexpectedly')
 }

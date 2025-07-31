@@ -41,7 +41,7 @@ void deploy(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   if (config.replace && config.update) {
-    throw new Exception('The parameters "replace" and "update" are mutually exclusive!')
+    error(message: 'The parameters "replace" and "update" are mutually exclusive!')
   }
   assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
@@ -100,7 +100,7 @@ void install(Map config) {
     case 'darwin': extension = '-darwin'; break
     case 'linux-arm64': extension = '-arm64'; break
     case 'linux-armhf': extension = '-armhf'; break
-    default: throw new Exception("Unsupported platform ${config.platform} specified!")
+    default: error(message: "Unsupported platform ${config.platform} specified!")
   }
   // download and install specified version
   new utils().downloadFile("https://github.com/openfaas/faas-cli/releases/download/${config.version}/faas-cli${extension}", "${config.installPath}/faas-cli")
@@ -159,7 +159,7 @@ void invoke(Map config) {
 String list(Map config) {
   // input checking
   if (config.quiet && config.verbose) {
-    throw new Exception('The "quiet" and "verbose" parameters for faas.list are mutually exclusive; only one can be specified.')
+    error(message: 'The "quiet" and "verbose" parameters for faas.list are mutually exclusive; only one can be specified.')
   }
   config.bin = config.bin ?: 'faas-cli'
 

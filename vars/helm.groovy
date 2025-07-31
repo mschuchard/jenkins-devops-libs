@@ -45,7 +45,7 @@ void install(Map config) {
   assert config.name in String : 'The required parameter "name" was not set.'
   assert config.chart in String : 'The required parameter "chart" was not set.'
   if (config.version && config.devel) {
-    throw new Exception("The 'version' and 'devel' parameters for helm.install are mutually exclusive; only one can be specified.")
+    error(message: "The 'version' and 'devel' parameters for helm.install are mutually exclusive; only one can be specified.")
   }
   config.bin = config.bin ?: 'helm'
 
@@ -107,7 +107,7 @@ void install(Map config) {
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
   if (releaseObjList =~ config.name) {
-    throw new Exception("Release object ${config.name} already exists!")
+    error(message: "Release object ${config.name} already exists!")
   }
 
   // install with helm
@@ -188,7 +188,7 @@ Boolean lint(Map config) {
   }
 
   print 'Failure using helm lint.'
-  throw new Exception('Helm lint failed unexpectedly')
+  error(message: 'Helm lint failed unexpectedly')
 }
 
 void packages(Map config) {
@@ -197,7 +197,7 @@ void packages(Map config) {
   assert config.chart in String : 'The required parameter "chart" was not set.'
   assert readYaml("${config.chart}/Chart.yaml") in String : "The supplied path ${config.chart} to the chart does not contain a valid Chart.yaml!"
   if (config.key && config.keyring) {
-    throw new Exception("The 'key' and 'keyring' parameters for helm.packages are mutually exclusive; only one can be specified.")
+    error(message: "The 'key' and 'keyring' parameters for helm.packages are mutually exclusive; only one can be specified.")
   }
 
   String cmd = "${config.bin} package"
@@ -552,7 +552,7 @@ void test(Map config) {
       }
     }
 
-    throw new Exception('Helm test failed with above logs.')
+    error(message: 'Helm test failed with above logs.')
   }
   print 'Helm test executed successfully.'
 }
@@ -593,7 +593,7 @@ void uninstall(Map config) {
 void upgrade(Map config) {
   // input checking
   if (config.version && config.devel) {
-    throw new Exception("The 'version' and 'devel' parameters for helm.upgrade are mutually exclusive; only one can be specified.")
+    error(message: "The 'version' and 'devel' parameters for helm.upgrade are mutually exclusive; only one can be specified.")
   }
   assert config.chart in String : 'The required parameter "chart" was not set.'
   assert config.name in String : 'The required parameter "name" was not set.'
@@ -690,5 +690,5 @@ Boolean verify(String chartPath, String helmPath = 'helm') {
   }
 
   print 'Failure using helm verify'
-  throw new Exception('Helm verify failed unexpectedly')
+  error(message: 'Helm verify failed unexpectedly')
 }

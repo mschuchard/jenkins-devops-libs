@@ -185,7 +185,7 @@ Boolean validate(Map config) {
   }
 
   print 'Failure using goss validate.'
-  throw new Exception('GoSS validate failed unexpectedly')
+  error(message: 'GoSS validate failed unexpectedly')
 }
 
 void validateDocker(Map config) {
