@@ -47,19 +47,19 @@ String render(Map config) {
   }
   config.bin = config.bin ?: 'goss'
 
+  String cmd = config.bin
+
+  // check for optional global inputs and establish command
+  cmd += globalArgsCmd(config)
+  cmd += ' render'
+
+  // check for optional inputs
+  if (config.debug == true) {
+    cmd += ' --debug'
+  }
+
   // render gossfile
   try {
-    String cmd = config.bin
-
-    // check for optional global inputs and establish command
-    cmd += globalArgsCmd(config)
-    cmd += ' render'
-
-    // check for optional inputs
-    if (config.debug == true) {
-      cmd += ' --debug'
-    }
-
     final String rendered = sh(label: "GoSS Render ${config?.gossfile}", script: cmd, returnStdout: true)
 
     print 'GoSSfile rendered successfully.'
@@ -88,35 +88,35 @@ void server(Map config) {
   config.port = config.port ?: '8080'
   config.bin = config.bin ?: 'goss'
 
+  String cmd = config.bin
+
+  // check for optional global inputs and establish command
+  cmd += globalArgsCmd(config)
+  cmd += ' serve'
+
+  // check for optional inputs
+  if (config.maxConcur) {
+    cmd += " --max-concurrent ${config.maxConcur}"
+  }
+  if (config.format) {
+    assert (['documentation', 'json', 'json_oneline', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
+
+    cmd += " -f ${config.format}"
+  }
+  if (config.formatOpts) {
+    assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
+
+    cmd += " -o ${config.formatOpts}"
+  }
+  if (config.cache) {
+    cmd += " -c ${config.cache}"
+  }
+  if (config.logLevel) {
+    cmd += " -L ${config.logLevel.toUpperCase()}"
+  }
+
   // create goss rest api endpoint
   try {
-    String cmd = config.bin
-
-    // check for optional global inputs and establish command
-    cmd += globalArgsCmd(config)
-    cmd += ' serve'
-
-    // check for optional inputs
-    if (config.maxConcur) {
-      cmd += " --max-concurrent ${config.maxConcur}"
-    }
-    if (config.format) {
-      assert (['documentation', 'json', 'json_oneline', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
-
-      cmd += " -f ${config.format}"
-    }
-    if (config.formatOpts) {
-      assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
-
-      cmd += " -o ${config.formatOpts}"
-    }
-    if (config.cache) {
-      cmd += " -c ${config.cache}"
-    }
-    if (config.logLevel) {
-      cmd += " -L ${config.logLevel.toUpperCase()}"
-    }
-
     sh(label: "GoSS Server ${config?.gossfile}", script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
   }
   catch (hudson.AbortException error) {
@@ -193,19 +193,19 @@ void validateDocker(Map config) {
   assert config.image in String : 'The required image parameter was not set.'
   config.bin = config.bin ?: 'dgoss'
 
+  String cmd = "${config.bin} run"
+
+  // check for optional inputs
+  if (config.flags) {
+    assert (config.flags in Map) : 'The flags parameter must be a Map.'
+
+    config.flags.each { String flag, String value ->
+        cmd += " -e ${flag}=${value}"
+    }
+  }
+
   // run with dgoss
   try {
-    String cmd = "${config.bin} run"
-
-    // check for optional inputs
-    if (config.flags) {
-      assert (config.flags in Map) : 'The flags parameter must be a Map.'
-
-      config.flags.each { String flag, String value ->
-        cmd += " -e ${flag}=${value}"
-      }
-    }
-
     sh(label: "DGoSS Validate Docker ${config.image}", script: "${cmd} ${config.image}")
   }
   catch (hudson.AbortException error) {
