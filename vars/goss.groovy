@@ -39,8 +39,8 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
 
 String render(Map config) {
   // input checking
-  if (config?.gossfile) {
-    assert readYaml(config?.gossfile) in String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
+  if (config.gossfile) {
+    assert readYaml(config.gossfile) in String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
     assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
@@ -74,8 +74,8 @@ String render(Map config) {
 
 void server(Map config) {
   // input checking
-  if (config?.gossfile) {
-    assert readYaml(config?.gossfile) in String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
+  if (config.gossfile) {
+    assert readYaml(config.gossfile) in String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
     assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
@@ -128,8 +128,8 @@ void server(Map config) {
 
 Boolean validate(Map config) {
   // input checking
-  if (config?.gossfile) {
-    assert readYaml(config?.gossfile) in String : "Gossfile ${config?.gossfile} does not exist or is not a valid YAML file!"
+  if (config.gossfile) {
+    assert readYaml(config.gossfile) in String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
   }
   else {
     assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
@@ -254,8 +254,8 @@ private String globalArgsCmd(Map config) {
 
     subCmd += " --package ${config.package}"
   }
-  if (config?.gossfile) {
-    subCmd += " -g ${config?.gossfile}"
+  if (config.gossfile) {
+    subCmd += " -g ${config.gossfile}"
   }
 
   // return subcommand based from global arguments
