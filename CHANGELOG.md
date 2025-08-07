@@ -4,7 +4,10 @@
 - Miscellanous improvements from code linting.
 
 **Terraform**
-- Fix check on return from `terraform.fmt`.
+- Fix check on return from `fmt`.
+- Fix config dir setting for `fmt` and `workspace`.
+- Fix `resources` assert for `import`.
+- Fix error throw for `fmt`.
 
 ### 2.2.0
 **General**

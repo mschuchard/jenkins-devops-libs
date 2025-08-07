@@ -113,7 +113,7 @@ Boolean fmt(Map config) {
 
   // canonically format the code
   int fmtStatus
-  dir(config.configDir) {
+  dir(config.dir) {
     fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
   }
 
@@ -127,7 +127,7 @@ Boolean fmt(Map config) {
 
     // the format command failed unexpectedly
     print 'Failure using terraform fmt.'
-    throw error
+    error(message: 'terraform fmt failed unexpectedly; check logs for details')
   }
 
   print 'Terraform fmt was successful.'
@@ -185,7 +185,7 @@ void imports(Map config) {
 
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
-  assert (config.resources in List) : 'Parameter resources must be a list of strings.'
+  assert (config.resources in Map) : 'Parameter resources must be a map of strings.'
   config.bin = config.bin ?: 'terraform'
 
   String cmd = "${config.bin} import -no-color -input=false"
@@ -293,7 +293,7 @@ void init(Map config) {
 
   // initialize the working config directory
   try {
-    dir(config.configDir) {
+    dir(config.dir) {
       sh(label: 'Terraform Init', script: cmd)
     }
   }
@@ -638,7 +638,7 @@ void state(Map config) {
 
         break
       case 'push':
-        assert !config.resources : 'Resources parameter is not allowed for push command.'
+        assert !config.resources : 'Resources parameter is not allowed for list command.'
 
         dir(config.dir) {
           sh(label: 'Terraform State Push', script: "${cmd} push")
@@ -872,7 +872,7 @@ void workspace(Map config) {
   dir(config.dir) {
     // select workspace in terraform config directory
     try {
-      sh(label: "Terraform Workspace Select ${config.workspace}", script: "${config.cmd} ${config.workspace}")
+      sh(label: "Terraform Workspace Select ${config.workspace}", script: "${cmd} ${config.workspace}")
     }
     catch (hudson.AbortException error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
