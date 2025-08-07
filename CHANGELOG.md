@@ -3,6 +3,11 @@
 - Improve label descriptions for `sh` steps.
 - Miscellanous improvements from code linting.
 
+**Helm**
+- Fix input parameter type assertions.
+- Fix input parameter command assignments.
+- Fix yaml file validations.
+
 **Terraform**
 - Fix check on return from `fmt`.
 - Fix config dir setting for `fmt` and `workspace`.
