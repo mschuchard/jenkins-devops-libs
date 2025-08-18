@@ -426,7 +426,7 @@ void setup(String version, String installPath = '/usr/bin/') {
 void show(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart in : 'The required parameter "chart" was not set.'
+  assert config.chart : 'The required parameter "chart" was not set.'
   assert (['all', 'chart', 'crds', 'readme', 'values']).contains(config.info) : 'The info parameter must be one of all, chart, crds, readme, or values.'
 
   // show chart info
