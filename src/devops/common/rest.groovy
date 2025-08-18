@@ -18,6 +18,7 @@ Map request(String url, HTTPMethod method = GET, Map body = [:], Map headers = [
   // initialize client and expected status code
   def client = new RESTClient(url)
   int status = 200
+  Map response
 
   // invoke helper request method depending upon interaction method
   switch(method) {

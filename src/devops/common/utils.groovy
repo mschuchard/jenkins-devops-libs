@@ -15,67 +15,36 @@ def defaultInput(input, defaultValue) {
 // removes file
 @NonCPS
 void removeFile(String file) {
-  // efficient initilization
-  final String node = env['NODE_NAME']
-
-  // delete a file on the master
-  if (node == 'master') {
-    new File(file).delete()
-  }
-  // delete a file off of the build node
-  else {
-    new FilePath(Jenkins.getInstance().getComputer(node).getChannel(), file).delete()
-  }
+  // delete a file on the master or build node
+  env['NODE_NAME'] == 'master' ? new File(file).delete() : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), file).delete()
 }
 
 // downloads file
 @NonCPS
 void downloadFile(String url, String dest) {
-  // efficient initilization
-  final String node = env['NODE_NAME']
-  File file
+  // establish the file download for the master or the build node
+  File file = env['NODE_NAME'] == 'master' ? new File(dest) : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dest)
 
-  // establish the file download for the master
-  if (node == 'master') {
-    file = new File(dest).newOutputStream()
-  }
-  // establish the file download for the build node
-  else {
-    file = new FilePath(Jenkins.getInstance().getComputer(node).getChannel(), dest).newOutputStream()
-  }
   // download the file and close the ostream
-  file << new URL(url).openStream()
+  file.newOutputStream() << new URL(url).openStream()
   file.close()
 }
 
 // functionally equivalent to unix mkdir -p
 @NonCPS
 void makeDirParents(String dir) {
-  // efficient initilization
-  final String node = env['NODE_NAME']
+  // ascertain directory on jenkins master or build agent/node
+  File file = env['NODE_NAME'] == 'master' ? new File(dir) : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dir)
 
-  print "Attempting to recursively create directory ${dir} on Jenkins ${node}"
-
-  // create a directory on the master
-  if (node == 'master') {
-    // short circuit if directory exists
-    if (File(dir).exists()) {
-      print 'Directory already exists on node.'
-      return
-    }
-
-    new File(dir).mkdirs()
+  // short circuit if directory exists
+  if (file.exists()) {
+    print "Directory at ${dir} already exists on node."
+    return
   }
-  // create a directory on the build agent
-  else {
-    // short circuit if directory exists
-    if (FilePath(Jenkins.getInstance().getComputer(node).getChannel(), dir).exists()) {
-      print 'Directory already exists on node.'
-      return
-    }
 
-    new FilePath(Jenkins.getInstance().getComputer(node).getChannel(), dir).mkdirs()
-  }
+  // create the directory(ies)
+  file.mkdirs()
+  print "Created directory at ${dir}"
 }
 
 // converts content map to json string
