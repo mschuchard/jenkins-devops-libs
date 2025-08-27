@@ -5,7 +5,7 @@ void build(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
-  assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
+  assert validateTemplate(config.template) : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
   String cmd = "${config.bin} build"
 
@@ -43,7 +43,7 @@ void deploy(Map config) {
   if (config.replace && config.update) {
     error(message: 'The parameters "replace" and "update" are mutually exclusive!')
   }
-  assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
+  assert validateTemplate(config.template) : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
   config.bin = config.bin ?: 'faas-cli'
   String cmd = "${config.bin} deploy"
@@ -231,10 +231,10 @@ String logs(Map config) {
   if (config.format) {
     assert ['plain', 'keyvalue', 'json'].contains(config.format)
 
-    cmd += "-o ${config.format}"
+    cmd += " -o ${config.format}"
   }
   if (config.since) {
-    cmd += "--since ${config.since}"
+    cmd += " --since ${config.since}"
   }
   cmd += globalArgsCmd(config)
 
@@ -255,7 +255,7 @@ String logs(Map config) {
 void push(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
-  assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
+  assert validateTemplate(config.template) : "The template file ${config.template} does not exist or is not a valid YAML file!"
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} push"
@@ -282,7 +282,7 @@ void push(Map config) {
 void remove(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'
-  assert readYaml(config.template) in String : "The template file ${config.template} does not exist or is not a valid YAML file!"
+  assert validateTemplate(config.template) : "The template file ${config.template} does not exist or is not a valid YAML file!"
   config.bin = config.bin ?: 'faas-cli'
 
   String cmd = "${config.bin} rm"
@@ -303,7 +303,7 @@ void remove(Map config) {
 
 Boolean validateTemplate(String template) {
   // ensure template exists and then check yaml syntax
-  assert readFile(template) in String : "Template ${template} does not exist!"
+  assert readFile(template) : "Template ${template} does not exist!"
 
   try {
     readYaml(file: template)
@@ -319,13 +319,13 @@ Boolean validateTemplate(String template) {
 }
 
 // private method for global arguments pertaining to all methods
-private String globalArgsCmd(Map config) {
+private static String globalArgsCmd(Map config) {
   // initialize subcommand from global args
   String subCmd = ''
 
   // check for optional inputs
   if (config.filter) {
-    cmd += " --filter '${config.filter}'"
+    subCmd += " --filter '${config.filter}'"
   }
   if (config.gateway) {
     subCmd += " -g ${config.gateway}"
@@ -334,7 +334,7 @@ private String globalArgsCmd(Map config) {
     subCmd += " -n ${config.namespace}"
   }
   if (config.regex) {
-    cmd += " --regex '${config.regex}'"
+    subCmd += " --regex '${config.regex}'"
   }
   if (config.tls == false) {
     subCmd += ' --tls-no-verify'

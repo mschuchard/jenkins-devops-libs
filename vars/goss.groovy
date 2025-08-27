@@ -233,7 +233,7 @@ Boolean validateGossfile(String gossfile) {
 }
 
 // private method for global arguments
-private String globalArgsCmd(Map config) {
+private static String globalArgsCmd(Map config) {
   // initialize subcommand from global args
   String subCmd = ''
 

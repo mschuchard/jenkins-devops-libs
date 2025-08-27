@@ -8,6 +8,10 @@
 - Fix `kind` parameter validation in inventory methods.
 - Fix `instance_id` parameter usage in `hostCreate` method.
 
+**FaaS**
+- Fix function file validation.
+- Fix `format` and `since` parameter usage in `logs` method.
+
 **Helm**
 - Fix input parameter type assertions.
 - Fix input parameter command assignments.
