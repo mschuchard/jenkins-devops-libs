@@ -3,6 +3,11 @@
 - Improve label descriptions for `sh` steps.
 - Miscellanous improvements from code linting.
 
+**AWX**
+- Fix `extraVars` parameter usage in template launch methods.
+- Fix `kind` parameter validation in inventory methods.
+- Fix `instance_id` parameter usage in `hostCreate` method.
+
 **Helm**
 - Fix input parameter type assertions.
 - Fix input parameter command assignments.

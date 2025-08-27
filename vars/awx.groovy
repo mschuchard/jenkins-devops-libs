@@ -18,7 +18,7 @@ void hostCreate(Map config) {
     cmd += ' --enabled'
   }
   if (config.instanceId) {
-    cmd += "--instance_id ${config.instanceId}"
+    cmd += " --instance_id ${config.instanceId}"
   }
   if (config.variables) {
     assert (config.variables in Map) : 'The variables parameter must be a Map.'
@@ -70,7 +70,7 @@ private void inventory(Map config) {
     cmd += " --description ${config.description}"
   }
   if (config.kind) {
-    assert ['smart', 'constructed'].contains(cconfig.kind) : 'Inventory kind parameter value must be "smart" or "constructed".'
+    assert ['smart', 'constructed'].contains(config.kind) : 'Inventory kind parameter value must be "smart" or "constructed".'
 
     cmd += " --kind ${config.kind}"
   }
@@ -130,7 +130,7 @@ void inventoryModify(Map config) {
 
 void jobTemplateLaunch(Map config) {
   // input checking
-  assert config.id in int : '"id" is a required parameter for awx.jobTemplateLaunch.'
+  assert config.id in Integer : '"id" is a required parameter for awx.jobTemplateLaunch.'
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
@@ -165,10 +165,10 @@ void jobTemplateLaunch(Map config) {
     cmd += " --skip_tags ${config.skipTags.join(',')}"
   }
   if (config.extraVars) {
-    assert (config.extraVars in Map) : 'The variables parameter must be a Map.'
+    assert (config.extraVars in Map) : 'The extraVars parameter must be a Map.'
 
     // convert variables map to json for input
-    final String extraVars = new utils().mapToJSON(config.variables)
+    final String extraVars = new utils().mapToJSON(config.extraVars)
 
     cmd += " --extra_vars ${extraVars}"
   }
@@ -227,10 +227,10 @@ void workflowJobTemplateLaunch(Map config) {
     cmd += " --inventory ${config.inventory}"
   }
   if (config.extraVars) {
-    assert (config.extraVars in Map) : 'The variables parameter must be a Map.'
+    assert (config.extraVars in Map) : 'The extraVars parameter must be a Map.'
 
     // convert variables map to json for input
-    final String extraVars = new utils().mapToJSON(config.variables)
+    final String extraVars = new utils().mapToJSON(config.extraVars)
 
     cmd += " --extra_vars ${extraVars}"
   }
