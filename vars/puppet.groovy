@@ -204,7 +204,7 @@ void task(Map config) {
   }
   // receive and parse response
   try {
-    response = readJSON(text: json.content)
+    response = readJSON(text: jsonResponse.content)
   }
   catch (Exception error) {
     print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
@@ -268,11 +268,11 @@ void token(Map config) {
       ignoreSslErrors:        !config.secure,
       quiet:                  true,
       requestBody:            payload,
-      url:                    "${server}:${config.port}/rbac-api/v1/auth/token",
+      url:                    "${config.server}:${config.port}/rbac-api/v1/auth/token",
     )
   }
   catch (Exception error) {
-    print "Failure executing REST API request against ${server} with username ${config.username}. Returned status: ${jsonResponse.status}."
+    print "Failure executing REST API request against ${config.server} with username ${config.username}. Returned status: ${jsonResponse.status}."
     throw error
   }
   // receive and parse response
@@ -280,7 +280,7 @@ void token(Map config) {
     response = readJSON(text: jsonResponse.content)
   }
   catch (Exception error) {
-    print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
+    print "Response from ${config.server} is not valid JSON! Response content: ${jsonResponse.content}."
     throw error
   }
 

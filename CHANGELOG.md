@@ -21,6 +21,9 @@
 - Fix input parameter command assignments.
 - Fix yaml file validations.
 
+**Puppet**
+- Fix reponse and server name handling in `task` method.
+
 **Terraform**
 - Fix check on return from `fmt`.
 - Fix config dir setting for `fmt` and `workspace`.
