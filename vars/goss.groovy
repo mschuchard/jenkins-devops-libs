@@ -29,7 +29,7 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
       return
     }
   }
-  assert (!(fileExists("${installPath}/dgoss"))) : 'Dgoss is installed but goss is not. Dgoss execution requires goss.'
+  assert (fileExists("${installPath}/goss")) : 'dgoss is installed but goss is not. dgoss execution requires goss.'
 
   // otherwise download and install specified version
   new utils().downloadFile("https://raw.githubusercontent.com/aelsabbahy/goss/v${version}/extras/dgoss/dgoss", "${installPath}/dgoss")
@@ -39,12 +39,6 @@ void installDgoss(String version, String installPath = '/usr/bin/') {
 
 String render(Map config) {
   // input checking
-  if (config.gossfile) {
-    assert readYaml(config.gossfile) in String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
-  }
-  else {
-    assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
-  }
   config.bin = config.bin ?: 'goss'
 
   String cmd = config.bin
@@ -74,14 +68,8 @@ String render(Map config) {
 
 void server(Map config) {
   // input checking
-  if (config.gossfile) {
-    assert readYaml(config.gossfile) in String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
-  }
-  else {
-    assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
-  }
   if (config.logLevel) {
-    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
+    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(config.logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
   }
 
   config.endpoint = config.endpoint ?: '/healthz'
@@ -99,7 +87,7 @@ void server(Map config) {
     cmd += " --max-concurrent ${config.maxConcur}"
   }
   if (config.format) {
-    assert (['documentation', 'json', 'json_oneline', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
+    assert (['documentation', 'json', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
     cmd += " -f ${config.format}"
   }
@@ -128,14 +116,8 @@ void server(Map config) {
 
 Boolean validate(Map config) {
   // input checking
-  if (config.gossfile) {
-    assert readYaml(config.gossfile) in String : "Gossfile ${config.gossfile} does not exist or is not a valid YAML file!"
-  }
-  else {
-    assert readYaml('goss.yaml') in String : 'Gossfile \'goss.yaml\' does not exist or is not a valid YAML file!'
-  }
   if (config.logLevel) {
-    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
+    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(config.logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
   }
   config.bin = config.bin ?: 'goss'
 
@@ -151,7 +133,7 @@ Boolean validate(Map config) {
     cmd += " --max-concurrent ${config.maxConcur}"
   }
   if (config.format) {
-    assert (['documentation', 'json', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
+    assert (['documentation', 'json', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
     cmd += " -f ${config.format}"
   }
@@ -217,13 +199,13 @@ void validateDocker(Map config) {
 
 Boolean validateGossfile(String gossfile) {
   // ensure gossfile exists and then check yaml syntax
-  assert readFile(gossfile) in String : "Gossfile ${gossfile} does not exist!"
+  assert readFile(gossfile) : "GoSSfile ${gossfile} does not exist!"
 
   try {
     readYaml(file: gossfile)
   }
   catch (Exception error) {
-    print 'Gossfile failed YAML validation.'
+    print 'GoSSfile failed YAML validation.'
     print error.getMessage()
     return false
   }
@@ -255,7 +237,12 @@ private static String globalArgsCmd(Map config) {
     subCmd += " --package ${config.package}"
   }
   if (config.gossfile) {
+    assert validateGossfile(config.gossfile) : "GoSSfile ${config.gossfile} does not exist or is not a valid YAML file!"
+
     subCmd += " -g ${config.gossfile}"
+  }
+  else {
+    assert validateGossfile('goss.yaml') : 'GoSSfile \'goss.yaml\' does not exist or is not a valid YAML file!'
   }
 
   // return subcommand based from global arguments

@@ -12,6 +12,10 @@
 - Fix function file validation.
 - Fix `format` and `since` parameter usage in `logs` method.
 
+**GoSS**
+- Fix `gossfile` validation.
+- Fix `logLevel` and `format` parameter validation.
+
 **Helm**
 - Fix input parameter type assertions.
 - Fix input parameter command assignments.
