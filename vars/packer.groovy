@@ -188,10 +188,8 @@ Map parse(String file) {
 }
 
 void pluginInstall(String url, String installLoc) {
-  // determine number of elements in loc up to final slash
-  final String elemCount = new File(installLoc).name.lastIndexOf('/')
   // return file path up to final slash element
-  final String installDir = new File(installLoc).name.take(elemCount)
+  final String installDir = new File(installLoc).parent ?: '.'
 
   // check if plugin dir exists and create if not
   new utils().makeDirParents(installDir)
