@@ -1,4 +1,4 @@
-### 2.2.1 (Next)
+### 2.2.1
 **General**
 - Improve label descriptions for `sh` steps.
 - Miscellanous improvements from code linting.
