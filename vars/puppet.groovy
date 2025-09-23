@@ -255,7 +255,6 @@ void token(Map config) {
   // initialize vars
   Map jsonResponse = [:]
   Map response = [:]
-  String token = ''
 
   // trigger token generation
   try {
@@ -263,7 +262,6 @@ void token(Map config) {
       acceptType:             'APPLICATION_JSON',
       consoleLogResponseBody: true,
       contentType:            'APPLICATION_JSON',
-      customHeaders:          [[name: 'X-Authentication', value: token]],
       httpMode:               'POST',
       ignoreSslErrors:        !config.secure,
       quiet:                  true,

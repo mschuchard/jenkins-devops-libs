@@ -2,6 +2,9 @@
 **Packer**
 - Fix return checks for `fmt` method.
 
+**Puppet**
+- Fix request in `token` method.
+
 ### 2.2.1
 **General**
 - Improve label descriptions for `sh` steps.
