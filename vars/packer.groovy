@@ -94,26 +94,28 @@ Boolean fmt(Map config) {
     cmd += ' -recursive'
   }
 
+  // canonically format the code
   int fmtStatus
-  try {
-    if (config.template ==~ /\.pkr\./) {
-      fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} ${config.template}")
-    }
-    else {
-      dir(config.template) {
-        fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} .")
-      }
-    }
+  if (config.template ==~ /\.pkr\./) {
+    fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} ${config.template}")
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using packer fmt.'
-    throw error
+  else {
+    dir(config.template) {
+        fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} .")
+    }
   }
 
   // report if formatting check detected issues
-  if ((config.check == true) && (fmtStatus != 0)) {
-    print 'Packer fmt has detected formatting errors.'
-    return false
+  if (fmtStatus != 0) {
+    // the format check failed
+    if (config.check == true) {
+      print 'Packer fmt has detected formatting errors.'
+      return false
+    }
+
+    // the format command failed unexpectedly
+    print 'Failure using packer fmt.'
+    error(message: 'packer fmt failed unexpectedly; check logs for details')
   }
 
   print 'Packer fmt was successful.'

@@ -1,3 +1,7 @@
+### 2.2.2 (Next)
+**Packer**
+- Fix return checks for `fmt` method.
+
 ### 2.2.1
 **General**
 - Improve label descriptions for `sh` steps.
