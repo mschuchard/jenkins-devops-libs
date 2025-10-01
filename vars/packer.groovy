@@ -19,20 +19,20 @@ void build(Map config) {
   if (config.except) {
     assert (config.except in List) : 'The except parameter must be a list of strings.'
 
-    cmd += " -except=${config.except.join(',')}"
+    cmd.add("-except=${config.except.join(',')}")
   }
   if (config.only) {
     assert (config.only in List) : 'The only parameter must be a list of strings.'
 
-    cmd += " -only=${config.only.join(',')}"
+    cmd.add("-only=${config.only.join(',')}")
   }
   if (config.force == true) {
-    cmd += ' -force'
+    cmd.add('-force')
   }
   if (config.onError) {
     assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.onError)) : 'The argument must be one of: default, abort, ask, or run-cleanup-provisioner.'
 
-    cmd += " -on-error=${config.onError}"
+    cmd.add("-on-error=${config.onError}")
   }
 
   // create artifact with packer
@@ -66,17 +66,17 @@ Boolean fmt(Map config) {
 
   // check for optional inputs
   if (config.diff == true) {
-    cmd += ' -diff'
+    cmd.add('-diff')
   }
   if (config.check == true) {
-    cmd += ' -check'
+    cmd.add('-check')
   }
   // incompatible with above
   else if (config.write == true) {
-    cmd += ' -write'
+    cmd.add('-write')
   }
   if (config.recursive == true) {
-    cmd += ' -recursive'
+    cmd.add('-recursive')
   }
 
   // canonically format the code
@@ -116,7 +116,7 @@ void init(Map config) {
 
   // check for optional inputs
   if (config.upgrade == true) {
-    cmd += ' -upgrade'
+    cmd.add('-upgrade')
   }
 
   // initialize the working template directory
@@ -210,7 +210,7 @@ void pluginsInstall(Map config) {
 
   // optional inputs
   if (config.force == true) {
-    cmd += ' -force'
+    cmd.add('-force')
   }
   // append plugin since optional version must be last argument
   cmd += " ${config.plugin}"
@@ -303,21 +303,21 @@ Boolean validate(Map config) {
   if (config.except) {
     assert (config.except in List) : 'The except parameter must be a list of strings.'
 
-    cmd += " -except=${config.except.join(',')}"
+    cmd.add("-except=${config.except.join(',')}")
   }
   if (config.only) {
     assert (config.only in List) : 'The only parameter must be a list of strings.'
 
-    cmd += " -only=${config.only.join(',')}"
+    cmd.add("-only=${config.only.join(',')}")
   }
   if (config.evalData == true) {
-    cmd += ' -evaluate-datasources'
+    cmd.add('-evaluate-datasources')
   }
   if (config.warnUndeclVar == false) {
-    cmd += ' -no-warn-undeclared-var'
+    cmd.add('-no-warn-undeclared-var')
   }
   if (config.syntaxOnly == true) {
-    cmd += ' -syntax-only'
+    cmd.add('-syntax-only')
   }
 
   // validate template with packer

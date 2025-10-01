@@ -21,15 +21,15 @@ private void execute(Map config) {
       assert (config.target in List) : 'The target parameter must be a list of strings.'
 
       config.target.each { String target ->
-        cmd += " -target=${target}"
+        cmd.add("-target=${target}")
       }
     }
   }
   if (config.compactWarn == true) {
-    cmd += ' -compact-warnings'
+    cmd.add('-compact-warnings')
   }
   if (config.action == 'destroy') {
-    cmd += ' -destroy'
+    cmd.add('-destroy')
   }
 
   // apply the config
@@ -82,17 +82,17 @@ Boolean fmt(Map config) {
 
   // check for optional inputs
   if (config.recursive == true) {
-    cmd += ' -recursive'
+    cmd.add('-recursive')
   }
   if (config.diff == true) {
-    cmd += ' -diff'
+    cmd.add('-diff')
   }
   if (config.check == true) {
-    cmd += ' -check'
+    cmd.add('-check')
   }
   // incompatible with above
   else if (config.write == true) {
-    cmd += ' -write'
+    cmd.add('-write')
   }
 
   // canonically format the code
@@ -133,7 +133,7 @@ void graph(Map config) {
 
   // check for plan versus dir target
   if (config.plan) {
-    cmd += " graph -plan=${config.plan}"
+    cmd.add("graph -plan=${config.plan}")
   }
   else {
     // cannot cleanly use dir step for this, and also because of later graph file write
@@ -144,10 +144,10 @@ void graph(Map config) {
   if (config.type) {
     assert (['plan', 'plan-refresh-only', 'plan-destroy', 'apply'].contains(config.type)) : 'The type parameter must be one of: plan, plan-refresh-only, plan-destroy, or apply.'
 
-    cmd += " -type=${config.type}"
+    cmd.add("-type=${config.type}")
   }
   if (config.drawCycles == true) {
-    cmd += ' -draw-cycles'
+    cmd.add('-draw-cycles')
   }
 
   String dotGraph
@@ -180,15 +180,15 @@ void imports(Map config) {
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
 
-    cmd += " -config=${config.dir}"
+    cmd.add("-config=${config.dir}")
   }
   if (config.provider) {
-    cmd += " -provider=${config.provider}"
+    cmd.add("-provider=${config.provider}")
   }
   if (config.state) {
     assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
-    cmd += " -state=${config.state}"
+    cmd.add("-state=${config.state}")
   }
 
   // import the resources
@@ -224,19 +224,19 @@ void init(Map config) {
   if (config.pluginDir) {
     new utils().makeDirParents(config.pluginDir)
 
-    cmd += " -plugin-dir=${config.pluginDir}"
+    cmd.add("-plugin-dir=${config.pluginDir}")
   }
   if (config.upgrade == true) {
-    cmd += ' -upgrade'
+    cmd.add('-upgrade')
   }
   if (config.backend == false) {
-    cmd += ' -backend=false'
+    cmd.add('-backend=false')
   }
   if (config.migrateState == true) {
-    cmd += ' -migrate-state'
+    cmd.add('-migrate-state')
   }
   if (config.forceCopy == true) {
-    cmd += ' -force-copy'
+    cmd.add('-force-copy')
   }
   if (config.backendConfig) {
     assert (config.backendConfig in List) : 'Parameter backendConfig must be a list of strings.'
@@ -244,7 +244,7 @@ void init(Map config) {
     config.backendConfig.each { String backconf ->
       assert fileExists(backconf) : "Backend config file ${backconf} does not exist!"
 
-      cmd += " -backend-config=${backconf}"
+      cmd.add("-backend-config=${backconf}")
     }
   }
   if (config.backendKV) {
@@ -257,7 +257,7 @@ void init(Map config) {
   if (config.testDir) {
     assert fileExists(config.testDir) : "The test directory ${config.testDir} does not exist."
 
-    cmd += " -test-directory=${config.testDir}"
+    cmd.add("-test-directory=${config.testDir}")
   }
 
   // initialize the working config directory
@@ -317,13 +317,13 @@ String output(Map config) {
   if (config.state) {
     assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
-    cmd += " -state=${config.state}"
+    cmd.add("-state=${config.state}")
   }
   if (config.json == true) {
-    cmd += ' -json'
+    cmd.add('-json')
   }
   if (config.raw == true) {
-    cmd += ' -raw'
+    cmd.add('-raw')
   }
   // must be last param
   if (config.name) {
@@ -380,24 +380,24 @@ String plan(Map config) {
     assert (config.target in List) : 'The target parameter must be a list of strings.'
 
     config.target.each { String target ->
-      cmd += " -target=${target}"
+      cmd.add("-target=${target}")
     }
   }
   if (config.replace) {
     assert (config.replace in List) : 'The replace parameter must be a list of strings.'
 
     config.replace.each { String resource ->
-      cmd += " -replace=${resource}"
+      cmd.add("-replace=${resource}")
     }
   }
   if (config.destroy == true) {
-    cmd += ' -destroy'
+    cmd.add('-destroy')
   }
   if (config.refreshOnly == true) {
-    cmd += ' -refresh-only'
+    cmd.add('-refresh-only')
   }
   if (config.compactWarn == true) {
-    cmd += ' -compact-warnings'
+    cmd.add('-compact-warnings')
   }
   if (config.genConfig) {
     assert !fileExists(config.genConfig) : "The path at ${config.genConfig} is required to not exist prior to Terraform config generation, but the path does exist."
@@ -509,11 +509,11 @@ void refresh(Map config) {
     assert (config.target in List) : 'The target parameter must be a list of strings.'
 
     config.target.each { String target ->
-      cmd += " -target=${target}"
+      cmd.add("-target=${target}")
     }
   }
   if (config.compactWarn == true) {
-    cmd += ' -compact-warnings'
+    cmd.add('-compact-warnings')
   }
 
   // refresh the state
@@ -549,7 +549,7 @@ void state(Map config) {
     assert config.command != 'push' && config.command != 'pull' : 'The state parameter is incompatible with state pushing and pulling.'
     assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
-    cmd += " -state=${config.state}"
+    cmd.add("-state=${config.state}")
   }
 
   // perform state manipulation
@@ -650,10 +650,10 @@ void taint(Map config) {
   if (config.state) {
     assert fileExists(config.state) : "The state file at ${config.state} does not exist."
 
-    cmd += " -state=${config.state}"
+    cmd.add("-state=${config.state}")
   }
   if (config.allowMissing == true) {
-    cmd += ' -allow-missing'
+    cmd.add('-allow-missing')
   }
 
   // taint the resources
@@ -689,27 +689,27 @@ String test(Map config) {
 
   // optional inputs
   if (config.cloudRun) {
-    cmd += " -cloud-run=${config.cloudRun}"
+    cmd.add("-cloud-run=${config.cloudRun}")
   }
   if (config.filter) {
     assert (config.filter in List) : 'The filter parameter must be a list of strings.'
 
     config.filter.each { String filter ->
-      cmd += " -filter=${filter}"
+      cmd.add("-filter=${filter}")
     }
   }
   if (config.json == true) {
-    cmd += ' -json'
+    cmd.add('-json')
   }
   if (config.testDir) {
     assert fileExists(config.testDir) : "The test directory ${config.testDir} does not exist."
 
-    cmd += " -test-directory=${config.testDir}"
+    cmd.add("-test-directory=${config.testDir}")
   }
   cmd += varSubCmd(config)
 
   if (config.verbose == true) {
-    cmd += ' -verbose'
+    cmd.add('-verbose')
   }
 
   // execute tests
@@ -745,15 +745,15 @@ String validate(Map config) {
 
   // optional inputs
   if (config.json == true) {
-    cmd += ' -json'
+    cmd.add('-json')
   }
   if (config.tests == false) {
-    cmd += ' -no-tests'
+    cmd.add('-no-tests')
   }
   else if (config.testDir) {
     assert fileExists(config.testDir) : "The test directory ${config.testDir} does not exist."
 
-    cmd += " -test-directory=${config.testDir}"
+    cmd.add("-test-directory=${config.testDir}")
   }
 
   // validate the config directory
@@ -790,7 +790,7 @@ void workspace(Map config) {
 
   // optional inputs
   if (config.create == true) {
-    cmd += ' -or-create'
+    cmd.add('-or-create')
   }
 
   dir(config.dir) {

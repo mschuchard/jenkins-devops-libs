@@ -10,18 +10,18 @@ String history(Map config) {
 
   // check for optional inputs
   if (config.max) {
-    cmd += " --max ${config.max}"
+    cmd.addAll(['--max', config.max])
   }
   if (config.outputFormat) {
     assert (['table', 'json', 'yaml'].contains(config.outputFormat)) : 'The outputFormat parameter must be one of table, json, or yaml'
 
-    cmd += " -o ${config.outputFormat}"
+    cmd.addAll(['-o', config.outputFormat])
   }
   if (config.context) {
-    cmd += " --kube-context ${config.context}"
+    cmd.addAll(['--kube-context', config.context])
   }
   if (config.namespace) {
-    cmd += " --namespace ${config.namespace}"
+    cmd.addAll(['--namespace', config.namespace])
   }
 
   // gather release revision history with helm
@@ -60,47 +60,47 @@ void install(Map config) {
         assert readYaml(value) : "Value overrides file ${value} is not a valid YAML file!"
       }
 
-      cmd += " -f ${value}"
+      cmd.addAll(['-f', value])
     }
   }
   if (config.set) {
     assert (config.set in Map) : 'The set parameter must be a Map.'
 
     config.set.each { String var, String value ->
-      cmd += " --set ${var}=${value}"
+      cmd.addAll(['--set', "${var}=${value}"])
     }
   }
   if (config.version) {
-    cmd += " --version ${config.version}"
+    cmd.addAll(['--version', config.version])
   }
   else if (config.devel == true) {
-    cmd += ' --devel'
+    cmd.add('--devel')
   }
   if (config.dryRun == true) {
-    cmd += ' --dry-run'
+    cmd.add('--dry-run')
   }
   if (config.force == true) {
-    cmd += ' --force'
+    cmd.add('--force')
   }
   if (config.context) {
-    cmd += " --kube-context ${config.context}"
+    cmd.addAll(['--kube-context', config.context])
     lister += " --kube-context ${config.context}"
   }
   if (config.namespace) {
-    cmd += " --namespace ${config.namespace}"
+    cmd.addAll(['--namespace', config.namespace])
     lister += " --namespace ${config.namespace}"
   }
   if (config.createNS == true) {
-    cmd += ' --create-namespace'
+    cmd.add('--create-namespace')
   }
   if (config.verify == true) {
-    cmd += ' --verify'
+    cmd.add('--verify')
   }
   if (config.atomic == true) {
-    cmd += ' --atomic'
+    cmd.add('--atomic')
   }
   else if (config.wait == true) {
-    cmd += ' --wait'
+    cmd.add('--wait')
   }
 
   // check release object
@@ -154,24 +154,24 @@ Boolean lint(Map config) {
         assert readYaml(value) : "Value overrides file ${value} is not a valid YAML file!"
       }
 
-      cmd += " -f ${value}"
+      cmd.addAll(['-f', value])
     }
   }
   if (config.set) {
     assert (config.set in Map) : 'The set parameter must be a Map.'
 
     config.set.each { String var, String value ->
-      cmd += " --set ${var}=${value}"
+      cmd.addAll(['--set', "${var}=${value}"])
     }
   }
   if (config.context) {
-    cmd += " --kube-context ${config.context}"
+    cmd.addAll(['--kube-context', config.context])
   }
   if (config.namespace) {
-    cmd += " --namespace ${config.namespace}"
+    cmd.addAll(['--namespace', config.namespace])
   }
   if (config.strict == true) {
-    cmd += ' --strict'
+    cmd.add('--strict')
   }
 
   // lint with helm
@@ -207,21 +207,21 @@ void packages(Map config) {
   if (config.dest) {
     new utils().makeDirParents(config.dest)
 
-    cmd += " -d ${config.dest}"
+    cmd.addAll(['-d', config.dest])
   }
   if (config.key) {
-    cmd += " --sign --key ${config.key}"
+    cmd.addAll(['--sign --key', config.key])
   }
   else if (config.keyring) {
     assert fileExists(config.keyring) : "The keyring ${config.keyring} does not exist."
 
-    cmd += " --sign --keyring ${config.keyring}"
+    cmd.addAll(['--sign --keyring', config.keyring])
   }
   if (config.updateDeps == true) {
-    cmd += ' -u'
+    cmd.add('-u')
   }
   if (config.version) {
-    cmd += " --version ${config.version}"
+    cmd.addAll(['--version', config.version])
   }
 
   // package with helm
@@ -270,7 +270,7 @@ void push(Map config) {
 
   // optional inputs
   if (config.insecure == true) {
-    cmd += ' --insecure-skip-tls-verify'
+    cmd.add('--insecure-skip-tls-verify')
   }
 
   // push helm chart to remote registry
@@ -295,7 +295,7 @@ void registryLogin(Map config) {
 
   // optional inputs
   if (config.insecure == true) {
-    cmd += ' --insecure'
+    cmd.add('--insecure')
   }
 
   // login to a helm registry
@@ -319,16 +319,16 @@ void repo(Map config) {
 
   // optional inputs
   if (config.insecure == true) {
-    cmd += ' --insecure-skip-tls-verify'
+    cmd.add('--insecure-skip-tls-verify')
   }
   else if ((config.ca) && (config.cert) && (config.key)) {
-    cmd += " --ca-file ${config.ca} --cert-file ${config.cert} --key-file ${config.key}"
+    cmd.addAll(['--ca-file ${config.ca} --cert-file ${config.cert} --key-file', config.key])
   }
   if (config.force == true) {
-    cmd += ' --force-update'
+    cmd.add('--force-update')
   }
   if ((config.user) && (config.password)) {
-    cmd += " --username ${config.user} --password ${config.password}"
+    cmd.addAll(['--username ${config.user} --password', config.password])
   }
 
   // add a repo with helm
@@ -362,11 +362,11 @@ void rollback(Map config) {
 
   // optional inputs also applicable to lister
   if (config.context) {
-    cmd += " --kube-context ${config.context}"
+    cmd.addAll(['--kube-context', config.context])
     lister += " --kube-context ${config.context}"
   }
   if (config.namespace) {
-    cmd += " --namespace ${config.namespace}"
+    cmd.addAll(['--namespace', config.namespace])
     lister += " --namespace ${config.namespace}"
   }
 
@@ -376,18 +376,18 @@ void rollback(Map config) {
 
   // optional inputs
   if (config.force == true) {
-    cmd += ' --force'
+    cmd.add('--force')
   }
   if (config.hooks == false) {
-    cmd += ' --no-hooks'
+    cmd.add('--no-hooks')
   }
   if (config.recreatePods == true) {
-    cmd += ' --recreate-pods'
+    cmd.add('--recreate-pods')
   }
 
   // append rollback version if specified
   if (config.version) {
-    cmd += " ${config.name} ${config.version}"
+    cmd.addAll(['${config.name}', config.version])
   }
   else {
     cmd += " ${config.name}"
@@ -450,26 +450,26 @@ String status(Map config) {
 
   // check for optional inputs
   if (config.context) {
-    cmd += " --kube-context ${config.context}"
+    cmd.addAll(['--kube-context', config.context])
     lister += " --kube-context ${config.context}"
   }
   if (config.description) {
-    cmd += ' --show-desc'
+    cmd.add('--show-desc')
   }
   if (config.namespace) {
-    cmd += " --namespace ${config.namespace}"
+    cmd.addAll(['--namespace', config.namespace])
     lister += " --namespace ${config.namespace}"
   }
   if (config.outputFormat) {
     assert (['table', 'json', 'yaml'].contains(config.outputFormat)) : 'The outputFormat parameter must be one of table, json, or yaml'
 
-    cmd += " -o ${config.outputFormat}"
+    cmd.addAll(['-o', config.outputFormat])
   }
   if (config.resources) {
-    cmd += ' --show-resources'
+    cmd.add('--show-resources')
   }
   if (config.revision) {
-    cmd += " --revision ${config.revision}"
+    cmd.addAll(['--revision', config.revision])
   }
 
   // check release object
@@ -500,15 +500,15 @@ void test(Map config) {
   // check if helm test has logging functionality (deprecated in 3, but interesting code to retain)
   final String logs = sh(label: 'Check Helm Usage', returnStdout: true, script: "${config.bin} test --help") ==~ /--logs/
   if (logs) {
-    cmd += ' --logs'
+    cmd.add('--logs')
   }
 
   // optional inputs
   if (config.context) {
-    cmd += " --kube-context ${config.context}"
+    cmd.addAll(['--kube-context', config.context])
   }
   if (config.namespace) {
-    cmd += " --namespace ${config.namespace}"
+    cmd.addAll(['--namespace', config.namespace])
   }
 
   // test with helm
@@ -566,11 +566,11 @@ void uninstall(Map config) {
 
   // check for optional inputs
   if (config.context) {
-    cmd += " --kube-context ${config.context}"
+    cmd.addAll(['--kube-context', config.context])
     lister += " --kube-context ${config.context}"
   }
   if (config.namespace) {
-    cmd += " --namespace ${config.namespace}"
+    cmd.addAll(['--namespace', config.namespace])
     lister += " --namespace ${config.namespace}"
   }
 
@@ -610,47 +610,47 @@ void upgrade(Map config) {
         assert readYaml(value) in String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
       }
 
-      cmd += " -f ${value}"
+      cmd.addAll(['-f', value])
     }
   }
   if (config.set) {
     assert (config.set in Map) : 'The set parameter must be a Map.'
 
     config.set.each { String var, String value ->
-      cmd += " --set ${var}=${value}"
+      cmd.addAll(['--set', "${var}=${value}"])
     }
   }
   if (config.version) {
-    cmd += " --version ${config.version}"
+    cmd.addAll(['--version', config.version])
   }
   else if (config.devel == true) {
-    cmd += ' --devel'
+    cmd.add('--devel')
   }
   if (config.verify == true) {
-    cmd += ' --verify'
+    cmd.add('--verify')
   }
   if (config.atomic == true) {
-    cmd += ' --atomic'
+    cmd.add('--atomic')
   }
   else if (config.wait == true) {
-    cmd += ' --wait'
+    cmd.add('--wait')
   }
   if (config.install == true) {
-    cmd += ' --install'
+    cmd.add('--install')
 
     if (config.createNS == true) {
-      cmd += ' --create-namespace'
+      cmd.add('--create-namespace')
     }
   }
   if (config.dryRun == true) {
-    cmd += ' --dry-run'
+    cmd.add('--dry-run')
   }
   if (config.context) {
-    cmd += " --kube-context ${config.context}"
+    cmd.addAll(['--kube-context', config.context])
     lister += " --kube-context ${config.context}"
   }
   if (config.namespace) {
-    cmd += " --namespace ${config.namespace}"
+    cmd.addAll(['--namespace', config.namespace])
     lister += " --namespace ${config.namespace}"
   }
 

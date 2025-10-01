@@ -8,17 +8,17 @@ void hostCreate(Map config) {
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
-  String cmd = "${config.bin} hosts create --name ${config.name} --inventory ${config.inventory}"
+  List<String> cmd = [config.bin, 'hosts', 'create', '--name', config.name, '--inventory', config.inventory]
 
   // check for optional inputs
   if (config.description) {
-    cmd += " --description ${config.description}"
+    cmd.addAll(['--description', config.description])
   }
   if (config.enabled == true) {
-    cmd += ' --enabled'
+    cmd.add('--enabled')
   }
   if (config.instanceId) {
-    cmd += " --instance_id ${config.instanceId}"
+    cmd.addAll(['--instance_id', config.instanceId])
   }
   if (config.variables) {
     assert (config.variables in Map) : 'The variables parameter must be a Map.'
@@ -26,7 +26,7 @@ void hostCreate(Map config) {
     // convert variables map to json for input
     final String variables = new utils().mapToJSON(config.variables)
 
-    cmd += " --variables ${variables}"
+    cmd.addAll(['--variables', variables])
   }
 
   // create a host in the inventory
@@ -67,15 +67,15 @@ private void inventory(Map config) {
 
   // check for optional inputs
   if (config.description) {
-    cmd += " --description ${config.description}"
+    cmd.addAll(['--description', config.description])
   }
   if (config.kind) {
     assert ['smart', 'constructed'].contains(config.kind) : 'Inventory kind parameter value must be "smart" or "constructed".'
 
-    cmd += " --kind ${config.kind}"
+    cmd.addAll(['--kind', config.kind])
   }
   if (config.hostFilter) {
-    cmd += " --host_filter ${config.hostFilter}"
+    cmd.addAll(['--host_filter', config.hostFilter])
   }
   if (config.variables) {
     assert (config.variables in Map) : 'The variables parameter must be a Map.'
@@ -83,7 +83,7 @@ private void inventory(Map config) {
     // convert variables map to json for input
     final String variables = new utils().mapToJSON(config.variables)
 
-    cmd += " --variables ${variables}"
+    cmd.addAll(['--variables', variables])
   }
   if (config.action == 'modify') {
     assert config.inventory in String : 'inventory is a required parameter for inventoryModify'
@@ -140,29 +140,29 @@ void jobTemplateLaunch(Map config) {
   if (config.credentials) {
     assert (config.credentials in List) : 'The credentials parameter must be a list of strings.'
 
-    cmd += " --credentials ${config.credentials.join(',')}"
+    cmd.addAll(['--credentials', config.credentials.join(',')])
   }
   if (config.executionEnv) {
-    cmd += " --execution_environment ${config.executionEnv}"
+    cmd.addAll(['--execution_environment', config.executionEnv])
   }
   if (config.monitor == true) {
-    cmd += ' --monitor'
+    cmd.add('--monitor')
   }
   if (config.limit) {
-    cmd += " --limit ${config.limit}"
+    cmd.addAll(['--limit', config.limit])
   }
   if (config.inventory) {
-    cmd += " --inventory ${config.inventory}"
+    cmd.addAll(['--inventory', config.inventory])
   }
   if (config.jobType) {
     assert config.jobType in ['run', 'check'] : 'jobType parameter must be one of "run" or "check"'
 
-    cmd += " --job_type ${config.jobType}"
+    cmd.addAll(['--job_type', config.jobType])
   }
   if (config.skipTags) {
     assert (config.skipTags in List) : 'The skipTags parameter must be a List.'
 
-    cmd += " --skip_tags ${config.skipTags.join(',')}"
+    cmd.addAll(['--skip_tags', config.skipTags.join(',')])
   }
   if (config.extraVars) {
     assert (config.extraVars in Map) : 'The extraVars parameter must be a Map.'
@@ -170,7 +170,7 @@ void jobTemplateLaunch(Map config) {
     // convert variables map to json for input
     final String extraVars = new utils().mapToJSON(config.extraVars)
 
-    cmd += " --extra_vars ${extraVars}"
+    cmd.addAll(['--extra_vars', extraVars])
   }
 
   // launch a job template job
@@ -194,7 +194,7 @@ void projectsUpdate(Map config) {
 
   // check for optional inputs
   if (config.monitor == true) {
-    cmd += ' --monitor'
+    cmd.add('--monitor')
   }
 
   // launch a project update job
@@ -218,13 +218,13 @@ void workflowJobTemplateLaunch(Map config) {
 
   // check for optional inputs
   if (config.monitor == true) {
-    cmd += ' --monitor'
+    cmd.add('--monitor')
   }
   if (config.limit) {
-    cmd += " --limit ${config.limit}"
+    cmd.addAll(['--limit', config.limit])
   }
   if (config.inventory) {
-    cmd += " --inventory ${config.inventory}"
+    cmd.addAll(['--inventory', config.inventory])
   }
   if (config.extraVars) {
     assert (config.extraVars in Map) : 'The extraVars parameter must be a Map.'
@@ -232,12 +232,12 @@ void workflowJobTemplateLaunch(Map config) {
     // convert variables map to json for input
     final String extraVars = new utils().mapToJSON(config.extraVars)
 
-    cmd += " --extra_vars ${extraVars}"
+    cmd.addAll(['--extra_vars', extraVars])
   }
   if (config.skipTags) {
     assert (config.skipTags in List) : 'The skipTags parameter must be a List.'
 
-    cmd += " --skip_tags ${config.skipTags.join(',')}"
+    cmd.addAll(['--skip_tags', config.skipTags.join(',')])
   }
 
   // launch a workflow job template job

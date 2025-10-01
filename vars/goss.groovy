@@ -45,11 +45,11 @@ String render(Map config) {
 
   // check for optional global inputs and establish command
   cmd += globalArgsCmd(config)
-  cmd += ' render'
+  cmd.add('render')
 
   // check for optional inputs
   if (config.debug == true) {
-    cmd += ' --debug'
+    cmd.add('--debug')
   }
 
   // render gossfile
@@ -80,27 +80,27 @@ void server(Map config) {
 
   // check for optional global inputs and establish command
   cmd += globalArgsCmd(config)
-  cmd += ' serve'
+  cmd.add('serve')
 
   // check for optional inputs
   if (config.maxConcur) {
-    cmd += " --max-concurrent ${config.maxConcur}"
+    cmd.addAll(['--max-concurrent', config.maxConcur])
   }
   if (config.format) {
     assert (['documentation', 'json', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
-    cmd += " -f ${config.format}"
+    cmd.addAll(['-f', config.format])
   }
   if (config.formatOpts) {
     assert (['perfdata', 'pretty', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
 
-    cmd += " -o ${config.formatOpts}"
+    cmd.addAll(['-o', config.formatOpts])
   }
   if (config.cache) {
-    cmd += " -c ${config.cache}"
+    cmd.addAll(['-c', config.cache])
   }
   if (config.logLevel) {
-    cmd += " -L ${config.logLevel.toUpperCase()}"
+    cmd.addAll(['-L', config.logLevel.toUpperCase()])
   }
 
   // create goss rest api endpoint
@@ -126,31 +126,31 @@ Boolean validate(Map config) {
 
   // check for optional global inputs and establish command
   cmd += globalArgsCmd(config)
-  cmd += ' validate --no-color'
+  cmd.add('validate --no-color')
 
   // check for optional inputs
   if (config.maxConcur) {
-    cmd += " --max-concurrent ${config.maxConcur}"
+    cmd.addAll(['--max-concurrent', config.maxConcur])
   }
   if (config.format) {
     assert (['documentation', 'json', 'junit', 'nagios', 'prometheus', 'rspecish', 'silent', 'structured', 'tap'].contains(config.format)) : 'The "format" parameter value must be a valid accepted format for GoSS'
 
-    cmd += " -f ${config.format}"
+    cmd.addAll(['-f', config.format])
   }
   if (config.formatOpts) {
     assert (['perfdata', 'pretty', 'sort', 'verbose'].contains(config.formatOpts)) : 'The "formatOpts" parameter value must be one of: perfdata, pretty, or verbose.'
 
-    cmd += " -o ${config.formatOpts}"
+    cmd.addAll(['-o', config.formatOpts])
   }
   if (config.retryTimeout) {
-    cmd += " -r ${config.retryTimeout}"
+    cmd.addAll(['-r', config.retryTimeout])
 
     if (config.sleep) {
-      cmd += " -s ${config.sleep}"
+      cmd.addAll(['-s', config.sleep])
     }
   }
   if (config.logLevel) {
-    cmd += " -L ${config.logLevel.toUpperCase()}"
+    cmd.addAll(['-L', config.logLevel.toUpperCase()])
   }
 
   // validate with goss
@@ -182,7 +182,7 @@ void validateDocker(Map config) {
     assert (config.flags in Map) : 'The flags parameter must be a Map.'
 
     config.flags.each { String flag, String value ->
-        cmd += " -e ${flag}=${value}"
+        cmd.addAll(['-e', "${flag}=${value}"])
     }
   }
 

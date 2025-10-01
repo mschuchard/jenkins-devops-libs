@@ -11,19 +11,19 @@ void build(Map config) {
 
   // check for optional inputs
   if (config.noCache == true) {
-    cmd += ' --no-cache'
+    cmd.add('--no-cache')
   }
   if (config.parallel) {
-    cmd += " --parallel ${config.parallel}"
+    cmd.addAll(['--parallel', config.parallel])
   }
   if (config.pull) {
-    cmd += ' --pull'
+    cmd.add('--pull')
   }
   if (config.squash == true) {
-    cmd += ' --squash'
+    cmd.add('--squash')
   }
   if (config.tag) {
-    cmd += " --tag ${config.tag}"
+    cmd.addAll(['--tag', config.tag])
   }
 
   // create image with faas
@@ -53,17 +53,17 @@ void deploy(Map config) {
     assert (config.label in Map) : 'The label parameter must be a Map.'
 
     config.label.each { String label, String value ->
-      cmd += " --label ${label}=${value}"
+      cmd.addAll(['--label', "${label}=${value}"])
     }
   }
   if (config.replace == false) {
-    cmd += ' --replace=false'
+    cmd.add('--replace=false')
   }
   if (config.secret) {
-    cmd += " --secret ${config.secret}"
+    cmd.addAll(['--secret', config.secret])
   }
   if (config.update == true) {
-    cmd += ' --update=true'
+    cmd.add('--update=true')
   }
   cmd += globalArgsCmd(config)
 
@@ -118,30 +118,30 @@ void invoke(Map config) {
 
   // check for optional inputs
   if (config.async == true) {
-    cmd += ' -a'
+    cmd.add('-a')
   }
   if (config.contentType) {
-    cmd += " --content-type ${config.contentType}"
+    cmd.addAll(['--content-type', config.contentType])
   }
   if (config.header) {
     assert (config.header in Map) : 'The header parameter must be a Map.'
 
     config.header.each { String header, String value ->
-      cmd += " -H ${header}=${value}"
+      cmd.addAll(['-H', "${header}=${value}"])
     }
   }
   if (config.method) {
-    cmd += " -m ${config.method}"
+    cmd.addAll(['-m', config.method])
   }
   if (config.query) {
     assert (config.query in Map) : 'The query parameter must be a Map.'
 
     config.query.each { String query, String value ->
-      cmd += " --query ${query}=${value}"
+      cmd.addAll(['--query', "${query}=${value}"])
     }
   }
   if (config.stdin) {
-    cmd += " < ${config.stdin}"
+    cmd.addAll(['<', config.stdin])
   }
   cmd += globalArgsCmd(config)
 
@@ -167,15 +167,15 @@ String list(Map config) {
 
   // optional inputs
   if (config.quiet) {
-    cmd += ' -q'
+    cmd.add('-q')
   }
   else if (config.verbose) {
-    cmd += ' -v'
+    cmd.add('-v')
   }
   if (config.sort) {
     assert ['name', 'invocations'].contains(config.sort) : 'The "sort" parameter value must be either "name" or "invocations".'
 
-    cmd += " --sort ${config.sort}"
+    cmd.addAll(['--sort', config.sort])
   }
   cmd += globalArgsCmd(config)
 
@@ -202,7 +202,7 @@ void login(Map config) {
 
   // check for optional inputs
   if (config.user) {
-    cmd += " -u ${config.user}"
+    cmd.addAll(['-u', config.user])
   }
   cmd += globalArgsCmd(config)
 
@@ -231,10 +231,10 @@ String logs(Map config) {
   if (config.format) {
     assert ['plain', 'keyvalue', 'json'].contains(config.format)
 
-    cmd += " -o ${config.format}"
+    cmd.addAll(['-o', config.format])
   }
   if (config.since) {
-    cmd += " --since ${config.since}"
+    cmd.addAll(['--since', config.since])
   }
   cmd += globalArgsCmd(config)
 
@@ -262,10 +262,10 @@ void push(Map config) {
 
   // check for optional inputs
   if (config.parallel) {
-    cmd += " --parallel ${config.parallel}"
+    cmd.addAll(['--parallel', config.parallel])
   }
   if (config.tag) {
-    cmd += " --tag ${config.tag}"
+    cmd.addAll(['--tag', config.tag])
   }
 
   // push function with faas
