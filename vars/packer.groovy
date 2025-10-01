@@ -14,23 +14,8 @@ void build(Map config) {
   String cmd = "${config.bin} build -color=false"
 
   // check for optional inputs
-  if (config.varFile) {
-    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
+  cmd += varSubCmd(config)
 
-    cmd += " -var-file=${config.varFile}"
-  }
-  if (config.var) {
-    assert (config.var in Map) : 'The var parameter must be a Map.'
-
-    config.var.each { String var, String value ->
-      // convert value to json if not string type
-      if (value in List || value in Map) {
-        value = writeJSON(json: value, returnText: true)
-      }
-
-      cmd += " -var ${var}=${value}"
-    }
-  }
   if (config.except) {
     assert (config.except in List) : 'The except parameter must be a list of strings.'
 
@@ -313,23 +298,8 @@ Boolean validate(Map config) {
   String cmd = "${config.bin} validate"
 
   // check for optional inputs
-  if (config.varFile) {
-    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
+  cmd += varSubCmd(config)
 
-    cmd += " -var-file=${config.varFile}"
-  }
-  if (config.var) {
-    assert (config.var in Map) : 'The var parameter must be a Map.'
-
-    config.var.each { String var, String value ->
-      // convert value to json if not string type
-      if (value in List || value in Map) {
-        value = writeJSON(json: value, returnText: true)
-      }
-
-      cmd += " -var ${var}=${value}"
-    }
-  }
   if (config.except) {
     assert (config.except in List) : 'The except parameter must be a list of strings.'
 
@@ -372,4 +342,30 @@ Boolean validate(Map config) {
   }
   print 'Failure using packer validate.'
   error(message: 'Packer validate failed unexpectedly')
+}
+
+// private method for vars
+private String varSubCmd(Map config) {
+  String subCmd = ''
+
+  // check for optional var inputs
+  if (config.varFile) {
+    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
+
+    subCmd += " -var-file=${config.varFile}"
+  }
+  if (config.var) {
+    assert (config.var in Map) : 'The var parameter must be a Map.'
+
+    config.var.each { String var, String value ->
+        // convert value to json if not string type
+        if (value in List || value in Map) {
+          value = writeJSON(json: value, returnText: true)
+        }
+
+        subCmd += " -var ${var}=${value}"
+    }
+  }
+
+  return subCmd
 }
