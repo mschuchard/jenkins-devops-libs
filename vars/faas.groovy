@@ -7,7 +7,7 @@ void build(Map config) {
   config.bin = config.bin ?: 'faas-cli'
   assert validateTemplate(config.template) : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
-  String cmd = "${config.bin} build"
+  List<String> cmd = [config.bin, 'build']
 
   // check for optional inputs
   if (config.noCache == true) {
@@ -46,7 +46,7 @@ void deploy(Map config) {
   assert validateTemplate(config.template) : "The template file ${config.template} does not exist or is not a valid YAML file!"
 
   config.bin = config.bin ?: 'faas-cli'
-  String cmd = "${config.bin} deploy"
+  List<String> cmd = [config.bin, 'deploy']
 
   // check for optional inputs
   if (config.label) {
@@ -114,7 +114,7 @@ void invoke(Map config) {
   config.bin = config.bin ?: 'faas-cli'
   assert config.function in String : 'The required parameter function was not set.'
 
-  String cmd = "${config.bin} invoke"
+  List<String> cmd = [config.bin, 'invoke']
 
   // check for optional inputs
   if (config.async == true) {
@@ -163,7 +163,7 @@ String list(Map config) {
   }
   config.bin = config.bin ?: 'faas-cli'
 
-  String cmd = "${config.bin} list"
+  List<String> cmd = [config.bin, 'list']
 
   // optional inputs
   if (config.quiet) {
@@ -198,7 +198,7 @@ void login(Map config) {
   assert config.password in String : 'The required password parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
 
-  String cmd = "${config.bin} login"
+  List<String> cmd = [config.bin, 'login']
 
   // check for optional inputs
   if (config.user) {
@@ -222,7 +222,7 @@ String logs(Map config) {
   assert config.name in String : 'The required "name" parameter was not set.'
   config.bin = config.bin ?: 'faas-cli'
 
-  String cmd = "${config.bin} logs"
+  List<String> cmd = [config.bin, 'logs']
 
   // optional inputs
   if (config.instance) {
@@ -258,7 +258,7 @@ void push(Map config) {
   assert validateTemplate(config.template) : "The template file ${config.template} does not exist or is not a valid YAML file!"
   config.bin = config.bin ?: 'faas-cli'
 
-  String cmd = "${config.bin} push"
+  List<String> cmd = [config.bin, 'push']
 
   // check for optional inputs
   if (config.parallel) {
@@ -285,7 +285,7 @@ void remove(Map config) {
   assert validateTemplate(config.template) : "The template file ${config.template} does not exist or is not a valid YAML file!"
   config.bin = config.bin ?: 'faas-cli'
 
-  String cmd = "${config.bin} rm"
+  List<String> cmd = [config.bin, 'rm']
 
   // check for optional inputs
   cmd += globalArgsCmd(config)
@@ -321,23 +321,23 @@ Boolean validateTemplate(String template) {
 // private method for global arguments pertaining to all methods
 private static String globalArgsCmd(Map config) {
   // initialize subcommand from global args
-  String subCmd = ''
+  List<String> subCmd = []
 
   // check for optional inputs
   if (config.filter) {
-    subCmd += " --filter '${config.filter}'"
+    subCmd.addAll(['--filter', "'${config.filter}'"])
   }
   if (config.gateway) {
-    subCmd += " -g ${config.gateway}"
+    subCmd.addAll(['-g', config.gateway])
   }
   if (config.namespace) {
-    subCmd += " -n ${config.namespace}"
+    subCmd.addAll(['-n', config.namespace])
   }
   if (config.regex) {
-    subCmd += " --regex '${config.regex}'"
+    subCmd.addAll(['--regex', "'${config.regex}'"])
   }
   if (config.tls == false) {
-    subCmd += ' --tls-no-verify'
+    subCmd.add(' --tls-no-verify')
   }
 
   // return subcommand based from global arguments

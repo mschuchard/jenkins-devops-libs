@@ -11,7 +11,7 @@ private void execute(Map config) {
   assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} apply -input=false -no-color -auto-approve"
+  List<String> cmd = [config.bin, 'apply', '-input=false', '-no-color', '-auto-approve']
 
   // check if a directory was passed for the config path
   if (!(config.configPath ==~ /\.tfplan$/)) {
@@ -78,7 +78,7 @@ Boolean fmt(Map config) {
   }
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} fmt -no-color"
+  List<String> cmd = [config.bin, 'fmt', '-no-color']
 
   // check for optional inputs
   if (config.recursive == true) {
@@ -172,7 +172,7 @@ void imports(Map config) {
   assert (config.resources in Map) : 'Parameter resources must be a map of strings.'
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} import -no-color -input=false"
+  List<String> cmd = [config.bin, 'import', '-no-color', '-input=false']
 
   // check for optional inputs
   cmd += varSubCmd(config)
@@ -218,7 +218,7 @@ void init(Map config) {
   }
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} init -input=false -no-color"
+  List<String> cmd = [config.bin, 'init', '-input=false', '-no-color']
 
   // check for optional inputs
   if (config.pluginDir) {
@@ -311,7 +311,7 @@ String output(Map config) {
   }
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} output -no-color"
+  List<String> cmd = [config.bin, 'output', '-no-color']
 
   // check for optional inputs
   if (config.state) {
@@ -371,7 +371,7 @@ String plan(Map config) {
   }
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} plan -no-color -input=false"
+  List<String> cmd = [config.bin, 'plan', '-no-color', '-input=false']
 
   // check for optional inputs
   cmd += varSubCmd(config)
@@ -500,7 +500,7 @@ void refresh(Map config) {
   }
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} refresh -no-color -input=false"
+  List<String> cmd = [config.bin, 'refresh', '-no-color', '-input=false']
 
   // check for optional inputs
   cmd += varSubCmd(config)
@@ -542,7 +542,7 @@ void state(Map config) {
     config.dir = env.WORKSPACE
   }
   config.bin = config.bin ?: 'terraform'
-  String cmd = "${config.bin} state"
+  List<String> cmd = [config.bin, 'state']
 
   // optional inputs
   if (config.state) {
@@ -644,7 +644,7 @@ void taint(Map config) {
   }
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} taint -no-color"
+  List<String> cmd = [config.bin, 'taint', '-no-color']
 
   // optional inputs
   if (config.state) {
@@ -685,7 +685,7 @@ String test(Map config) {
   }
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} test -no-color"
+  List<String> cmd = [config.bin, 'test', '-no-color']
 
   // optional inputs
   if (config.cloudRun) {
@@ -741,7 +741,7 @@ String validate(Map config) {
   }
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} validate -no-color"
+  List<String> cmd = [config.bin, 'validate', '-no-color']
 
   // optional inputs
   if (config.json == true) {
@@ -786,7 +786,7 @@ void workspace(Map config) {
   assert config.workspace in String : 'The "workspace" parameter must be specified for the "workspace" method.'
   config.bin = config.bin ?: 'terraform'
 
-  String cmd = "${config.bin} workspace select"
+  List<String> cmd = [config.bin, 'workspace', 'select']
 
   // optional inputs
   if (config.create == true) {
@@ -812,13 +812,13 @@ void workspace(Map config) {
 
 // private method for vars
 private String varSubCmd(Map config) {
-  String subCmd = ''
+  List<String> subCmd = []
 
   // check for optional var inputs
   if (config.varFile) {
     assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
-    subCmd += " -var-file=${config.varFile}"
+    subCmd.add("-var-file=${config.varFile}")
   }
   if (config.var) {
     assert (config.var in Map) : 'The var parameter must be a Map.'
@@ -829,7 +829,7 @@ private String varSubCmd(Map config) {
           value = writeJSON(json: value, returnText: true)
         }
 
-        subCmd += " -var ${var}=${value}"
+        subCmd.addAll(['-var', "${var}=${value}"])
     }
   }
 

@@ -63,7 +63,7 @@ private void inventory(Map config) {
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
-  String cmd = "${config.bin} inventory ${config.action} --name ${config.name} --organization ${config.organization}"
+  List<String> cmd = [config.bin, 'inventory', config.action, '--name', config.name, '--organization', config.organization]
 
   // check for optional inputs
   if (config.description) {
@@ -134,7 +134,7 @@ void jobTemplateLaunch(Map config) {
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
-  String cmd = "${config.bin} job_templates launch"
+  List<String> cmd = [config.bin, 'job_templates', 'launch']
 
   // check for optional inputs
   if (config.credentials) {
@@ -190,7 +190,7 @@ void projectsUpdate(Map config) {
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
-  String cmd = "${config.bin} projects update"
+  List<String> cmd = [config.bin, 'projects', 'update']
 
   // check for optional inputs
   if (config.monitor == true) {
@@ -214,7 +214,7 @@ void workflowJobTemplateLaunch(Map config) {
   config.bin = config.bin ?: 'awx'
 
   // initialize the base command
-  String cmd = "${config.bin} workflow_job_templates launch"
+  List<String> cmd = [config.bin, 'workflow_job_templates', 'launch']
 
   // check for optional inputs
   if (config.monitor == true) {

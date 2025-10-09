@@ -41,7 +41,7 @@ String render(Map config) {
   // input checking
   config.bin = config.bin ?: 'goss'
 
-  String cmd = config.bin
+  List<String> cmd = [config.bin]
 
   // check for optional global inputs and establish command
   cmd += globalArgsCmd(config)
@@ -76,7 +76,7 @@ void server(Map config) {
   config.port = config.port ?: '8080'
   config.bin = config.bin ?: 'goss'
 
-  String cmd = config.bin
+  List<String> cmd = [config.bin]
 
   // check for optional global inputs and establish command
   cmd += globalArgsCmd(config)
@@ -122,7 +122,7 @@ Boolean validate(Map config) {
   config.bin = config.bin ?: 'goss'
 
   // optional inputs
-  String cmd = config.bin
+  List<String> cmd = [config.bin]
 
   // check for optional global inputs and establish command
   cmd += globalArgsCmd(config)
@@ -175,7 +175,7 @@ void validateDocker(Map config) {
   assert config.image in String : 'The required image parameter was not set.'
   config.bin = config.bin ?: 'dgoss'
 
-  String cmd = "${config.bin} run"
+  List<String> cmd = [config.bin, 'run']
 
   // check for optional inputs
   if (config.flags) {
@@ -217,29 +217,29 @@ Boolean validateGossfile(String gossfile) {
 // private method for global arguments
 private static String globalArgsCmd(Map config) {
   // initialize subcommand from global args
-  String subCmd = ''
+  List<String> subCmd = []
 
   // check for optional global args
   if (config.varsInline) {
     assert config.varsInline in Map : 'The inline vars parameter must be a Map.'
     final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
 
-    subCmd += " --vars-inline ${varsInlineJSON}"
+    subCmd.addAll(['--vars-inline', varsInlineJSON])
   }
   else if (config.vars) {
     assert readYaml(config.vars) in String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
 
-    subCmd += " --vars ${config.vars}"
+    subCmd.addAll(['--vars', config.vars])
   }
   if (config.package) {
     assert (['apk', 'dpkg', 'pacman', 'rpm'].contains(config.package)) : 'The "package" parameter must be one of: apk, dpkg, pacman, or rpm'
 
-    subCmd += " --package ${config.package}"
+    subCmd.addAll(['--package', config.package])
   }
   if (config.gossfile) {
     assert validateGossfile(config.gossfile) : "GoSSfile ${config.gossfile} does not exist or is not a valid YAML file!"
 
-    subCmd += " -g ${config.gossfile}"
+    subCmd.addAll(['-g', config.gossfile])
   }
   else {
     assert validateGossfile('goss.yaml') : 'GoSSfile \'goss.yaml\' does not exist or is not a valid YAML file!'

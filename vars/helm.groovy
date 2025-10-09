@@ -6,7 +6,7 @@ String history(Map config) {
   assert config.name : 'The required parameter "name" was not set.'
   config.bin = config.bin ?: 'helm'
 
-  String cmd = "${config.bin} history"
+  List<String> cmd = [config.bin, 'history']
 
   // check for optional inputs
   if (config.max) {
@@ -47,8 +47,8 @@ void install(Map config) {
   }
   config.bin = config.bin ?: 'helm'
 
-  String cmd = "${config.bin} install"
-  String lister = "${config.bin} list"
+  List<String> cmd = [config.bin, 'install']
+  String lister = [config.bin, 'list']
 
   // check for optional inputs
   if (config.values) {
@@ -142,7 +142,7 @@ Boolean lint(Map config) {
   config.bin = config.bin ?: 'helm'
   assert config.chart : 'The required parameter "chart" was not set.'
 
-  String cmd = "${config.bin} lint"
+  List<String> cmd = [config.bin, 'lint']
 
   // check for optional inputs
   if (config.values) {
@@ -201,7 +201,7 @@ void packages(Map config) {
     error(message: "The 'key' and 'keyring' parameters for helm.packages are mutually exclusive; only one can be specified.")
   }
 
-  String cmd = "${config.bin} package"
+  List<String> cmd = [config.bin, 'package']
 
   // check for optional inputs
   if (config.dest) {
@@ -241,11 +241,11 @@ void plugin(Map config) {
   assert (config.plugin) && (config.command != 'list') : 'The required parameter "plugin" was not set for a non-list command.'
   config.bin = config.bin ?: 'helm'
 
-  String cmd = "${config.bin} plugin ${config.command}"
+  List<String> cmd = [config.bin, 'plugin', config.command]
 
   // append plugin to cmd if not list command
   if (config.command != 'list') {
-    cmd += " ${config.plugin}"
+    cmd.add(config.plugin)
   }
 
   // manage a helm plugin
@@ -266,7 +266,7 @@ void push(Map config) {
   assert config.remote : 'The required parameter "remote" was not set.'
   config.bin = config.bin ?: 'helm'
 
-  String cmd = "${config.bin} push"
+  List<String> cmd = [config.bin, 'push']
 
   // optional inputs
   if (config.insecure == true) {
@@ -291,7 +291,7 @@ void registryLogin(Map config) {
   assert config.username : 'The required parameter "username" was not set.'
   config.bin = config.bin ?: 'helm'
 
-  String cmd = "${config.bin} registry login --username ${config.username} --password ${config.password}"
+  List<String> cmd = [config.bin, 'registry', 'login', '--username', config.username, '--password', config.password]
 
   // optional inputs
   if (config.insecure == true) {
@@ -315,7 +315,7 @@ void repo(Map config) {
   assert config.url : 'The required parameter "url" was not set.'
   config.bin = config.bin ?: 'helm'
 
-  String cmd = "${config.bin} repo add"
+  List<String> cmd = [config.bin, 'repo', 'add']
 
   // optional inputs
   if (config.insecure == true) {
@@ -357,8 +357,8 @@ void rollback(Map config) {
   assert config.name : "The required parameter 'name' was not set."
   config.bin = config.bin ?: 'helm'
 
-  String cmd = "${config.bin} rollback"
-  String lister = "${config.bin} list"
+  List<String> cmd = [config.bin, 'rollback']
+  String lister = [config.bin, 'list']
 
   // optional inputs also applicable to lister
   if (config.context) {
@@ -445,8 +445,8 @@ String status(Map config) {
   config.bin = config.bin ?: 'helm'
   assert config.name : 'The required parameter "name" was not set.'
 
-  String cmd = "${config.bin} status"
-  String lister = "${config.bin} list"
+  List<String> cmd = [config.bin, 'status']
+  String lister = [config.bin, 'list']
 
   // check for optional inputs
   if (config.context) {
@@ -495,7 +495,7 @@ void test(Map config) {
   config.bin = config.bin ?: 'helm'
   assert config.name : 'The required parameter "name" was not set.'
 
-  String cmd = "${config.bin} test"
+  List<String> cmd = [config.bin, 'test']
 
   // check if helm test has logging functionality (deprecated in 3, but interesting code to retain)
   final String logs = sh(label: 'Check Helm Usage', returnStdout: true, script: "${config.bin} test --help") ==~ /--logs/
@@ -561,8 +561,8 @@ void uninstall(Map config) {
   config.bin = config.bin ?: 'helm'
   assert config.name in String : 'The required parameter "name" was not set.'
 
-  String cmd = "${config.bin} uninstall"
-  String lister = "${config.bin} list"
+  List<String> cmd = [config.bin, 'uninstall']
+  String lister = [config.bin, 'list']
 
   // check for optional inputs
   if (config.context) {
@@ -598,8 +598,8 @@ void upgrade(Map config) {
   assert config.name in String : 'The required parameter "name" was not set.'
   config.bin = config.bin ?: 'helm'
 
-  String cmd = "${config.bin} upgrade"
-  String lister = "${config.bin} list"
+  List<String> cmd = [config.bin, 'upgrade']
+  String lister = [config.bin, 'list']
 
   // check for optional inputs
   if (config.values) {

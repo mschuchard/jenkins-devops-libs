@@ -11,7 +11,7 @@ void build(Map config) {
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
 
-  String cmd = "${config.bin} build -color=false"
+  List<String> cmd = [config.bin, 'build', '-color=false']
 
   // check for optional inputs
   cmd += varSubCmd(config)
@@ -62,7 +62,7 @@ Boolean fmt(Map config) {
   }
   config.bin = config.bin ?: 'packer'
 
-  String cmd = "${config.bin} fmt"
+  List<String> cmd = [config.bin, 'fmt']
 
   // check for optional inputs
   if (config.diff == true) {
@@ -112,7 +112,7 @@ void init(Map config) {
   assert fileExists(config.dir) : "Working template directory ${config.dir} does not exist."
   config.bin = config.bin ?: 'packer'
 
-  String cmd = "${config.bin} init"
+  List<String> cmd = [config.bin, 'init']
 
   // check for optional inputs
   if (config.upgrade == true) {
@@ -206,7 +206,7 @@ void pluginsInstall(Map config) {
   config.bin = config.bin ?: 'packer'
   assert config.plugin in String : 'The required "plugin" parameter was not assigned a value.'
 
-  String cmd = "${config.bin} install"
+  List<String> cmd = [config.bin, 'install']
 
   // optional inputs
   if (config.force == true) {
@@ -234,7 +234,7 @@ void pluginsRemove(Map config) {
   config.bin = config.bin ?: 'packer'
   assert config.plugin in String : 'The required "plugin" parameter was not assigned a value.'
 
-  String cmd = "${config.bin} remove ${config.plugin}"
+  List<String> cmd = [config.bin, 'remove', config.plugin]
 
   // optional inputs
   if (config.version) {
@@ -257,7 +257,7 @@ void plugins(Map config) {
   assert (['installed', 'required'].contains(config.command)) : 'The command parameter must be one of "installed" or "required".'
   config.bin = config.bin ?: 'packer'
 
-  String cmd = "${config.bin} plugins ${config.command}"
+  List<String> cmd = [config.bin, 'plugins', config.command]
 
   // check for optional inputs
   // conditional based on command to double verify dir param input both exists and is valid
@@ -295,7 +295,7 @@ Boolean validate(Map config) {
   assert fileExists(config.template) : "The template file or templates directory ${config.template} does not exist!"
   config.bin = config.bin ?: 'packer'
 
-  String cmd = "${config.bin} validate"
+  List<String> cmd = [config.bin, 'validate']
 
   // check for optional inputs
   cmd += varSubCmd(config)
@@ -346,13 +346,13 @@ Boolean validate(Map config) {
 
 // private method for vars
 private String varSubCmd(Map config) {
-  String subCmd = ''
+  List<String> subCmd = []
 
   // check for optional var inputs
   if (config.varFile) {
     assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
 
-    subCmd += " -var-file=${config.varFile}"
+    subCmd.add("-var-file=${config.varFile}")
   }
   if (config.var) {
     assert (config.var in Map) : 'The var parameter must be a Map.'
@@ -363,7 +363,7 @@ private String varSubCmd(Map config) {
           value = writeJSON(json: value, returnText: true)
         }
 
-        subCmd += " -var ${var}=${value}"
+        subCmd.addAll(['-var', "${var}=${value}"])
     }
   }
 
