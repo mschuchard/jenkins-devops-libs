@@ -38,11 +38,11 @@ void build(Map config) {
   // create artifact with packer
   try {
     if (config.template ==~ /\.pkr\./) {
-      sh(label: "Packer Build ${config.template}", script: "${cmd} ${config.template}")
+      sh(label: "Packer Build ${config.template}", script: cmd.add(config.template).join(' '))
     }
     else {
       dir(config.template) {
-        sh(label: "Packer Build ${config.template}", script: "${cmd} .")
+        sh(label: "Packer Build ${config.template}", script: cmd.add('.').join(' '))
       }
     }
   }
@@ -82,11 +82,11 @@ Boolean fmt(Map config) {
   // canonically format the code
   int fmtStatus
   if (config.template ==~ /\.pkr\./) {
-    fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} ${config.template}")
+    fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: cmd.add(config.template).join(' '))
   }
   else {
     dir(config.template) {
-        fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: "${cmd} .")
+        fmtStatus = sh(label: "Packer Format ${config.template}", returnStatus: true, script: cmd.add('.').join(' '))
     }
   }
 
@@ -122,7 +122,7 @@ void init(Map config) {
   // initialize the working template directory
   try {
     dir(config.dir) {
-      sh(label: "Packer Init ${config.dir}", script: "${cmd} .")
+      sh(label: "Packer Init ${config.dir}", script: cmd.add('.').join(' '))
     }
   }
   catch (hudson.AbortException error) {
@@ -221,7 +221,7 @@ void pluginsInstall(Map config) {
 
   // install plugin
   try {
-    sh(label: "Packer Plugins Install ${config.plugin}", script: cmd)
+    sh(label: "Packer Plugins Install ${config.plugin}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using packer plugins install.'
@@ -243,7 +243,7 @@ void pluginsRemove(Map config) {
 
   // remove plugin
   try {
-    sh(label: "Packer Plugins Remove ${config.plugin}", script: cmd)
+    sh(label: "Packer Plugins Remove ${config.plugin}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using packer plugins remove.'
@@ -272,11 +272,11 @@ void plugins(Map config) {
     // groovy 3: if (config.command === 'required') {
     if (config.command == 'required') {
       dir(config.dir) {
-        sh(label: "Packer Plugins ${config.command.capitalize()}", script: "${cmd} .")
+        sh(label: "Packer Plugins ${config.command.capitalize()}", script: cmd.add('.').join(' '))
       }
     }
     else {
-      sh(label: "Packer Plugins ${config.command.capitalize()}", script: cmd)
+      sh(label: "Packer Plugins ${config.command.capitalize()}", script: cmd.join(' '))
     }
     }
   catch (hudson.AbortException error) {
@@ -323,11 +323,11 @@ Boolean validate(Map config) {
   // validate template with packer
   int returnCode
   if (config.template ==~ /\.pkr\./) {
-    returnCode = sh(label: "Packer Validate ${config.template}", script: "${cmd} ${config.template}", returnStatus: true)
+    returnCode = sh(label: "Packer Validate ${config.template}", script: cmd.add(config.template).join(' '), returnStatus: true)
   }
   else {
     dir(config.template) {
-      returnCode = sh(label: "Packer Validate ${config.template}", script: "${cmd} .", returnStatus: true)
+      returnCode = sh(label: "Packer Validate ${config.template}", script: cmd.add('.').join(' '), returnStatus: true)
     }
   }
 

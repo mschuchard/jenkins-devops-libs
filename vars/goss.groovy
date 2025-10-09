@@ -54,7 +54,7 @@ String render(Map config) {
 
   // render gossfile
   try {
-    final String rendered = sh(label: "GoSS Render ${config?.gossfile}", script: cmd, returnStdout: true)
+    final String rendered = sh(label: "GoSS Render ${config?.gossfile}", script: cmd.join(' '), returnStdout: true)
 
     print 'GoSSfile rendered successfully.'
 
@@ -105,7 +105,7 @@ void server(Map config) {
 
   // create goss rest api endpoint
   try {
-    sh(label: "GoSS Server ${config?.gossfile}", script: "nohup ${cmd} -e ${config.endpoint} -l :${config.port} &")
+    sh(label: "GoSS Server ${config?.gossfile}", script: ['nohup'].addAll(cmd).addAll(['-e', config.endpoint, '-l', ":${config.port}"]).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using goss serve.'
@@ -154,7 +154,7 @@ Boolean validate(Map config) {
   }
 
   // validate with goss
-  final int returnCode = sh(label: "GoSS Validate ${config?.gossfile}", script: cmd, returnStatus: true)
+  final int returnCode = sh(label: "GoSS Validate ${config?.gossfile}", script: cmd.join(' '), returnStatus: true)
 
   // return by code
   if (returnCode == 0) {
@@ -188,7 +188,7 @@ void validateDocker(Map config) {
 
   // run with dgoss
   try {
-    sh(label: "DGoSS Validate Docker ${config.image}", script: "${cmd} ${config.image}")
+    sh(label: "DGoSS Validate Docker ${config.image}", script: cmd.add(config.image).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using dgoss run.'

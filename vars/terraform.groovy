@@ -35,11 +35,11 @@ private void execute(Map config) {
   // apply the config
   try {
     if (config.configPath ==~ /\.tfplan$/) {
-      sh(label: "Terraform Apply ${config.configPath}", script: "${cmd} ${config.configPath}")
+      sh(label: "Terraform Apply ${config.configPath}", script: cmd.add(config.configPath).join(' '))
     }
     else {
       dir(config.configPath) {
-        sh(label: "Terraform Apply ${config.configPath}", script: cmd)
+        sh(label: "Terraform Apply ${config.configPath}", script: cmd.join(' '))
       }
     }
   }
@@ -98,7 +98,7 @@ Boolean fmt(Map config) {
   // canonically format the code
   int fmtStatus
   dir(config.dir) {
-    fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd)
+    fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd.join(' '))
   }
 
   // report if formatting check detected issues
@@ -137,7 +137,7 @@ void graph(Map config) {
   }
   else {
     // cannot cleanly use dir step for this, and also because of later graph file write
-    cmd += " -chdir=${config.dir} graph"
+    cmd.addAll(["-chdir=${config.dir}", 'graph'])
   }
 
   // check for optional inputs
@@ -152,7 +152,7 @@ void graph(Map config) {
 
   String dotGraph
   try {
-    dotGraph = sh(label: 'Terraform Graph', script: cmd)
+    dotGraph = sh(label: 'Terraform Graph', script: cmd.join(' '), returnStdout: true)
   }
   catch (hudson.AbortException error) {
     print 'Failure using terraform graph.'
@@ -175,7 +175,7 @@ void imports(Map config) {
   List<String> cmd = [config.bin, 'import', '-no-color', '-input=false']
 
   // check for optional inputs
-  cmd += varSubCmd(config)
+  cmd.addAll(varSubCmd(config))
 
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -195,7 +195,7 @@ void imports(Map config) {
   try {
     // import each resource
     config.resources.each { String name, String id ->
-      sh(label: "Terraform Import ${name}", script: "${cmd} '${name}' ${id}")
+      sh(label: "Terraform Import ${name}", script: cmd.addAll(["'${name}'", id]).join(' '))
     }
   }
   catch (hudson.AbortException error) {
@@ -263,7 +263,7 @@ void init(Map config) {
   // initialize the working config directory
   try {
     dir(config.dir) {
-      sh(label: 'Terraform Init', script: cmd)
+      sh(label: 'Terraform Init', script: cmd.join(' '))
     }
   }
   catch (hudson.AbortException error) {
@@ -335,7 +335,7 @@ String output(Map config) {
   try {
     // capture output(s)
     dir(config.dir) {
-      outputs = sh(label: 'Terraform Output', script: cmd, returnStdout: true)
+      outputs = sh(label: 'Terraform Output', script: cmd.join(' '), returnStdout: true)
     }
   }
   catch (hudson.AbortException error) {
@@ -411,7 +411,7 @@ String plan(Map config) {
   try {
     // execute plan
     dir(config.dir) {
-      planOutput = sh(label: 'Terraform Plan', script: "${cmd} -out=${out}", returnStdout: true)
+      planOutput = sh(label: 'Terraform Plan', script: cmd.add("-out=${out}").join(' '), returnStdout: true)
       print "Plan output artifact written to: ${out}"
     }
   }
@@ -519,7 +519,7 @@ void refresh(Map config) {
   // refresh the state
   try {
     dir(config.dir) {
-      sh(label: 'Terraform Refresh', script: cmd)
+      sh(label: 'Terraform Refresh', script: cmd.join(' '))
     }
   }
   catch (hudson.AbortException error) {
@@ -561,7 +561,7 @@ void state(Map config) {
 
         dir(config.dir) {
           config.resources.each { String from, String to ->
-            sh(label: "Terraform State Move ${from} to ${to}", script: "${cmd} mv ${from} ${to}")
+            sh(label: "Terraform State Move ${from} to ${to}", script: cmd.addAll(['mv', from, to]).join(' '))
           }
         }
 
@@ -571,7 +571,7 @@ void state(Map config) {
 
         dir(config.dir) {
           config.resources.each { String resource ->
-            sh(label: "Terraform State Remove ${resource}", script: "${cmd} rm ${resource}")
+            sh(label: "Terraform State Remove ${resource}", script: cmd.addAll(['rm', resource]).join(' '))
           }
         }
 
@@ -580,7 +580,7 @@ void state(Map config) {
         assert !config.resources : 'Resources parameter is not allowed for list command.'
 
         dir(config.dir) {
-          sh(label: 'Terraform State Push', script: "${cmd} push")
+          sh(label: 'Terraform State Push', script: cmd.add('push').join(' '))
         }
 
         break
@@ -589,7 +589,7 @@ void state(Map config) {
 
         String stateList
         dir(config.dir) {
-          stateList = sh(label: 'Terraform State List', script: "${cmd} list", returnStdout: true)
+          stateList = sh(label: 'Terraform State List', script: cmd.add('list').join(' '), returnStdout: true)
         }
 
         print 'Terraform state output is as follows:'
@@ -601,7 +601,7 @@ void state(Map config) {
 
         dir(config.dir) {
           config.resources.each { String resource ->
-            String stateShow = sh(label: "Terraform State Show ${resource}", script: "${cmd} show ${resource}", returnStdout: true)
+            String stateShow = sh(label: "Terraform State Show ${resource}", script: cmd.addAll(['show', resource]).join(' '), returnStdout: true)
 
             print 'Terraform state output is as follows:'
             print stateShow
@@ -613,7 +613,7 @@ void state(Map config) {
         assert !config.resources : 'Resources parameter is not allowed for pull command.'
 
         dir(config.dir) {
-            sh(label: 'Terraform State Pull', script: "${cmd} pull")
+            sh(label: 'Terraform State Pull', script: cmd.add('pull').join(' '))
         }
 
         break
@@ -661,7 +661,7 @@ void taint(Map config) {
     // taint each resource
     dir(config.dir) {
       config.resources.each { String resource ->
-        sh(label: "Terraform Taint ${resource}", script: "${cmd} ${resource}")
+        sh(label: "Terraform Taint ${resource}", script: cmd.add(resource).join(' '))
       }
     }
   }
@@ -716,7 +716,7 @@ String test(Map config) {
   String testOutput
   try {
     dir(config.dir) {
-      testOutput = sh(label: 'Terraform Test', script: cmd, returnStdout: true)
+      testOutput = sh(label: 'Terraform Test', script: cmd.join(' '), returnStdout: true)
     }
   }
   catch (hudson.AbortException error) {
@@ -760,7 +760,7 @@ String validate(Map config) {
   String validateOutput
   try {
     dir(config.dir) {
-      validateOutput = sh(label: 'Terraform Validate', script: cmd, returnStdout: true)
+      validateOutput = sh(label: 'Terraform Validate', script: cmd.join(' '), returnStdout: true)
     }
   }
   catch (hudson.AbortException error) {
@@ -796,7 +796,7 @@ void workspace(Map config) {
   dir(config.dir) {
     // select workspace in terraform config directory
     try {
-      sh(label: "Terraform Workspace Select ${config.workspace}", script: "${cmd} ${config.workspace}")
+      sh(label: "Terraform Workspace Select ${config.workspace}", script: cmd.add(config.workspace).join(' '))
     }
     catch (hudson.AbortException error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'

@@ -31,7 +31,7 @@ void hostCreate(Map config) {
 
   // create a host in the inventory
   try {
-    sh(label: "AWX Host Create ${config.name}", script: cmd)
+    sh(label: "AWX Host Create ${config.name}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using awx host create.'
@@ -88,12 +88,12 @@ private void inventory(Map config) {
   if (config.action == 'modify') {
     assert config.inventory in String : 'inventory is a required parameter for inventoryModify'
 
-    cmd += " ${config.inventory}"
+    cmd.add(config.inventory)
   }
 
   // "something" a inventory
   try {
-    sh(label: "AWX Inventory ${capAction} ${config.name}", script: cmd)
+    sh(label: "AWX Inventory ${capAction} ${config.name}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print "Failure using awx inventory${config.action}."
@@ -175,7 +175,7 @@ void jobTemplateLaunch(Map config) {
 
   // launch a job template job
   try {
-    sh(label: "AWX Job Template Launch ${config.id}", script: "${cmd} ${config.id}")
+    sh(label: "AWX Job Template Launch ${config.id}", script: cmd.add(config.id).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using awx job template launch.'
@@ -199,7 +199,7 @@ void projectsUpdate(Map config) {
 
   // launch a project update job
   try {
-    sh(label: "AWX Project Update ${config.id}", script: "${cmd} ${config.id}")
+    sh(label: "AWX Project Update ${config.id}", script: cmd.add(config.id).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using awx projects update.'
@@ -242,7 +242,7 @@ void workflowJobTemplateLaunch(Map config) {
 
   // launch a workflow job template job
   try {
-    sh(label: "AWX Workflow Job Template Launch ${config.id}", script: "${cmd} ${config.id}")
+    sh(label: "AWX Workflow Job Template Launch ${config.id}", script: cmd.add(config.id).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using awx workflow job template launch.'

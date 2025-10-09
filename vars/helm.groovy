@@ -26,7 +26,7 @@ String history(Map config) {
 
   // gather release revision history with helm
   try {
-    final String historyOutput = sh(label: "Helm History ${config.name}", script: "${cmd} ${config.name}", returnStdout: true)
+    final String historyOutput = sh(label: "Helm History ${config.name}", script: cmd.add(config.name).join(' '), returnStdout: true)
 
     print 'Helm history executed successfully.'
 
@@ -104,14 +104,14 @@ void install(Map config) {
   }
 
   // check release object
-  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
   if (releaseObjList =~ config.name) {
     error(message: "Release object ${config.name} already exists!")
   }
 
   // install with helm
   try {
-    sh(label: "Helm Install ${config.name}", script: "${cmd} ${config.name} ${config.chart}")
+    sh(label: "Helm Install ${config.name}", script: cmd.addAll([config.name, config.chart]).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm install.'
@@ -175,7 +175,7 @@ Boolean lint(Map config) {
   }
 
   // lint with helm
-  final int returnCode = sh(label: "Helm Lint ${config.chart}", script: "${cmd} ${config.chart}", returnStatus: true)
+  final int returnCode = sh(label: "Helm Lint ${config.chart}", script: cmd.add(config.chart).join(' '), returnStatus: true)
 
   // return by code
   if (returnCode == 0) {
@@ -226,7 +226,7 @@ void packages(Map config) {
 
   // package with helm
   try {
-    sh(label: "Helm Package ${config.chart}", script: "${cmd} ${config.chart}")
+    sh(label: "Helm Package ${config.chart}", script: cmd.add(config.chart).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm package.'
@@ -250,7 +250,7 @@ void plugin(Map config) {
 
   // manage a helm plugin
   try {
-    sh(label: 'Helm Plugin', script: cmd)
+    sh(label: 'Helm Plugin', script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print "Failure using helm plugin ${config.command}."
@@ -275,7 +275,7 @@ void push(Map config) {
 
   // push helm chart to remote registry
   try {
-    sh(label: "Helm Push ${config.chart}", script: "${cmd} ${config.chart} ${config.remote}")
+    sh(label: "Helm Push ${config.chart}", script: cmd.addAll([config.chart, config.remote]).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm push'
@@ -300,7 +300,7 @@ void registryLogin(Map config) {
 
   // login to a helm registry
   try {
-    sh(label: "Helm Registry Login ${config.host}", script: "${cmd} ${config.host}")
+    sh(label: "Helm Registry Login ${config.host}", script: cmd.add(config.host).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm registry login.'
@@ -333,7 +333,7 @@ void repo(Map config) {
 
   // add a repo with helm
   try {
-    sh(label: "Helm Repo Add ${config.repo}", script: "${cmd} ${config.repo} ${config.url}")
+    sh(label: "Helm Repo Add ${config.repo}", script: cmd.addAll([config.repo, config.url]).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm repo add.'
@@ -343,7 +343,7 @@ void repo(Map config) {
 
   // update the repo
   try {
-    sh(label: "Helm Repo Update ${config.repo}", script: "${cmd.replaceFirst('add', 'update')} ${config.repo}")
+    sh(label: "Helm Repo Update ${config.repo}", script: cmd.replaceFirst('add', 'update').add(config.repo).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm repo update.'
@@ -371,7 +371,7 @@ void rollback(Map config) {
   }
 
   // check release object
-  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
   assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
 
   // optional inputs
@@ -395,7 +395,7 @@ void rollback(Map config) {
 
   // rollback with helm
   try {
-    sh(label: "Helm Rollback ${config.name}", script: cmd)
+    sh(label: "Helm Rollback ${config.name}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm rollback.'
@@ -473,12 +473,12 @@ String status(Map config) {
   }
 
   // check release object
-  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
   assert (releaseObjList =~ config.name) : "Release object ${config.name} does not exist!"
 
   // attempt to query a release object's status
   try {
-    String status = sh(label: "Helm Status ${config.name}", script: "${cmd} ${config.name}", returnStdout: true)
+    String status = sh(label: "Helm Status ${config.name}", script: cmd.add(config.name).join(' '), returnStdout: true)
 
     print 'Helm status executed successfully.'
 
@@ -513,7 +513,7 @@ void test(Map config) {
 
   // test with helm
   try {
-    sh(label: "Helm Test ${config.name}", script: "${cmd} ${config.name}")
+    sh(label: "Helm Test ${config.name}", script: cmd.add(config.name).join(' '))
   }
   catch (hudson.AbortException error) {
     // no longer relevant as of version 1.6.0, but still interesting code
@@ -575,12 +575,12 @@ void uninstall(Map config) {
   }
 
   // check release object
-  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
   assert (releaseObjList =~ config.name) : "Release object ${config.name} does not exist!"
 
   // attempt to uninstall a release object
   try {
-    sh(label: "Helm Uninstall ${config.name}", script: "${cmd} ${config.name}")
+    sh(label: "Helm Uninstall ${config.name}", script: cmd.add(config.name).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm uninstall.'
@@ -656,13 +656,13 @@ void upgrade(Map config) {
 
   // check release object presence if install param is not true (i.e. false or null)
   if (!(config.install == true)) {
-    final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister).trim()
+    final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
     assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
   }
 
   // upgrade with helm
   try {
-    sh(label: "Helm Upgrade ${config.name}", script: "${cmd} ${config.name} ${config.chart}")
+    sh(label: "Helm Upgrade ${config.name}", script: cmd.addAll([config.name, config.chart]).join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm upgrade.'
