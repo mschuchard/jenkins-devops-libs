@@ -28,7 +28,8 @@ void build(Map config) {
 
   // create image with faas
   try {
-    sh(label: "OpenFaaS Build ${config.template}", script: cmd.addAll(['-f', config.template]).join(' '))
+    cmd.addAll(['-f', config.template])
+    sh(label: "OpenFaaS Build ${config.template}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using faas-cli build.'
@@ -69,7 +70,8 @@ void deploy(Map config) {
 
   // deploy function with faas
   try {
-    sh(label: "OpenFaaS Deploy ${config.template}", script: cmd.addAll(['-f', config.template]).join(' '))
+    cmd.addAll(['-f', config.template])
+    sh(label: "OpenFaaS Deploy ${config.template}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using faas-cli deploy.'
@@ -147,7 +149,8 @@ void invoke(Map config) {
 
   // invoke faas function
   try {
-    sh(label: "OpenFaaS Invoke ${config.function}", script: cmd.add(config.function).join(' '))
+    cmd.add(config.function)
+    sh(label: "OpenFaaS Invoke ${config.function}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using faas-cli invoke.'
@@ -208,7 +211,8 @@ void login(Map config) {
 
   // login to faas gateway
   try {
-    sh(label: "OpenFaaS Login ${config.user}", script: cmd.addAll(['-p', config.password]).join(' '))
+    cmd.addAll(['-p', config.password])
+    sh(label: "OpenFaaS Login ${config.user}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using faas-cli login.'
@@ -241,7 +245,8 @@ String logs(Map config) {
   // retrieve function logs
   String logs
   try {
-    logs = sh(label: "OpenFaaS Logs ${config.name}", script: cmd.add(config.name).join(' '), returnStdout: true)
+    cmd.add(config.name)
+    logs = sh(label: "OpenFaaS Logs ${config.name}", script: cmd.join(' '), returnStdout: true)
   }
   catch (hudson.AbortException error) {
     print 'Failure using faas-cli logs.'
@@ -270,7 +275,8 @@ void push(Map config) {
 
   // push function with faas
   try {
-    sh(label: "OpenFaaS Push ${config.template}", script: cmd.addAll(['-f', config.template]).join(' '))
+    cmd.addAll(['-f', config.template])
+    sh(label: "OpenFaaS Push ${config.template}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using faas-cli push.'
@@ -292,7 +298,8 @@ void remove(Map config) {
 
   // remove function with faas
   try {
-    sh(label: "OpenFaaS Remove ${config.template}", script: cmd.addAll(['-f', config.template]).join(' '))
+    cmd.addAll(['-f', config.template])
+    sh(label: "OpenFaaS Remove ${config.template}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using faas-cli remove.'

@@ -175,7 +175,8 @@ void jobTemplateLaunch(Map config) {
 
   // launch a job template job
   try {
-    sh(label: "AWX Job Template Launch ${config.id}", script: cmd.add(config.id).join(' '))
+    cmd.add(config.id)
+    sh(label: "AWX Job Template Launch ${config.id}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using awx job template launch.'
@@ -199,7 +200,8 @@ void projectsUpdate(Map config) {
 
   // launch a project update job
   try {
-    sh(label: "AWX Project Update ${config.id}", script: cmd.add(config.id).join(' '))
+    cmd.add(config.id)
+    sh(label: "AWX Project Update ${config.id}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using awx projects update.'
@@ -242,7 +244,8 @@ void workflowJobTemplateLaunch(Map config) {
 
   // launch a workflow job template job
   try {
-    sh(label: "AWX Workflow Job Template Launch ${config.id}", script: cmd.add(config.id).join(' '))
+    cmd.add(config.id)
+    sh(label: "AWX Workflow Job Template Launch ${config.id}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using awx workflow job template launch.'

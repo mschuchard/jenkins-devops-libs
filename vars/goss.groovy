@@ -105,7 +105,8 @@ void server(Map config) {
 
   // create goss rest api endpoint
   try {
-    sh(label: "GoSS Server ${config?.gossfile}", script: ['nohup'].addAll(cmd).addAll(['-e', config.endpoint, '-l', ":${config.port}"]).join(' '))
+    List<String> bgCmd = ['nohup'] + cmd + ['-e', config.endpoint, '-l', ":${config.port}"]
+    sh(label: "GoSS Server ${config?.gossfile}", script: bgCmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using goss serve.'
@@ -188,7 +189,8 @@ void validateDocker(Map config) {
 
   // run with dgoss
   try {
-    sh(label: "DGoSS Validate Docker ${config.image}", script: cmd.add(config.image).join(' '))
+    cmd.add(config.image)
+    sh(label: "DGoSS Validate Docker ${config.image}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using dgoss run.'

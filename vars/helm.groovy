@@ -26,7 +26,8 @@ String history(Map config) {
 
   // gather release revision history with helm
   try {
-    final String historyOutput = sh(label: "Helm History ${config.name}", script: cmd.add(config.name).join(' '), returnStdout: true)
+    cmd.add(config.name)
+    final String historyOutput = sh(label: "Helm History ${config.name}", script: cmd.join(' '), returnStdout: true)
 
     print 'Helm history executed successfully.'
 
@@ -111,7 +112,8 @@ void install(Map config) {
 
   // install with helm
   try {
-    sh(label: "Helm Install ${config.name}", script: cmd.addAll([config.name, config.chart]).join(' '))
+    cmd.addAll([config.name, config.chart])
+    sh(label: "Helm Install ${config.name}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm install.'
@@ -175,7 +177,8 @@ Boolean lint(Map config) {
   }
 
   // lint with helm
-  final int returnCode = sh(label: "Helm Lint ${config.chart}", script: cmd.add(config.chart).join(' '), returnStatus: true)
+  cmd.add(config.chart)
+  final int returnCode = sh(label: "Helm Lint ${config.chart}", script: cmd.join(' '), returnStatus: true)
 
   // return by code
   if (returnCode == 0) {
@@ -210,12 +213,12 @@ void packages(Map config) {
     cmd.addAll(['-d', config.dest])
   }
   if (config.key) {
-    cmd.addAll(['--sign --key', config.key])
+    cmd.addAll(['--sign', '--key', config.key])
   }
   else if (config.keyring) {
     assert fileExists(config.keyring) : "The keyring ${config.keyring} does not exist."
 
-    cmd.addAll(['--sign --keyring', config.keyring])
+    cmd.addAll(['--sign', '--keyring', config.keyring])
   }
   if (config.updateDeps == true) {
     cmd.add('-u')
@@ -226,7 +229,8 @@ void packages(Map config) {
 
   // package with helm
   try {
-    sh(label: "Helm Package ${config.chart}", script: cmd.add(config.chart).join(' '))
+    cmd.add(config.chart)
+    sh(label: "Helm Package ${config.chart}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm package.'
@@ -275,7 +279,8 @@ void push(Map config) {
 
   // push helm chart to remote registry
   try {
-    sh(label: "Helm Push ${config.chart}", script: cmd.addAll([config.chart, config.remote]).join(' '))
+    cmd.addAll([config.chart, config.remote])
+    sh(label: "Helm Push ${config.chart}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm push'
@@ -300,7 +305,8 @@ void registryLogin(Map config) {
 
   // login to a helm registry
   try {
-    sh(label: "Helm Registry Login ${config.host}", script: cmd.add(config.host).join(' '))
+    cmd.add(config.host)
+    sh(label: "Helm Registry Login ${config.host}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm registry login.'
@@ -322,18 +328,19 @@ void repo(Map config) {
     cmd.add('--insecure-skip-tls-verify')
   }
   else if ((config.ca) && (config.cert) && (config.key)) {
-    cmd.addAll(['--ca-file ${config.ca} --cert-file ${config.cert} --key-file', config.key])
+    cmd.addAll(['--ca-file', config.ca, '--cert-file', config.cert, '--key-file', config.key])
   }
   if (config.force == true) {
     cmd.add('--force-update')
   }
   if ((config.user) && (config.password)) {
-    cmd.addAll(['--username ${config.user} --password', config.password])
+    cmd.addAll(['--username', config.user, '--password', config.password])
   }
 
   // add a repo with helm
   try {
-    sh(label: "Helm Repo Add ${config.repo}", script: cmd.addAll([config.repo, config.url]).join(' '))
+    cmd.addAll([config.repo, config.url])
+    sh(label: "Helm Repo Add ${config.repo}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm repo add.'
@@ -343,7 +350,8 @@ void repo(Map config) {
 
   // update the repo
   try {
-    sh(label: "Helm Repo Update ${config.repo}", script: cmd.replaceFirst('add', 'update').add(config.repo).join(' '))
+    cmd.add(config.repo)
+    sh(label: "Helm Repo Update ${config.repo}", script: cmd.join(' ').replaceFirst('add', 'update'))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm repo update.'
@@ -387,7 +395,7 @@ void rollback(Map config) {
 
   // append rollback version if specified
   if (config.version) {
-    cmd.addAll(['${config.name}', config.version])
+    cmd.addAll([config.name, config.version])
   }
   else {
     cmd.add(config.name)
@@ -478,7 +486,8 @@ String status(Map config) {
 
   // attempt to query a release object's status
   try {
-    String status = sh(label: "Helm Status ${config.name}", script: cmd.add(config.name).join(' '), returnStdout: true)
+    cmd.add(config.name)
+    String status = sh(label: "Helm Status ${config.name}", script: cmd.join(' '), returnStdout: true)
 
     print 'Helm status executed successfully.'
 
@@ -513,7 +522,8 @@ void test(Map config) {
 
   // test with helm
   try {
-    sh(label: "Helm Test ${config.name}", script: cmd.add(config.name).join(' '))
+    cmd.add(config.name)
+    sh(label: "Helm Test ${config.name}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     // no longer relevant as of version 1.6.0, but still interesting code
@@ -580,7 +590,8 @@ void uninstall(Map config) {
 
   // attempt to uninstall a release object
   try {
-    sh(label: "Helm Uninstall ${config.name}", script: cmd.add(config.name).join(' '))
+    cmd.add(config.name)
+    sh(label: "Helm Uninstall ${config.name}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm uninstall.'
@@ -662,7 +673,8 @@ void upgrade(Map config) {
 
   // upgrade with helm
   try {
-    sh(label: "Helm Upgrade ${config.name}", script: cmd.addAll([config.name, config.chart]).join(' '))
+    cmd.addAll([config.name, config.chart])
+    sh(label: "Helm Upgrade ${config.name}", script: cmd.join(' '))
   }
   catch (hudson.AbortException error) {
     print 'Failure using helm upgrade.'
