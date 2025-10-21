@@ -14,7 +14,7 @@ void build(Map config) {
   List<String> cmd = [config.bin, 'build', '-color=false']
 
   // check for optional inputs
-  cmd += varSubCmd(config)
+  cmd.addAll(varSubCmd(config))
 
   if (config.except) {
     assert (config.except in List) : 'The except parameter must be a list of strings.'
@@ -213,10 +213,10 @@ void pluginsInstall(Map config) {
     cmd.add('-force')
   }
   // append plugin since optional version must be last argument
-  cmd += " ${config.plugin}"
+  cmd.add(config.plugin)
 
   if (config.version) {
-    cmd += " ${config.version}"
+    cmd.add(config.version)
   }
 
   // install plugin
@@ -238,7 +238,7 @@ void pluginsRemove(Map config) {
 
   // optional inputs
   if (config.version) {
-    cmd += " ${config.version}"
+    cmd.add(config.version)
   }
 
   // remove plugin
@@ -298,7 +298,7 @@ Boolean validate(Map config) {
   List<String> cmd = [config.bin, 'validate']
 
   // check for optional inputs
-  cmd += varSubCmd(config)
+  cmd.addAll(varSubCmd(config))
 
   if (config.except) {
     assert (config.except in List) : 'The except parameter must be a list of strings.'

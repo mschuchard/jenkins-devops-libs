@@ -44,7 +44,7 @@ String render(Map config) {
   List<String> cmd = [config.bin]
 
   // check for optional global inputs and establish command
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
   cmd.add('render')
 
   // check for optional inputs
@@ -79,7 +79,7 @@ void server(Map config) {
   List<String> cmd = [config.bin]
 
   // check for optional global inputs and establish command
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
   cmd.add('serve')
 
   // check for optional inputs
@@ -125,7 +125,7 @@ Boolean validate(Map config) {
   List<String> cmd = [config.bin]
 
   // check for optional global inputs and establish command
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
   cmd.add('validate --no-color')
 
   // check for optional inputs

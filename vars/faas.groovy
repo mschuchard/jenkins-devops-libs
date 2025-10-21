@@ -65,7 +65,7 @@ void deploy(Map config) {
   if (config.update == true) {
     cmd.add('--update=true')
   }
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
 
   // deploy function with faas
   try {
@@ -143,7 +143,7 @@ void invoke(Map config) {
   if (config.stdin) {
     cmd.addAll(['<', config.stdin])
   }
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
 
   // invoke faas function
   try {
@@ -177,7 +177,7 @@ String list(Map config) {
 
     cmd.addAll(['--sort', config.sort])
   }
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
 
   // list faas functions
   String functions
@@ -204,7 +204,7 @@ void login(Map config) {
   if (config.user) {
     cmd.addAll(['-u', config.user])
   }
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
 
   // login to faas gateway
   try {
@@ -226,7 +226,7 @@ String logs(Map config) {
 
   // optional inputs
   if (config.instance) {
-    cmd += '--instance'
+    cmd.add('--instance')
   }
   if (config.format) {
     assert ['plain', 'keyvalue', 'json'].contains(config.format)
@@ -236,7 +236,7 @@ String logs(Map config) {
   if (config.since) {
     cmd.addAll(['--since', config.since])
   }
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
 
   // retrieve function logs
   String logs
@@ -288,7 +288,7 @@ void remove(Map config) {
   List<String> cmd = [config.bin, 'rm']
 
   // check for optional inputs
-  cmd += globalArgsCmd(config)
+  cmd.addAll(globalArgsCmd(config))
 
   // remove function with faas
   try {

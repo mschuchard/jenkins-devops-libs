@@ -15,7 +15,7 @@ private void execute(Map config) {
 
   // check if a directory was passed for the config path
   if (!(config.configPath ==~ /\.tfplan$/)) {
-    cmd += varSubCmd(config)
+    cmd.addAll(varSubCmd(config))
 
     if (config.target) {
       assert (config.target in List) : 'The target parameter must be a list of strings.'
@@ -251,7 +251,7 @@ void init(Map config) {
     assert (config.backendKV in Map) : 'Parameter backendKV must be a map of strings.'
 
     config.backendKV.each { String key, String value ->
-      cmd += " -backend-config='${key}=${value}'"
+      cmd.add("-backend-config='${key}=${value}'")
     }
   }
   if (config.testDir) {
@@ -327,7 +327,7 @@ String output(Map config) {
   }
   // must be last param
   if (config.name) {
-    cmd += " ${config.name}"
+    cmd.add(config.name)
   }
 
   // display outputs from the state
@@ -374,7 +374,7 @@ String plan(Map config) {
   List<String> cmd = [config.bin, 'plan', '-no-color', '-input=false']
 
   // check for optional inputs
-  cmd += varSubCmd(config)
+  cmd.addAll(varSubCmd(config))
 
   if (config.target) {
     assert (config.target in List) : 'The target parameter must be a list of strings.'
@@ -402,7 +402,7 @@ String plan(Map config) {
   if (config.genConfig) {
     assert !fileExists(config.genConfig) : "The path at ${config.genConfig} is required to not exist prior to Terraform config generation, but the path does exist."
 
-    cmd += "-generate-config-out=${config.genConfig}"
+    cmd.add("-generate-config-out=${config.genConfig}")
   }
   final String out = config.out ?: "${config.dir}/plan.tfplan"
 
@@ -503,7 +503,7 @@ void refresh(Map config) {
   List<String> cmd = [config.bin, 'refresh', '-no-color', '-input=false']
 
   // check for optional inputs
-  cmd += varSubCmd(config)
+  cmd.addAll(varSubCmd(config))
 
   if (config.target) {
     assert (config.target in List) : 'The target parameter must be a list of strings.'
@@ -706,7 +706,7 @@ String test(Map config) {
 
     cmd.add("-test-directory=${config.testDir}")
   }
-  cmd += varSubCmd(config)
+  cmd.addAll(varSubCmd(config))
 
   if (config.verbose == true) {
     cmd.add('-verbose')

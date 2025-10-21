@@ -84,11 +84,11 @@ void install(Map config) {
   }
   if (config.context) {
     cmd.addAll(['--kube-context', config.context])
-    lister += " --kube-context ${config.context}"
+    lister.addAll(['--kube-context', config.context])
   }
   if (config.namespace) {
     cmd.addAll(['--namespace', config.namespace])
-    lister += " --namespace ${config.namespace}"
+    lister.addAll(['--namespace', config.namespace])
   }
   if (config.createNS == true) {
     cmd.add('--create-namespace')
@@ -363,11 +363,11 @@ void rollback(Map config) {
   // optional inputs also applicable to lister
   if (config.context) {
     cmd.addAll(['--kube-context', config.context])
-    lister += " --kube-context ${config.context}"
+    lister.addAll(['--kube-context', config.context])
   }
   if (config.namespace) {
     cmd.addAll(['--namespace', config.namespace])
-    lister += " --namespace ${config.namespace}"
+    lister.addAll(['--namespace', config.namespace])
   }
 
   // check release object
@@ -390,7 +390,7 @@ void rollback(Map config) {
     cmd.addAll(['${config.name}', config.version])
   }
   else {
-    cmd += " ${config.name}"
+    cmd.add(config.name)
   }
 
   // rollback with helm
@@ -451,14 +451,14 @@ String status(Map config) {
   // check for optional inputs
   if (config.context) {
     cmd.addAll(['--kube-context', config.context])
-    lister += " --kube-context ${config.context}"
+    lister.addAll(['--kube-context', config.context])
   }
   if (config.description) {
     cmd.add('--show-desc')
   }
   if (config.namespace) {
     cmd.addAll(['--namespace', config.namespace])
-    lister += " --namespace ${config.namespace}"
+    lister.addAll(['--namespace', config.namespace])
   }
   if (config.outputFormat) {
     assert (['table', 'json', 'yaml'].contains(config.outputFormat)) : 'The outputFormat parameter must be one of table, json, or yaml'
@@ -567,11 +567,11 @@ void uninstall(Map config) {
   // check for optional inputs
   if (config.context) {
     cmd.addAll(['--kube-context', config.context])
-    lister += " --kube-context ${config.context}"
+    lister.addAll(['--kube-context', config.context])
   }
   if (config.namespace) {
     cmd.addAll(['--namespace', config.namespace])
-    lister += " --namespace ${config.namespace}"
+    lister.addAll(['--namespace', config.namespace])
   }
 
   // check release object
@@ -647,11 +647,11 @@ void upgrade(Map config) {
   }
   if (config.context) {
     cmd.addAll(['--kube-context', config.context])
-    lister += " --kube-context ${config.context}"
+    lister.addAll(['--kube-context', config.context])
   }
   if (config.namespace) {
     cmd.addAll(['--namespace', config.namespace])
-    lister += " --namespace ${config.namespace}"
+    lister.addAll(['--namespace', config.namespace])
   }
 
   // check release object presence if install param is not true (i.e. false or null)
