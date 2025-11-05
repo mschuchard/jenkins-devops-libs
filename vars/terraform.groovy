@@ -130,7 +130,7 @@ void graph(Map config) {
   else if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
-  String cmd = config.bin ?: 'terraform'
+  List<String> cmd = [config.bin ?: 'terraform']
 
   // check for plan versus dir target
   if (config.plan) {
@@ -822,7 +822,7 @@ void workspace(Map config) {
 }
 
 // private method for vars
-private String varSubCmd(Map config) {
+private List<String> varSubCmd(Map config) {
   List<String> subCmd = []
 
   // check for optional var inputs

@@ -1,4 +1,7 @@
 ### 2.2.2 (Next)
+**General**
+- Improve reliability of tool command assignments.
+
 **Packer**
 - Fix return checks for `fmt` method.
 

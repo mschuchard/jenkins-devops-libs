@@ -49,7 +49,7 @@ void install(Map config) {
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'install']
-  String lister = [config.bin, 'list']
+  List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
   if (config.values) {
@@ -366,7 +366,7 @@ void rollback(Map config) {
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'rollback']
-  String lister = [config.bin, 'list']
+  List<String> lister = [config.bin, 'list']
 
   // optional inputs also applicable to lister
   if (config.context) {
@@ -454,7 +454,7 @@ String status(Map config) {
   assert config.name : 'The required parameter "name" was not set.'
 
   List<String> cmd = [config.bin, 'status']
-  String lister = [config.bin, 'list']
+  List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
   if (config.context) {
@@ -572,7 +572,7 @@ void uninstall(Map config) {
   assert config.name in String : 'The required parameter "name" was not set.'
 
   List<String> cmd = [config.bin, 'uninstall']
-  String lister = [config.bin, 'list']
+  List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
   if (config.context) {
@@ -610,7 +610,7 @@ void upgrade(Map config) {
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'upgrade']
-  String lister = [config.bin, 'list']
+  List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
   if (config.values) {

@@ -326,7 +326,7 @@ Boolean validateTemplate(String template) {
 }
 
 // private method for global arguments pertaining to all methods
-private static String globalArgsCmd(Map config) {
+private static List<String> globalArgsCmd(Map config) {
   // initialize subcommand from global args
   List<String> subCmd = []
 

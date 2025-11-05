@@ -353,7 +353,7 @@ Boolean validate(Map config) {
 }
 
 // private method for vars
-private String varSubCmd(Map config) {
+private List<String> varSubCmd(Map config) {
   List<String> subCmd = []
 
   // check for optional var inputs
