@@ -60,11 +60,11 @@ void deploy(Map config) {
   if (config.replace == false) {
     cmd.add('--replace=false')
   }
+  else if (config.update == true) {
+    cmd.add('--update=true')
+  }
   if (config.secret) {
     cmd.addAll(['--secret', config.secret])
-  }
-  if (config.update == true) {
-    cmd.add('--update=true')
   }
   cmd.addAll(globalArgsCmd(config))
 

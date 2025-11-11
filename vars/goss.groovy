@@ -229,7 +229,13 @@ private static List<String> globalArgsCmd(Map config) {
     subCmd.addAll(['--vars-inline', varsInlineJSON])
   }
   else if (config.vars) {
-    assert readYaml(config.vars) in String : "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
+    try {
+      readYaml(file: config.vars)
+    }
+    catch (Exception error) {
+      print "The vars file ${config.vars} does not exist, or is not a valid YAML or JSON file!"
+      throw error
+    }
 
     subCmd.addAll(['--vars', config.vars])
   }

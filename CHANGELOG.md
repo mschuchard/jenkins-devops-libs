@@ -2,6 +2,9 @@
 **General**
 - Improve reliability of tool command assignments.
 
+**GoSS**
+- Fix variable file validation.
+
 **Packer**
 - Fix return checks for `fmt` method.
 
