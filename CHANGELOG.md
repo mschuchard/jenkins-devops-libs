@@ -13,6 +13,8 @@
 
 **Puppet**
 - Fix request in `token` method.
+- Update request bodies to match updated API.
+- Minor fixes to logging.
 
 ### 2.2.1
 **General**

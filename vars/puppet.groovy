@@ -21,7 +21,7 @@ void codeDeploy(Map config) {
   config.port = config.port ?: 8170
 
   // init payload
-  Map<String,String> payload = [:]
+  Map<String,Object> payload = [:]
 
   // check for environments
   if (config.environments) {
@@ -33,9 +33,26 @@ void codeDeploy(Map config) {
   else {
     payload['deploy-all'] = true
   }
+
   // check for wait
   if (config.wait == true) {
     payload['wait'] = true
+  }
+
+  // check for deploy-modules
+  if (config.deployModules != null) {
+    payload['deploy-modules'] = config.deployModules
+  }
+
+  // check for modules
+  if (config.modules) {
+    assert (config.modules in List || config.modules in String) : 'The modules parameter must be a list of strings or a string.'
+    payload['modules'] = config.modules
+  }
+
+  // check for dry-run
+  if (config.dryRun == true) {
+    payload['dry-run'] = true
   }
 
   // convert map to json string
@@ -71,7 +88,7 @@ void codeDeploy(Map config) {
         ignoreSslErrors:        true,
         quiet:                  true,
         requestBody:            payload,
-        url:                    "${server}:${config.port}/code-manager/v1/deploys",
+        url:                    "https://${server}:${config.port}/code-manager/v1/deploys",
       )
     }
     catch (Exception error) {
@@ -125,20 +142,25 @@ void task(Map config) {
   config.port = config.port ?: 8143
 
   // initialize payload
-  Map<String,String> payload = [:]
+  Map<String,Object> payload = [:]
 
-  if (config.environment) {
-    payload['environment'] = config.environment
-  }
+  // environment is required, default to production
+  payload['environment'] = config.environment ?: 'production'
+
   if (config.description) {
     payload['description'] = config.description
   }
-  if (config.noop) {
+  if (config.noop != null) {
     payload['noop'] = config.noop
   }
+
+  // params is required, can be empty
   payload['params'] = config.params ?: [:]
 
+  // task is required
   payload['task'] = config.task
+
+  // scope is required
   payload['scope'] = [:]
 
   if (config.scope in List) {
@@ -163,6 +185,22 @@ void task(Map config) {
   }
   else {
     error(message: 'The scope parameter is an invalid type!')
+  }
+
+  // check for targets (for Bolt server usage)
+  if (config.targets) {
+    assert (config.targets in List) : 'The targets parameter must be a list of target objects.'
+    payload['targets'] = config.targets
+  }
+
+  // check for timeout
+  if (config.timeout) {
+    payload['timeout'] = config.timeout
+  }
+
+  // check for userdata
+  if (config.userdata) {
+    payload['userdata'] = config.userdata
   }
 
   // convert map to json file
@@ -195,11 +233,11 @@ void task(Map config) {
       ignoreSslErrors:        true,
       quiet:                  true,
       requestBody:            payload,
-      url:                    "${server}:${config.port}/orchestrator/v1/command/task",
+      url:                    "https://${config.server}:${config.port}/orchestrator/v1/command/task",
     )
   }
   catch (Exception error) {
-    print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse.status}."
+    print "Failure executing REST API request against ${config.server} with token! Returned status: ${jsonResponse.status}."
     throw error
   }
   // receive and parse response
@@ -207,32 +245,18 @@ void task(Map config) {
     response = readJSON(text: jsonResponse.content)
   }
   catch (Exception error) {
-    print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
+    print "Response from ${config.server} is not valid JSON! Response content: ${jsonResponse.content}."
     throw error
   }
-  // handle errors in response
-  response.each { Map hash ->
-    if (hash.containsKey('puppetlabs.orchestrator/unknown-environment')) {
-      error(message: 'The environment does not exist!')
-    }
-    else if (hash.containsKey('puppetlabs.orchestrator/empty-target')) {
-      error(message: 'The application instance specified to deploy does not exist or is empty!')
-    }
-    else if (hash.containsKey('puppetlabs.orchestrator/puppetdb-error')) {
-      error(message: 'The orchestrator is unable to make a query to PuppetDB!')
-    }
-    else if (hash.containsKey('puppetlabs.orchestrator/query-error')) {
-      error(message: 'The user does not have appropriate permissions to run a query, or the query is invalid!')
-    }
-    else if (hash.containsKey('puppetlabs.orchestrator/not-permitted')) {
-      error(message: 'The user does not have permission to run the task on the requested nodes!')
-    }
-    else {
-      print 'Successful response from Orchestrator below:'
-      print hash.toMapString()
-    }
+  // handle successful response
+  if (response.containsKey('job')) {
+    print 'Puppet Orchestrator Task execution successfully requested.'
+    print "Job Name: ${response['job']['name']}, Job ID: ${response['job']['id']}"
   }
-  print 'Puppet Orchestrator Task execution successfully requested.'
+  else {
+    print 'Failure response from Orchestrator below:'
+    print response.toMapString()
+  }
 }
 
 void token(Map config) {
@@ -245,9 +269,17 @@ void token(Map config) {
   config.path = config.path ?: "${env.JENKINS_HOME}/.puppetlabs"
 
   //construct payload
-  Map<String,String> payload = [:]
-  payload['username'] = config.username
+  Map<String,Object> payload = [:]
+  payload['login'] = config.username
   payload['password'] = config.password
+
+  // optional parameters
+  if (config.lifetime) {
+    payload['lifetime'] = config.lifetime
+  }
+  if (config.label) {
+    payload['label'] = config.label
+  }
 
   // convert map to json file
   payload = new utils().mapToJSON(payload)
@@ -266,7 +298,7 @@ void token(Map config) {
       ignoreSslErrors:        !config.secure,
       quiet:                  true,
       requestBody:            payload,
-      url:                    "${config.server}:${config.port}/rbac-api/v1/auth/token",
+      url:                    "https://${config.server}:${config.port}/rbac-api/v1/auth/token",
     )
   }
   catch (Exception error) {
