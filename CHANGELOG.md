@@ -2,6 +2,9 @@
 **General**
 - Improve reliability of tool command assignments.
 
+**FaaS**
+- Add `stategy` parameter to `deploy` method.
+
 **GoSS**
 - Fix variable file validation.
 

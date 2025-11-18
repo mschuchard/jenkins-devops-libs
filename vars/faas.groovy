@@ -63,6 +63,11 @@ void deploy(Map config) {
   else if (config.update == true) {
     cmd.add('--update=true')
   }
+  else if (config.strategy) {
+    assert ['replace', 'update'].contains(config.strategy) : 'The strategy parameter must be either "replace" or "update".'
+
+    cmd.add(["--${config.strategy}"])
+  }
   if (config.secret) {
     cmd.addAll(['--secret', config.secret])
   }
