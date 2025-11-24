@@ -1,7 +1,22 @@
 // src/devops/common/helpers.groovy
 package devops.common
 
-// private method for vars
+// imports
+import hudson.AbortException
+
+// generic tool execution
+void toolExec(String label, List<String> cmd) {
+    try {
+        sh(label: label, script: cmd.join(' '))
+    }
+    catch (AbortException error) {
+        print "failure using ${label.toLowerCase()}"
+        throw error
+    }
+    print "${label.toLowerCase()} was successful"
+}
+
+// hashi vars
 List<String> varSubCmd(Map config) {
     List<String> subCmd = []
 
