@@ -1,5 +1,6 @@
 // vars/terraform.groovy
 import devops.common.utils
+import devops.common.helpers
 import devops.common.hcl
 
 private void execute(Map config) {
@@ -15,7 +16,7 @@ private void execute(Map config) {
 
   // check if a directory was passed for the config path
   if (!(config.configPath ==~ /\.tfplan$/)) {
-    cmd.addAll(varSubCmd(config))
+    cmd.addAll(new helpers().varSubCmd(config))
 
     if (config.target) {
       assert (config.target in List) : 'The target parameter must be a list of strings.'
@@ -176,7 +177,7 @@ void imports(Map config) {
   List<String> cmd = [config.bin, 'import', '-no-color', '-input=false']
 
   // check for optional inputs
-  cmd.addAll(varSubCmd(config))
+  cmd.addAll(new helpers().varSubCmd(config))
 
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -376,7 +377,7 @@ String plan(Map config) {
   List<String> cmd = [config.bin, 'plan', '-no-color', '-input=false']
 
   // check for optional inputs
-  cmd.addAll(varSubCmd(config))
+  cmd.addAll(new helpers().varSubCmd(config))
 
   if (config.target) {
     assert (config.target in List) : 'The target parameter must be a list of strings.'
@@ -506,7 +507,7 @@ void refresh(Map config) {
   List<String> cmd = [config.bin, 'refresh', '-no-color', '-input=false']
 
   // check for optional inputs
-  cmd.addAll(varSubCmd(config))
+  cmd.addAll(new helpers().varSubCmd(config))
 
   if (config.target) {
     assert (config.target in List) : 'The target parameter must be a list of strings.'
@@ -716,7 +717,7 @@ String test(Map config) {
 
     cmd.add("-test-directory=${config.testDir}")
   }
-  cmd.addAll(varSubCmd(config))
+  cmd.addAll(new helpers().varSubCmd(config))
 
   if (config.verbose == true) {
     cmd.add('-verbose')
@@ -819,30 +820,4 @@ void workspace(Map config) {
     }
     print "Terraform workspace ${config.workspace} selected successfully."
   }
-}
-
-// private method for vars
-private List<String> varSubCmd(Map config) {
-  List<String> subCmd = []
-
-  // check for optional var inputs
-  if (config.varFile) {
-    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
-
-    subCmd.add("-var-file=${config.varFile}")
-  }
-  if (config.var) {
-    assert (config.var in Map) : 'The var parameter must be a Map.'
-
-    config.var.each { String var, String value ->
-        // convert value to json if not string type
-        if (value in List || value in Map) {
-          value = writeJSON(json: value, returnText: true)
-        }
-
-        subCmd.addAll(['-var', "${var}=${value}"])
-    }
-  }
-
-  return subCmd
 }

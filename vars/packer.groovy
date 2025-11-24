@@ -1,5 +1,6 @@
 // vars/packer.groovy
 import devops.common.utils
+import devops.common.helpers
 import devops.common.hcl
 
 void build(Map config) {
@@ -14,7 +15,7 @@ void build(Map config) {
   List<String> cmd = [config.bin, 'build', '-color=false']
 
   // check for optional inputs
-  cmd.addAll(varSubCmd(config))
+  cmd.addAll(new helpers().varSubCmd(config))
 
   if (config.except) {
     assert (config.except in List) : 'The except parameter must be a list of strings.'
@@ -304,7 +305,7 @@ Boolean validate(Map config) {
   List<String> cmd = [config.bin, 'validate']
 
   // check for optional inputs
-  cmd.addAll(varSubCmd(config))
+  cmd.addAll(new helpers().varSubCmd(config))
 
   if (config.except) {
     assert (config.except in List) : 'The except parameter must be a list of strings.'
@@ -350,30 +351,4 @@ Boolean validate(Map config) {
   }
   print 'Failure using packer validate.'
   error(message: 'Packer validate failed unexpectedly')
-}
-
-// private method for vars
-private List<String> varSubCmd(Map config) {
-  List<String> subCmd = []
-
-  // check for optional var inputs
-  if (config.varFile) {
-    assert fileExists(config.varFile) : "The var file ${config.varFile} does not exist!"
-
-    subCmd.add("-var-file=${config.varFile}")
-  }
-  if (config.var) {
-    assert (config.var in Map) : 'The var parameter must be a Map.'
-
-    config.var.each { String var, String value ->
-        // convert value to json if not string type
-        if (value in List || value in Map) {
-          value = writeJSON(json: value, returnText: true)
-        }
-
-        subCmd.addAll(['-var', "${var}=${value}"])
-    }
-  }
-
-  return subCmd
 }
