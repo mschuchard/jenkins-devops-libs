@@ -56,7 +56,7 @@ void codeDeploy(Map config) {
   }
 
   // convert map to json string
-  payload = new utils().mapToJSON(payload)
+  payload = writeJSON(json: payload, returnText: true)
 
   // initialize vars
   boolean errored = false
@@ -203,8 +203,8 @@ void task(Map config) {
     payload['userdata'] = config.userdata
   }
 
-  // convert map to json file
-  payload = new utils().mapToJSON(payload)
+  // convert map to json string
+  payload = writeJSON(json: payload, returnText: true)
 
   // initialize vars
   Map jsonResponse = [:]
@@ -281,8 +281,8 @@ void token(Map config) {
     payload['label'] = config.label
   }
 
-  // convert map to json file
-  payload = new utils().mapToJSON(payload)
+  // convert map to json string
+  payload = writeJSON(json: payload, returnText: true)
 
   // initialize vars
   Map jsonResponse = [:]

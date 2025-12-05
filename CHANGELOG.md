@@ -1,6 +1,7 @@
 ### 2.2.2 (Next)
 **General**
 - Improve reliability of tool command assignments.
+- Improve serialization of utility methods.
 
 **FaaS**
 - Add `stategy` parameter to `deploy` method.

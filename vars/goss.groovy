@@ -224,7 +224,7 @@ private static List<String> globalArgsCmd(Map config) {
   // check for optional global args
   if (config.varsInline) {
     assert config.varsInline in Map : 'The inline vars parameter must be a Map.'
-    final String varsInlineJSON = new utils().mapToJSON(config.varsInline)
+    final String varsInlineJSON = writeJSON(json: config.varsInline, returnText: true)
 
     subCmd.addAll(['--vars-inline', varsInlineJSON])
   }

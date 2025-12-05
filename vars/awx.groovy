@@ -24,7 +24,7 @@ void hostCreate(Map config) {
     assert (config.variables in Map) : 'The variables parameter must be a Map.'
 
     // convert variables map to json for input
-    final String variables = new utils().mapToJSON(config.variables)
+    final String variables = writeJSON(json: config.variables, returnText: true)
 
     cmd.addAll(['--variables', variables])
   }
@@ -81,7 +81,7 @@ private void inventory(Map config) {
     assert (config.variables in Map) : 'The variables parameter must be a Map.'
 
     // convert variables map to json for input
-    final String variables = new utils().mapToJSON(config.variables)
+    final String variables = writeJSON(json: config.variables, returnText: true)
 
     cmd.addAll(['--variables', variables])
   }
@@ -168,7 +168,7 @@ void jobTemplateLaunch(Map config) {
     assert (config.extraVars in Map) : 'The extraVars parameter must be a Map.'
 
     // convert variables map to json for input
-    final String extraVars = new utils().mapToJSON(config.extraVars)
+    final String extraVars = writeJSON(json: config.extraVars, returnText: true)
 
     cmd.addAll(['--extra_vars', extraVars])
   }
@@ -232,7 +232,7 @@ void workflowJobTemplateLaunch(Map config) {
     assert (config.extraVars in Map) : 'The extraVars parameter must be a Map.'
 
     // convert variables map to json for input
-    final String extraVars = new utils().mapToJSON(config.extraVars)
+    final String extraVars = writeJSON(json: config.extraVars, returnText: true)
 
     cmd.addAll(['--extra_vars', extraVars])
   }
