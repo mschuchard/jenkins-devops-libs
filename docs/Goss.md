@@ -4,7 +4,6 @@ Interacts with GoSS.
 
 ### Dependencies
 
-- `pipeline-utility-steps plugin` (`validateGossfile`)
 - GoSS CLI binary executable >= 0.4.0
 - DGoSS CLI binary exeuctable (`validateDocker`)
 

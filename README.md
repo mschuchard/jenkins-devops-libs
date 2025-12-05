@@ -8,6 +8,10 @@ Additionally, you can pare down the libraries available from this repo and then 
 
 Note also that a library will not be developed to compete against a good existing plugin (e.g. Ansible), or a good existing library (e.g. Fabric8). These and any future libraries will exist to fill a gap in the existence of a good Jenkins Pipeline plugin or library for a software tool.
 
+## Dependencies
+
+While each library enumerates its own dependencies in its related documentation, it should be noted that a low percentage of the various methods across the libraries also require the [Pipeline Utility Steps Plugin](https://www.jenkins.io/doc/pipeline/steps/pipeline-utility-steps/). Therefore, that plugin should generally be installed as a dependency of these libraries to ensure reliability.
+
 ## Retrieve and use with Disabled Sandbox
 
 Basically, if you have the GitHub Branch Source plugin installed, then you can [load a specific version](https://jenkins.io/doc/book/pipeline/shared-libraries/#library-versions) like:

@@ -4,7 +4,6 @@ Interacts with Puppet Enterprise endpoints. This library is considered experimen
 
 ### Dependencies
 
-- `pipeline-utility-steps` plugin
 - `http_request` plugin
 - Puppet Enterprise installation
 

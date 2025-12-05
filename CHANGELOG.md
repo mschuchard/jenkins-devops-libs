@@ -2,6 +2,7 @@
 **General**
 - Improve reliability of tool command assignments.
 - Improve serialization of utility methods.
+- Promote `pipeline-utility-steps` plugin to global dependency.
 
 **FaaS**
 - Add `stategy` parameter to `deploy` method.

@@ -4,7 +4,6 @@ Interacts with OpenFaaS CLI.
 
 ### Dependencies
 
-- pipeline-utility-steps plugin (`validateTemplate`)
 - OpenFaaS CLI binary executable >= 0.17
 
 ### faas.build()
