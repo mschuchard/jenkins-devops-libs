@@ -2,7 +2,6 @@
 package devops.common
 
 // imports
-import groovy.json.JsonOutput
 import com.cloudbees.groovy.cps.NonCPS
 import hudson.FilePath
 import jenkins.model.Jenkins
@@ -19,9 +18,28 @@ void removeFile(String file) {
   env['NODE_NAME'] == 'master' ? new File(file).delete() : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), file).delete()
 }
 
-// downloads file
-@NonCPS
+// downloads file using httpRequest step
 void downloadFile(String url, String dest) {
+  // attempt to download the file
+  try {
+    Map response = httpRequest(
+      url: url,
+      httpMode: 'GET',
+      outputFile: dest,
+      quiet: true,
+      validResponseCodes: '200:399'
+    )
+
+    print "Downloaded ${url} to ${dest} (HTTP ${response.status})"
+  } catch (Exception error) {
+    print "Failed to download ${url} to ${dest} (HTTP ${response.status})"
+    throw error
+  }
+}
+
+// downloads file (java/groovy)
+@NonCPS
+void deprecatedDownloadFile(String url, String dest) {
   // establish the file download for the master or the build node
   File file = env['NODE_NAME'] == 'master' ? new File(dest) : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dest)
 
@@ -30,9 +48,26 @@ void downloadFile(String url, String dest) {
   file.close()
 }
 
-// functionally equivalent to unix mkdir -p
-@NonCPS
+// recursively creates directory with serializable steps
 void makeDirParents(String dir) {
+  // normalize path
+  String normalizedDir = dir.replaceAll('\\\\', '/')
+
+  // check if directory already exists
+  if (fileExists(normalizedDir)) {
+    print "Directory at ${normalizedDir} already exists on node."
+    return
+  }
+
+  // create the directory(ies)
+  dir(normalizedDir) {
+    print "Created directory at ${normalizedDir}"
+  }
+}
+
+// functionally equivalent to unix mkdir -p (java/groovy)
+@NonCPS
+void deprecatedMakeDirParents(String dir) {
   // ascertain directory on jenkins master or build agent/node
   File file = env['NODE_NAME'] == 'master' ? new File(dir) : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dir)
 
@@ -49,7 +84,7 @@ void makeDirParents(String dir) {
 
 // converts content map to json string
 String mapToJSON(Map content) {
-  return JsonOutput.toJson(content)
+  return writeJSON(json: content, returnText: true)
 }
 
 // converts closure body to config map, or returns same config map
