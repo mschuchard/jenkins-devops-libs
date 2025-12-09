@@ -1,5 +1,6 @@
 // vars/faas.groovy
 import devops.common.utils
+import devops.common.helpers
 
 void build(Map config) {
   // input checking
@@ -314,20 +315,7 @@ void remove(Map config) {
 }
 
 Boolean validateTemplate(String template) {
-  // ensure template exists and then check yaml syntax
-  assert readFile(template) : "Template ${template} does not exist!"
-
-  try {
-    readYaml(file: template)
-  }
-  catch (Exception error) {
-    print 'Template failed YAML validation.'
-    print error.getMessage()
-    return false
-  }
-
-  print "${template} is valid YAML."
-  return true
+  return new helpers().validateYamlFile(template, 'template')
 }
 
 // private method for global arguments pertaining to all methods

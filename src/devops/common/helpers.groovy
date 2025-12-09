@@ -52,11 +52,11 @@ Boolean validateYamlFile(String filePath, String description) {
         readYaml(file: filePath)
     }
     catch (Exception error) {
-        print "${description} failed YAML validation."
+        print "${description} failed YAML and JSON validation."
         print error.getMessage()
         return false
     }
 
-    print "${filePath} is valid YAML."
+    print "${filePath} is valid YAML and/or JSON."
     return true
 }

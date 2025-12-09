@@ -200,20 +200,7 @@ void validateDocker(Map config) {
 }
 
 Boolean validateGossfile(String gossfile) {
-  // ensure gossfile exists and then check yaml syntax
-  assert fileExists(gossfile) : "GoSSfile ${gossfile} does not exist!"
-
-  try {
-    readYaml(file: gossfile)
-  }
-  catch (Exception error) {
-    print 'GoSSfile failed YAML validation.'
-    print error.getMessage()
-    return false
-  }
-
-  print "${gossfile} is valid YAML."
-  return true
+  return new helpers().validateYamlFile(gossfile, 'GoSSfile')
 }
 
 // private method for global arguments
@@ -229,16 +216,8 @@ private static List<String> globalArgsCmd(Map config) {
     subCmd.addAll(['--vars-inline', varsInlineJSON])
   }
   else if (config.vars) {
-    // ensure vars file exists and then check yaml syntax
-    assert fileExists(config.vars) : "Vars file ${config.vars} does not exist."
-
-    try {
-      readYaml(file: config.vars)
-    }
-    catch (Exception error) {
-      print "The vars file ${config.vars} is not a valid YAML or JSON file."
-      throw error
-    }
+    // validate vars file
+    assert new helpers().validateYamlFile(config.vars, 'vars file')
 
     subCmd.addAll(['--vars', config.vars])
   }

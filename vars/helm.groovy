@@ -57,8 +57,7 @@ void install(Map config) {
 
     config.values.each { String value ->
       if (!(value ==~ /:\/\//)) {
-        assert fileExists(value) : "Value overrides file ${value} does not exist."
-        assert readYaml(value) : "Value overrides file ${value} is not a valid YAML file!"
+        assert new helpers().validateYamlFile(value, 'value overrides file')
       }
 
       cmd.addAll(['-f', value])
@@ -152,8 +151,7 @@ Boolean lint(Map config) {
 
     config.values.each { String value ->
       if (!(value ==~ /:\/\//)) {
-        assert fileExists(value) : "Value overrides file ${value} does not exist."
-        assert readYaml(value) : "Value overrides file ${value} is not a valid YAML file!"
+        assert new helpers().validateYamlFile(value, 'value overrides file')
       }
 
       cmd.addAll(['-f', value])
@@ -198,8 +196,7 @@ void packages(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
   assert config.chart : 'The required parameter "chart" was not set.'
-  assert fileExists("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart does not exist."
-  assert readYaml("${config.chart}/Chart.yaml") : "The supplied path ${config.chart} to the chart is not a valid yaml file."
+  assert new helpers().validateYamlFile("${config.chart}/Chart.yaml", 'chart')
   if (config.key && config.keyring) {
     error(message: "The 'key' and 'keyring' parameters for helm.packages are mutually exclusive; only one can be specified.")
   }
@@ -618,7 +615,7 @@ void upgrade(Map config) {
 
     config.values.each { String value ->
       if (!(value ==~ /:\/\//)) {
-        assert readYaml(value) in String : "Value overrides file ${value} does not exist or is not a valid YAML file!"
+        assert new helpers().validateYamlFile(value, 'value overrides file')
       }
 
       cmd.addAll(['-f', value])
