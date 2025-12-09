@@ -41,3 +41,22 @@ List<String> varSubCmd(Map config) {
 
     return subCmd
 }
+
+// yaml file validation
+Boolean validateYamlFile(String filePath, String description) {
+    // ensure yaml file exists
+    assert fileExists(filePath) : "${description} ${filePath} does not exist!"
+
+    // check yaml syntax
+    try {
+        readYaml(file: filePath)
+    }
+    catch (Exception error) {
+        print "${description} failed YAML validation."
+        print error.getMessage()
+        return false
+    }
+
+    print "${filePath} is valid YAML."
+    return true
+}
