@@ -1,6 +1,7 @@
 ### 2.2.2 (Next)
 **General**
 - Improve reliability of tool command assignments.
+- improve YAML and JSON file validation.
 - Improve serialization of utility methods.
 - Promote `pipeline-utility-steps` plugin to global dependency.
 

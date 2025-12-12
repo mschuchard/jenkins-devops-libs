@@ -1,5 +1,6 @@
 // vars/awx.groovy
 import devops.common.utils
+import devops.common.helpers
 
 void hostCreate(Map config) {
   // input checking
@@ -30,26 +31,12 @@ void hostCreate(Map config) {
   }
 
   // create a host in the inventory
-  try {
-    sh(label: "AWX Host Create ${config.name}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using awx host create.'
-    throw error
-  }
-  print 'awx host create was successful.'
+  new helpers().toolExec('AWX Host Create', cmd)
 }
 
 void hostDelete(String id, String bin = 'awx') {
   // delete a host in the inventory
-  try {
-    sh(label: "AWX Host Delete ${id}", script: "${bin} hosts delete ${id}")
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using awx host delete.'
-    throw error
-  }
-  print 'awx host delete was successful.'
+  new helpers().toolExec('AWX Host Delete', [bin, 'hosts', 'delete', id])
 }
 
 // helper method for create and modify
@@ -92,14 +79,7 @@ private void inventory(Map config) {
   }
 
   // "something" a inventory
-  try {
-    sh(label: "AWX Inventory ${capAction} ${config.name}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print "Failure using awx inventory${config.action}."
-    throw error
-  }
-  print "awx inventory${config.action} was successful."
+  new helpers().toolExec("AWX Inventory ${capAction}", cmd)
 }
 
 // invokes inventory helper method
@@ -111,14 +91,7 @@ void inventoryCreate(Map config) {
 
 void inventoryDelete(String id, String bin = 'awx') {
   // delete an inventory
-  try {
-    sh(label: "AWX Inventory Delete ${id}", script: "${bin} inventory delete ${id}")
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using awx inventory delete.'
-    throw error
-  }
-  print 'awx inventory delete was successful.'
+  new helpers().toolExec('AWX Inventory Delete', [bin, 'inventory', 'delete', id])
 }
 
 // invokes inventory helper method
@@ -174,15 +147,7 @@ void jobTemplateLaunch(Map config) {
   }
 
   // launch a job template job
-  try {
-    cmd.add(config.id)
-    sh(label: "AWX Job Template Launch ${config.id}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using awx job template launch.'
-    throw error
-  }
-  print 'awx job template launch was successful.'
+  new helpers().toolExec('AWX Job Template Launch', cmd)
 }
 
 void projectsUpdate(Map config) {
@@ -199,15 +164,7 @@ void projectsUpdate(Map config) {
   }
 
   // launch a project update job
-  try {
-    cmd.add(config.id)
-    sh(label: "AWX Project Update ${config.id}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using awx projects update.'
-    throw error
-  }
-  print 'awx projects update was successful.'
+  new helpers().toolExec('AWX Project Update', cmd)
 }
 
 void workflowJobTemplateLaunch(Map config) {
@@ -243,13 +200,5 @@ void workflowJobTemplateLaunch(Map config) {
   }
 
   // launch a workflow job template job
-  try {
-    cmd.add(config.id)
-    sh(label: "AWX Workflow Job Template Launch ${config.id}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using awx workflow job template launch.'
-    throw error
-  }
-  print 'awx workflow job template launch was successful.'
+  new helpers().toolExec('AWX Workflow Job Template Launch', cmd)
 }
