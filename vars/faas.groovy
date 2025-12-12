@@ -28,15 +28,7 @@ void build(Map config) {
   }
 
   // create image with faas
-  try {
-    cmd.addAll(['-f', config.template])
-    sh(label: "OpenFaaS Build ${config.template}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using faas-cli build.'
-    throw error
-  }
-  print 'FaaS build image created successfully.'
+  new helpers().toolExec('OpenFaaS Build', cmd)
 }
 
 void deploy(Map config) {
@@ -75,15 +67,8 @@ void deploy(Map config) {
   cmd.addAll(globalArgsCmd(config))
 
   // deploy function with faas
-  try {
-    cmd.addAll(['-f', config.template])
-    sh(label: "OpenFaaS Deploy ${config.template}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using faas-cli deploy.'
-    throw error
-  }
-  print 'FaaS function deployed successfully.'
+  cmd.addAll(['-f', config.template])
+  new helpers().toolExec('OpenFaaS Deploy', cmd)
 }
 
 void install(Map config) {
@@ -154,15 +139,8 @@ void invoke(Map config) {
   cmd.addAll(globalArgsCmd(config))
 
   // invoke faas function
-  try {
-    cmd.add(config.function)
-    sh(label: "OpenFaaS Invoke ${config.function}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using faas-cli invoke.'
-    throw error
-  }
-  print 'FaaS function invoked successfully.'
+  cmd.add(config.function)
+  new helpers().toolExec('OpenFaaS Invoke', cmd)
 }
 
 String list(Map config) {
@@ -216,15 +194,8 @@ void login(Map config) {
   cmd.addAll(globalArgsCmd(config))
 
   // login to faas gateway
-  try {
-    cmd.addAll(['-p', config.password])
-    sh(label: "OpenFaaS Login ${config.user}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using faas-cli login.'
-    throw error
-  }
-  print 'Successfully logged in to FaaS gateway.'
+  cmd.addAll(['-p', config.password])
+  new helpers().toolExec('OpenFaaS Login', cmd)
 }
 
 String logs(Map config) {
@@ -280,15 +251,8 @@ void push(Map config) {
   }
 
   // push function with faas
-  try {
-    cmd.addAll(['-f', config.template])
-    sh(label: "OpenFaaS Push ${config.template}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using faas-cli push.'
-    throw error
-  }
-  print 'FaaS function container image pushed successfully.'
+  cmd.addAll(['-f', config.template])
+  new helpers().toolExec('OpenFaaS Push', cmd)
 }
 
 void remove(Map config) {
@@ -303,15 +267,8 @@ void remove(Map config) {
   cmd.addAll(globalArgsCmd(config))
 
   // remove function with faas
-  try {
-    cmd.addAll(['-f', config.template])
-    sh(label: "OpenFaaS Remove ${config.template}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using faas-cli remove.'
-    throw error
-  }
-  print 'FaaS function removed successfully.'
+  cmd.addAll(['-f', config.template])
+  new helpers().toolExec('OpenFaaS Remove', cmd)
 }
 
 Boolean validateTemplate(String template) {
