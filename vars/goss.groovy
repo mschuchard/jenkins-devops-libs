@@ -1,5 +1,6 @@
 // vars/goss.groovy
 import devops.common.utils
+import devops.common.helpers
 
 void install(String version, String installPath = '/usr/bin/') {
   new utils().makeDirParents(installPath)
@@ -104,15 +105,7 @@ void server(Map config) {
   }
 
   // create goss rest api endpoint
-  try {
-    List<String> bgCmd = ['nohup'] + cmd + ['-e', config.endpoint, '-l', ":${config.port}"]
-    sh(label: "GoSS Server ${config?.gossfile}", script: bgCmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using goss serve.'
-    throw error
-  }
-  print 'GoSS server endpoint created successfully.'
+  new helpers.toolExec("GoSS Server ${config?.gossfile}", ['nohup'] + cmd + ['-e', config.endpoint, '-l', ":${config.port}"])
 }
 
 Boolean validate(Map config) {
@@ -188,15 +181,8 @@ void validateDocker(Map config) {
   }
 
   // run with dgoss
-  try {
-    cmd.add(config.image)
-    sh(label: "DGoSS Validate Docker ${config.image}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using dgoss run.'
-    throw error
-  }
-  print 'DGoSS run command was successful.'
+  cmd.add(config.image)
+  new helpers.toolExec("DGoSS Validate Docker ${config.image}", cmd)
 }
 
 Boolean validateGossfile(String gossfile) {
