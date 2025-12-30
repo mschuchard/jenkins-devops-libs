@@ -1,5 +1,6 @@
 //vars/helm.groovy
 import devops.common.utils
+import devops.common.helpers
 
 String history(Map config) {
   // input checking
@@ -110,15 +111,8 @@ void install(Map config) {
   }
 
   // install with helm
-  try {
-    cmd.addAll([config.name, config.chart])
-    sh(label: "Helm Install ${config.name}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm install.'
-    throw error
-  }
-  print 'Helm install executed successfully.'
+  cmd.addAll([config.name, config.chart])
+  new helpers().toolExec("Helm Install ${config.name}", cmd)
 }
 
 void kubectl(String version, String installPath = '/usr/bin/') {
@@ -225,15 +219,8 @@ void packages(Map config) {
   }
 
   // package with helm
-  try {
-    cmd.add(config.chart)
-    sh(label: "Helm Package ${config.chart}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm package.'
-    throw error
-  }
-  print 'Helm package command was successful.'
+  cmd.add(config.chart)
+  new helpers().toolExec("Helm Package ${config.chart}", cmd)
 }
 
 void plugin(Map config) {
@@ -250,14 +237,7 @@ void plugin(Map config) {
   }
 
   // manage a helm plugin
-  try {
-    sh(label: 'Helm Plugin', script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print "Failure using helm plugin ${config.command}."
-    throw error
-  }
-  print "Helm plugin ${config.command} executed successfully."
+  new helpers().toolExec("Helm Plugin ${config.command.capitalize()}", cmd)
 }
 
 void push(Map config) {
@@ -275,15 +255,8 @@ void push(Map config) {
   }
 
   // push helm chart to remote registry
-  try {
-    cmd.addAll([config.chart, config.remote])
-    sh(label: "Helm Push ${config.chart}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm push'
-    throw error
-  }
-  print 'Helm push executed successfully'
+  cmd.addAll([config.chart, config.remote])
+  new helpers().toolExec("Helm Push ${config.chart}", cmd)
 }
 
 void registryLogin(Map config) {
@@ -301,15 +274,8 @@ void registryLogin(Map config) {
   }
 
   // login to a helm registry
-  try {
-    cmd.add(config.host)
-    sh(label: "Helm Registry Login ${config.host}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm registry login.'
-    throw error
-  }
-  print 'Helm registry login executed successfully.'
+  cmd.add(config.host)
+  new helpers().toolExec("Helm Registry Login ${config.host}", cmd)
 }
 
 void repo(Map config) {
@@ -335,26 +301,11 @@ void repo(Map config) {
   }
 
   // add a repo with helm
-  try {
-    cmd.addAll([config.repo, config.url])
-    sh(label: "Helm Repo Add ${config.repo}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm repo add.'
-    throw error
-  }
-  print 'Helm repo add executed successfully.'
+  cmd.addAll([config.repo, config.url])
+  new helpers().toolExec("Helm Repo Add ${config.repo}", cmd)
 
   // update the repo
-  try {
-    cmd.add(config.repo)
-    sh(label: "Helm Repo Update ${config.repo}", script: cmd.join(' ').replaceFirst('add', 'update'))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm repo update.'
-    throw error
-  }
-  print 'Helm repo update executed successfully.'
+  new helpers().toolExec("Helm Repo Update ${config.repo}", cmd.join(' ').replaceFirst('add', 'update').split(' ') as List)
 }
 
 void rollback(Map config) {
@@ -399,14 +350,7 @@ void rollback(Map config) {
   }
 
   // rollback with helm
-  try {
-    sh(label: "Helm Rollback ${config.name}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm rollback.'
-    throw error
-  }
-  print 'Helm rollback command was successful.'
+  new helpers().toolExec("Helm Rollback ${config.name}", cmd)
 }
 
 void setup(String version, String installPath = '/usr/bin/') {
@@ -435,14 +379,7 @@ void show(Map config) {
   assert (['all', 'chart', 'crds', 'readme', 'values']).contains(config.info) : 'The info parameter must be one of all, chart, crds, readme, or values.'
 
   // show chart info
-  try {
-    sh(label: "Helm Show ${config.chart}", script: "${config.bin} ${config.info} ${config.chart}")
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm show.'
-    throw error
-  }
-  print 'Helm show executed successfully.'
+  new helpers().toolExec("Helm Show ${config.chart}", [config.bin, 'show', config.info, config.chart])
 }
 
 String status(Map config) {
@@ -586,15 +523,8 @@ void uninstall(Map config) {
   assert (releaseObjList =~ config.name) : "Release object ${config.name} does not exist!"
 
   // attempt to uninstall a release object
-  try {
-    cmd.add(config.name)
-    sh(label: "Helm Uninstall ${config.name}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm uninstall.'
-    throw error
-  }
-  print 'Helm uninstall executed successfully.'
+  cmd.add(config.name)
+  new helpers().toolExec("Helm Uninstall ${config.name}", cmd)
 }
 
 void upgrade(Map config) {
@@ -669,15 +599,8 @@ void upgrade(Map config) {
   }
 
   // upgrade with helm
-  try {
-    cmd.addAll([config.name, config.chart])
-    sh(label: "Helm Upgrade ${config.name}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using helm upgrade.'
-    throw error
-  }
-  print 'Helm upgrade executed successfully.'
+  cmd.addAll([config.name, config.chart])
+  new helpers().toolExec("Helm Upgrade ${config.name}", cmd)
 }
 
 Boolean verify(String chartPath, String helmPath = 'helm') {
