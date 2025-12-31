@@ -37,23 +37,16 @@ void build(Map config) {
   }
 
   // create artifact with packer
-  try {
-    if (config.template ==~ /\.pkr\./) {
-      cmd.add(config.template)
-      sh(label: "Packer Build ${config.template}", script: cmd.join(' '))
-    }
-    else {
-      dir(config.template) {
-        cmd.add('.')
-        sh(label: "Packer Build ${config.template}", script: cmd.join(' '))
-      }
+  if (config.template ==~ /\.pkr\./) {
+    cmd.add(config.template)
+    new helpers().toolExec("Packer Build ${config.template}", cmd)
+  }
+  else {
+    dir(config.template) {
+      cmd.add('.')
+      new helpers().toolExec("Packer Build ${config.template}", cmd)
     }
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using packer build.'
-    throw error
-  }
-  print 'Packer build artifact created successfully.'
 }
 
 Boolean fmt(Map config) {
@@ -125,17 +118,10 @@ void init(Map config) {
   }
 
   // initialize the working template directory
-  try {
-    dir(config.dir) {
-      cmd.add('.')
-      sh(label: "Packer Init ${config.dir}", script: cmd.join(' '))
-    }
+  dir(config.dir) {
+    cmd.add('.')
+    new helpers().toolExec("Packer Init ${config.dir}", cmd)
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using packer init.'
-    throw error
-  }
-  print 'Packer init was successful.'
 }
 
 void inspect(String template, String bin = '/usr/bin/packer') {
@@ -143,14 +129,7 @@ void inspect(String template, String bin = '/usr/bin/packer') {
   assert fileExists(template) : "A file does not exist at ${template}."
 
   // inspect the packer template
-  try {
-    sh(label: "Packer Inspect ${template}", script: "${bin} inspect ${template}")
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure inspecting the template.'
-    throw error
-  }
-  print 'Packer inspect was successful'
+  new helpers().toolExec("Packer Inspect ${template}", [bin, 'inspect', template])
 }
 
 void install(Map config) {
@@ -212,7 +191,7 @@ void pluginsInstall(Map config) {
   config.bin = config.bin ?: 'packer'
   assert config.plugin in String : 'The required "plugin" parameter was not assigned a value.'
 
-  List<String> cmd = [config.bin, 'install']
+  List<String> cmd = [config.bin, 'plugins', 'install']
 
   // optional inputs
   if (config.force == true) {
@@ -226,21 +205,14 @@ void pluginsInstall(Map config) {
   }
 
   // install plugin
-  try {
-    sh(label: "Packer Plugins Install ${config.plugin}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using packer plugins install.'
-    throw error
-  }
-  print 'Packer plugins install executed successfully.'
+  new helpers().toolExec("Packer Plugins Install ${config.plugin}", cmd)
 }
 
 void pluginsRemove(Map config) {
   config.bin = config.bin ?: 'packer'
   assert config.plugin in String : 'The required "plugin" parameter was not assigned a value.'
 
-  List<String> cmd = [config.bin, 'remove', config.plugin]
+  List<String> cmd = [config.bin, 'plugins', 'remove', config.plugin]
 
   // optional inputs
   if (config.version) {
@@ -248,14 +220,7 @@ void pluginsRemove(Map config) {
   }
 
   // remove plugin
-  try {
-    sh(label: "Packer Plugins Remove ${config.plugin}", script: cmd.join(' '))
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using packer plugins remove.'
-    throw error
-  }
-  print 'Packer plugins remove executed successfully.'
+  new helpers().toolExec("Packer Plugins Remove ${config.plugin}", cmd)
 }
 
 void plugins(Map config) {
@@ -274,23 +239,16 @@ void plugins(Map config) {
   }
 
   // interact with packer plugins
-  try {
-    // groovy 3: if (config.command === 'required') {
-    if (config.command == 'required') {
-      dir(config.dir) {
-        cmd.add('.')
-        sh(label: "Packer Plugins ${config.command.capitalize()}", script: cmd.join(' '))
-      }
+  // groovy 3: if (config.command === 'required') {
+  if (config.command == 'required') {
+    dir(config.dir) {
+      cmd.add('.')
+      new helpers().toolExec("Packer Plugins ${config.command.capitalize()}", cmd)
     }
-    else {
-      sh(label: "Packer Plugins ${config.command.capitalize()}", script: cmd.join(' '))
-    }
-    }
-  catch (hudson.AbortException error) {
-    print 'Failure using packer plugins.'
-    throw error
   }
-  print 'Packer plugins executed successfully.'
+  else {
+    new helpers().toolExec("Packer Plugins ${config.command.capitalize()}", cmd)
+  }
   }
 
 Boolean validate(Map config) {

@@ -13,6 +13,7 @@
 
 **Packer**
 - Fix return checks for `fmt` method.
+- Fix `pluginsInstall` and `pluginsRemove` methods.
 
 **Puppet**
 - Fix request in `token` method.
