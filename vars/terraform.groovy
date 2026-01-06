@@ -34,22 +34,15 @@ private void execute(Map config) {
   }
 
   // apply the config
-  try {
-    if (config.configPath ==~ /\.tfplan$/) {
-      cmd.add(config.configPath)
-      sh(label: "Terraform Apply ${config.configPath}", script: cmd.join(' '))
-    }
-    else {
-      dir(config.configPath) {
-        sh(label: "Terraform Apply ${config.configPath}", script: cmd.join(' '))
-      }
+  if (config.configPath ==~ /\.tfplan$/) {
+    cmd.add(config.configPath)
+    new helpers().toolExec("Terraform Apply ${config.configPath}", cmd)
+  }
+  else {
+    dir(config.configPath) {
+      new helpers().toolExec("Terraform Apply ${config.configPath}", cmd)
     }
   }
-  catch (hudson.AbortException error) {
-    print "Failure using terraform ${config.action}."
-    throw error
-  }
-  print "Terraform ${config.action} was successful."
 }
 
 void apply(Map config) {
@@ -193,19 +186,11 @@ void imports(Map config) {
     cmd.add("-state=${config.state}")
   }
 
-  // import the resources
-  try {
-    // import each resource
-    config.resources.each { String name, String id ->
-      cmd.addAll(["'${name}'", id])
-      sh(label: "Terraform Import ${name}", script: cmd.join(' '))
-    }
+  // import each resource
+  config.resources.each { String name, String id ->
+    List<String> resourceCmd = cmd + ["'${name}'", id]
+    new helpers().toolExec("Terraform Import ${name}", resourceCmd)
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using terraform import.'
-    throw error
-  }
-  print 'Terraform imports were successful.'
 }
 
 void init(Map config) {
@@ -264,16 +249,9 @@ void init(Map config) {
   }
 
   // initialize the working config directory
-  try {
-    dir(config.dir) {
-      sh(label: 'Terraform Init', script: cmd.join(' '))
-    }
+  dir(config.dir) {
+    new helpers().toolExec('Terraform Init', cmd)
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using terraform init.'
-    throw error
-  }
-  print 'Terraform init was successful.'
 }
 
 void install(Map config) {
@@ -479,16 +457,9 @@ void providers(String rootDir = '', String bin = 'terraform') {
   }
 
   // output provider information
-  try {
-    dir(rootDir) {
-      sh(label: 'Terraform Providers Information', script: "${bin} providers")
-    }
+  dir(rootDir) {
+    new helpers().toolExec('Terraform Providers Information', [bin, 'providers'])
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using terraform providers.'
-    throw error
-  }
-  print 'Terraform providers was successful.'
 }
 
 void refresh(Map config) {
@@ -521,16 +492,9 @@ void refresh(Map config) {
   }
 
   // refresh the state
-  try {
-    dir(config.dir) {
-      sh(label: 'Terraform Refresh', script: cmd.join(' '))
-    }
+  dir(config.dir) {
+    new helpers().toolExec('Terraform Refresh', cmd)
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using terraform refresh.'
-    throw error
-  }
-  print 'Terraform refresh was successful.'
 }
 
 void state(Map config) {
@@ -557,84 +521,66 @@ void state(Map config) {
   }
 
   // perform state manipulation
-  try {
+  dir(config.dir) {
     // perform different commands based upon type of state action
     switch (config.command) {
       case 'move':
         assert (config.resources in Map) : 'Parameter resources must be a Map of strings for move command.'
 
-        dir(config.dir) {
-          config.resources.each { String from, String to ->
-            cmd.addAll(['mv', from, to])
-            sh(label: "Terraform State Move ${from} to ${to}", script: cmd.join(' '))
-          }
+        config.resources.each { String from, String to ->
+          List<String> moveCmd = cmd + ['mv', from, to]
+          new helpers().toolExec("Terraform State Move ${from} to ${to}", moveCmd)
         }
-
         break
       case 'remove':
         assert (config.resources in List) : 'Parameter resources must be a list of strings for remove command.'
 
-        dir(config.dir) {
-          config.resources.each { String resource ->
-            cmd.addAll(['rm', resource])
-            sh(label: "Terraform State Remove ${resource}", script: cmd.join(' '))
-          }
+        config.resources.each { String resource ->
+          List<String> removeCmd = cmd + ['rm', resource]
+          new helpers().toolExec("Terraform State Remove ${resource}", removeCmd)
         }
-
         break
       case 'push':
         assert !config.resources : 'Resources parameter is not allowed for list command.'
-
-        dir(config.dir) {
-          cmd.add('push')
-          sh(label: 'Terraform State Push', script: cmd.join(' '))
-        }
-
+        new helpers().toolExec('Terraform State Push', cmd + ['push'])
         break
       case 'list':
         assert !config.resources : 'Resources parameter is not allowed for push command.'
 
-        String stateList
-        dir(config.dir) {
-          cmd.add('list')
-          stateList = sh(label: 'Terraform State List', script: cmd.join(' '), returnStdout: true)
+        try {
+          String stateList = sh(label: 'Terraform State List', script: (cmd + ['list']).join(' '), returnStdout: true)
+          print 'Terraform state output is as follows:'
+          print stateList
         }
-
-        print 'Terraform state output is as follows:'
-        print stateList
-
+        catch (hudson.AbortException error) {
+          print 'Failure using terraform state manipulation.'
+          throw error
+        }
         break
       case 'show':
         assert (config.resources in List) : 'Parameter resources must be a list of strings for show command.'
 
-        dir(config.dir) {
-          config.resources.each { String resource ->
-            cmd.addAll(['show', resource])
-            String stateShow = sh(label: "Terraform State Show ${resource}", script: cmd.join(' '), returnStdout: true)
-
+        config.resources.each { String resource ->
+          try {
+            List<String> showCmd = cmd + ['show', resource]
+            String stateShow = sh(label: "Terraform State Show ${resource}", script: showCmd.join(' '), returnStdout: true)
             print 'Terraform state output is as follows:'
             print stateShow
           }
+          catch (hudson.AbortException error) {
+            print 'Failure using terraform state manipulation.'
+            throw error
+          }
         }
-
         break
       case 'pull':
         assert !config.resources : 'Resources parameter is not allowed for pull command.'
-
-        dir(config.dir) {
-          cmd.add('pull')
-          sh(label: 'Terraform State Pull', script: cmd.join(' '))
-        }
-
+        new helpers().toolExec('Terraform State Pull', cmd + ['pull'])
         break
       default:
         // should never reach this because of above assert
         error(message: "Unknown Terraform state command ${config.command} specified.")
     }
-  }
-  catch (hudson.AbortException error) {
-    print 'Failure using terraform state manipulation.'
-    throw error
   }
   print 'Terraform state manipulation was successful.'
 }
@@ -666,21 +612,13 @@ void taint(Map config) {
     cmd.add('-allow-missing')
   }
 
-  // taint the resources
-  try {
-    // taint each resource
-    dir(config.dir) {
-      config.resources.each { String resource ->
-        cmd.add(resource)
-        sh(label: "Terraform Taint ${resource}", script: cmd.join(' '))
-      }
+  // taint each resource
+  dir(config.dir) {
+    config.resources.each { String resource ->
+      List<String> taintCmd = cmd + [resource]
+      new helpers().toolExec("Terraform Taint ${resource}", taintCmd)
     }
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using terraform taint.'
-    throw error
-  }
-  print 'Terraform taints were successful.'
 }
 
 String test(Map config) {
@@ -808,7 +746,7 @@ void workspace(Map config) {
     // select workspace in terraform config directory
     try {
       cmd.add(config.workspace)
-      sh(label: "Terraform Workspace Select ${config.workspace}", script: cmd.join(' '))
+      new helpers().toolExec("Terraform Workspace Select ${config.workspace}", cmd)
     }
     catch (hudson.AbortException error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'
@@ -818,6 +756,5 @@ void workspace(Map config) {
 
       throw error
     }
-    print "Terraform workspace ${config.workspace} selected successfully."
   }
 }
