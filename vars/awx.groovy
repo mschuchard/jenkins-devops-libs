@@ -31,12 +31,12 @@ void hostCreate(Map config) {
   }
 
   // create a host in the inventory
-  new helpers().toolExec('AWX Host Create', cmd)
+  new helpers().toolExec("AWX Host Create ${config.name}", cmd)
 }
 
 void hostDelete(String id, String bin = 'awx') {
   // delete a host in the inventory
-  new helpers().toolExec('AWX Host Delete', [bin, 'hosts', 'delete', id])
+  new helpers().toolExec("AWX Host Delete ${id}", [bin, 'hosts', 'delete', id])
 }
 
 // helper method for create and modify
@@ -91,7 +91,7 @@ void inventoryCreate(Map config) {
 
 void inventoryDelete(String id, String bin = 'awx') {
   // delete an inventory
-  new helpers().toolExec('AWX Inventory Delete', [bin, 'inventory', 'delete', id])
+  new helpers().toolExec("AWX Inventory Delete ${id}", [bin, 'inventory', 'delete', id])
 }
 
 // invokes inventory helper method
@@ -147,7 +147,7 @@ void jobTemplateLaunch(Map config) {
   }
 
   // launch a job template job
-  new helpers().toolExec('AWX Job Template Launch', cmd)
+  new helpers().toolExec("AWX Job Template Launch ${config.id}", cmd)
 }
 
 void projectsUpdate(Map config) {
@@ -164,7 +164,7 @@ void projectsUpdate(Map config) {
   }
 
   // launch a project update job
-  new helpers().toolExec('AWX Project Update', cmd)
+  new helpers().toolExec("AWX Project Update ${config.id}", cmd)
 }
 
 void workflowJobTemplateLaunch(Map config) {
@@ -200,5 +200,5 @@ void workflowJobTemplateLaunch(Map config) {
   }
 
   // launch a workflow job template job
-  new helpers().toolExec('AWX Workflow Job Template Launch', cmd)
+  new helpers().toolExec("AWX Workflow Job Template Launch ${config.id}", cmd)
 }

@@ -28,7 +28,7 @@ void build(Map config) {
   }
 
   // create image with faas
-  new helpers().toolExec('OpenFaaS Build', cmd)
+  new helpers().toolExec("OpenFaaS Build ${config.template}", cmd)
 }
 
 void deploy(Map config) {
@@ -68,7 +68,7 @@ void deploy(Map config) {
 
   // deploy function with faas
   cmd.addAll(['-f', config.template])
-  new helpers().toolExec('OpenFaaS Deploy', cmd)
+  new helpers().toolExec("OpenFaaS Deploy ${config.template}", cmd)
 }
 
 void install(Map config) {
@@ -140,7 +140,7 @@ void invoke(Map config) {
 
   // invoke faas function
   cmd.add(config.function)
-  new helpers().toolExec('OpenFaaS Invoke', cmd)
+  new helpers().toolExec("OpenFaaS Invoke ${config.function}", cmd)
 }
 
 String list(Map config) {
@@ -252,7 +252,7 @@ void push(Map config) {
 
   // push function with faas
   cmd.addAll(['-f', config.template])
-  new helpers().toolExec('OpenFaaS Push', cmd)
+  new helpers().toolExec("OpenFaaS Push ${config.template}", cmd)
 }
 
 void remove(Map config) {
@@ -268,7 +268,7 @@ void remove(Map config) {
 
   // remove function with faas
   cmd.addAll(['-f', config.template])
-  new helpers().toolExec('OpenFaaS Remove', cmd)
+  new helpers().toolExec("OpenFaaS Remove ${config.template}", cmd)
 }
 
 Boolean validateTemplate(String template) {
