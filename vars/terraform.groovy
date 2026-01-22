@@ -250,7 +250,7 @@ void init(Map config) {
 
   // initialize the working config directory
   dir(config.dir) {
-    new helpers().toolExec('Terraform Init', cmd)
+    new helpers().toolExec("Terraform Init ${config.dir}", cmd)
   }
 }
 
@@ -493,7 +493,7 @@ void refresh(Map config) {
 
   // refresh the state
   dir(config.dir) {
-    new helpers().toolExec('Terraform Refresh', cmd)
+    new helpers().toolExec("Terraform Refresh ${config.dir}", cmd)
   }
 }
 
@@ -542,7 +542,7 @@ void state(Map config) {
         break
       case 'push':
         assert !config.resources : 'Resources parameter is not allowed for list command.'
-        new helpers().toolExec('Terraform State Push', cmd + ['push'])
+        new helpers().toolExec("Terraform State Push ${config.dir}", cmd + ['push'])
         break
       case 'list':
         assert !config.resources : 'Resources parameter is not allowed for push command.'
@@ -575,7 +575,7 @@ void state(Map config) {
         break
       case 'pull':
         assert !config.resources : 'Resources parameter is not allowed for pull command.'
-        new helpers().toolExec('Terraform State Pull', cmd + ['pull'])
+        new helpers().toolExec("Terraform State Pull ${config.dir}", cmd + ['pull'])
         break
       default:
         // should never reach this because of above assert

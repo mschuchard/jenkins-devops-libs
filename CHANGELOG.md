@@ -4,6 +4,7 @@
 - improve YAML and JSON file validation.
 - Improve serialization of utility methods.
 - Promote `pipeline-utility-steps` plugin to global dependency.
+- Improve tool execution label descriptions.
 
 **FaaS**
 - Add `stategy` parameter to `deploy` method.
