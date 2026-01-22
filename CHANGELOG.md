@@ -5,6 +5,7 @@
 - Improve serialization of utility methods.
 - Promote `pipeline-utility-steps` plugin to global dependency.
 - Improve tool execution label descriptions.
+- Improve checks on boolean type parameters.
 
 **FaaS**
 - Add `stategy` parameter to `deploy` method.

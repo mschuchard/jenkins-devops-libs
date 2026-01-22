@@ -213,7 +213,7 @@ void init(Map config) {
   if (config.upgrade == true) {
     cmd.add('-upgrade')
   }
-  if (config.backend == false) {
+  if (config.backend === false) {
     cmd.add('-backend=false')
   }
   if (config.migrateState == true) {
@@ -684,7 +684,7 @@ String validate(Map config) {
   if (config.json == true) {
     cmd.add('-json')
   }
-  if (config.tests == false) {
+  if (config.tests === false) {
     cmd.add('-no-tests')
   }
   else if (config.testDir) {

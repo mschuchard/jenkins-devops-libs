@@ -278,7 +278,7 @@ Boolean validate(Map config) {
   if (config.evalData == true) {
     cmd.add('-evaluate-datasources')
   }
-  if (config.warnUndeclVar == false) {
+  if (config.warnUndeclVar === false) {
     cmd.add('-no-warn-undeclared-var')
   }
   if (config.syntaxOnly == true) {

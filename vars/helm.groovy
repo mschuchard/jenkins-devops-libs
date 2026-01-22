@@ -334,7 +334,7 @@ void rollback(Map config) {
   if (config.force == true) {
     cmd.add('--force')
   }
-  if (config.hooks == false) {
+  if (config.hooks === false) {
     cmd.add('--no-hooks')
   }
   if (config.recreatePods == true) {

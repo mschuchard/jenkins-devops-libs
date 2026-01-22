@@ -50,7 +50,7 @@ void deploy(Map config) {
       cmd.addAll(['--label', "${label}=${value}"])
     }
   }
-  if (config.replace == false) {
+  if (config.replace === false) {
     cmd.add('--replace=false')
   }
   else if (config.update == true) {
@@ -293,7 +293,7 @@ private static List<String> globalArgsCmd(Map config) {
   if (config.regex) {
     subCmd.addAll(['--regex', "'${config.regex}'"])
   }
-  if (config.tls == false) {
+  if (config.tls === false) {
     subCmd.add(' --tls-no-verify')
   }
 
