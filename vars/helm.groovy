@@ -57,7 +57,7 @@ void install(Map config) {
     assert (config.values in List) : 'The values parameter must be a list of strings.'
 
     config.values.each { String value ->
-      if (!(value ==~ /:\/\//)) {
+      if (!value.contains('://')) {
         assert new helpers().validateYamlFile(value, 'value overrides file')
       }
 
@@ -144,7 +144,7 @@ Boolean lint(Map config) {
     assert (config.values in List) : 'The values parameter must be a list of strings.'
 
     config.values.each { String value ->
-      if (!(value ==~ /:\/\//)) {
+      if (!value.contains('://')) {
         assert new helpers().validateYamlFile(value, 'value overrides file')
       }
 
@@ -544,7 +544,7 @@ void upgrade(Map config) {
     assert (config.values in List) : 'The values parameter must be a list of strings.'
 
     config.values.each { String value ->
-      if (!(value ==~ /:\/\//)) {
+      if (!value.contains('://')) {
         assert new helpers().validateYamlFile(value, 'value overrides file')
       }
 

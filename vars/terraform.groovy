@@ -541,9 +541,9 @@ void state(Map config) {
         try {
           withEnv(['TF_IN_AUTOMATION=true']) {
             String stateList = sh(label: 'Terraform State List', script: (cmd + ['list']).join(' '), returnStdout: true)
+            print 'Terraform state output is as follows:'
+            print stateList
           }
-          print 'Terraform state output is as follows:'
-          print stateList
         }
         catch (hudson.AbortException error) {
           print 'Failure using terraform state manipulation.'

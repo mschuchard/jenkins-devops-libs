@@ -12,6 +12,9 @@
 **GoSS**
 - Fix variable file validation.
 
+**Helm**
+- Fix check on whether `values` parameter is a file.
+
 **Packer**
 - Fix return checks for `fmt` method.
 - Fix `pluginsInstall` and `pluginsRemove` methods.
