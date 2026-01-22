@@ -4,9 +4,6 @@ import devops.common.helpers
 import devops.common.hcl
 
 private void execute(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   assert config.configPath in String : "'configPath' is a required parameter for terraform.${config.action}."
   assert fileExists(config.configPath) : "Terraform config/plan ${config.configPath} does not exist!"
@@ -36,11 +33,16 @@ private void execute(Map config) {
   // apply the config
   if (config.configPath ==~ /\.tfplan$/) {
     cmd.add(config.configPath)
-    new helpers().toolExec("Terraform Apply ${config.configPath}", cmd)
+
+    withEnv(['TF_IN_AUTOMATION=true']) {
+      new helpers().toolExec("Terraform Apply ${config.configPath}", cmd)
+    }
   }
   else {
     dir(config.configPath) {
-      new helpers().toolExec("Terraform Apply ${config.configPath}", cmd)
+      withEnv(['TF_IN_AUTOMATION=true']) {
+        new helpers().toolExec("Terraform Apply ${config.configPath}", cmd)
+      }
     }
   }
 }
@@ -58,9 +60,6 @@ void destroy(Map config) {
 }
 
 Boolean fmt(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -93,7 +92,9 @@ Boolean fmt(Map config) {
   // canonically format the code
   int fmtStatus
   dir(config.dir) {
-    fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd.join(' '))
+    withEnv(['TF_IN_AUTOMATION=true']) {
+      fmtStatus = sh(label: 'Terraform Format', returnStatus: true, script: cmd.join(' '))
+    }
   }
 
   // report if formatting check detected issues
@@ -114,9 +115,6 @@ Boolean fmt(Map config) {
 }
 
 void graph(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.plan && config.dir) {
     error(message: "The 'plan' and 'dir' parameters for terraform.graph are mutually exclusive; only one can be specified.")
@@ -147,7 +145,9 @@ void graph(Map config) {
 
   String dotGraph
   try {
-    dotGraph = sh(label: 'Terraform Graph', script: cmd.join(' '), returnStdout: true)
+    withEnv(['TF_IN_AUTOMATION=true']) {
+      dotGraph = sh(label: 'Terraform Graph', script: cmd.join(' '), returnStdout: true)
+    }
   }
   catch (hudson.AbortException error) {
     print 'Failure using terraform graph.'
@@ -159,9 +159,6 @@ void graph(Map config) {
 }
 
 void imports(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
   assert (config.resources in Map) : 'Parameter resources must be a map of strings.'
@@ -187,16 +184,15 @@ void imports(Map config) {
   }
 
   // import each resource
-  config.resources.each { String name, String id ->
-    List<String> resourceCmd = cmd + ["'${name}'", id]
-    new helpers().toolExec("Terraform Import ${name}", resourceCmd)
+  withEnv(['TF_IN_AUTOMATION=true']) {
+    config.resources.each { String name, String id ->
+      List<String> resourceCmd = cmd + ["'${name}'", id]
+      new helpers().toolExec("Terraform Import ${name}", resourceCmd)
+    }
   }
 }
 
 void init(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -250,14 +246,13 @@ void init(Map config) {
 
   // initialize the working config directory
   dir(config.dir) {
-    new helpers().toolExec("Terraform Init ${config.dir}", cmd)
+    withEnv(['TF_IN_AUTOMATION=true']) {
+      new helpers().toolExec("Terraform Init ${config.dir}", cmd)
+    }
   }
 }
 
 void install(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
   assert (config.platform in String && config.version in String) : 'A required parameter is missing from the terraform.install method. Please consult the documentation for proper usage.'
@@ -280,9 +275,6 @@ void install(Map config) {
 }
 
 String output(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -316,7 +308,9 @@ String output(Map config) {
   try {
     // capture output(s)
     dir(config.dir) {
-      outputs = sh(label: 'Terraform Output', script: cmd.join(' '), returnStdout: true)
+      withEnv(['TF_IN_AUTOMATION=true']) {
+        outputs = sh(label: 'Terraform Output', script: cmd.join(' '), returnStdout: true)
+      }
     }
   }
   catch (hudson.AbortException error) {
@@ -340,9 +334,6 @@ Map parse(String file) {
 }
 
 String plan(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -393,7 +384,9 @@ String plan(Map config) {
     // execute plan
     dir(config.dir) {
       cmd.add("-out=${out}")
-      planOutput = sh(label: 'Terraform Plan', script: cmd.join(' '), returnStdout: true)
+      withEnv(['TF_IN_AUTOMATION=true']) {
+        planOutput = sh(label: 'Terraform Plan', script: cmd.join(' '), returnStdout: true)
+      }
       print "Plan output artifact written to: ${out}"
     }
   }
@@ -407,9 +400,6 @@ String plan(Map config) {
 }
 
 void pluginInstall(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   assert config.url in String : "The required parameter 'url' was not set."
   assert config.installName in String : "The required parameter 'installName' was not set."
@@ -446,9 +436,6 @@ void pluginInstall(Map config) {
 }
 
 void providers(String rootDir = '', String bin = 'terraform') {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (rootDir.length() == 0) {
     rootDir = env.WORKSPACE
@@ -458,14 +445,13 @@ void providers(String rootDir = '', String bin = 'terraform') {
 
   // output provider information
   dir(rootDir) {
-    new helpers().toolExec('Terraform Providers Information', [bin, 'providers'])
+    withEnv(['TF_IN_AUTOMATION=true']) {
+      new helpers().toolExec('Terraform Providers Information', [bin, 'providers'])
+    }
   }
 }
 
 void refresh(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -493,14 +479,13 @@ void refresh(Map config) {
 
   // refresh the state
   dir(config.dir) {
-    new helpers().toolExec("Terraform Refresh ${config.dir}", cmd)
+    withEnv(['TF_IN_AUTOMATION=true']) {
+      new helpers().toolExec("Terraform Refresh ${config.dir}", cmd)
+    }
   }
 }
 
 void state(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   assert (['move', 'remove', 'push', 'list', 'show', 'pull'].contains(config.command)) : 'The command parameter must be one of: move, remove, list, show, pull, or push.'
   if (config.dir) {
@@ -529,7 +514,9 @@ void state(Map config) {
 
         config.resources.each { String from, String to ->
           List<String> moveCmd = cmd + ['mv', from, to]
-          new helpers().toolExec("Terraform State Move ${from} to ${to}", moveCmd)
+          withEnv(['TF_IN_AUTOMATION=true']) {
+            new helpers().toolExec("Terraform State Move ${from} to ${to}", moveCmd)
+          }
         }
         break
       case 'remove':
@@ -537,18 +524,24 @@ void state(Map config) {
 
         config.resources.each { String resource ->
           List<String> removeCmd = cmd + ['rm', resource]
-          new helpers().toolExec("Terraform State Remove ${resource}", removeCmd)
+          withEnv(['TF_IN_AUTOMATION=true']) {
+            new helpers().toolExec("Terraform State Remove ${resource}", removeCmd)
+          }
         }
         break
       case 'push':
         assert !config.resources : 'Resources parameter is not allowed for list command.'
-        new helpers().toolExec("Terraform State Push ${config.dir}", cmd + ['push'])
+        withEnv(['TF_IN_AUTOMATION=true']) {
+          new helpers().toolExec("Terraform State Push ${config.dir}", cmd + ['push'])
+        }
         break
       case 'list':
         assert !config.resources : 'Resources parameter is not allowed for push command.'
 
         try {
-          String stateList = sh(label: 'Terraform State List', script: (cmd + ['list']).join(' '), returnStdout: true)
+          withEnv(['TF_IN_AUTOMATION=true']) {
+            String stateList = sh(label: 'Terraform State List', script: (cmd + ['list']).join(' '), returnStdout: true)
+          }
           print 'Terraform state output is as follows:'
           print stateList
         }
@@ -586,9 +579,6 @@ void state(Map config) {
 }
 
 void taint(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   assert config.resources : 'Parameter resources must be specified.'
   assert (config.resources in List) : 'Parameter resources must be a list of strings.'
@@ -616,15 +606,14 @@ void taint(Map config) {
   dir(config.dir) {
     config.resources.each { String resource ->
       List<String> taintCmd = cmd + [resource]
-      new helpers().toolExec("Terraform Taint ${resource}", taintCmd)
+      withEnv(['TF_IN_AUTOMATION=true']) {
+        new helpers().toolExec("Terraform Taint ${resource}", taintCmd)
+      }
     }
   }
 }
 
 String test(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -665,7 +654,9 @@ String test(Map config) {
   String testOutput
   try {
     dir(config.dir) {
-      testOutput = sh(label: 'Terraform Test', script: cmd.join(' '), returnStdout: true)
+      withEnv(['TF_IN_AUTOMATION=true']) {
+        testOutput = sh(label: 'Terraform Test', script: cmd.join(' '), returnStdout: true)
+      }
     }
   }
   catch (hudson.AbortException error) {
@@ -678,9 +669,6 @@ String test(Map config) {
 }
 
 String validate(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -709,7 +697,9 @@ String validate(Map config) {
   String validateOutput
   try {
     dir(config.dir) {
-      validateOutput = sh(label: 'Terraform Validate', script: cmd.join(' '), returnStdout: true)
+      withEnv(['TF_IN_AUTOMATION=true']) {
+        validateOutput = sh(label: 'Terraform Validate', script: cmd.join(' '), returnStdout: true)
+      }
     }
   }
   catch (hudson.AbortException error) {
@@ -722,9 +712,6 @@ String validate(Map config) {
 }
 
 void workspace(Map config) {
-  // set terraform env for automation
-  env.TF_IN_AUTOMATION = true
-
   // input checking
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
@@ -746,7 +733,9 @@ void workspace(Map config) {
     // select workspace in terraform config directory
     try {
       cmd.add(config.workspace)
-      new helpers().toolExec("Terraform Workspace Select ${config.workspace}", cmd)
+      withEnv(['TF_IN_AUTOMATION=true']) {
+        new helpers().toolExec("Terraform Workspace Select ${config.workspace}", cmd)
+      }
     }
     catch (hudson.AbortException error) {
       print 'Failure using terraform workspace select. The available workspaces and your current workspace are as follows:'

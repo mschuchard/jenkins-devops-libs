@@ -21,6 +21,9 @@
 - Update request bodies to match updated API.
 - Minor fixes to logging.
 
+**Terraform**
+- Improve `TF_IN_AUTOMATION` env var assignment scope.
+
 ### 2.2.1
 **General**
 - Improve label descriptions for `sh` steps.
