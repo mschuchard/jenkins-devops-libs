@@ -1,4 +1,4 @@
-### 2.2.2 (Next)
+### 2.2.2
 **General**
 - Improve reliability of tool command assignments.
 - improve YAML and JSON file validation.
