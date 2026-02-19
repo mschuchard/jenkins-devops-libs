@@ -50,16 +50,16 @@ void deploy(Map config) {
       cmd.addAll(['--label', "${label}=${value}"])
     }
   }
-  if (config.replace === false) {
-    cmd.add('--replace=false')
-  }
-  else if (config.update == true) {
-    cmd.add('--update=true')
-  }
-  else if (config.strategy) {
+  if (config.strategy) {
     assert ['replace', 'update'].contains(config.strategy) : 'The strategy parameter must be either "replace" or "update".'
 
-    cmd.add(["--${config.strategy}"])
+    // this is a weird nuance of the deploy command where either both must be specified with a param value, or nothing specified
+    if (config.strategy == 'replace') {
+      cmd.add('--replace=true --update=false')
+    }
+    else if (config.strategy == 'update') {
+      cmd.add('--update=true --replace=false')
+    }
   }
   if (config.secret) {
     cmd.addAll(['--secret', config.secret])

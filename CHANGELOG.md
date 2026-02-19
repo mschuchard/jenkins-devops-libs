@@ -1,3 +1,8 @@
+### 2.3.0 (Next)
+**FaaS**
+- Remove `replace` and `update` parameters from `deploy` method.
+- Fix `strategy` parameter behavior for `deploy` method.
+
 ### 2.2.2
 **General**
 - Improve reliability of tool command assignments.

@@ -34,13 +34,11 @@ faas.deploy(
   label:     ['canary':'true', 'dev':'false'], // optional labels to set
   namespace: 'default', // optional namespace of the function
   regex:     'regexp_string', // optional regex to match with function names in yaml file (default is unused)
-  replace:   true, // optional replace any existing function (mutually exclusive with update; will be deprecated in 2.3.0 for strategy)
   regex:     'regexp_string', // optional regex to match with function names in yaml file
   secret:    'dockerhuborg', // optional secure secret to give function access to
   strategy:  'update', // optional function strategy (valid: 'update' or 'replace')
   template:  'samples.yaml', // path to yaml file describing function(s)
   tls:       true // optional TLS validation
-  update:    false // optional update existing functions (mutually exclusive with replace; will be deprecated in 2.3.0 for strategy)
 )
 ```
 
