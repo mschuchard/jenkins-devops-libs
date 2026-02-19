@@ -4,7 +4,7 @@ Interacts with Packer. The `template` argument must generally be a `pkr.json` te
 
 ### Dependencies
 
-- Packer CLI binary executable >= 1.7
+- Packer CLI binary executable >= 1.9
 
 ### packer.build()
 Uses Packer to build an artifact from a template or template directory.
@@ -96,8 +96,6 @@ packer.plugins(
 ```
 
 ### packer.validate()
-**`evalData` and `warnUndeclVar` require Packer version >= 1.8.5**
-
 Uses Packer to validate a build template or template directory. This method will return a `Boolean` type indicating whether the validation was successful (`true`) or not (`false`).
 
 ```groovy

@@ -3,6 +3,9 @@
 - Remove `replace` and `update` parameters from `deploy` method.
 - Fix `strategy` parameter behavior for `deploy` method.
 
+**Packer**
+- Increase minimum supported version to 1.9.
+
 ### 2.2.2
 **General**
 - Improve reliability of tool command assignments.
