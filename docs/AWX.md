@@ -5,7 +5,7 @@ Interacts with AWX/Ansible Tower endpoints via the AWX CLI. Note that you should
 ### Dependencies
 
 - AWX CLI binary executable
-- AWX or Tower installation
+- AWX or Ansible Automation Platform installation
 
 ### awx.hostCreate()
 

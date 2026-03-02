@@ -6,6 +6,9 @@
 **Packer**
 - Increase minimum supported version to 1.9.
 
+**Terraform**
+- Increase minimum supported version to 1.8.
+
 ### 2.2.2
 **General**
 - Improve reliability of tool command assignments.

@@ -4,7 +4,7 @@ Interacts with Terraform. `env.TF_IN_AUTOMATION` is set to `true` for each metho
 
 ### Dependencies
 
-- Terraform CLI binary executable >= 1.0
+- Terraform CLI binary executable >= 1.8
 
 ### terraform.apply()
 Uses Terraform to apply a config. Note that if `terraform.plan(path: configDir)` was invoked before this and the `out` parameter was not specified, then the resultant plan file is in `${configDir}/plan.tfplan` by default. If a plan file is specified as the `configPath` parameter value, then the `vars` and `target` parameters will be ignored.
@@ -201,7 +201,7 @@ terraform.test(
 ```
 
 ### terraform.validate()
-Uses Terraform to validate a config directory. The validation output is also returned as a String (mostly useful with `json: true`). **This subcommand's usage varies greatly between different versions of Terraform, and therefore not all parameters may be supported in your utilized version.**
+Uses Terraform to validate a config directory. The validation output is also returned as a String (mostly useful with `json: true`).
 
 ```groovy
 terraform.validate(
@@ -214,8 +214,6 @@ terraform.validate(
 ```
 
 ### terraform.workspace()
-**`create` requires version >= 1.4**
-
 Selects the Terraform workspace for a config directory. Ideally executed in Pipeline before other Terraform blocks.
 
 ```groovy

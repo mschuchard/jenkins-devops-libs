@@ -4,7 +4,7 @@ Interacts with GoSS.
 
 ### Dependencies
 
-- GoSS CLI binary executable >= 0.4.0
+- GoSS CLI binary executable >= 0.4
 - DGoSS CLI binary exeuctable (`validateDocker`)
 
 ### goss.render()
