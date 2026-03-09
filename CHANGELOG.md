@@ -8,6 +8,7 @@
 
 **Terraform**
 - Increase minimum supported version to 1.8.
+- Add `refresh`, `lock`, `lockTimeout`, `parallelism`, and `state` params to `plan` method.
 
 ### 2.2.2
 **General**

@@ -335,6 +335,12 @@ Map parse(String file) {
 
 String plan(Map config) {
   // input checking
+  if (config?.lock == false && config.lockTimeout) {
+    error(message: "The 'lock' and 'lockTimeout' options for terraform.plan are mutually exclusive; only one can be specified.")
+  }
+  if (config?.refreshOnly == true && config?.refresh == false) {
+    error(message: "The 'refreshOnly' and 'refresh' options for terraform.plan are mutually exclusive; only one can be specified.")
+  }
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
@@ -368,8 +374,28 @@ String plan(Map config) {
   if (config.refreshOnly == true) {
     cmd.add('-refresh-only')
   }
+  else if (config.refresh == false) {
+    cmd.add('-refresh=false')
+  }
   if (config.compactWarn == true) {
     cmd.add('-compact-warnings')
+  }
+  if (config.lock == false) {
+    cmd.add('-lock=false')
+  }
+  else if (config.lockTimeout) {
+    assert (config.lockTimeout in String) : 'The lockTimeout parameter must be a duration string (e.g. "30s").'
+    cmd.add("-lock-timeout=${config.lockTimeout}")
+  }
+  if (config.parallelism) {
+    assert (config.parallelism in Integer) : 'The parallelism parameter must be an integer.'
+    cmd.add("-parallelism=${config.parallelism}")
+  }
+  if (config.state) {
+    assert (config.state in String) : 'The state parameter must be a string path to a state file.'
+    assert fileExists(config.state) : "The state file at ${config.state} does not exist."
+
+    cmd.add("-state=${config.state}")
   }
   if (config.genConfig) {
     assert !fileExists(config.genConfig) : "The path at ${config.genConfig} is required to not exist prior to Terraform config generation, but the path does exist."

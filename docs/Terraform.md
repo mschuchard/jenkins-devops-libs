@@ -121,17 +121,22 @@ Uses Terraform to generate an execution plan. The output plan file `plan.tfplan`
 
 ```groovy
 terraform.plan(
-  bin:         '/usr/bin/terraform', // optional path to terraform executable
-  compactWarn: false, // optional warnings as compact summary messages
-  destroy:     false, // optional generate a plan to destroy resources
-  dir:         env.WORKSPACE, // optional path to config dir
-  genConfig:   'config.tf', // optional hcl generation for import blocks (>= 1.5)
-  out:         'plan.tfplan', // optional plan output file path (extension must be .tfplan)
-  refreshOnly: false, // optional check if remote objects match outcome of most recent apply (>= 0.15)
-  replace:     ['aws_instance.example', 'aws_eip.ip'], // optional resources to unconditionally recreate in plan
-  target:      ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
-  var:         ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile:     '/path/to/variables.tf' // optional location of variables file
+  bin:          '/usr/bin/terraform', // optional path to terraform executable
+  compactWarn:  false, // optional warnings as compact summary messages
+  destroy:      false, // optional generate a plan to destroy resources
+  dir:          env.WORKSPACE, // optional path to config dir
+  genConfig:    'config.tf', // optional hcl generation for import blocks (>= 1.5)
+  lock:         true, // optional do not hold a state lock when false (mutually exclusive with lockTimeout)
+  lockTimeout:  '0s', // optional duration to retry a state lock (e.g. '30s') (mutually exclusive with lock)
+  out:          'plan.tfplan', // optional plan output file path (extension must be .tfplan)
+  parallelism:  10, // optional number of concurrent operations
+  refresh:      true, // optional skip checking for external changes to remote objects when false (mutually exclusive with refreshOnly)
+  refreshOnly:  false, // optional check if remote objects match outcome of most recent apply (>= 0.15) (mutually exclusive with refresh)
+  replace:      ['aws_instance.example', 'aws_eip.ip'], // optional resources to unconditionally recreate in plan
+  state:        'terraform.tfstate', // optional path to state file (local backend only)
+  target:       ['aws_instance.example', 'aws_eip.ip'], // optional resource targets
+  var:          ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:      '/path/to/variables.tf' // optional location of variables file
 )
 ```
 
