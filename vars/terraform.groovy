@@ -194,6 +194,12 @@ void imports(Map config) {
 
 void init(Map config) {
   // input checking
+  if (config?.lock == false && config.lockTimeout) {
+    error(message: "The 'lock' and 'lockTimeout' options for terraform.init are mutually exclusive; only one can be specified.")
+  }
+  if (config.migrateState == true && config.reconfigure == true) {
+    error(message: "The 'migrateState' and 'reconfigure' options for terraform.init are mutually exclusive; only one can be specified.")
+  }
   if (config.dir) {
     assert fileExists(config.dir) : "Config directory ${config.dir} does not exist!"
   }
@@ -219,6 +225,9 @@ void init(Map config) {
   if (config.migrateState == true) {
     cmd.add('-migrate-state')
   }
+  else if (config.reconfigure == true) {
+    cmd.add('-reconfigure')
+  }
   if (config.forceCopy == true) {
     cmd.add('-force-copy')
   }
@@ -242,6 +251,33 @@ void init(Map config) {
     assert fileExists(config.testDir) : "The test directory ${config.testDir} does not exist."
 
     cmd.add("-test-directory=${config.testDir}")
+  }
+  if (config.fromModule) {
+    assert (config.fromModule in String) : 'The "fromModule" parameter must be a string.'
+
+    cmd.add("-from-module=${config.fromModule}")
+  }
+  if (config.get == false) {
+    cmd.add('-get=false')
+  }
+  if (config.lock == false) {
+    cmd.add('-lock=false')
+  }
+  else if (config.lockTimeout) {
+    assert (config.lockTimeout in String) : 'The "lockTimeout" parameter must be a duration string (e.g. "30s").'
+
+    cmd.add("-lock-timeout=${config.lockTimeout}")
+  }
+  if (config.json == true) {
+    cmd.add('-json')
+  }
+  if (config.lockfile) {
+    assert config.lockfile == 'readonly' : 'The "lockfile" parameter currently only accepts "readonly" as a valid value.'
+
+    cmd.add("-lockfile=${config.lockfile}")
+  }
+  if (config.ignoreRemoteVersion == true) {
+    cmd.add('-ignore-remote-version')
   }
 
   // initialize the working config directory

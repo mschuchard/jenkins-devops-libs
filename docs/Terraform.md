@@ -81,16 +81,24 @@ Uses Terraform to initialize a working directory.
 
 ```groovy
 terraform.init(
-  backend:       true // optional false to omit backend initialization
-  backendConfig: ['/path/to/backend.hcl'] // optional paths to hcl files with backend configs
-  backendKV:     ['address':'demo.consul.io', 'scheme':'https'], // optional key-value pairs for backend settings
-  bin:           '/usr/bin/terraform', // optional path to terraform executable
-  dir:           env.WORKSPACE, // optional path to working config dir
-  forceCopy:     false, // optional suppress prompts about copying state data when initializating a new state backend
-  migrateState:  false, // optional reconfigure a backend and attempt to migrate any existing state
-  pluginDir:     '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
-  testDir:       'tests', // optional terraform test directory
-  upgrade:       false, // optional upgrade modules and plugins
+  backend:             true, // optional false to omit backend initialization
+  backendConfig:       ['/path/to/backend.hcl'], // optional paths to hcl files with backend configs
+  backendKV:           ['address':'demo.consul.io', 'scheme':'https'], // optional key-value pairs for backend settings
+  bin:                 '/usr/bin/terraform', // optional path to terraform executable
+  dir:                 env.WORKSPACE, // optional path to working config dir
+  forceCopy:           false, // optional suppress prompts about copying state data when initializing a new state backend
+  fromModule:          'git::https://example.com/module', // optional source module to copy into target dir before initialization
+  get:                 true, // optional false to disable downloading modules
+  ignoreRemoteVersion: false, // optional ignore state representation version compatibility checks for HCP Terraform and remote backends
+  json:                false, // optional machine-readable JSON output
+  lock:                true, // optional false to skip holding a state lock during backend migration (mutually exclusive with lockTimeout)
+  lockTimeout:         '0s', // optional duration to retry a state lock (e.g. '30s') (mutually exclusive with lock)
+  lockfile:            'readonly', // optional dependency lockfile mode; currently only 'readonly' is valid
+  migrateState:        false, // optional reconfigure a backend and attempt to migrate any existing state (mutually exclusive with reconfigure)
+  pluginDir:           '/path/to/plugin_dir', // optional path to (presumably shared) plugin/provider installation directory
+  reconfigure:         false, // optional reconfigure a backend, ignoring any saved configuration (mutually exclusive with migrateState)
+  testDir:             'tests', // optional terraform test directory
+  upgrade:             false, // optional upgrade modules and plugins
 )
 ```
 
