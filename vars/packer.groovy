@@ -136,6 +136,9 @@ void init(Map config) {
   if (config.upgrade == true) {
     cmd.add('-upgrade')
   }
+  if (config.force == true) {
+    cmd.add('-force')
+  }
 
   // initialize the working template directory
   dir(config.dir) {
@@ -303,6 +306,15 @@ Boolean validate(Map config) {
   }
   if (config.syntaxOnly == true) {
     cmd.add('-syntax-only')
+  }
+  if (config.machineReadable == true) {
+    cmd.add('-machine-readable')
+  }
+  if (config.ignorePrerelease == true) {
+    cmd.add('-ignore-prerelease-plugins')
+  }
+  if (config.sequentialEval == true) {
+    cmd.add('-use-sequential-evaluation')
   }
 
   // validate template with packer

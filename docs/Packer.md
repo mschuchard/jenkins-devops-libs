@@ -12,7 +12,6 @@ Uses Packer to build an artifact from a template or template directory.
 ```groovy
 packer.build(
   bin:              '/usr/bin/packer', // optional location of packer install
-  debug:            false, // optional enable debug mode for builds
   except:           ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to ignore during build (mutually exclusive with only)
   force:            false, // optional force a build to continue if artifacts exist and deletes existing artifacts
   ignorePrerelease: false, // optional disable loading of prerelease plugin binaries
@@ -50,6 +49,7 @@ Uses Packer to install all the missing plugins required in a Packer template dir
 packer.init(
   bin:     '/usr/bin/packer', // optional location of packer install
   dir:     '/path/to/template_dir', // location of packer templates directory
+  force:   false, // optional force reinstallation of plugins
   upgrade: false // optional update installed plugins to the latest available version within the specified constraints
 )
 ```
@@ -107,14 +107,17 @@ Uses Packer to validate a build template or template directory. This method will
 
 ```groovy
 packer.validate(
-  bin:           '/usr/bin/packer', // optional location of packer install
-  evalData:      false, // optional evaluate datasources during validation
-  except:   ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to ignore during build (mutually exclusive with only)
-  only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build (mutually exclusive with except)
-  syntaxOnly:    false, // optional only check syntax and do not verify config
-  template:      '/path/to/template.pkr.hcl', // // location of packer template file or templates directory
-  var:           ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile:       '/path/to/variables.json' // optional location of variables file
-  warnUndeclVar: true, // optional warn on user variable files containing undeclared variables
+  bin:              '/usr/bin/packer', // optional location of packer install
+  evalData:         false, // optional evaluate datasources during validation
+  except:           ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to ignore during validation (mutually exclusive with only)
+  ignorePrerelease: false, // optional disable loading of prerelease plugin binaries
+  machineReadable:  false, // optional produce machine-readable output
+  only:             ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to validate (mutually exclusive with except)
+  sequentialEval:   false, // optional fallback to sequential evaluation for local/datasource evaluation
+  syntaxOnly:       false, // optional only check syntax and do not verify config
+  template:         '/path/to/template.pkr.hcl', // location of packer template file or templates directory
+  var:              ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:          '/path/to/variables.json', // optional location of variables file
+  warnUndeclVar:    true, // optional false to disable warnings for var files containing undeclared variables
 )
 ```
