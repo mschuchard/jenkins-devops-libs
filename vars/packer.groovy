@@ -31,9 +31,29 @@ void build(Map config) {
     cmd.add('-force')
   }
   if (config.onError) {
-    assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.onError)) : 'The argument must be one of: default, abort, ask, or run-cleanup-provisioner.'
+    assert (['default', 'abort', 'ask', 'run-cleanup-provisioner'].contains(config.onError)) : 'The onError parameter must be one of: default, abort, ask, or run-cleanup-provisioner.'
 
     cmd.add("-on-error=${config.onError}")
+  }
+  if (config.machineReadable == true) {
+    cmd.add('-machine-readable')
+  }
+  if (config.parallelBuilds) {
+    assert (config.parallelBuilds in Integer) : 'The parallelBuilds parameter must be an integer.'
+
+    cmd.add("-parallel-builds=${config.parallelBuilds}")
+  }
+  if (config.timestampUi == true) {
+    cmd.add('-timestamp-ui')
+  }
+  if (config.warnUndeclaredVar == true) {
+    cmd.add('-warn-on-undeclared-var')
+  }
+  if (config.ignorePrerelease == true) {
+    cmd.add('-ignore-prerelease-plugins')
+  }
+  if (config.sequentialEval == true) {
+    cmd.add('-use-sequential-evaluation')
   }
 
   // create artifact with packer

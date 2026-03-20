@@ -5,6 +5,7 @@
 
 **Packer**
 - Increase minimum supported version to 1.9.
+- Add `machineReadable`, `parallelBuilds`, `timestampUi`, `warnUndeclaredVar`, `ignorePrerelease`, and `sequentialEval` params to `build` method.
 
 **Terraform**
 - Increase minimum supported version to 1.8.

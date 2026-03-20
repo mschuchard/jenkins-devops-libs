@@ -11,14 +11,21 @@ Uses Packer to build an artifact from a template or template directory.
 
 ```groovy
 packer.build(
-  bin:      '/usr/bin/packer', // optional location of packer install
-  except:   ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to ignore during build (mutually exclusive with only)
-  force:    false, // optional force a build to continue if artifacts exist and deletes existing artifacts
-  only:     ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build (mutually exclusive with except)
-  onError:  'default', // optional 'default' cleanup, 'abort', 'ask', or 'run-cleanup-provisioner'
-  template: '/path/to/template.pkr.json', // location of packer template file or templates directory
-  var:      ['foo':'bar', 'bar':'baz'], // optional variable setting
-  varFile: '/path/to/variables.json' // optional location of variables file
+  bin:              '/usr/bin/packer', // optional location of packer install
+  debug:            false, // optional enable debug mode for builds
+  except:           ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to ignore during build (mutually exclusive with only)
+  force:            false, // optional force a build to continue if artifacts exist and deletes existing artifacts
+  ignorePrerelease: false, // optional disable loading of prerelease plugin binaries
+  machineReadable:  false, // optional produce machine-readable output
+  only:             ['source.*.foo', 'source.bar.*', 'baz'], // optional builder names to build (mutually exclusive with except)
+  onError:          'default', // optional 'default' cleanup, 'abort', 'ask', or 'run-cleanup-provisioner'
+  parallelBuilds:   0, // optional number of parallel builds; 0 means no limit (default), 1 disables parallelization
+  sequentialEval:   false, // optional fallback to sequential evaluation for local/datasource evaluation
+  template:         '/path/to/template.pkr.json', // location of packer template file or templates directory
+  timestampUi:      false, // optional prefix each ui output line with an RFC3339 timestamp
+  var:              ['foo':'bar', 'bar':'baz'], // optional variable setting
+  varFile:          '/path/to/variables.json', // optional location of variables file
+  warnUndeclaredVar: false, // optional display warnings for var files containing undeclared variables
 )
 ```
 
