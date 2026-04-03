@@ -272,7 +272,7 @@ void plugins(Map config) {
   else {
     new helpers().toolExec("Packer Plugins ${config.command.capitalize()}", cmd)
   }
-  }
+}
 
 Boolean validate(Map config) {
   // input checking

@@ -69,10 +69,6 @@ String render(Map config) {
 
 void server(Map config) {
   // input checking
-  if (config.logLevel) {
-    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(config.logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
-  }
-
   config.endpoint = config.endpoint ?: '/healthz'
   config.port = config.port ?: '8080'
   config.bin = config.bin ?: 'goss'
@@ -100,9 +96,6 @@ void server(Map config) {
   if (config.cache) {
     cmd.addAll(['-c', config.cache])
   }
-  if (config.logLevel) {
-    cmd.addAll(['-L', config.logLevel.toUpperCase()])
-  }
 
   // create goss rest api endpoint
   new helpers.toolExec("GoSS Server ${config?.gossfile}", ['nohup'] + cmd + ['-e', config.endpoint, '-l', ":${config.port}"])
@@ -110,9 +103,6 @@ void server(Map config) {
 
 Boolean validate(Map config) {
   // input checking
-  if (config.logLevel) {
-    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(config.logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
-  }
   config.bin = config.bin ?: 'goss'
 
   // optional inputs
@@ -142,9 +132,6 @@ Boolean validate(Map config) {
     if (config.sleep) {
       cmd.addAll(['-s', config.sleep])
     }
-  }
-  if (config.logLevel) {
-    cmd.addAll(['-L', config.logLevel.toUpperCase()])
   }
 
   // validate with goss
@@ -195,6 +182,11 @@ private static List<String> globalArgsCmd(Map config) {
   List<String> subCmd = []
 
   // check for optional global args
+  if (config.logLevel) {
+    assert ['error', 'warn', 'info', 'debug', 'trace'].contains(config.logLevel) : 'The logLevel parameter must be one of error, warn, info, debug, or trace.'
+
+    subCmd.addAll(['-l', config.logLevel.toUpperCase()])
+  }
   if (config.varsInline) {
     assert config.varsInline in Map : 'The inline vars parameter must be a Map.'
     final String varsInlineJSON = writeJSON(json: config.varsInline, returnText: true)

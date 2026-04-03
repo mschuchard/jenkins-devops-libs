@@ -15,6 +15,7 @@ goss.render(
   bin:        '/usr/bin/goss', // optional executable path for goss
   debug:      false, // optional print rendered golang template prior to gossfile
   gossfile:   'goss.yaml', // optional location of gossfile with included directive
+  logLevel:   'info', // optional logging verbosity level; one of 'error', 'warn', 'info', 'debug', or 'trace'
   package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
   vars:       'vars.yaml', // optional YAML or JSON vars file to use with gossfile
   varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')

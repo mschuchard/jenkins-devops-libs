@@ -3,6 +3,9 @@
 - Remove `replace` and `update` parameters from `deploy` method.
 - Fix `strategy` parameter behavior for `deploy` method.
 
+**GoSS**
+- Migrate `logLevel` parameter to global.
+
 **Packer**
 - Increase minimum supported version to 1.9.
 - Add `machineReadable`, `parallelBuilds`, `timestampUi`, `warnUndeclaredVar`, `ignorePrerelease`, and `sequentialEval` params to `build` method.
