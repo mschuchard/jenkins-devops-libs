@@ -310,6 +310,23 @@ void install(Map config) {
   print "Terraform successfully installed at ${config.installPath}/terraform."
 }
 
+void login(String hostname = 'app.terraform.io') {
+  // input checking
+  config.bin = config.bin ?: 'terraform'
+
+  // retrieve authentication token
+  try {
+    withEnv(['TF_IN_AUTOMATION=true']) {
+      new helpers().toolExec('Terraform Login', [config.bin, 'login', hostname])
+    }
+  }
+  catch (hudson.AbortException error) {
+    print 'Failure using terraform login.'
+    throw error
+  }
+  print 'Terraform login was successful.'
+}
+
 String output(Map config) {
   // input checking
   if (config.dir) {
