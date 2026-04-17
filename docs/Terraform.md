@@ -102,6 +102,13 @@ terraform.init(
 )
 ```
 
+### terraform.login(String bin = 'terraform', String hostname = 'app.terraform.io')
+Retrieves an authentication token for the given hostname, if it supports automatic login, and saves it in a credentials file in the home directory.
+
+```groovy
+terraform.login('/usr/local/bin/terraform', 'tfe.example.com')
+```
+
 ### terraform.output()
 Reads an output variable from a Terraform state and returns the value as a String.
 

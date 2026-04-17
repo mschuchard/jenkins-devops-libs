@@ -14,6 +14,7 @@
 
 **Terraform**
 - Increase minimum supported version to 1.8.
+- Add `login` method.
 - Add `refresh`, `lock`, `lockTimeout`, `parallelism`, and `state` params to `plan` method.
 - Add `reconfigure`, `fromModule`, `get`, `lock`, `lockTimeout`, `json`, `lockfile`, and `ignoreRemoteVersion` params to `init` method.
 
