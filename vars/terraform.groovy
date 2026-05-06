@@ -312,16 +312,16 @@ void install(Map config) {
 
 void login(String bin = 'terraform', String hostname = 'app.terraform.io') {
   // retrieve authentication token
-  try {
-    withEnv(['TF_IN_AUTOMATION=true']) {
-      new helpers().toolExec('Terraform Login', [bin, 'login', hostname])
-    }
+  withEnv(['TF_IN_AUTOMATION=true']) {
+    new helpers().toolExec('Terraform Login', [bin, 'login', hostname])
   }
-  catch (hudson.AbortException error) {
-    print 'Failure using terraform login.'
-    throw error
+}
+
+void logout(String bin = 'terraform', String hostname = 'app.terraform.io') {
+  // remove authentication token
+  withEnv(['TF_IN_AUTOMATION=true']) {
+    new helpers().toolExec('Terraform Logout', [bin, 'logout', hostname])
   }
-  print 'Terraform login was successful.'
 }
 
 String output(Map config) {
