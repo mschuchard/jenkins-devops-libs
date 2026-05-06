@@ -109,6 +109,13 @@ Retrieves an authentication token for the given hostname, if it supports automat
 terraform.login('/usr/local/bin/terraform', 'tfe.example.com')
 ```
 
+### terraform.logout(String bin = 'terraform', String hostname = 'app.terraform.io')
+Removes locally-stored credentials for specified hostname. Note the API token is only removed from local storage, not destroyed on the remote server, and so it will remain valid until manually revoked.
+
+```groovy
+terraform.logout('/usr/local/bin/terraform', 'tfe.example.com')
+```
+
 ### terraform.output()
 Reads an output variable from a Terraform state and returns the value as a String.
 
