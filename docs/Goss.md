@@ -7,7 +7,7 @@ Interacts with GoSS.
 - GoSS CLI binary executable >= 0.4
 - DGoSS CLI binary exeuctable (`validateDocker`)
 
-### goss.autoadd()
+### goss.autoadd(String version, String installPath = '/usr/bin/')
 Automatically add all matching resource to the test suite.
 
 ```groovy

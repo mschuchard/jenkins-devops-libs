@@ -22,7 +22,7 @@ awx.hostCreate(
 )
 ```
 
-### awx.hostDelete()
+### awx.hostDelete(String id, String bin = 'awx')
 Uses AWX to delete a host in an inventory.
 
 ```groovy
@@ -44,7 +44,7 @@ awx.inventoryCreate(
 )
 ```
 
-### awx.inventoryDelete()
+### awx.inventoryDelete(String id, String bin = 'awx')
 Uses AWX to delete an inventory.
 
 ```groovy
