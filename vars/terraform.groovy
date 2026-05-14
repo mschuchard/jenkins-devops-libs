@@ -310,14 +310,14 @@ void install(Map config) {
   print "Terraform successfully installed at ${config.installPath}/terraform."
 }
 
-void login(String bin = 'terraform', String hostname = 'app.terraform.io') {
+void login(String hostname = 'app.terraform.io', String bin = 'terraform') {
   // retrieve authentication token
   withEnv(['TF_IN_AUTOMATION=true']) {
     new helpers().toolExec('Terraform Login', [bin, 'login', hostname])
   }
 }
 
-void logout(String bin = 'terraform', String hostname = 'app.terraform.io') {
+void logout(String hostname = 'app.terraform.io', String bin = 'terraform') {
   // remove authentication token
   withEnv(['TF_IN_AUTOMATION=true']) {
     new helpers().toolExec('Terraform Logout', [bin, 'logout', hostname])
