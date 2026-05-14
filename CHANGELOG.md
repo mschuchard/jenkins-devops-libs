@@ -4,6 +4,7 @@
 - Fix `strategy` parameter behavior for `deploy` method.
 
 **GoSS**
+- Add `autoadd` method.
 - Migrate `logLevel` parameter to global.
 
 **Packer**

@@ -31,6 +31,13 @@ pipeline {
         }
       }
     }
+    stage('Autoadd Resource') {
+      steps {
+        script {
+          goss.autoadd('/etc')
+        }
+      }
+    }
     stage('Validate Server') {
       steps {
         script {

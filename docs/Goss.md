@@ -7,6 +7,13 @@ Interacts with GoSS.
 - GoSS CLI binary executable >= 0.4
 - DGoSS CLI binary exeuctable (`validateDocker`)
 
+### goss.autoadd()
+Automatically add all matching resource to the test suite.
+
+```groovy
+goss.autoadd('sshd', '/usr/local/bin/goss') // resource name for first argument
+```
+
 ### goss.render()
 Renders a single valid GoSSfile from separated individual test files. This method will return the rendered GoSSfile as a String, and does not perform any further actions with the rendered content.
 

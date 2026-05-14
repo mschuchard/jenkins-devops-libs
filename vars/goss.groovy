@@ -2,6 +2,10 @@
 import devops.common.utils
 import devops.common.helpers
 
+void autoadd(String resource, String bin = 'goss') {
+  new helpers().toolExec("GoSS Autoadd ${resource}", [bin, 'autoadd', resource])
+}
+
 void install(String version, String installPath = '/usr/bin/') {
   new utils().makeDirParents(installPath)
 

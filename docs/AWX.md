@@ -8,7 +8,6 @@ Interacts with AWX/Ansible Tower endpoints via the AWX CLI. Note that you should
 - AWX or Ansible Automation Platform installation
 
 ### awx.hostCreate()
-
 Uses AWX to create a host in an inventory.
 
 ```groovy
@@ -24,7 +23,6 @@ awx.hostCreate(
 ```
 
 ### awx.hostDelete()
-
 Uses AWX to delete a host in an inventory.
 
 ```groovy
@@ -32,7 +30,6 @@ awx.hostDelete('foo.bar.com', '/usr/local/bin/awx') // the ID (or unique name) o
 ```
 
 ### awx.inventoryCreate()
-
 Uses AWX to create an inventory.
 
 ```groovy
@@ -48,7 +45,6 @@ awx.inventoryCreate(
 ```
 
 ### awx.inventoryDelete()
-
 Uses AWX to delete an inventory.
 
 ```groovy
@@ -56,7 +52,6 @@ awx.inventoryDelete('my_inventory', '/usr/local/bin/awx') // the ID (or unique n
 ```
 
 ### awx.inventoryModify()
-
 Uses AWX to modify an inventory.
 
 ```groovy
@@ -73,7 +68,6 @@ awx.inventoryModify(
 ```
 
 ### awx.jobTemplateLaunch()
-
 Uses AWX to launch a job from a job template.
 
 ```groovy
@@ -92,7 +86,6 @@ awx.jobTemplateLaunch(
 ```
 
 ### awx.projectsUpdate()
-
 Uses AWX to launch a project update job.
 
 ```groovy
@@ -104,7 +97,6 @@ awx.projectsUpdate(
 ```
 
 ### awx.workflowJobTemplateLaunch()
-
 Uses AWX to launch a workflow job from a workflow job template.
 
 ```groovy
