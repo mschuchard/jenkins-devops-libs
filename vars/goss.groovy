@@ -2,6 +2,31 @@
 import devops.common.utils
 import devops.common.helpers
 
+void add(Map config) {
+  // input checking
+  assert config.resource in String : 'The required "resource" parameter was not set.'
+  assert config.name in String : 'The required "name" parameter was not set.'
+  assert (['package', 'file', 'addr', 'port', 'service', 'user', 'group', 'command', 'dns', 'process', 'http', 'goss', 'kernel-param', 'mount', 'interface'].contains(config.resource)) : 'The "resource" parameter must be a valid GoSS resource type (package, file, addr, port, service, user, group, command, dns, process, http, goss, kernel-param, mount, or interface).'
+  config.bin = config.bin ?: 'goss'
+
+  List<String> cmd = [config.bin, 'add']
+
+  // check for optional inputs
+  if (config.excludeAttr) {
+    assert (config.excludeAttr in List) : 'The "excludeAttr" parameter must be a list of strings.'
+
+    config.excludeAttr.each { String attr ->
+      cmd.addAll(['--exclude-attr', attr])
+    }
+  }
+
+  // append resource type and name
+  cmd.addAll([config.resource, config.name])
+
+  // add resource to the test suite
+  new helpers().toolExec("GoSS Add ${config.resource} ${config.name}", cmd)
+}
+
 void autoadd(String resource, String bin = 'goss') {
   new helpers().toolExec("GoSS Autoadd ${resource}", [bin, 'autoadd', resource])
 }
