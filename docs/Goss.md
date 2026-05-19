@@ -7,6 +7,18 @@ Interacts with GoSS.
 - GoSS CLI binary executable >= 0.4
 - DGoSS CLI binary exeuctable (`validateDocker`)
 
+### goss.add()
+Add a single resource to the test suite.
+
+```groovy
+goss.add(
+  bin:         '/usr/bin/goss', // optional executable path for goss
+  excludeAttr: ['checksums', 'owner'], // optional list of resource attributes to exclude
+  name:        '/etc/hosts', // name of the resource to add (e.g. filename, service name, port)
+  resource:    'file', // type of resource to add; must be one of 'package', 'file', 'addr', 'port', 'service', 'user', 'group', 'command', 'dns', 'process', 'http', 'goss', 'kernel-param', 'mount', or 'interface'
+)
+```
+
 ### goss.autoadd(String version, String installPath = '/usr/bin/')
 Automatically add all matching resource to the test suite.
 

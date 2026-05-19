@@ -31,6 +31,16 @@ pipeline {
         }
       }
     }
+    stage('Add Resource') {
+      steps {
+        script {
+          goss.add(
+            resource: 'file', // resource type to add
+            name:     '/tmp/goss.yaml', // name of resource to add
+          )
+        }
+      }
+    }
     stage('Autoadd Resource') {
       steps {
         script {
