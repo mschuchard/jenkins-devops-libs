@@ -18,6 +18,7 @@
 - Add `login` and `logout` methods.
 - Add `refresh`, `lock`, `lockTimeout`, `parallelism`, and `state` params to `plan` method.
 - Add `reconfigure`, `fromModule`, `get`, `lock`, `lockTimeout`, `json`, `lockfile`, and `ignoreRemoteVersion` params to `init` method.
+- Add `ignoreVersion` and `lockTimeout` params to `taint` method.
 
 ### 2.2.2
 **General**

@@ -677,6 +677,14 @@ void taint(Map config) {
   if (config.allowMissing == true) {
     cmd.add('-allow-missing')
   }
+  if (config.lockTimeout) {
+    assert (config.lockTimeout in String) : 'The lockTimeout parameter must be a duration string (e.g. "30s").'
+
+    cmd.add("-lock-timeout=${config.lockTimeout}")
+  }
+  if (config.ignoreVersion == true) {
+    cmd.add('-ignore-remote-version')
+  }
 
   // taint each resource
   dir(config.dir) {
