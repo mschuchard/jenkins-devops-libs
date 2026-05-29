@@ -665,8 +665,9 @@ void taint(Map config) {
     config.dir = env.WORKSPACE
   }
   config.bin = config.bin ?: 'terraform'
+  String subCommand = config.untaint == true ? 'untaint' : 'taint'
 
-  List<String> cmd = [config.bin, 'taint', '-no-color']
+  List<String> cmd = [config.bin, subCommand, '-no-color']
 
   // optional inputs
   if (config.state) {
@@ -686,12 +687,12 @@ void taint(Map config) {
     cmd.add('-ignore-remote-version')
   }
 
-  // taint each resource
+  // taint or untaint each resource
   dir(config.dir) {
     config.resources.each { String resource ->
       List<String> taintCmd = cmd + [resource]
       withEnv(['TF_IN_AUTOMATION=true']) {
-        new helpers().toolExec("Terraform Taint ${resource}", taintCmd)
+        new helpers().toolExec("Terraform ${subCommand.capitalize()} ${resource}", taintCmd)
       }
     }
   }

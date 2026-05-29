@@ -209,6 +209,7 @@ terraform.taint(
   lockTimeout:   '0s', // optional duration to retry a state lock
   resources:     ['resource.name', 'other.name'], // names of the resources to taint
   state:         'terraform.tfstate' // optional path to read and save state
+  untaint:       false, // optional untaint resources instead of taint
 )
 ```
 
