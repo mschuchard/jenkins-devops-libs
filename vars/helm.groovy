@@ -2,6 +2,54 @@
 import devops.common.utils
 import devops.common.helpers
 
+void dependency(Map config) {
+  // input checking
+  assert (['build', 'update'].contains(config.command)) : 'The "command" parameter must be one of "build" or "update".'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
+  assert fileExists(config.chart) : "The chart at ${config.chart} does not exist."
+  config.bin = config.bin ?: 'helm'
+
+  List<String> cmd = [config.bin, 'dependency', config.command]
+
+  // check for optional inputs
+  if (config.caFile) {
+    cmd.addAll(['--ca-file', config.caFile])
+  }
+  if (config.certFile) {
+    cmd.addAll(['--cert-file', config.certFile])
+  }
+  if (config.insecure == true) {
+    cmd.add('--insecure-skip-tls-verify')
+  }
+  if (config.keyFile) {
+    cmd.addAll(['--key-file', config.keyFile])
+  }
+  if (config.keyring) {
+    assert fileExists(config.keyring) : "The keyring ${config.keyring} does not exist."
+
+    cmd.addAll(['--keyring', config.keyring])
+  }
+  if (config.password) {
+    cmd.addAll(['--password', config.password])
+  }
+  if (config.plainHttp == true) {
+    cmd.add('--plain-http')
+  }
+  if (config.skipRefresh == true) {
+    cmd.add('--skip-refresh')
+  }
+  if (config.username) {
+    cmd.addAll(['--username', config.username])
+  }
+  if (config.verify == true) {
+    cmd.add('--verify')
+  }
+
+  // manage chart dependencies
+  cmd.add(config.chart)
+  new helpers().toolExec("Helm Dependency ${config.command.capitalize()} ${config.chart}", cmd)
+}
+
 String history(Map config) {
   // input checking
   assert config.name : 'The required parameter "name" was not set.'
