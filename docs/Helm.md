@@ -9,6 +9,27 @@ Also please note direct Kubernetes support will never exist in this library. The
 - Helm CLI binary executable >= 3.0
 - Kubernetes cluster
 
+### helm.dependency()
+Manages the dependencies of a Helm chart. The `build` command reconstructs the `charts/` directory from the lock file. The `update` command updates on-disk dependencies to mirror `Chart.yaml` and regenerates the lock file.
+
+```groovy
+helm.dependency(
+  bin:         '/usr/bin/helm', // optional executable path for helm
+  caFile:      '/path/to/ca.crt', // optional CA bundle to verify HTTPS server certificates
+  certFile:    '/path/to/client.crt', // optional HTTPS client SSL certificate file
+  chart:       'path/to/chart', // required path to the chart directory
+  command:     'update', // dependency command; one of 'build' or 'update'
+  insecure:    false, // optional skip TLS certificate checks for chart download
+  keyFile:     '/path/to/client.key', // optional HTTPS client SSL key file
+  keyring:     '/home/user/.gnupg/pubring.gpg', // optional keyring containing public keys
+  password:    'mypassword', // optional chart repository password
+  plainHttp:   false, // optional use insecure HTTP connections for chart download
+  skipRefresh: false, // optional do not refresh the local repository cache
+  username:    'myuser', // optional chart repository username
+  verify:      false, // optional verify packages against signatures
+)
+```
+
 ### helm.history()
 Prints historical revisions for a given release, and also returns the information as a String.
 
