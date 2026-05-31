@@ -1,4 +1,4 @@
-### 2.3.0 (Next)
+### 2.3.0
 **FaaS**
 - Remove `replace` and `update` parameters from `deploy` method.
 - Fix `strategy` parameter behavior for `deploy` method.
