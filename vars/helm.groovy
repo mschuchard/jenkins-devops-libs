@@ -52,7 +52,7 @@ void dependency(Map config) {
 
 String history(Map config) {
   // input checking
-  assert config.name : 'The required parameter "name" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'history']
@@ -90,8 +90,8 @@ String history(Map config) {
 
 void install(Map config) {
   // input checking
-  assert config.name : 'The required parameter "name" was not set.'
-  assert config.chart : 'The required parameter "chart" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
+  assert config.chart in String: 'The required parameter "chart" was not set.'
   if (config.version && config.devel) {
     error(message: "The 'version' and 'devel' parameters for helm.install are mutually exclusive; only one can be specified.")
   }
@@ -183,7 +183,7 @@ void kubectl(String version, String installPath = '/usr/bin/') {
 Boolean lint(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart : 'The required parameter "chart" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
 
   List<String> cmd = [config.bin, 'lint']
 
@@ -237,7 +237,7 @@ Boolean lint(Map config) {
 void packages(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart : 'The required parameter "chart" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
   assert new helpers().validateYamlFile("${config.chart}/Chart.yaml", 'chart')
   if (config.key && config.keyring) {
     error(message: "The 'key' and 'keyring' parameters for helm.packages are mutually exclusive; only one can be specified.")
@@ -290,9 +290,9 @@ void plugin(Map config) {
 
 void push(Map config) {
   // input checking
-  assert config.chart : 'The required parameter "chart" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
   assert fileExists(config.chart) : "The chart does not exist at ${config.chart}."
-  assert config.remote : 'The required parameter "remote" was not set.'
+  assert config.remote in String : 'The required parameter "remote" was not set.'
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'push']
@@ -309,9 +309,9 @@ void push(Map config) {
 
 void registryLogin(Map config) {
   // input checking
-  assert config.host : 'The required parameter "host" was not set.'
-  assert config.password : 'The required parameter "password" was not set.'
-  assert config.username : 'The required parameter "username" was not set.'
+  assert config.host in String : 'The required parameter "host" was not set.'
+  assert config.password in String : 'The required parameter "password" was not set.'
+  assert config.username in String : 'The required parameter "username" was not set.'
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'registry', 'login', '--username', config.username, '--password', config.password]
@@ -328,8 +328,8 @@ void registryLogin(Map config) {
 
 void repo(Map config) {
   // input checking
-  assert config.repo : 'The required parameter "repo" was not set.'
-  assert config.url : 'The required parameter "url" was not set.'
+  assert config.repo in String : 'The required parameter "repo" was not set.'
+  assert config.url in String : 'The required parameter "url" was not set.'
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'repo', 'add']
@@ -358,7 +358,7 @@ void repo(Map config) {
 
 void rollback(Map config) {
   // input checking
-  assert config.name : "The required parameter 'name' was not set."
+  assert config.name in String : "The required parameter 'name' was not set."
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'rollback']
@@ -423,7 +423,7 @@ void setup(String version, String installPath = '/usr/bin/') {
 void show(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.chart : 'The required parameter "chart" was not set.'
+  assert config.chart in String : 'The required parameter "chart" was not set.'
   assert (['all', 'chart', 'crds', 'readme', 'values']).contains(config.info) : 'The info parameter must be one of all, chart, crds, readme, or values.'
 
   // show chart info
@@ -433,7 +433,7 @@ void show(Map config) {
 String status(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.name : 'The required parameter "name" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
 
   List<String> cmd = [config.bin, 'status']
   List<String> lister = [config.bin, 'list']
@@ -484,7 +484,7 @@ String status(Map config) {
 void test(Map config) {
   // input checking
   config.bin = config.bin ?: 'helm'
-  assert config.name : 'The required parameter "name" was not set.'
+  assert config.name in String : 'The required parameter "name" was not set.'
 
   List<String> cmd = [config.bin, 'test']
 
