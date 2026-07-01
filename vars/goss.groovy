@@ -128,7 +128,7 @@ void server(Map config) {
   }
 
   // create goss rest api endpoint
-  new helpers.toolExec("GoSS Server ${config?.gossfile}", ['nohup'] + cmd + ['-e', config.endpoint, '-l', ":${config.port}"])
+  new helpers().toolExec("GoSS Server ${config?.gossfile}", ['nohup'] + cmd + ['-e', config.endpoint, '-l', ":${config.port}"])
 }
 
 Boolean validate(Map config) {
@@ -199,7 +199,7 @@ void validateDocker(Map config) {
 
   // run with dgoss
   cmd.add(config.image)
-  new helpers.toolExec("DGoSS Validate Docker ${config.image}", cmd)
+  new helpers().toolExec("DGoSS Validate Docker ${config.image}", cmd)
 }
 
 Boolean validateGossfile(String gossfile) {

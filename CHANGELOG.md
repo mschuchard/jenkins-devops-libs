@@ -1,4 +1,7 @@
 ### 2.3.1 (Next)
+**GoSS**
+- Fix `helpers` constructor in `server` and `validateDocker` methods.
+
 **Helm**
 - Improve required parameter type checking.
 
@@ -8,7 +11,7 @@
 - Fix `strategy` parameter behavior for `deploy` method.
 
 **GoSS**
-- Add `add` and `autoadd` method.
+- Add `add` and `autoadd` methods.
 - Migrate `logLevel` parameter to global.
 
 **Helm**
