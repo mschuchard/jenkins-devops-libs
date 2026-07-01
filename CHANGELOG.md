@@ -1,3 +1,7 @@
+### 2.3.1 (Next)
+**Helm**
+- Improve required parameter type checking.
+
 ### 2.3.0
 **FaaS**
 - Remove `replace` and `update` parameters from `deploy` method.

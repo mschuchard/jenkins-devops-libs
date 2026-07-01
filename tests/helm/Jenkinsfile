@@ -54,7 +54,7 @@ pipeline {
     stage('Verify') {
       steps {
         script {
-          Boolean success = helm.verify(chartPath: '/tmp')
+          Boolean success = helm.verify('/tmp')
         }
       }
     }
@@ -107,17 +107,17 @@ pipeline {
         }
       }
     }
-    stage('Uninstall') {
-      steps {
-        script {
-          helm.uninstall(name: 'happy-panda')
-        }
-      }
-    }
     stage('History') {
       steps {
         script {
           helm.history(name: 'happy-panda')
+        }
+      }
+    }
+    stage('Uninstall') {
+      steps {
+        script {
+          helm.uninstall(name: 'happy-panda')
         }
       }
     }
