@@ -4,9 +4,10 @@ import devops.common.helpers
 
 void add(Map config) {
   // input checking
-  assert config.resource in String : 'The required "resource" parameter was not set.'
   assert config.name in String : 'The required "name" parameter was not set.'
-  assert (['package', 'file', 'addr', 'port', 'service', 'user', 'group', 'command', 'dns', 'process', 'http', 'goss', 'kernel-param', 'mount', 'interface'].contains(config.resource)) : 'The "resource" parameter must be a valid GoSS resource type (package, file, addr, port, service, user, group, command, dns, process, http, goss, kernel-param, mount, or interface).'
+  assert config.resource in String : 'The required "resource" parameter was not set.'
+  final List<String> validResources = ['package', 'file', 'addr', 'port', 'service', 'user', 'group', 'command', 'dns', 'process', 'http', 'goss', 'kernel-param', 'mount', 'interface']
+  assert (validResources.contains(config.resource)) : "The 'resource' parameter must be a valid GoSS resource type: (${validResources.join(', ')})."
   config.bin = config.bin ?: 'goss'
 
   List<String> cmd = [config.bin, 'add']
