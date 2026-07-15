@@ -14,8 +14,13 @@ Add a single resource to the test suite.
 goss.add(
   bin:         '/usr/bin/goss', // optional executable path for goss
   excludeAttr: ['checksums', 'owner'], // optional list of resource attributes to exclude
+  gossfile:    'goss.yaml', // optional location of gossfile with included directive
+  logLevel:    'info', // optional logging verbosity level; one of 'error', 'warn', 'info', 'debug', or 'trace'
   name:        '/etc/hosts', // name of the resource to add (e.g. filename, service name, port)
+  package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
   resource:    'file', // type of resource to add; must be one of 'package', 'file', 'addr', 'port', 'service', 'user', 'group', 'command', 'dns', 'process', 'http', 'goss', 'kernel-param', 'mount', or 'interface'
+  vars:       'vars.yaml', // optional YAML or JSON vars file to use with gossfile
+  varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 )
 ```
 

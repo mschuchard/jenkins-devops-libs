@@ -10,7 +10,11 @@ void add(Map config) {
   assert (validResources.contains(config.resource)) : "The 'resource' parameter must be a valid GoSS resource type: (${validResources.join(', ')})."
   config.bin = config.bin ?: 'goss'
 
-  List<String> cmd = [config.bin, 'add']
+  List<String> cmd = [config.bin]
+
+  // check for optional global inputs and establish command
+  cmd.addAll(globalArgsCmd(config))
+  cmd.add('add')
 
   // check for optional inputs
   if (config.excludeAttr) {

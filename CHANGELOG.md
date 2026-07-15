@@ -1,6 +1,7 @@
 ### 2.3.1 (Next)
 **GoSS**
 - Fix `helpers` constructor in `server` and `validateDocker` methods.
+- Support global arguments in `add` method.
 
 **Helm**
 - Improve required parameter type checking.
