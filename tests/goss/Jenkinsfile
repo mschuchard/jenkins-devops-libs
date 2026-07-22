@@ -36,6 +36,7 @@ pipeline {
         script {
           goss.add(
             resource: 'file', // resource type to add
+            gossfile: '/tmp/goss.yaml',
             name:     '/tmp/goss.yaml', // name of resource to add
           )
         }

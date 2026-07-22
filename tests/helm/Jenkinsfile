@@ -100,7 +100,6 @@ pipeline {
       steps {
         script {
           helm.test(
-            chart:   'stable/mariadb', // chart repository, local archive, directory, or url to install
             kubectl: '/usr/bin/kubectl', // optional executable path for kubectl
             name:    'happy-panda' // name of a deployed release
           )

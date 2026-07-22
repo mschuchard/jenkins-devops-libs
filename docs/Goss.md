@@ -24,7 +24,7 @@ goss.add(
 )
 ```
 
-### goss.autoadd(String version, String installPath = '/usr/bin/')
+### goss.autoadd(String version, String bin = 'goss')
 Automatically add all matching resource to the test suite.
 
 ```groovy
