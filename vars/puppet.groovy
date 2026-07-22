@@ -91,7 +91,7 @@ void codeDeploy(Map config) {
         url:                    "https://${server}:${config.port}/code-manager/v1/deploys",
       )
     }
-    catch (Exception error) {
+    catch (hudson.AbortException error) {
       print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse.status}."
       print error
       errored = true
@@ -100,7 +100,7 @@ void codeDeploy(Map config) {
     try {
       response = readJSON(text: jsonResponse.content)
     }
-    catch (Exception error) {
+    catch (hudson.AbortException error) {
       print "Response from ${server} is not valid JSON! Response content: ${jsonResponse.content}."
       print error
       errored = true
@@ -236,7 +236,7 @@ void task(Map config) {
       url:                    "https://${config.server}:${config.port}/orchestrator/v1/command/task",
     )
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print "Failure executing REST API request against ${config.server} with token! Returned status: ${jsonResponse.status}."
     throw error
   }
@@ -244,7 +244,7 @@ void task(Map config) {
   try {
     response = readJSON(text: jsonResponse.content)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print "Response from ${config.server} is not valid JSON! Response content: ${jsonResponse.content}."
     throw error
   }
@@ -301,7 +301,7 @@ void token(Map config) {
       url:                    "https://${config.server}:${config.port}/rbac-api/v1/auth/token",
     )
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print "Failure executing REST API request against ${config.server} with username ${config.username}. Returned status: ${jsonResponse.status}."
     throw error
   }
@@ -309,7 +309,7 @@ void token(Map config) {
   try {
     response = readJSON(text: jsonResponse.content)
   }
-  catch (Exception error) {
+  catch (hudson.AbortException error) {
     print "Response from ${config.server} is not valid JSON! Response content: ${jsonResponse.content}."
     throw error
   }

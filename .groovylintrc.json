@@ -6,6 +6,9 @@
         },
         "formatting.LineLength": {
             "length": 240
+        },
+        "DuplicateStringLiteral": {
+            "enabled": false
         }
     }
 }

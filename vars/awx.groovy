@@ -1,5 +1,4 @@
 // vars/awx.groovy
-import devops.common.utils
 import devops.common.helpers
 
 void hostCreate(Map config) {

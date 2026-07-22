@@ -51,9 +51,9 @@ Boolean validateYamlFile(String filePath, String description) {
     try {
         readYaml(file: filePath)
     }
-    catch (Exception error) {
+    catch (AbortException error) {
         print "${description} failed YAML and JSON validation."
-        print error.getMessage()
+        print error.message
         return false
     }
 

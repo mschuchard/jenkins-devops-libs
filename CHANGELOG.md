@@ -1,4 +1,7 @@
 ### 2.3.1 (Next)
+**General**
+- Minor code cleanup.
+
 **GoSS**
 - Fix `helpers` constructor in `server` and `validateDocker` methods.
 - Support global arguments in `add` method.

@@ -15,7 +15,7 @@ def defaultInput(input, defaultValue) {
 @NonCPS
 void removeFile(String file) {
   // delete a file on the master or build node
-  env['NODE_NAME'] == 'master' ? new File(file).delete() : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), file).delete()
+  env['NODE_NAME'] == 'master' ? new File(file).delete() : new FilePath(Jenkins.instance.getComputer(env['NODE_NAME']).channel, file).delete()
 }
 
 // downloads file using httpRequest step
@@ -31,7 +31,7 @@ void downloadFile(String url, String dest) {
     )
 
     print "Downloaded ${url} to ${dest} (HTTP ${response.status})"
-  } catch (Exception error) {
+  } catch (hudson.AbortException error) {
     print "Failed to download ${url} to ${dest} (HTTP ${response.status})"
     throw error
   }
@@ -106,7 +106,7 @@ Map paramsConverter(body) {
   }
   // params are invalid type
   else {
-    throw new Exception('The parameter inputs are an invalid type. They must either be a Closure or Map. Consult the documentation for more information.')
+    throw new hudson.AbortException('The parameter inputs are an invalid type. They must either be a Closure or Map. Consult the documentation for more information.')
   }
 
   return config
@@ -168,7 +168,7 @@ private String subCommand(param, String cmdArg) {
         subCmd += " ${cmdArg}"
         break
       default:
-        throw new Exception("Unexpected parameter type '${param.getClass()}' for command argument '${cmdArg}'.")
+        throw new hudson.AbortException("Unexpected parameter type '${param.getClass()}' for command argument '${cmdArg}'.")
     }
   }
 
