@@ -93,7 +93,6 @@ void install(Map config) {
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'install']
-  List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
   cmd.addAll(valuesSetCmd(config))
@@ -109,9 +108,7 @@ void install(Map config) {
   if (config.force == true) {
     cmd.add('--force')
   }
-  List<String> subCmd = ctxNsCmd(config)
-  cmd.addAll(subCmd)
-  lister.addAll(subCmd)
+  cmd.addAll(ctxNsCmd(config))
   if (config.createNS == true) {
     cmd.add('--create-namespace')
   }
@@ -125,11 +122,8 @@ void install(Map config) {
     cmd.add('--wait')
   }
 
-  // check release object
-  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
-  if (releaseObjList =~ config.name) {
-    error(message: "Release object ${config.name} already exists!")
-  }
+  // validate release object
+  checkReleaseObject(config, false)
 
   // install with helm
   cmd.addAll([config.name, config.chart])
@@ -313,16 +307,12 @@ void rollback(Map config) {
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'rollback']
-  List<String> lister = [config.bin, 'list']
 
-  // optional inputs also applicable to lister
-  List<String> subCmd = ctxNsCmd(config)
-  cmd.addAll(subCmd)
-  lister.addAll(subCmd)
+  // optional inputs
+  cmd.addAll(ctxNsCmd(config))
 
-  // check release object
-  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
-  assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
+  // validate release object
+  checkReleaseObject(config)
 
   // optional inputs
   if (config.force == true) {
@@ -382,12 +372,9 @@ String status(Map config) {
   assert config.name in String : 'The required parameter "name" was not set.'
 
   List<String> cmd = [config.bin, 'status']
-  List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
-  List<String> subCmd = ctxNsCmd(config)
-  cmd.addAll(subCmd)
-  lister.addAll(subCmd)
+  cmd.addAll(ctxNsCmd(config))
   if (config.description) {
     cmd.add('--show-desc')
   }
@@ -403,9 +390,8 @@ String status(Map config) {
     cmd.addAll(['--revision', config.revision])
   }
 
-  // check release object
-  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
-  assert (releaseObjList =~ config.name) : "Release object ${config.name} does not exist!"
+  // validate release object
+  checkReleaseObject(config)
 
   // attempt to query a release object's status
   try {
@@ -490,16 +476,12 @@ void uninstall(Map config) {
   assert config.name in String : 'The required parameter "name" was not set.'
 
   List<String> cmd = [config.bin, 'uninstall']
-  List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
-  List<String> subCmd = ctxNsCmd(config)
-  cmd.addAll(subCmd)
-  lister.addAll(subCmd)
+  cmd.addAll(ctxNsCmd(config))
 
-  // check release object
-  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
-  assert (releaseObjList =~ config.name) : "Release object ${config.name} does not exist!"
+  // validate release object
+  checkReleaseObject(config)
 
   // attempt to uninstall a release object
   cmd.add(config.name)
@@ -516,7 +498,6 @@ void upgrade(Map config) {
   config.bin = config.bin ?: 'helm'
 
   List<String> cmd = [config.bin, 'upgrade']
-  List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
   cmd.addAll(valuesSetCmd(config))
@@ -545,14 +526,11 @@ void upgrade(Map config) {
   if (config.dryRun == true) {
     cmd.add('--dry-run')
   }
-  List<String> subCmd = ctxNsCmd(config)
-  cmd.addAll(subCmd)
-  lister.addAll(subCmd)
+  cmd.addAll(ctxNsCmd(config))
 
-  // check release object presence if install param is not true (i.e. false or null)
+  // validate release object presence if install param is not true (i.e. false or null)
   if (!(config.install == true)) {
-    final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
-    assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
+    checkReleaseObject(config)
   }
 
   // upgrade with helm
@@ -579,6 +557,24 @@ Boolean verify(String chartPath, String helmPath = 'helm') {
 
   print 'Failure using helm verify'
   error(message: 'Helm verify failed unexpectedly')
+}
+
+// private method for release object existence checking
+private static void checkReleaseObject(Map config, Boolean expectExists = true) {
+  // build release object lister cmd
+  List<String> lister = [config.bin, 'list']
+  lister.addAll(ctxNsCmd(config))
+
+  // check release object
+  final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
+
+  // validate based on whether it should exist or not
+  if (expectExists) {
+    assert releaseObjList =~ config.name : "Release object ${config.name} does not exist!"
+  }
+  else if (releaseObjList =~ config.name) {
+    error(message: "Release object ${config.name} already exists!")
+  }
 }
 
 // private method for kube-context and namespace flags common to most methods
