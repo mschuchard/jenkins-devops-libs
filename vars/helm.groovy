@@ -66,12 +66,7 @@ String history(Map config) {
 
     cmd.addAll(['-o', config.outputFormat])
   }
-  if (config.context) {
-    cmd.addAll(['--kube-context', config.context])
-  }
-  if (config.namespace) {
-    cmd.addAll(['--namespace', config.namespace])
-  }
+  cmd.addAll(ctxNsCmd(config))
 
   // gather release revision history with helm
   try {
@@ -101,24 +96,7 @@ void install(Map config) {
   List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
-  if (config.values) {
-    assert (config.values in List) : 'The values parameter must be a list of strings.'
-
-    config.values.each { String value ->
-      if (!value.contains('://')) {
-        assert new helpers().validateYamlFile(value, 'value overrides file')
-      }
-
-      cmd.addAll(['-f', value])
-    }
-  }
-  if (config.set) {
-    assert (config.set in Map) : 'The set parameter must be a Map.'
-
-    config.set.each { String var, String value ->
-      cmd.addAll(['--set', "${var}=${value}"])
-    }
-  }
+  cmd.addAll(valuesSetCmd(config))
   if (config.version) {
     cmd.addAll(['--version', config.version])
   }
@@ -131,14 +109,9 @@ void install(Map config) {
   if (config.force == true) {
     cmd.add('--force')
   }
-  if (config.context) {
-    cmd.addAll(['--kube-context', config.context])
-    lister.addAll(['--kube-context', config.context])
-  }
-  if (config.namespace) {
-    cmd.addAll(['--namespace', config.namespace])
-    lister.addAll(['--namespace', config.namespace])
-  }
+  List<String> subCmd = ctxNsCmd(config)
+  cmd.addAll(subCmd)
+  lister.addAll(subCmd)
   if (config.createNS == true) {
     cmd.add('--create-namespace')
   }
@@ -188,30 +161,8 @@ Boolean lint(Map config) {
   List<String> cmd = [config.bin, 'lint']
 
   // check for optional inputs
-  if (config.values) {
-    assert (config.values in List) : 'The values parameter must be a list of strings.'
-
-    config.values.each { String value ->
-      if (!value.contains('://')) {
-        assert new helpers().validateYamlFile(value, 'value overrides file')
-      }
-
-      cmd.addAll(['-f', value])
-    }
-  }
-  if (config.set) {
-    assert (config.set in Map) : 'The set parameter must be a Map.'
-
-    config.set.each { String var, String value ->
-      cmd.addAll(['--set', "${var}=${value}"])
-    }
-  }
-  if (config.context) {
-    cmd.addAll(['--kube-context', config.context])
-  }
-  if (config.namespace) {
-    cmd.addAll(['--namespace', config.namespace])
-  }
+  cmd.addAll(valuesSetCmd(config))
+  cmd.addAll(ctxNsCmd(config))
   if (config.strict == true) {
     cmd.add('--strict')
   }
@@ -365,14 +316,9 @@ void rollback(Map config) {
   List<String> lister = [config.bin, 'list']
 
   // optional inputs also applicable to lister
-  if (config.context) {
-    cmd.addAll(['--kube-context', config.context])
-    lister.addAll(['--kube-context', config.context])
-  }
-  if (config.namespace) {
-    cmd.addAll(['--namespace', config.namespace])
-    lister.addAll(['--namespace', config.namespace])
-  }
+  List<String> subCmd = ctxNsCmd(config)
+  cmd.addAll(subCmd)
+  lister.addAll(subCmd)
 
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
@@ -439,16 +385,11 @@ String status(Map config) {
   List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
-  if (config.context) {
-    cmd.addAll(['--kube-context', config.context])
-    lister.addAll(['--kube-context', config.context])
-  }
+  List<String> subCmd = ctxNsCmd(config)
+  cmd.addAll(subCmd)
+  lister.addAll(subCmd)
   if (config.description) {
     cmd.add('--show-desc')
-  }
-  if (config.namespace) {
-    cmd.addAll(['--namespace', config.namespace])
-    lister.addAll(['--namespace', config.namespace])
   }
   if (config.outputFormat) {
     assert (['table', 'json', 'yaml'].contains(config.outputFormat)) : 'The outputFormat parameter must be one of table, json, or yaml'
@@ -495,12 +436,7 @@ void test(Map config) {
   }
 
   // optional inputs
-  if (config.context) {
-    cmd.addAll(['--kube-context', config.context])
-  }
-  if (config.namespace) {
-    cmd.addAll(['--namespace', config.namespace])
-  }
+  cmd.addAll(ctxNsCmd(config))
 
   // test with helm
   try {
@@ -557,14 +493,9 @@ void uninstall(Map config) {
   List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
-  if (config.context) {
-    cmd.addAll(['--kube-context', config.context])
-    lister.addAll(['--kube-context', config.context])
-  }
-  if (config.namespace) {
-    cmd.addAll(['--namespace', config.namespace])
-    lister.addAll(['--namespace', config.namespace])
-  }
+  List<String> subCmd = ctxNsCmd(config)
+  cmd.addAll(subCmd)
+  lister.addAll(subCmd)
 
   // check release object
   final String releaseObjList = sh(label: 'List Release Objects', returnStdout: true, script: lister.join(' ')).trim()
@@ -588,24 +519,7 @@ void upgrade(Map config) {
   List<String> lister = [config.bin, 'list']
 
   // check for optional inputs
-  if (config.values) {
-    assert (config.values in List) : 'The values parameter must be a list of strings.'
-
-    config.values.each { String value ->
-      if (!value.contains('://')) {
-        assert new helpers().validateYamlFile(value, 'value overrides file')
-      }
-
-      cmd.addAll(['-f', value])
-    }
-  }
-  if (config.set) {
-    assert (config.set in Map) : 'The set parameter must be a Map.'
-
-    config.set.each { String var, String value ->
-      cmd.addAll(['--set', "${var}=${value}"])
-    }
-  }
+  cmd.addAll(valuesSetCmd(config))
   if (config.version) {
     cmd.addAll(['--version', config.version])
   }
@@ -631,14 +545,9 @@ void upgrade(Map config) {
   if (config.dryRun == true) {
     cmd.add('--dry-run')
   }
-  if (config.context) {
-    cmd.addAll(['--kube-context', config.context])
-    lister.addAll(['--kube-context', config.context])
-  }
-  if (config.namespace) {
-    cmd.addAll(['--namespace', config.namespace])
-    lister.addAll(['--namespace', config.namespace])
-  }
+  List<String> subCmd = ctxNsCmd(config)
+  cmd.addAll(subCmd)
+  lister.addAll(subCmd)
 
   // check release object presence if install param is not true (i.e. false or null)
   if (!(config.install == true)) {
@@ -670,4 +579,41 @@ Boolean verify(String chartPath, String helmPath = 'helm') {
 
   print 'Failure using helm verify'
   error(message: 'Helm verify failed unexpectedly')
+}
+
+// private method for kube-context and namespace flags common to most methods
+private static List<String> ctxNsCmd(Map config) {
+  List<String> subCmd = []
+
+  if (config.context) {
+    subCmd.addAll(['--kube-context', config.context])
+  }
+  if (config.namespace) {
+    subCmd.addAll(['--namespace', config.namespace])
+  }
+
+  return subCmd
+}
+
+// private method for values overrides and set input
+private static List<String> valuesSetCmd(Map config) {
+  List<String> subCmd = []
+
+  if (config.values) {
+    assert (config.values in List) : 'The values parameter must be a list of strings.'
+    config.values.each { String value ->
+      if (!value.contains('://')) {
+        assert new helpers().validateYamlFile(value, 'value overrides file')
+      }
+      subCmd.addAll(['-f', value])
+    }
+  }
+  if (config.set) {
+    assert (config.set in Map) : 'The set parameter must be a Map.'
+    config.set.each { String var, String value ->
+      subCmd.addAll(['--set', "${var}=${value}"])
+    }
+  }
+
+  return subCmd
 }
