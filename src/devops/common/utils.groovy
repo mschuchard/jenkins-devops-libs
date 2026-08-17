@@ -41,7 +41,7 @@ void downloadFile(String url, String dest) {
 @NonCPS
 void deprecatedDownloadFile(String url, String dest) {
   // establish the file download for the master or the build node
-  File file = env['NODE_NAME'] == 'master' ? new File(dest) : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dest)
+  File file = env['NODE_NAME'] == 'master' ? new File(dest) : new FilePath(Jenkins.instance.getComputer(env['NODE_NAME']).channel, dest)
 
   // download the file and close the ostream
   file.newOutputStream() << new URL(url).openStream()
@@ -69,7 +69,7 @@ void makeDirParents(String dir) {
 @NonCPS
 void deprecatedMakeDirParents(String dir) {
   // ascertain directory on jenkins master or build agent/node
-  File file = env['NODE_NAME'] == 'master' ? new File(dir) : new FilePath(Jenkins.getInstance().getComputer(env['NODE_NAME']).getChannel(), dir)
+  File file = env['NODE_NAME'] == 'master' ? new File(dir) : new FilePath(Jenkins.instance.getComputer(env['NODE_NAME']).channel, dir)
 
   // short circuit if directory exists
   if (file.exists()) {
