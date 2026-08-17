@@ -8,7 +8,7 @@ library identifier: 'jenkins-devops-libs@master', retriever: modernSCM(
 //library('jenkins-devops-libs')_
 
 pipeline {
-  agent { docker { image 'hashicorp/terraform:1.13' } }
+  agent { docker { image 'hashicorp/terraform:1.14' } }
 
   stages {
     stage('Initialize') {
