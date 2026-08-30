@@ -1,4 +1,4 @@
-### 2.3.1 (Next)
+### 2.3.1
 **General**
 - Minor code cleanup.
 
