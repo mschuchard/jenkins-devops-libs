@@ -45,7 +45,10 @@ pipeline {
     stage('Autoadd Resource') {
       steps {
         script {
-          goss.autoadd('/etc')
+          goss.autoadd(
+            gossfile: '/tmp/goss.yaml',
+            name: '/etc',
+          )
         }
       }
     }

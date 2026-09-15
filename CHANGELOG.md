@@ -1,3 +1,7 @@
+### 2.4.0 (Next)
+**GoSS**
+- Add global arguments to `autoadd` method (not backwards compatible usage update).
+
 ### 2.3.1
 **General**
 - Minor code cleanup.

@@ -28,7 +28,14 @@ goss.add(
 Automatically add all matching resource to the test suite.
 
 ```groovy
-goss.autoadd('sshd', '/usr/local/bin/goss') // resource name for first argument
+goss.autoadd(
+  bin:         '/usr/bin/goss', // optional executable path for goss
+  gossfile:    'goss.yaml', // optional location of gossfile with included directive
+  logLevel:    'info', // optional logging verbosity level; one of 'error', 'warn', 'info', 'debug', or 'trace'
+  name:        'sshd', // name of the resource to add (e.g. filename, service name, port)
+  package:    null, // optional package type to use (apk, dpkg, pacman, rpm)
+  vars:       'vars.yaml', // optional YAML or JSON vars file to use with gossfile
+  varsInline: ['name':'value', 'name2':'value2'] // optional inline vars to use with gossfile (overwrites 'vars')
 ```
 
 ### goss.render()
