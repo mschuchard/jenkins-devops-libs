@@ -32,8 +32,20 @@ void add(Map config) {
   new helpers().toolExec("GoSS Add ${config.resource} ${config.name}", cmd)
 }
 
-void autoadd(String resource, String bin = 'goss') {
-  new helpers().toolExec("GoSS Autoadd ${resource}", [bin, 'autoadd', resource])
+void autoadd(Map config) {
+  // input checking
+  assert config.name in String : 'The required "name" parameter was not set.'
+  config.bin = config.bin ?: 'goss'
+
+  List<String> cmd = [config.bin]
+
+  // check for optional global inputs
+  cmd.addAll(globalArgsCmd(config))
+  // append subcommand and resource name
+  cmd.addAll(['autoadd', config.name])
+
+  // autoadd resource to the test suite
+  new helpers().toolExec("GoSS Autoadd ${config.name}", cmd)
 }
 
 void install(String version, String installPath = '/usr/bin/') {
@@ -238,6 +250,7 @@ private static List<String> globalArgsCmd(Map config) {
 
     subCmd.addAll(['--package', config.package])
   }
+  // gossfile
   if (config.gossfile) {
     assert validateGossfile(config.gossfile) : "GoSSfile ${config.gossfile} does not exist or is not a valid YAML file!"
 
