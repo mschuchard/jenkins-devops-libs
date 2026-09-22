@@ -92,7 +92,7 @@ void codeDeploy(Map config) {
       )
     }
     catch (hudson.AbortException error) {
-      print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse.status}."
+      print "Failure executing REST API request against ${server} with token! Returned status: ${jsonResponse?.status}."
       print error
       errored = true
     }
@@ -198,7 +198,7 @@ void plan(Map config) {
     )
   }
   catch (hudson.AbortException error) {
-    print "Failure executing REST API request against ${config.server} with token! Returned status: ${jsonResponse.status}."
+    print "Failure executing REST API request against ${config.server} with token! Returned status: ${jsonResponse?.status}."
     throw error
   }
   // receive and parse response
@@ -330,7 +330,7 @@ void task(Map config) {
     )
   }
   catch (hudson.AbortException error) {
-    print "Failure executing REST API request against ${config.server} with token! Returned status: ${jsonResponse.status}."
+    print "Failure executing REST API request against ${config.server} with token! Returned status: ${jsonResponse?.status}."
     throw error
   }
   // receive and parse response
@@ -395,7 +395,7 @@ void token(Map config) {
     )
   }
   catch (hudson.AbortException error) {
-    print "Failure executing REST API request against ${config.server} with username ${config.username}. Returned status: ${jsonResponse.status}."
+    print "Failure executing REST API request against ${config.server} with username ${config.username}. Returned status: ${jsonResponse?.status}."
     throw error
   }
   // receive and parse response

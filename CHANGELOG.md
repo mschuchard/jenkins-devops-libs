@@ -4,6 +4,7 @@
 
 **Puppet**
 - Add `plan` method.
+- Safe navigate response status when `httpRequest` throws exception.
 
 ### 2.3.1
 **General**
