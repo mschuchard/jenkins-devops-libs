@@ -129,7 +129,7 @@ void codeDeploy(Map config) {
 void plan(Map config) {
   // input checking
   if (config.tokenFile && config.credentialsId) {
-    error(message: "The 'tokenFile' and 'credentialsId' parameters for puppet.planRun are mutually exclusive; only one can be specified.")
+    error(message: "The 'tokenFile' and 'credentialsId' parameters for puppet.plan are mutually exclusive; only one can be specified.")
   }
   assert config.tokenFile || (config.credentialsId in String) : 'The required token or credentialsId parameter was not set.'
   if (config.tokenFile) {
@@ -211,7 +211,7 @@ void plan(Map config) {
   }
   // handle successful response
   if (response.containsKey('name')) {
-    print "Puppet Orchestrator Plan Run execution successfully requested. Job Name/ID: ${response['name']}"
+    print "Puppet Orchestrator Plan Run execution successfully requested. Job Name: ${response['name']}"
   }
   else {
     print 'Failure response from Orchestrator below:'

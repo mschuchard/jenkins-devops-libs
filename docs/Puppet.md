@@ -21,6 +21,24 @@ puppet.codeDeploy(
 )
 ```
 
+### puppet.plan()
+Triggers the execution of a Puppet plan via the Puppet Enterprise Orchestrator.
+
+```groovy
+puppet.planRun(
+  credentialsId: 'pe_token', // token bindings credentials id for rbac token; mutually exclusive with token
+  description:   'my plan run', // optional description of the job
+  environment:   'production', // optional environment to load the plan from (default is production)
+  params:        ['nodes':['node1.example.com', 'node2.example.com']], // optional parameters for the plan to use
+  planName:      'canary', // name of the plan to run
+  port:          8143, // optional orchestrator api endpoint port
+  server:        'puppet', // optional server hosting puppet orchestrator
+  timeout:       3600, // optional maximum number of seconds allowed for the plan to run
+  tokenFile:     '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with code orchestrator; mutually exclusive with credentialsId
+  userdata:      ['foo':'bar'] // optional arbitrary key/value data supplied to the job
+)
+```
+
 ### puppet.task()
 Triggers the execution of a Puppet Enterprise task via the Puppet Enterprise Orchestrator.
 
@@ -35,7 +53,7 @@ puppet.task(
   scope:         ['node1.example.com', 'node2.example.com'], // scope for deployment (if string, will be passed as `node_group` or `application`; if array of strings, will be passed as `nodes` or `query`; internal logic attempts to correctly determine which)
   server:        'puppet', // optional server hosting puppet orchestrator
   task:          'package', // name of the task to execute
-  tokenFile:     '/var/lib/jenkins/.puppetlabs/token' // rbac token file location for deploying with code manager; mutually exclusive with credentialId
+  tokenFile:     '/var/lib/jenkins/.puppetlabs/token' // rbac token file location for deploying with orchestrator; mutually exclusive with credentialId
 )
 ```
 

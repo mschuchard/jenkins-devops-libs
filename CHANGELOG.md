@@ -2,6 +2,9 @@
 **GoSS**
 - Add global arguments to `autoadd` method (not backwards compatible usage update).
 
+**Puppet**
+- Add `plan` method.
+
 ### 2.3.1
 **General**
 - Minor code cleanup.
