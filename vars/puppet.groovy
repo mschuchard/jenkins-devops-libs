@@ -126,6 +126,99 @@ void codeDeploy(Map config) {
   print 'Code manager deployment(s) was successful.'
 }
 
+void plan(Map config) {
+  // input checking
+  if (config.tokenFile && config.credentialsId) {
+    error(message: "The 'tokenFile' and 'credentialsId' parameters for puppet.planRun are mutually exclusive; only one can be specified.")
+  }
+  assert config.tokenFile || (config.credentialsId in String) : 'The required token or credentialsId parameter was not set.'
+  if (config.tokenFile) {
+    assert readFile(config.tokenFile) in String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
+  }
+  assert config.planName in String : 'The required planName parameter was not set.'
+
+  config.server = config.server ?: 'puppet'
+  config.port = config.port ?: 8143
+
+  // initialize payload
+  Map<String,Object> payload = [:]
+
+  // plan_name is required
+  payload['plan_name'] = config.planName
+
+  // environment is required, default to production
+  payload['environment'] = config.environment ?: 'production'
+
+  if (config.description) {
+    payload['description'] = config.description
+  }
+  if (config.timeout) {
+    assert (config.timeout in Integer) : 'The timeout parameter must be an integer.'
+    payload['timeout'] = config.timeout
+  }
+  if (config.params) {
+    assert (config.params in Map) : 'The params parameter must be a Map.'
+    payload['params'] = config.params
+  }
+  if (config.userdata) {
+    payload['userdata'] = config.userdata
+  }
+
+  // convert map to json string
+  payload = writeJSON(json: payload, returnText: true)
+
+  // initialize vars
+  Map jsonResponse = [:]
+  Map response = [:]
+  String token = ''
+
+  // set token with logic from appropriate parameter
+  if (config.credentialsId) {
+    withCredentials([token(credentialsId: config.credentialsId, variable: 'theToken')]) {
+      token = theToken
+    }
+  }
+  else if (config.tokenFile) {
+    // initialize token with readFile relative pathing requirement stupidness
+    token = readFile("../../../../../../../../../../../${config.tokenFile}")
+  }
+
+  // trigger plan run orchestration
+  try {
+    jsonResponse = httpRequest(
+      acceptType:             'APPLICATION_JSON',
+      consoleLogResponseBody: true,
+      contentType:            'APPLICATION_JSON',
+      customHeaders:          [[name: 'X-Authentication', value: token]],
+      httpMode:               'POST',
+      ignoreSslErrors:        true,
+      quiet:                  true,
+      requestBody:            payload,
+      url:                    "https://${config.server}:${config.port}/orchestrator/v1/command/plan_run",
+    )
+  }
+  catch (hudson.AbortException error) {
+    print "Failure executing REST API request against ${config.server} with token! Returned status: ${jsonResponse.status}."
+    throw error
+  }
+  // receive and parse response
+  try {
+    response = readJSON(text: jsonResponse.content)
+  }
+  catch (hudson.AbortException error) {
+    print "Response from ${config.server} is not valid JSON! Response content: ${jsonResponse.content}."
+    throw error
+  }
+  // handle successful response
+  if (response.containsKey('name')) {
+    print "Puppet Orchestrator Plan Run execution successfully requested. Job Name/ID: ${response['name']}"
+  }
+  else {
+    print 'Failure response from Orchestrator below:'
+    print response.toMapString()
+  }
+}
+
 void task(Map config) {
   // input checking
   if (config.tokenFile && config.credentialsId) {
