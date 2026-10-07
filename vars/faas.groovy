@@ -230,6 +230,18 @@ void login(Map config) {
   new helpers().toolExec('OpenFaaS Login', cmd)
 }
 
+void logout(String gateway = '', String bin = 'faas-cli') {
+  List<String> cmd = [bin, 'logout']
+
+  // check for optional inputs
+  if (gateway) {
+    cmd.addAll(['-g', gateway])
+  }
+
+  // logout from faas gateway
+  new helpers().toolExec('OpenFaaS Logout', cmd)
+}
+
 String logs(Map config) {
   // input checking
   assert config.name in String : 'The required "name" parameter was not set.'

@@ -108,6 +108,13 @@ faas.login(
 )
 ```
 
+### faas.logout(String gateway = 'http://127.0.0.1:8080', String bin = 'faas-cli')
+Log out from the specified OpenFaaS gateway.
+
+```groovy
+faas.logout('http://127.0.0.1:8080', '/usr/local/bin/faas-cli')
+```
+
 ### faas.logs()
 Fetch logs for a given function name. The logs are returned by this method as a `String`.
 

@@ -36,5 +36,13 @@ pipeline {
         }
       }
     }
+    stage('Logout') {
+      steps {
+        script {
+          print 'This may fail at runtime without a prior login, but should succeed during compilation.'
+          faas.logout('http://127.0.0.1:8080')
+        }
+      }
+    }
   }
 }

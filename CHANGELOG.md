@@ -1,6 +1,6 @@
 ### 2.4.0 (Next)
 **FaaS**
-- Add `describe` and `ready` methods.
+- Add `describe`, `logout`, and `ready` methods.
 
 **GoSS**
 - Add global arguments to `autoadd` method (not backwards compatible usage update).
