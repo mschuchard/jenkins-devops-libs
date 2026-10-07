@@ -234,6 +234,36 @@ String logs(Map config) {
   return logs
 }
 
+void ready(Map config) {
+  // input checking
+  config.bin = config.bin ?: 'faas-cli'
+
+  List<String> cmd = [config.bin, 'ready']
+
+  // check for optional inputs
+  if (config.attempts) {
+    assert (config.attempts in Integer) : 'The attempts parameter must be an integer.'
+
+    cmd.addAll(['--attempts', config.attempts.toString()])
+  }
+  if (config.interval) {
+    assert (config.interval in String) : 'The interval parameter must be a duration string (e.g. "5s").'
+
+    cmd.addAll(['--interval', config.interval])
+  }
+  cmd.addAll(globalArgsCmd(config))
+
+  // the optional function name is a positional argument and must be last
+  if (config.function) {
+    assert (config.function in String) : 'The function parameter must be a string.'
+
+    cmd.add(config.function)
+  }
+
+  // block until the gateway or function is ready
+  new helpers().toolExec("OpenFaaS Ready ${config.function ?: 'Gateway'}", cmd)
+}
+
 void push(Map config) {
   // input checking
   assert config.template : 'The required template parameter was not set.'

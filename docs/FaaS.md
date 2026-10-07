@@ -111,6 +111,21 @@ faas.logs(
 )
 ```
 
+### faas.ready()
+Blocks until the gateway or a function is ready for use. If `function` is omitted, then only the gateway readiness is checked. The pipeline fails if readiness is not achieved within `attempts` checks.
+
+```groovy
+faas.ready(
+  attempts:  60, // optional number of attempts to check the gateway
+  bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
+  function:  'echo', // optional name of the function to wait for
+  gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
+  interval:  '1s', // optional duration between attempts
+  namespace: 'default', // optional namespace of the function
+  tls:       true // optional TLS validation
+)
+```
+
 ### faas.push()
 Pushes the OpenFaaS function container image(s) to a remote repository. These container images must already be present in your local image cache.
 

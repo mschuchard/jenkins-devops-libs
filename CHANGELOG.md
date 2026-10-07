@@ -1,4 +1,7 @@
 ### 2.4.0 (Next)
+**FaaS**
+- Add `ready` method.
+
 **GoSS**
 - Add global arguments to `autoadd` method (not backwards compatible usage update).
 
