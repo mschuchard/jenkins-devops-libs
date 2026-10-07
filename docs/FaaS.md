@@ -42,6 +42,21 @@ faas.deploy(
 )
 ```
 
+### faas.describe()
+Displays details of an OpenFaaS function. The details are also returned by this method as a `String`.
+
+```groovy
+faas.describe(
+  bin:       '/usr/bin/faas-cli', // optional executable path for faas-cli
+  function:  'echo', // name of the deployed function
+  gateway:   'http://127.0.0.1:8080', // optional gateway url with protocol
+  namespace: 'default', // optional namespace of the function
+  tls:       true, // optional TLS validation
+  token:     'jwt', // optional JWT to use instead of basic auth (wrap in `withCredentials` to mask in logs)
+  verbose:   false // optional enable verbose output
+)
+```
+
 ### faas.invoke()
 Invokes an OpenFaaS function.
 

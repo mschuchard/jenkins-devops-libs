@@ -28,5 +28,13 @@ pipeline {
         }
       }
     }
+    stage('Describe') {
+      steps {
+        script {
+          print 'This will fail at runtime without a gateway, but should succeed during compilation.'
+          faas.describe(function: 'echo')
+        }
+      }
+    }
   }
 }

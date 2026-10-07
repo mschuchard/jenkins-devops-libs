@@ -71,6 +71,38 @@ void deploy(Map config) {
   new helpers().toolExec("OpenFaaS Deploy ${config.template}", cmd)
 }
 
+String describe(Map config) {
+  // input checking
+  assert config.function in String : 'The required function parameter was not set.'
+  config.bin = config.bin ?: 'faas-cli'
+
+  List<String> cmd = [config.bin, 'describe']
+
+  // check for optional inputs
+  if (config.token) {
+    cmd.addAll(['--token', config.token])
+  }
+  if (config.verbose == true) {
+    cmd.add('-v')
+  }
+  cmd.addAll(globalArgsCmd(config))
+
+  // retrieve function details
+  String details
+  try {
+    // the function name is a positional argument and must be last
+    cmd.add(config.function)
+    details = sh(label: "OpenFaaS Describe ${config.function}", script: cmd.join(' '), returnStdout: true)
+  }
+  catch (hudson.AbortException error) {
+    print 'Failure using faas-cli describe.'
+    throw error
+  }
+
+  print 'FaaS function describe executed successfully.'
+  return details
+}
+
 void install(Map config) {
   // input checking
   config.installPath = config.installPath ? config.installPath : '/usr/bin'
