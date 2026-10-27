@@ -52,6 +52,19 @@ pipeline {
             }
           }
         }
+        stage('Puppet Deploy') {
+          steps {
+            script {
+              puppet.puppetDeploy(
+                description: 'puppet deploy test', // optional description of the job
+                environment: 'production', // environment to deploy
+                noop:        true, // optional run the agent in no-op mode
+                scope:       ['puppet'], // optional target nodes for deployment
+                tokenFile:   '/var/lib/jenkins/.puppetlabs/token' // rbac token for deploying with orchestrator
+              )
+            }
+          }
+        }
       }
     }
   }

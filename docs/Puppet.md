@@ -39,6 +39,39 @@ puppet.planRun(
 )
 ```
 
+### puppet.puppetDeploy()
+Runs Puppet on demand via the Puppet Enterprise Orchestrator, across the nodes selected by `scope` in the specified environment. If `environment` is an empty string, then `scope` is required and `enforceEnvironment` must not be `true`.
+
+```groovy
+puppet.puppetDeploy(
+  concurrency:          5, // optional maximum number of nodes to run at one time
+  credentialsId:        'pe_token', // token bindings credentials id for rbac token; mutually exclusive with tokenFile
+  debug:                false, // optional use the --debug flag on puppet agent runs
+  description:          'my deploy', // optional description of the job
+  enforceEnvironment:   true, // optional force agents to run in the specified environment (must not be true if environment is an empty string)
+  environment:          'production', // environment to deploy (can be an empty string)
+  evaltrace:            false, // optional use the --evaltrace flag on puppet agent runs
+  fileTimeout:          15, // optional value for the --filetimeout flag on puppet agent runs
+  httpConnectTimeout:   120, // optional value for the --http_connect_timeout flag on puppet agent runs
+  httpKeepaliveTimeout: 120, // optional value for the --http_keepalive_timeout flag on puppet agent runs
+  httpReadTimeout:      120, // optional value for the --http_read_timeout flag on puppet agent runs
+  noNoop:               false, // optional run the agent in enforcement mode, overriding noop in the agent's puppet.conf (mutually exclusive with noop)
+  noop:                 false, // optional run the agent in no-op mode (mutually exclusive with noNoop)
+  ordering:             'manifest', // optional value for the --ordering flag on puppet agent runs
+  port:                 8143, // optional orchestrator api endpoint port
+  scope:                ['node1.example.com', 'node2.example.com'], // optional (required if environment is an empty string) deployment target (if string, will be passed as `node_group` id; if array of strings, will be passed as `nodes`; if array with a nested array as the last element, will be passed as a PuppetDB or PQL `query`)
+  server:               'puppet', // optional server hosting puppet orchestrator
+  skipTags:             'foo,bar', // optional value for the --skip_tags flag on puppet agent runs
+  tags:                 'baz', // optional value for the --tags flag on puppet agent runs
+  timeout:              3600, // optional maximum number of seconds a deploy job can take to execute on any individual node
+  tokenFile:            '/var/lib/jenkins/.puppetlabs/token', // rbac token file location for deploying with orchestrator; mutually exclusive with credentialsId
+  trace:                false, // optional use the --trace flag on puppet agent runs
+  useCachedCatalog:     false, // optional use the --use_cached_catalog flag on puppet agent runs
+  useCacheOnFailure:    false, // optional use the --usecacheonfailure flag on puppet agent runs
+  userdata:             ['foo':'bar'] // optional arbitrary key/value data supplied to the job
+)
+```
+
 ### puppet.task()
 Triggers the execution of a Puppet Enterprise task via the Puppet Enterprise Orchestrator.
 

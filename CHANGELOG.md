@@ -6,7 +6,7 @@
 - Add global arguments to `autoadd` method (not backwards compatible usage update).
 
 **Puppet**
-- Add `plan` method.
+- Add `plan` and `puppetDeploy` methods.
 - Safe navigate response status when `httpRequest` throws exception.
 
 ### 2.3.1
