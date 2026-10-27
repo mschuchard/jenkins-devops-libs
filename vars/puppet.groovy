@@ -219,6 +219,173 @@ void plan(Map config) {
   }
 }
 
+void puppetDeploy(Map config) {
+  // input checking
+  if (config.tokenFile && config.credentialsId) {
+    error(message: "The 'tokenFile' and 'credentialsId' parameters for puppet.deploy are mutually exclusive; only one can be specified.")
+  }
+  assert config.tokenFile || (config.credentialsId in String) : 'The required token or credentialsId parameter was not set.'
+  if (config.tokenFile) {
+    assert readFile(config.tokenFile) in String : "The RBAC token ${config.tokenFile} does not exist or is not readable!"
+  }
+  // an empty string is a valid environment, so only the type is checked
+  assert config.environment in String : 'The required environment parameter was not set.'
+  if (config.noop == true && config.noNoop == true) {
+    error(message: "The 'noop' and 'noNoop' parameters for puppet.deploy are mutually exclusive; only one can be true.")
+  }
+
+  config.server = config.server ?: 'puppet'
+  config.port = config.port ?: 8143
+
+  // initialize payload
+  Map<String,Object> payload = [:]
+
+  // environment is required, but can be an empty string
+  payload['environment'] = config.environment
+
+  // an empty environment requires a scope and prohibits environment enforcement
+  if (config.environment == '') {
+    assert config.scope : 'The scope parameter is required when the environment parameter is an empty string.'
+    if (config.enforceEnvironment == true) {
+      error(message: "The 'enforceEnvironment' parameter for puppet.deploy must be false when the environment parameter is an empty string.")
+    }
+
+    payload['enforce_environment'] = false
+  }
+  else if (config.enforceEnvironment != null) {
+    assert (config.enforceEnvironment in Boolean) : 'The enforceEnvironment parameter must be a Boolean.'
+    payload['enforce_environment'] = config.enforceEnvironment
+  }
+
+  // scope is a map with exactly one key
+  if (config.scope) {
+    if (config.scope in List) {
+      // is the last element of the list a nested list
+      if (config.scope[-1] in List) {
+        payload['scope'] = ['query': config.scope]
+      }
+      // otherwise it is a list of strings which is then a node list
+      else {
+        payload['scope'] = ['nodes': config.scope]
+      }
+    }
+    // a string is the id of a classifier node group
+    else if (config.scope in String) {
+      payload['scope'] = ['node_group': config.scope]
+    }
+    else {
+      error(message: 'The scope parameter is an invalid type!')
+    }
+  }
+
+  // boolean parameters mapped to their payload keys
+  final Map<String,String> booleanParams = [
+    'debug':             'debug',
+    'evaltrace':         'evaltrace',
+    'noop':              'noop',
+    'noNoop':            'no_noop',
+    'trace':             'trace',
+    'useCachedCatalog':  'use_cached_catalog',
+    'useCacheOnFailure': 'usecacheonfailure'
+  ]
+  booleanParams.each { String param, String key ->
+    if (config[param] != null) {
+      assert (config[param] in Boolean) : "The ${param} parameter must be a Boolean."
+      payload[key] = config[param]
+    }
+  }
+
+  // integer parameters mapped to their payload keys
+  final Map<String,String> integerParams = [
+    'concurrency':          'concurrency',
+    'fileTimeout':          'filetimeout',
+    'httpConnectTimeout':   'http_connect_timeout',
+    'httpKeepaliveTimeout': 'http_keepalive_timeout',
+    'httpReadTimeout':      'http_read_timeout',
+    'timeout':              'timeout'
+  ]
+  integerParams.each { String param, String key ->
+    if (config[param] != null) {
+      assert (config[param] in Integer) : "The ${param} parameter must be an integer."
+      payload[key] = config[param]
+    }
+  }
+
+  // string parameters mapped to their payload keys
+  final Map<String,String> stringParams = [
+    'description': 'description',
+    'ordering':    'ordering',
+    'skipTags':    'skip_tags',
+    'tags':        'tags'
+  ]
+  stringParams.each { String param, String key ->
+    if (config[param]) {
+      assert (config[param] in String) : "The ${param} parameter must be a string."
+      payload[key] = config[param]
+    }
+  }
+
+  if (config.userdata) {
+    assert (config.userdata in Map) : 'The userdata parameter must be a Map.'
+    payload['userdata'] = config.userdata
+  }
+
+  // convert map to json string
+  final String payloadJSON = writeJSON(json: payload, returnText: true)
+
+  // initialize vars
+  Map jsonResponse = [:]
+  Map response = [:]
+  String token = ''
+
+  // set token with logic from appropriate parameter
+  if (config.credentialsId) {
+    withCredentials([token(credentialsId: config.credentialsId, variable: 'theToken')]) {
+      token = theToken
+    }
+  }
+  else if (config.tokenFile) {
+    // initialize token with readFile relative pathing requirement stupidness
+    token = readFile("../../../../../../../../../../../${config.tokenFile}")
+  }
+
+  // trigger puppet run on demand
+  try {
+    jsonResponse = httpRequest(
+      acceptType:             'APPLICATION_JSON',
+      consoleLogResponseBody: true,
+      contentType:            'APPLICATION_JSON',
+      customHeaders:          [[name: 'X-Authentication', value: token]],
+      httpMode:               'POST',
+      ignoreSslErrors:        true,
+      quiet:                  true,
+      requestBody:            payloadJSON,
+      url:                    "https://${config.server}:${config.port}/orchestrator/v1/command/deploy",
+    )
+  }
+  catch (hudson.AbortException error) {
+    print "Failure executing REST API request against ${config.server} with token! Returned status: ${jsonResponse?.status}."
+    throw error
+  }
+  // receive and parse response
+  try {
+    response = readJSON(text: jsonResponse.content)
+  }
+  catch (hudson.AbortException error) {
+    print "Response from ${config.server} is not valid JSON! Response content: ${jsonResponse.content}."
+    throw error
+  }
+  // handle successful response
+  if (response.containsKey('job')) {
+    print 'Puppet Orchestrator Deploy execution successfully requested.'
+    print "Job Name: ${response['job']['name']}, Job ID: ${response['job']['id']}"
+  }
+  else {
+    print 'Failure response from Orchestrator below:'
+    print response.toMapString()
+  }
+}
+
 void task(Map config) {
   // input checking
   if (config.tokenFile && config.credentialsId) {
